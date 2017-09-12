@@ -131,7 +131,7 @@ add_openmw_dir (mwmp/processors/world BaseObjectProcessor ProcessorConsoleComman
 # Main executable
 
 if (NOT ANDROID)
-    add_executable(tes3mp
+    openmw_add_executable(tes3mp
         ${OPENMW_FILES}
         ${GAME} ${GAME_HEADER}
         ${APPLE_BUNDLE_RESOURCES}
