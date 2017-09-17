@@ -873,8 +873,8 @@ void CharacterController::handleTextKey(const std::string &groupname, const std:
             {
                 // Don't make foot sounds local for the player, it makes sense to keep them
                 // positioned on the ground.
-                sndMgr->playSound3D(mPtr, sound, volume, pitch, MWBase::SoundManager::Play_TypeFoot,
-                                    MWBase::SoundManager::Play_NoPlayerLocal);
+                sndMgr->playSound3D(mPtr, sound, volume, pitch, MWSound::Type::Foot,
+                                    MWSound::PlayMode::NoPlayerLocal);
             }
             else
             {
@@ -1237,8 +1237,8 @@ bool CharacterController::updateWeaponState()
             && mWeaponType == WeapType_None)
         {
             if(!sndMgr->getSoundPlaying(mPtr, "WolfRun"))
-                sndMgr->playSound3D(mPtr, "WolfRun", 1.0f, 1.0f, MWBase::SoundManager::Play_TypeSfx,
-                                    MWBase::SoundManager::Play_Loop);
+                sndMgr->playSound3D(mPtr, "WolfRun", 1.0f, 1.0f, MWSound::Type::Sfx,
+                                    MWSound::PlayMode::Loop);
         }
         else
             sndMgr->stopSound3D(mPtr, "WolfRun");
@@ -1276,6 +1276,7 @@ bool CharacterController::updateWeaponState()
         if(mUpperBodyState == UpperCharState_WeapEquiped && (mHitState == CharState_None || mHitState == CharState_Block))
         {
             MWBase::Environment::get().getWorld()->breakInvisibility(mPtr);
+            mAttackStrength = 0;
             if(mWeaponType == WeapType_Spell)
             {
                 // Unset casting flag, otherwise pressing the mouse button down would
@@ -1388,9 +1389,8 @@ bool CharacterController::updateWeaponState()
                 if(!resultMessage.empty())
                     MWBase::Environment::get().getWindowManager()->messageBox(resultMessage);
                 if(!resultSound.empty())
-                    MWBase::Environment::get().getSoundManager()->playSound3D(target,
-                    resultSound, 1.0f, 1.0f, MWBase::SoundManager::Play_TypeSfx,
-                    MWBase::SoundManager::Play_Normal);
+                    MWBase::Environment::get().getSoundManager()->playSound3D(target, resultSound,
+                                                                              1.0f, 1.0f);
             }
             else if (ammunition)
             {

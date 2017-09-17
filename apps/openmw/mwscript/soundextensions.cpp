@@ -108,7 +108,7 @@ namespace MWScript
                     std::string sound = runtime.getStringLiteral (runtime[0].mInteger);
                     runtime.pop();
 
-                    MWBase::Environment::get().getSoundManager()->playSound(sound, 1.0, 1.0, MWBase::SoundManager::Play_TypeSfx, MWBase::SoundManager::Play_NoEnv);
+                    MWBase::Environment::get().getSoundManager()->playSound(sound, 1.0, 1.0, MWSound::Type::Sfx, MWSound::PlayMode::NoEnv);
                 }
         };
 
@@ -127,7 +127,7 @@ namespace MWScript
                     Interpreter::Type_Float pitch = runtime[0].mFloat;
                     runtime.pop();
 
-                    MWBase::Environment::get().getSoundManager()->playSound(sound, volume, pitch, MWBase::SoundManager::Play_TypeSfx, MWBase::SoundManager::Play_NoEnv);
+                    MWBase::Environment::get().getSoundManager()->playSound(sound, volume, pitch, MWSound::Type::Sfx, MWSound::PlayMode::NoEnv);
                 }
         };
 
@@ -148,9 +148,9 @@ namespace MWScript
                     runtime.pop();
 
                     MWBase::Environment::get().getSoundManager()->playSound3D(ptr, sound, 1.0, 1.0,
-                                                                              MWBase::SoundManager::Play_TypeSfx,
-                                                                              mLoop ? MWBase::SoundManager::Play_LoopRemoveAtDistance
-                                                                                     : MWBase::SoundManager::Play_Normal);
+                                                                              MWSound::Type::Sfx,
+                                                                              mLoop ? MWSound::PlayMode::LoopRemoveAtDistance
+                                                                                    : MWSound::PlayMode::Normal);
                 }
         };
 
@@ -177,9 +177,9 @@ namespace MWScript
                     runtime.pop();
 
                     MWBase::Environment::get().getSoundManager()->playSound3D(ptr, sound, volume, pitch,
-                                                                              MWBase::SoundManager::Play_TypeSfx,
-                                                                              mLoop ? MWBase::SoundManager::Play_LoopRemoveAtDistance
-                                                                                    : MWBase::SoundManager::Play_Normal);
+                                                                              MWSound::Type::Sfx,
+                                                                              mLoop ? MWSound::PlayMode::LoopRemoveAtDistance
+                                                                                    : MWSound::PlayMode::Normal);
 
                 }
         };
