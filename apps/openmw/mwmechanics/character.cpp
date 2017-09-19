@@ -1822,19 +1822,10 @@ void CharacterController::update(float duration)
         if(sneak || inwater || flying)
             vec.z() = 0.0f;
 
-        if (inwater || flying)
-            cls.getCreatureStats(mPtr).land();
-
         bool inJump = true;
         if(!onground && !flying && !inwater)
         {
             // In the air (either getting up —ascending part of jump— or falling).
-
-            if (world->isSlowFalling(mPtr))
-            {
-                // SlowFalling spell effect is active, do not keep previous fall height
-                cls.getCreatureStats(mPtr).land();
-            }
 
             forcestateupdate = (mJumpState != JumpState_InAir);
             jumpstate = JumpState_InAir;
@@ -1881,7 +1872,7 @@ void CharacterController::update(float duration)
                 }
             }
         }
-        else if(mJumpState == JumpState_InAir)
+        else if(mJumpState == JumpState_InAir && !inwater && !flying)
         {
             forcestateupdate = true;
             jumpstate = JumpState_Landing;
@@ -1963,9 +1954,6 @@ void CharacterController::update(float duration)
         {
             movestate = mMovementState;
         }
-
-        if (onground)
-            cls.getCreatureStats(mPtr).land();
 
         if(movestate != CharState_None && movestate != CharState_TurnLeft && movestate != CharState_TurnRight)
             clearAnimQueue();
