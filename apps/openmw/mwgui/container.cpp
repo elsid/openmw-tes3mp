@@ -25,6 +25,7 @@
 #include "../mwmechanics/actorutil.hpp"
 
 #include "../mwworld/class.hpp"
+#include "../mwworld/inventorystore.hpp"
 
 #include "../mwmechanics/pickpocket.hpp"
 #include "../mwmechanics/creaturestats.hpp"
@@ -303,57 +304,74 @@ namespace MWGui
 
     void ContainerWindow::onTakeAllButtonClicked(MyGUI::Widget* _sender)
     {
-        if(mDragAndDrop == NULL || !mDragAndDrop->mIsOnDragAndDrop)
+        if(mDragAndDrop != NULL && mDragAndDrop->mIsOnDragAndDrop)
+            return;
+
+        // transfer everything into the player's inventory
+        ItemModel* playerModel = MWBase::Environment::get().getWindowManager()->getInventoryWindow()->getModel();
+        mModel->update();
+
+        // unequip all items to avoid unequipping/reequipping
+        if (mPtr.getClass().hasInventoryStore(mPtr))
         {
-            // transfer everything into the player's inventory
-            ItemModel* playerModel = MWBase::Environment::get().getWindowManager()->getInventoryWindow()->getModel();
-            mModel->update();
+            MWWorld::InventoryStore& invStore = mPtr.getClass().getInventoryStore(mPtr);
             for (size_t i=0; i<mModel->getItemCount(); ++i)
             {
-                if (i==0)
-                {
-                    // play the sound of the first object
-                    MWWorld::Ptr item = mModel->getItem(i).mBase;
-                    std::string sound = item.getClass().getUpSoundId(item);
-                    MWBase::Environment::get().getWindowManager()->playSound(sound);
-                }
-
                 const ItemStack& item = mModel->getItem(i);
+                if (invStore.isEquipped(item.mBase) == false)
+                    continue;
 
-                if (!onTakeItem(item, item.mCount))
-                    break;
+                invStore.unequipItem(item.mBase, mPtr);
+            }
+        }
 
-                mModel->moveItem(item, item.mCount, playerModel);
+        mModel->update();
+
+        for (size_t i=0; i<mModel->getItemCount(); ++i)
+        {
+            if (i==0)
+            {
+                // play the sound of the first object
+                MWWorld::Ptr item = mModel->getItem(i).mBase;
+                std::string sound = item.getClass().getUpSoundId(item);
+                MWBase::Environment::get().getWindowManager()->playSound(sound);
             }
 
-            MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
+            const ItemStack& item = mModel->getItem(i);
 
-            /*
-                Start of tes3mp addition
+            if (!onTakeItem(item, item.mCount))
+                break;
 
-                Send an ID_CONTAINER packet every time the Take All button is used on
-                a container
-            */
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->cell = *mPtr.getCell()->getCell();
-            worldEvent->action = mwmp::BaseEvent::SET;
-
-            mwmp::WorldObject worldObject;
-            worldObject.refId = mPtr.getCellRef().getRefId();
-            worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
-            worldObject.mpNum = mPtr.getCellRef().getMpNum();
-            worldEvent->addObject(worldObject);
-
-            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
-
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s",
-                               worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str());
-            /*
-                End of tes3mp addition
-            */
+            mModel->moveItem(item, item.mCount, playerModel);
         }
+
+        MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
+
+        /*
+            Start of tes3mp addition
+
+            Send an ID_CONTAINER packet every time the Take All button is used on
+            a container
+        */
+        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
+        worldEvent->reset();
+        worldEvent->cell = *mPtr.getCell()->getCell();
+        worldEvent->action = mwmp::BaseEvent::SET;
+
+        mwmp::WorldObject worldObject;
+        worldObject.refId = mPtr.getCellRef().getRefId();
+        worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
+        worldObject.mpNum = mPtr.getCellRef().getMpNum();
+        worldEvent->addObject(worldObject);
+
+        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s",
+                           worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str());
+        /*
+            End of tes3mp addition
+        */
     }
 
     void ContainerWindow::onDisposeCorpseButtonClicked(MyGUI::Widget *sender)
