@@ -26,7 +26,7 @@ Community administrators
 Art
 ---
 
-    Texafornian - tes3mp logo
+    Texafornian - TES3MP logo
 
 
 Special thanks (in alphabetical order)
@@ -51,6 +51,7 @@ Special thanks (in alphabetical order)
     Rhiyo
     Scorcio
     Shnatsel
+    Simon Nemes
     Zaphida
     Zaric Zhakaron
     All the developers of OpenMW for creating an amazing open source project
