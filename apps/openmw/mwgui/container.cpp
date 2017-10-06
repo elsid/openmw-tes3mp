@@ -36,6 +36,7 @@
 #include "itemview.hpp"
 #include "itemwidget.hpp"
 #include "inventoryitemmodel.hpp"
+#include "containeritemmodel.hpp"
 #include "sortfilteritemmodel.hpp"
 #include "pickpocketitemmodel.hpp"
 #include "draganddrop.hpp"
@@ -61,7 +62,6 @@ namespace MWGui
 
         mDisposeCorpseButton->eventMouseButtonClick += MyGUI::newDelegate(this, &ContainerWindow::onDisposeCorpseButtonClicked);
         mCloseButton->eventMouseButtonClick += MyGUI::newDelegate(this, &ContainerWindow::onCloseButtonClicked);
-        mCloseButton->eventKeyButtonPressed += MyGUI::newDelegate(this, &ContainerWindow::onKeyPressed);
         mTakeButton->eventMouseButtonClick += MyGUI::newDelegate(this, &ContainerWindow::onTakeAllButtonClicked);
 
         setCoord(200,0,600,300);
@@ -219,22 +219,39 @@ namespace MWGui
             dropItem();
     }
 
-    void ContainerWindow::openContainer(const MWWorld::Ptr& container, bool loot)
+    void ContainerWindow::setPtr(const MWWorld::Ptr& container)
     {
+        /*
+            Start of tes3mp addition
+
+            Mark this container as open for multiplayer logic purposes
+        */
         mwmp::Main::get().getCellController()->openContainer(container, loot);
+        /*
+            End of tes3mp addition
+        */
 
         mPickpocketDetected = false;
         mPtr = container;
 
-        if (mPtr.getTypeName() == typeid(ESM::NPC).name() && !loot)
+        bool loot = mPtr.getClass().isActor() && mPtr.getClass().getCreatureStats(mPtr).isDead();
+
+        if (mPtr.getClass().hasInventoryStore(mPtr))
         {
-            // we are stealing stuff
-            MWWorld::Ptr player = MWMechanics::getPlayer();
-            mModel = new PickpocketItemModel(player, new InventoryItemModel(container),
-                                             !mPtr.getClass().getCreatureStats(mPtr).getKnockedDown());
+            if (mPtr.getClass().isNpc() && !loot)
+            {
+                // we are stealing stuff
+                MWWorld::Ptr player = MWMechanics::getPlayer();
+                mModel = new PickpocketItemModel(player, new InventoryItemModel(container),
+                                                 !mPtr.getClass().getCreatureStats(mPtr).getKnockedDown());
+            }
+            else
+                mModel = new InventoryItemModel(container);
         }
         else
-            mModel = new InventoryItemModel(container);
+        {
+            mModel = new ContainerItemModel(container);
+        }
 
         mDisposeCorpseButton->setVisible(loot);
 
@@ -248,14 +265,6 @@ namespace MWGui
         setTitle(container.getClass().getName(container));
     }
 
-    void ContainerWindow::onKeyPressed(MyGUI::Widget *_sender, MyGUI::KeyCode _key, MyGUI::Char _char)
-    {
-        if (_key == MyGUI::KeyCode::Space)
-            onCloseButtonClicked(mCloseButton);
-        if (_key == MyGUI::KeyCode::Return || _key == MyGUI::KeyCode::NumpadEnter)
-            onTakeAllButtonClicked(mTakeButton);
-    }
-
     void ContainerWindow::resetReference()
     {
         ReferenceInterface::resetReference();
@@ -264,10 +273,19 @@ namespace MWGui
         mSortModel = NULL;
     }
 
-    void ContainerWindow::close()
+    void ContainerWindow::onClose()
     {
+        /*
+            Start of tes3mp addition
+
+            Mark this container as closed for multiplayer logic purposes
+        */
         mwmp::Main::get().getCellController()->closeContainer(mPtr);
-        WindowBase::close();
+        /*
+            End of tes3mp addition
+        */
+
+        WindowBase::onClose();
 
         if (dynamic_cast<PickpocketItemModel*>(mModel)
                 // Make sure we were actually closed, rather than just temporarily hidden (e.g. console or main menu opened)
@@ -289,17 +307,9 @@ namespace MWGui
         }
     }
 
-    void ContainerWindow::exit()
-    {
-        if(mDragAndDrop == NULL || !mDragAndDrop->mIsOnDragAndDrop)
-        {
-            MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
-        }
-    }
-
     void ContainerWindow::onCloseButtonClicked(MyGUI::Widget* _sender)
     {
-        exit();
+        MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
     }
 
     void ContainerWindow::onTakeAllButtonClicked(MyGUI::Widget* _sender)
@@ -420,9 +430,8 @@ namespace MWGui
             MWMechanics::Pickpocket pickpocket(player, mPtr);
             if (pickpocket.pick(item.mBase, count))
             {
-                int value = item.mBase.getClass().getValue(item.mBase) * count;
                 MWBase::Environment::get().getMechanicsManager()->commitCrime(
-                            player, mPtr, MWBase::MechanicsManager::OT_Theft, value, true);
+                            player, mPtr, MWBase::MechanicsManager::OT_Pickpocket, 0, true);
                 MWBase::Environment::get().getWindowManager()->removeGuiMode(MWGui::GM_Container);
                 mPickpocketDetected = true;
                 return false;

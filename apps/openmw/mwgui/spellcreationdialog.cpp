@@ -107,19 +107,19 @@ namespace MWGui
         mConstantEffect = constant;
     }
 
-    void EditEffectDialog::open()
+    void EditEffectDialog::onOpen()
     {
-        WindowModal::open();
+        WindowModal::onOpen();
         center();
     }
 
-    void EditEffectDialog::exit()
+    bool EditEffectDialog::exit()
     {
-        setVisible(false);
         if(mEditing)
             eventEffectModified(mOldEffect);
         else
             eventEffectRemoved(mEffect);
+        return true;
     }
 
     void EditEffectDialog::newEffect (const ESM::MagicEffect *effect)
@@ -286,6 +286,7 @@ namespace MWGui
 
     void EditEffectDialog::onCancelButtonClicked (MyGUI::Widget* sender)
     {
+        setVisible(false);
         exit();
     }
 
@@ -359,11 +360,12 @@ namespace MWGui
 
         mCancelButton->eventMouseButtonClick += MyGUI::newDelegate(this, &SpellCreationDialog::onCancelButtonClicked);
         mBuyButton->eventMouseButtonClick += MyGUI::newDelegate(this, &SpellCreationDialog::onBuyButtonClicked);
+        mNameEdit->eventEditSelectAccept += MyGUI::newDelegate(this, &SpellCreationDialog::onAccept);
 
         setWidgets(mAvailableEffectsList, mUsedEffectsView);
     }
 
-    void SpellCreationDialog::startSpellMaking (MWWorld::Ptr actor)
+    void SpellCreationDialog::setPtr (const MWWorld::Ptr& actor)
     {
         mPtr = actor;
         mNameEdit->setCaption("");
@@ -373,7 +375,7 @@ namespace MWGui
 
     void SpellCreationDialog::onCancelButtonClicked (MyGUI::Widget* sender)
     {
-        exit();
+        MWBase::Environment::get().getWindowManager()->removeGuiMode (MWGui::GM_SpellCreation);
     }
 
     void SpellCreationDialog::onBuyButtonClicked (MyGUI::Widget* sender)
@@ -440,14 +442,15 @@ namespace MWGui
         MWBase::Environment::get().getWindowManager()->removeGuiMode (GM_SpellCreation);
     }
 
-    void SpellCreationDialog::open()
+    void SpellCreationDialog::onAccept(MyGUI::EditBox *sender)
     {
-        center();
+        onBuyButtonClicked(sender);
     }
 
-    void SpellCreationDialog::exit()
+    void SpellCreationDialog::onOpen()
     {
-        MWBase::Environment::get().getWindowManager()->removeGuiMode (MWGui::GM_SpellCreation);
+        center();
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mNameEdit);
     }
 
     void SpellCreationDialog::onReferenceUnavailable ()

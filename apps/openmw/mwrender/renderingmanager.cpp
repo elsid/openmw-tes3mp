@@ -251,6 +251,10 @@ namespace MWRender
         sceneRoot->setNodeMask(Mask_Scene);
         sceneRoot->setName("Scene Root");
 
+        mUniformRainIntensity = new osg::Uniform("rainIntensity",(float) 0.0);
+        
+        mRootNode->getOrCreateStateSet()->addUniform(mUniformRainIntensity);
+
         mSky.reset(new SkyManager(sceneRoot, resourceSystem->getSceneManager()));
 
         source->setStateSetModes(*mRootNode->getOrCreateStateSet(), osg::StateAttribute::ON);
@@ -499,6 +503,9 @@ namespace MWRender
             mSky->update(dt);
             mWater->update(dt);
         }
+
+        if (!mSky->isEnabled() || !mSky->hasRain())
+          clearRainRipples();
 
         mCamera->update(dt, paused);
 
@@ -799,6 +806,11 @@ namespace MWRender
     {
         mEffectManager->clear();
         mWater->clearRipples();
+    }
+
+    void RenderingManager::clearRainRipples()
+    {
+        mUniformRainIntensity->set((float) 0.0);
     }
 
     void RenderingManager::clear()

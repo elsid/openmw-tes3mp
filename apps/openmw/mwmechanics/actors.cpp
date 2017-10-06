@@ -88,7 +88,9 @@ void adjustBoundItem (const std::string& item, bool bound, const MWWorld::Ptr& a
     }
     else
     {
-        actor.getClass().getContainerStore(actor).remove(item, 1, actor);
+        MWWorld::Ptr itemPtr = actor.getClass().getInventoryStore(actor).search(item);
+        if (!itemPtr.isEmpty())
+            actor.getClass().getInventoryStore(actor).remove(itemPtr, 1, actor, true);
     }
 }
 
@@ -1383,13 +1385,17 @@ namespace MWMechanics
                             float sqrHeadTrackDistance = std::numeric_limits<float>::max();
                             MWWorld::Ptr headTrackTarget;
 
-                            for(PtrActorMap::iterator it(mActors.begin()); it != mActors.end(); ++it)
+                            // Unconsious actor can not track target
+                            if (!iter->first.getClass().getCreatureStats(iter->first).getKnockedDown())
                             {
-                                if (it->first == iter->first)
-                                    continue;
-                                updateHeadTracking(iter->first, it->first, headTrackTarget, sqrHeadTrackDistance);
+                                for(PtrActorMap::iterator it(mActors.begin()); it != mActors.end(); ++it)
+                                {
+                                    if (it->first == iter->first)
+                                        continue;
+                                    updateHeadTracking(iter->first, it->first, headTrackTarget, sqrHeadTrackDistance);
+                                }
+                                iter->second->getCharacterController()->setHeadTrackTarget(headTrackTarget);
                             }
-                            iter->second->getCharacterController()->setHeadTrackTarget(headTrackTarget);
                         }
 
                         if (iter->first.getClass().isNpc() && iter->first != player && (isLocalActor || isAIActive))

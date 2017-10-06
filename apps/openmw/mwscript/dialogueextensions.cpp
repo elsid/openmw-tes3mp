@@ -23,6 +23,7 @@
 #include "../mwbase/dialoguemanager.hpp"
 #include "../mwbase/journal.hpp"
 #include "../mwbase/world.hpp"
+#include "../mwbase/windowmanager.hpp"
 
 #include "../mwworld/class.hpp"
 #include "../mwmechanics/npcstats.hpp"
@@ -163,7 +164,7 @@ namespace MWScript
                             runtime.pop();
                             arg0 = arg0 -1;
                         }
-                        dialogue->askQuestion(question,choice);
+                        dialogue->addChoice(question,choice);
                     }
                 }
         };
@@ -187,7 +188,7 @@ namespace MWScript
                         preventing infinite greeting loops
                     */
                     if (!MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Dialogue))
-                        MWBase::Environment::get().getDialogueManager()->startDialogue(ptr);
+                        MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_Dialogue, ptr);
                     /*
                         End of tes3mp change (major)
                     */
