@@ -30,6 +30,7 @@ namespace mwmp
         void setEditPassword(bool value);
 
         virtual void onOpen();
+        virtual bool exit();
 
         /** Event : Dialog finished, OK button clicked.\n
             signature : void method()\n

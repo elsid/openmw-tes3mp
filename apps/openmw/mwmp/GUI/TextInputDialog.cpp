@@ -62,6 +62,11 @@ namespace mwmp
         MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mTextEdit);
     }
 
+    bool TextInputDialog::exit()
+    {
+        return false;
+    }
+
 // widget controls
 
     void TextInputDialog::onOkClicked(MyGUI::Widget *_sender)
