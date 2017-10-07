@@ -142,7 +142,7 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                     currentContainer->mpNum == ptrFound.getCellRef().getMpNum())
                 {
                     MWBase::Environment::get().getWindowManager()->removeGuiMode(MWGui::GM_Container);
-                    MWBase::Environment::get().getWindowManager()->openContainer(ptrFound, currentContainer->loot);
+                    MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_Container, ptrFound);
                 }
             }
         }

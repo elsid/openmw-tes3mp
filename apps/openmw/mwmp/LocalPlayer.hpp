@@ -86,7 +86,7 @@ namespace mwmp
         void clearCurrentContainer();
 
         void storeCellState(ESM::Cell cell, int stateType);
-        void storeCurrentContainer(const MWWorld::Ptr& container, bool loot);
+        void storeCurrentContainer(const MWWorld::Ptr& container);
 
     private:
         Networking *getNetworking();

@@ -43,11 +43,10 @@ namespace mwmp
 
         void Update(float dt);
 
+        virtual void onOpen();
+        virtual void onClose();
 
-        virtual void open();
-        virtual void close();
-
-        virtual void exit();
+        virtual bool exit();
 
         void setFont(const std::string &fntName);
 

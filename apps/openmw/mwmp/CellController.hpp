@@ -59,7 +59,7 @@ namespace mwmp
 
         bool isSameCell(const ESM::Cell& cell, const ESM::Cell& otherCell);
 
-        void openContainer(const MWWorld::Ptr& container,  bool loot);
+        void openContainer(const MWWorld::Ptr& container);
         void closeContainer(const MWWorld::Ptr& container);
 
         int getCellSize() const;

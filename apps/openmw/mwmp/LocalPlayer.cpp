@@ -719,7 +719,7 @@ void LocalPlayer::addTopics()
         env.getDialogueManager()->addTopic(topicId);
 
         if (env.getWindowManager()->containsMode(MWGui::GM_Dialogue))
-            env.getDialogueManager()->updateTopics();
+            env.getDialogueManager()->updateActorKnownTopics();
     }
 }
 
@@ -1369,10 +1369,9 @@ void LocalPlayer::storeCellState(ESM::Cell cell, int stateType)
     cellStateChanges.cellStates.push_back(cellState);
 }
 
-void LocalPlayer::storeCurrentContainer(const MWWorld::Ptr &container, bool loot)
+void LocalPlayer::storeCurrentContainer(const MWWorld::Ptr &container)
 {
     currentContainer.refId = container.getCellRef().getRefId();
     currentContainer.refNumIndex = container.getCellRef().getRefNum().mIndex;
     currentContainer.mpNum = container.getCellRef().getMpNum();
-    currentContainer.loot = loot;
 }

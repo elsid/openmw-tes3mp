@@ -226,7 +226,7 @@ namespace MWGui
 
             Mark this container as open for multiplayer logic purposes
         */
-        mwmp::Main::get().getCellController()->openContainer(container, loot);
+        mwmp::Main::get().getCellController()->openContainer(container);
         /*
             End of tes3mp addition
         */

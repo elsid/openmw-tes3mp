@@ -105,7 +105,7 @@ namespace MWBase
 
                 Declare this method here so it can be used from outside of MWDialogue::DialogueManager
             */
-            virtual void updateTopics() = 0;
+            virtual void updateActorKnownTopics() = 0;
             /*
                 End of tes3mp addition
             */

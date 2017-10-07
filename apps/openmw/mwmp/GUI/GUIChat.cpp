@@ -46,7 +46,7 @@ namespace mwmp
         delay = 3; // 3 sec.
     }
 
-    void GUIChat::open()
+    void GUIChat::onOpen()
     {
         // Give keyboard focus to the combo box whenever the console is
         // turned on
@@ -54,7 +54,7 @@ namespace mwmp
         windowState = CHAT_ENABLED;
     }
 
-    void GUIChat::close()
+    void GUIChat::onClose()
     {
         // Apparently, hidden widgets can retain key focus
         // Remove for MyGUI 3.2.2
@@ -62,9 +62,10 @@ namespace mwmp
         SetEditState(0);
     }
 
-    void GUIChat::exit()
+    bool GUIChat::exit()
     {
         //WindowBase::exit();
+        return true;
     }
 
     void GUIChat::acceptCommand(MyGUI::EditBox *_sender)
