@@ -1775,9 +1775,10 @@ namespace MWGui
     {
         if (!mCurrentModals.empty())
         {
-            if (!mCurrentModals.back()->exit())
+            WindowModal* window = mCurrentModals.back();
+            if (!window->exit())
                 return;
-            mCurrentModals.back()->setVisible(false);
+            window->setVisible(false);
         }
     }
 
