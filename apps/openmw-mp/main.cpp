@@ -1,26 +1,29 @@
-#include <RakPeerInterface.h>
+#include <iostream>
+
+#include <boost/filesystem/fstream.hpp>
+#include <boost/iostreams/concepts.hpp>
+#include <boost/iostreams/stream_buffer.hpp>
+
+#include <components/files/configurationmanager.hpp>
+#include <components/files/escape.hpp>
+#include <components/settings/settings.hpp>
+#include <components/version/version.hpp>
+
+#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/NetworkMessages.hpp>
+#include <components/openmw-mp/Version.hpp>
+
 #include <BitStream.h>
+#include <MessageIdentifiers.h>
+#include <RakPeer.h>
+#include <RakPeerInterface.h>
+
 #include "Player.hpp"
 #include "Networking.hpp"
 #include "MasterClient.hpp"
-#include <RakPeer.h>
-#include <MessageIdentifiers.h>
-#include <components/openmw-mp/Log.hpp>
-#include <components/openmw-mp/NetworkMessages.hpp>
-#include <apps/openmw-mp/Script/Script.hpp>
-#include <iostream>
-#include <components/files/configurationmanager.hpp>
-#include <components/settings/settings.hpp>
-#include <boost/iostreams/concepts.hpp>
-#include <boost/iostreams/stream_buffer.hpp>
-#include <boost/filesystem/fstream.hpp>
-#include <components/openmw-mp/Version.hpp>
 #include "Utils.hpp"
 
-#include "MasterClient.hpp"
-
-#include <components/version/version.hpp>
-#include <components/files/escape.hpp>
+#include <apps/openmw-mp/Script/Script.hpp>
 
 #ifdef ENABLE_BREAKPAD
 #include <handler/exception_handler.h>
