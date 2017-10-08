@@ -164,7 +164,7 @@ void Utils::printVersion(std::string appName, std::string version, std::string c
     cout << "Unknown OS";
 #endif
     cout << " ";
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(_M_X64)
     cout << "64-bit";
 #elif defined(__i386__) || defined(_M_I86)
     cout << "32-bit";
