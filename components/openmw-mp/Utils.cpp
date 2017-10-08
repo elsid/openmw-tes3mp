@@ -9,6 +9,7 @@
 #include <ctime>
 #include <cmath>
 #include <memory>
+#include <iostream>
 #include <sstream>
 #include <boost/crc.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -147,6 +148,41 @@ unsigned int ::Utils::crc32Checksum(const std::string &file)
         } while (ifs);
     }
     return crc32.checksum();
+}
+
+void Utils::printVersion(std::string appName, std::string version, std::string commitHash, int protocol)
+{
+    cout << appName << " " << version;
+    cout << " (";
+#if defined(_WIN32)
+    cout << "Windows";
+#elif defined(__linux)
+    cout << "Linux";
+#elif defined(__APPLE__)
+    cout << "OS X";
+#else
+    cout << "Unknown OS";
+#endif
+    cout << " ";
+#ifdef __x86_64__
+    cout << "64-bit";
+#elif defined(__i386__) || defined(_M_I86)
+    cout << "32-bit";
+#elif defined(__ARM_ARCH)
+    cout << "ARMv" << __ARM_ARCH << " ";
+#ifdef __aarch64__
+    cout << "64-bit";
+#else
+    cout << "32-bit";
+#endif
+#else
+    cout << "Unknown architecture";
+#endif
+    cout << ")" << endl;
+    cout << "Protocol version: " << protocol << endl;
+    cout << "Commit hash: " << commitHash.substr(0, 10) << endl;
+
+    cout << "------------------------------------------------------------" << endl;
 }
 
 void Utils::printWithWidth(ostringstream &sstr, string str, size_t width)
