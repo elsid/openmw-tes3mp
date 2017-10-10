@@ -69,7 +69,7 @@ namespace mwmp
         int keyChatMode;
 
         long id;
-        bool calledMessageBox;
+        bool calledInteractiveMessage;
         TextInputDialog *mInputBox;
         GUIDialogList *mListBox;
         void onInputBoxDone(MWGui::WindowBase* parWindow);

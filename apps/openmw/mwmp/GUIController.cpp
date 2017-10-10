@@ -43,7 +43,7 @@ mwmp::GUIController::GUIController(): mInputBox(0), mListBox(0)
     mChat = nullptr;
     keySay = SDL_SCANCODE_Y;
     keyChatMode = SDL_SCANCODE_F2;
-    calledMessageBox = false;
+    calledInteractiveMessage = false;
 }
 
 mwmp::GUIController::~GUIController()
@@ -119,7 +119,6 @@ void mwmp::GUIController::showMessageBox(const BasePlayer::GUIMessageBox &guiMes
 {
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
     windowManager->messageBox(guiMessageBox.label);
-    calledMessageBox = true;
 }
 
 std::vector<std::string> splitString(const std::string &str, char delim = ';')
@@ -137,7 +136,7 @@ void mwmp::GUIController::showCustomMessageBox(const BasePlayer::GUIMessageBox &
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
     std::vector<std::string> buttons = splitString(guiMessageBox.buttons);
     windowManager->interactiveMessageBox(guiMessageBox.label, buttons);
-    calledMessageBox = true;
+    calledInteractiveMessage = true;
 }
 
 void mwmp::GUIController::showInputBox(const BasePlayer::GUIMessageBox &guiMessageBox)
@@ -205,10 +204,10 @@ void mwmp::GUIController::update(float dt)
     // checked somewhere else
     int pressedButton = MWBase::Environment::get().getWindowManager()->readPressedButton(false);
 
-    if (pressedButton != -1 && calledMessageBox)
+    if (pressedButton != -1 && calledInteractiveMessage)
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Pressed: %d", pressedButton);
-        calledMessageBox = false;
+        calledInteractiveMessage = false;
         Main::get().getLocalPlayer()->guiMessageBox.data = MyGUI::utility::toString(pressedButton);
         Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX)->setPlayer(Main::get().getLocalPlayer());
         Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX)->Send();
