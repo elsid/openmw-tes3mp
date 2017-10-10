@@ -118,9 +118,7 @@ void mwmp::GUIController::showDialogList(const mwmp::BasePlayer::GUIMessageBox &
 void mwmp::GUIController::showMessageBox(const BasePlayer::GUIMessageBox &guiMessageBox)
 {
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
-    std::vector<std::string> buttons;
-    buttons.push_back("Ok");
-    windowManager->interactiveMessageBox(guiMessageBox.label, buttons);
+    windowManager->messageBox(guiMessageBox.label);
     calledMessageBox = true;
 }
 
