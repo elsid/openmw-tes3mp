@@ -43,7 +43,7 @@ addons:
       name: "TES3MP/openmw-tes3mp"
       description: "<Your project description here>"
     notification_email: stas5978@gmail.com
-    build_command_prepend: "cmake . -DBUILD_UNITTESTS=FALSE"
+    build_command_prepend: "cmake . -DBUILD_UNITTESTS=FALSE -DBUILD_OPENCS=FALSE -DBUILD_BSATOOL=FALSE -DBUILD_ESMTOOL=FALSE -DBUILD_MWINIIMPORTER=FALSE -DBUILD_LAUNCHER=FALSE"
     build_command:   "make -j3"
     branch_pattern: coverity_scan
 matrix:

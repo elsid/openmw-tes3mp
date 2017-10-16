@@ -86,7 +86,10 @@ namespace MWGui
                 Prevent teleportation to jail if specified
             */
             if (!mwmp::Main::get().getLocalPlayer()->ignoreJailTeleportation)
+            {
                 MWBase::Environment::get().getWorld()->teleportToClosestMarker(player, "prisonmarker");
+                MWBase::Environment::get().getWindowManager()->fadeScreenOut(0.f); // override fade-in caused by cell transition
+            }
             /*
                 End of tes3mp change (minor)
             */

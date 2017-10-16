@@ -120,7 +120,6 @@ namespace MWGui
         , mSpellStatus(NULL)
         , mEffectBox(NULL)
         , mMinimap(NULL)
-        , mCompass(NULL)
         , mCrosshair(NULL)
         , mCellNameBox(NULL)
         , mDrowningFrame(NULL)

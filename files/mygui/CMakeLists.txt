@@ -4,7 +4,7 @@ endif()
 
 # Copy resource files into the build directory
 set(SDIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(DDIR ${OPENMW_MYGUI_FILES_ROOT}/resources/mygui)
+set(DDIRRELATIVE resources/mygui)
 
 set(MYGUI_FILES
     core.skin
@@ -105,4 +105,4 @@ set(MYGUI_FILES
 )
 
 
-copy_all_files(${CMAKE_CURRENT_SOURCE_DIR} ${DDIR} "${MYGUI_FILES}")
+copy_all_resource_files(${CMAKE_CURRENT_SOURCE_DIR} ${OPENMW_MYGUI_FILES_ROOT} ${DDIRRELATIVE} "${MYGUI_FILES}")
