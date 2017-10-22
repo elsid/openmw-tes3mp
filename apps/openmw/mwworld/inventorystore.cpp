@@ -354,17 +354,15 @@ void MWWorld::InventoryStore::autoEquip (const MWWorld::Ptr& actor)
                             Ptr rightRing = *slots_.at(Slot_RightRing);
 
                             // we want to swap cheaper ring only if both are equipped
-                            if (rightRing.getClass().getValue(rightRing) < old.getClass().getValue(old))
-                            {
+                            if (old.getClass().getValue (old) >= rightRing.getClass().getValue (rightRing))
                                 continue;
-                            }
                         }
                     }
 
                     if (old.getTypeName() == typeid(ESM::Clothing).name())
                     {
                         // check value
-                        if (old.getClass().getValue (old) > test.getClass().getValue (test))
+                        if (old.getClass().getValue (old) >= test.getClass().getValue (test))
                             // old clothing was more valuable
                             continue;
                     }
