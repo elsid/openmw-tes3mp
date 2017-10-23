@@ -363,8 +363,7 @@ namespace MWDialogue
             {
                 if (filter.responseAvailable (*iter))
                 {
-                    std::string lower = Misc::StringUtils::lowerCase(iter->mId);
-                    mActorKnownTopics.insert (lower);
+                    mActorKnownTopics.insert (iter->mId);
                 }
             }
         }
@@ -380,7 +379,7 @@ namespace MWDialogue
         for (const std::string& topic : mActorKnownTopics)
         {
             //does the player know the topic?
-            if (mKnownTopics.count(Misc::StringUtils::lowerCase(topic)))
+            if (mKnownTopics.count(topic))
                 keywordList.push_back(topic);
         }
 
