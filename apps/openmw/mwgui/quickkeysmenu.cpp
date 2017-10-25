@@ -8,6 +8,18 @@
 #include <components/esm/esmwriter.hpp>
 #include <components/esm/quickkeys.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include <components/openmw-mp/Log.hpp>
+#include "../mwmp/Main.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwworld/inventorystore.hpp"
 #include "../mwworld/class.hpp"
 #include "../mwworld/player.hpp"
@@ -111,7 +123,35 @@ namespace MWGui
             textBox->setCaption (MyGUI::utility::toString(index+1));
             textBox->setNeedMouseFocus (false);
         }
+
+        /*
+            Start of tes3mp addition
+
+            Send a PLAYER_QUICKKEYS packet whenever a key is unassigned, but only if the player
+            has finished character generation, so as to avoid doing anything doing startup when all
+            quick keys get unassigned by default
+        */
+        if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen() && !mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
+        {
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(index, Type_Unassigned);
+        }
+        /*
+            End of tes3mp addition
+        */
     }
+
+    /*
+        Start of tes3mp addition
+
+        Allow unassigning an index directly from elsewhere in the code
+    */
+    void QuickKeysMenu::unassignIndex(int index)
+    {
+        unassign(mQuickKeyButtons[index], index);
+    }
+    /*
+        End of tes3mp addition
+    */
 
     void QuickKeysMenu::onQuickKeyButtonClicked(MyGUI::Widget* sender)
     {
@@ -193,6 +233,17 @@ namespace MWGui
 
         if (mItemSelectionDialog)
             mItemSelectionDialog->setVisible(false);
+
+        /*
+            Start of tes3mp addition
+
+            Send a PLAYER_QUICKKEYS packet whenever a key is assigned to an item
+        */
+        if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_Item, item.getCellRef().getRefId());
+        /*
+            End of tes3mp addition
+        */
     }
 
     void QuickKeysMenu::onAssignItemCancel()
@@ -217,6 +268,17 @@ namespace MWGui
 
         if (mMagicSelectionDialog)
             mMagicSelectionDialog->setVisible(false);
+
+        /*
+            Start of tes3mp addition
+
+            Send a PLAYER_QUICKKEYS packet whenever a key is assigned to an item's magic
+        */
+        if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_MagicItem, item.getCellRef().getRefId());
+        /*
+            End of tes3mp addition
+        */
     }
 
     void QuickKeysMenu::onAssignMagic (const std::string& spellId)
@@ -251,6 +313,17 @@ namespace MWGui
 
         if (mMagicSelectionDialog)
             mMagicSelectionDialog->setVisible(false);
+
+        /*
+            Start of tes3mp addition
+
+            Send a PLAYER_QUICKKEYS packet whenever a key is assigned to a spell
+        */
+        if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_Magic, spellId);
+        /*
+            End of tes3mp addition
+        */
     }
 
     void QuickKeysMenu::onAssignMagicCancel ()
@@ -401,6 +474,19 @@ namespace MWGui
             MWBase::Environment::get().getWorld()->getPlayer().setDrawState(MWMechanics::DrawState_Weapon);
         }
     }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to add quickKeys from elsewhere in the code
+    */
+    void QuickKeysMenu::setSelectedIndex(int index)
+    {
+        mSelectedIndex = index;
+    }
+    /*
+        End of tes3mp addition
+    */
 
     // ---------------------------------------------------------------------------------------------------------
 

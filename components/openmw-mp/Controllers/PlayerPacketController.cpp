@@ -28,6 +28,7 @@
 #include "../Packets/Player/PacketPlayerLevel.hpp"
 #include "../Packets/Player/PacketPlayerMap.hpp"
 #include "../Packets/Player/PacketPlayerPosition.hpp"
+#include "../Packets/Player/PacketPlayerQuickKeys.hpp"
 #include "../Packets/Player/PacketPlayerRegionAuthority.hpp"
 #include "../Packets/Player/PacketPlayerRest.hpp"
 #include "../Packets/Player/PacketPlayerResurrect.hpp"
@@ -81,6 +82,7 @@ mwmp::PlayerPacketController::PlayerPacketController(RakNet::RakPeerInterface *p
     AddPacket<PacketPlayerLevel>(&packets, peer);
     AddPacket<PacketPlayerMap>(&packets, peer);
     AddPacket<PacketPlayerPosition>(&packets, peer);
+    AddPacket<PacketPlayerQuickKeys>(&packets, peer);
     AddPacket<PacketPlayerRegionAuthority>(&packets, peer);
     AddPacket<PacketPlayerRest>(&packets, peer);
     AddPacket<PacketPlayerResurrect>(&packets, peer);

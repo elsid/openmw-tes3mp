@@ -77,6 +77,77 @@ void GUIFunctions::ListBox(unsigned short pid, int id, const char *label, const 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->Send(false);
 }
 
+void GUIFunctions::InitializeQuickKeyChanges(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->quickKeyChanges.quickKeys.clear();
+}
+
+unsigned int GUIFunctions::GetQuickKeyChangesSize(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->quickKeyChanges.count;
+}
+
+int GUIFunctions::GetQuickKeySlot(unsigned short pid, unsigned int i) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    if (i >= player->quickKeyChanges.count)
+        return 0;
+
+    return player->quickKeyChanges.quickKeys.at(i).slot;
+}
+
+int GUIFunctions::GetQuickKeyType(unsigned short pid, unsigned int i) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    if (i >= player->quickKeyChanges.count)
+        return 0;
+
+    return player->quickKeyChanges.quickKeys.at(i).type;
+}
+
+const char *GUIFunctions::GetQuickKeyItemId(unsigned short pid, unsigned int i) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, "");
+
+    if (i >= player->quickKeyChanges.count)
+        return "invalid";
+
+    return player->quickKeyChanges.quickKeys.at(i).itemId.c_str();
+}
+
+void GUIFunctions::AddQuickKey(unsigned short pid, unsigned short slot, int type, const char* itemId) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    mwmp::QuickKey quickKey;
+    quickKey.slot = slot;
+    quickKey.type = type;
+    quickKey.itemId = itemId;
+
+    player->quickKeyChanges.quickKeys.push_back(quickKey);
+}
+
+void GUIFunctions::SendQuickKeyChanges(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_QUICKKEYS)->setPlayer(player);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_QUICKKEYS)->Send(false);
+}
+
 void GUIFunctions::SetMapVisibility(unsigned short targetPID, unsigned short affectedPID, unsigned short state) noexcept
 {
     LOG_MESSAGE(Log::LOG_WARN, "stub");

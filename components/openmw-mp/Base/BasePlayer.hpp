@@ -65,6 +65,22 @@ namespace mwmp
         std::string bookId;
     };
 
+    struct QuickKey
+    {
+        std::string itemId;
+
+        enum QUICKKEY_TYPE
+        {   
+            ITEM = 0,
+            MAGIC = 1,
+            ITEM_MAGIC = 2,
+            UNASSIGNED = 3
+        };
+
+        unsigned short slot;
+        int type;
+    };
+
     struct CellState
     {
         ESM::Cell cell;
@@ -149,6 +165,12 @@ namespace mwmp
         int action; // 0 - Clear and set in entirety, 1 - Add spell, 2 - Remove spell
     };
 
+    struct QuickKeyChanges
+    {
+        std::vector<QuickKey> quickKeys;
+        unsigned int count;
+    };
+
     struct CellStateChanges
     {
         std::vector<CellState> cellStates;
@@ -212,6 +234,7 @@ namespace mwmp
 
         InventoryChanges inventoryChanges;
         SpellbookChanges spellbookChanges;
+        QuickKeyChanges quickKeyChanges;
         JournalChanges journalChanges;
         FactionChanges factionChanges;
         TopicChanges topicChanges;
@@ -265,6 +288,7 @@ namespace mwmp
         unsigned int resurrectType;
 
         bool diedSinceArrestAttempt;
+        bool isReceivingQuickKeys;
     };
 }
 

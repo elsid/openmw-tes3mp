@@ -35,6 +35,7 @@
 #include "player/ProcessorPlayerLevel.hpp"
 #include "player/ProcessorPlayerMap.hpp"
 #include "player/ProcessorPlayerPosition.hpp"
+#include "player/ProcessorPlayerQuickKeys.hpp"
 #include "player/ProcessorPlayerRegionAuthority.hpp"
 #include "player/ProcessorPlayerRest.hpp"
 #include "player/ProcessorPlayerResurrect.hpp"
@@ -113,6 +114,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerLevel());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMap());
     PlayerProcessor::AddProcessor(new ProcessorPlayerPosition());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerQuickKeys());
     PlayerProcessor::AddProcessor(new ProcessorPlayerRegionAuthority());
     PlayerProcessor::AddProcessor(new ProcessorPlayerRest());
     PlayerProcessor::AddProcessor(new ProcessorPlayerResurrect());

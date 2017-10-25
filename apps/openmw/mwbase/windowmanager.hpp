@@ -227,6 +227,16 @@ namespace MWBase
             /// update activated quick key state (if action executing was delayed for some reason)
             virtual void updateActivatedQuickKey () = 0;
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to add quickKeys from elsewhere in the code
+            */
+            virtual void setQuickKey(int slot, int quickKeyType, MWWorld::Ptr item, const std::string& spellId = "") = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual std::string getSelectedSpell() = 0;
             virtual void setSelectedSpell(const std::string& spellId, int successChancePercent) = 0;
             virtual void setSelectedEnchantItem(const MWWorld::Ptr& item) = 0;

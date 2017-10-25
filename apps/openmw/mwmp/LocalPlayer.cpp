@@ -65,6 +65,7 @@ LocalPlayer::LocalPlayer()
     isWerewolf = false;
 
     diedSinceArrestAttempt = false;
+    isReceivingQuickKeys = false;
 }
 
 LocalPlayer::~LocalPlayer()
@@ -993,6 +994,57 @@ void LocalPlayer::setSpellbook()
     addSpells();
 }
 
+void LocalPlayer::setQuickKeys()
+{
+    MWWorld::Ptr ptrPlayer = getPlayerPtr();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_QUICKKEYS from server");
+
+    // Because we send QuickKeys packets from the same OpenMW methods that we use to set received ones with,
+    // we need a boolean to prevent their sending here
+    isReceivingQuickKeys = true;
+
+    for (const auto &quickKey : quickKeyChanges.quickKeys)
+    {
+        LOG_APPEND(Log::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
+
+        if (quickKey.type == QuickKey::ITEM || quickKey.type == QuickKey::ITEM_MAGIC)
+        {
+            MWWorld::InventoryStore &ptrInventory = ptrPlayer.getClass().getInventoryStore(ptrPlayer);
+
+            auto it = find_if(ptrInventory.begin(), ptrInventory.end(), [&quickKey](const MWWorld::Ptr &inventoryItem) {
+                return Misc::StringUtils::ciEqual(inventoryItem.getCellRef().getRefId(), quickKey.itemId);
+            });
+
+            if (it != ptrInventory.end())
+                MWBase::Environment::get().getWindowManager()->setQuickKey(quickKey.slot, quickKey.type, (*it));
+        }
+        else if (quickKey.type == QuickKey::MAGIC)
+        {
+            MWMechanics::Spells &ptrSpells = ptrPlayer.getClass().getCreatureStats(ptrPlayer).getSpells();
+            bool hasSpell = false;
+
+            MWMechanics::Spells::TIterator iter = ptrSpells.begin();
+            for (; iter != ptrSpells.end(); iter++)
+            {
+                const ESM::Spell *spell = iter->first;
+                if (Misc::StringUtils::ciEqual(spell->mId, quickKey.itemId))
+                {
+                    hasSpell = true;
+                    break;
+                }
+            }
+
+            if (hasSpell)
+                MWBase::Environment::get().getWindowManager()->setQuickKey(quickKey.slot, quickKey.type, 0, quickKey.itemId);
+        }
+        else
+            MWBase::Environment::get().getWindowManager()->setQuickKey(quickKey.slot, quickKey.type, 0);
+    }
+
+    isReceivingQuickKeys = false;
+}
+
 void LocalPlayer::setFactions()
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
@@ -1197,6 +1249,24 @@ void LocalPlayer::sendSpellRemoval(const ESM::Spell &spell)
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
     */
+}
+
+void LocalPlayer::sendQuickKey(unsigned short slot, int type, const std::string& itemId)
+{
+    quickKeyChanges.quickKeys.clear();
+
+    mwmp::QuickKey quickKey;
+    quickKey.slot = slot;
+    quickKey.type = type;
+    quickKey.itemId = itemId;
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_QUICKKEYS", itemId.c_str());
+    LOG_APPEND(Log::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
+
+    quickKeyChanges.quickKeys.push_back(quickKey);
+
+    getNetworking()->getPlayerPacket(ID_PLAYER_QUICKKEYS)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_QUICKKEYS)->Send();
 }
 
 void LocalPlayer::sendJournalEntry(const std::string& quest, int index, const MWWorld::Ptr& actor)

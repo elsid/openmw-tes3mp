@@ -9,24 +9,24 @@
     \
     {"SetSpellbookChangesAction",  SpellFunctions::SetSpellbookChangesAction},\
     {"AddSpell",                   SpellFunctions::AddSpell},\
-    {"AddCustomSpell",                   SpellFunctions::AddCustomSpell},\
-    {"AddCustomSpellData",                   SpellFunctions::AddCustomSpellData},\
-    {"AddCustomSpellEffect",                   SpellFunctions::AddCustomSpellEffect},\
+    {"AddCustomSpell",             SpellFunctions::AddCustomSpell},\
+    {"AddCustomSpellData",         SpellFunctions::AddCustomSpellData},\
+    {"AddCustomSpellEffect",       SpellFunctions::AddCustomSpellEffect},\
     \
     {"GetSpellId",                 SpellFunctions::GetSpellId},\
-    {"GetSpellName",                 SpellFunctions::GetSpellName},\
-    {"GetSpellType",                 SpellFunctions::GetSpellType},\
-    {"GetSpellCost",                 SpellFunctions::GetSpellCost},\
-    {"GetSpellFlags",                 SpellFunctions::GetSpellFlags},\
-    {"GetSpellEffectCount",                 SpellFunctions::GetSpellEffectCount},\
-    {"GetSpellEffectId",                 SpellFunctions::GetSpellEffectId},\
-    {"GetSpellEffectSkill",                 SpellFunctions::GetSpellEffectSkill},\
-    {"GetSpellEffectAttribute",                 SpellFunctions::GetSpellEffectAttribute},\
-    {"GetSpellEffectRange",                 SpellFunctions::GetSpellEffectRange},\
-    {"GetSpellEffectArea",                 SpellFunctions::GetSpellEffectArea},\
-    {"GetSpellEffectDuration",                 SpellFunctions::GetSpellEffectDuration},\
-    {"GetSpellEffectMagnMin",                 SpellFunctions::GetSpellEffectMagnMin},\
-    {"GetSpellEffectMagnMax",                 SpellFunctions::GetSpellEffectMagnMax},\
+    {"GetSpellName",               SpellFunctions::GetSpellName},\
+    {"GetSpellType",               SpellFunctions::GetSpellType},\
+    {"GetSpellCost",               SpellFunctions::GetSpellCost},\
+    {"GetSpellFlags",              SpellFunctions::GetSpellFlags},\
+    {"GetSpellEffectCount",        SpellFunctions::GetSpellEffectCount},\
+    {"GetSpellEffectId",           SpellFunctions::GetSpellEffectId},\
+    {"GetSpellEffectSkill",        SpellFunctions::GetSpellEffectSkill},\
+    {"GetSpellEffectAttribute",    SpellFunctions::GetSpellEffectAttribute},\
+    {"GetSpellEffectRange",        SpellFunctions::GetSpellEffectRange},\
+    {"GetSpellEffectArea",         SpellFunctions::GetSpellEffectArea},\
+    {"GetSpellEffectDuration",     SpellFunctions::GetSpellEffectDuration},\
+    {"GetSpellEffectMagnMin",      SpellFunctions::GetSpellEffectMagnMin},\
+    {"GetSpellEffectMagnMax",      SpellFunctions::GetSpellEffectMagnMax},\
     \
     {"SendSpellbookChanges",       SpellFunctions::SendSpellbookChanges}
 

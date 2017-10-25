@@ -25,6 +25,7 @@
 
     Include additional headers for multiplayer purposes
 */
+#include <components/openmw-mp/Log.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/GUIController.hpp"
 /*
@@ -1588,6 +1589,35 @@ namespace MWGui
     {
         mQuickKeysMenu->activateQuickKey(index);
     }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to add quickKeys from elsewhere in the code
+    */
+    void WindowManager::setQuickKey(int slot, int quickKeyType, MWWorld::Ptr item, const std::string& spellId)
+    {
+        mQuickKeysMenu->setSelectedIndex(slot);
+
+        switch (quickKeyType)
+        {
+            case QuickKeysMenu::Type_Unassigned:
+                mQuickKeysMenu->unassignIndex(slot);
+                break;
+            case QuickKeysMenu::Type_Item:
+                mQuickKeysMenu->onAssignItem(item);
+                break;
+            case QuickKeysMenu::Type_MagicItem:
+                mQuickKeysMenu->onAssignMagicItem(item);
+                break;
+            case QuickKeysMenu::Type_Magic:
+                mQuickKeysMenu->onAssignMagic(spellId);
+                break;
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
 
     bool WindowManager::getSubtitlesEnabled ()
     {
