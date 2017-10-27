@@ -10,7 +10,9 @@
     \
     {"GetTopicId",              DialogueFunctions::GetTopicId},\
     \
-    {"SendTopicChanges",        DialogueFunctions::SendTopicChanges}
+    {"SendTopicChanges",        DialogueFunctions::SendTopicChanges},\
+    \
+    {"PlayAnimation",           DialogueFunctions::PlayAnimation}
 
 class DialogueFunctions
 {
@@ -61,6 +63,9 @@ public:
     * \return void
     */
     static void SendTopicChanges(unsigned short pid, bool toOthers = false) noexcept;
+
+    static void PlayAnimation(unsigned short pid, const char* groupname, int mode = 0, int count = 1, bool persist = false) noexcept;
+
 private:
 
 };

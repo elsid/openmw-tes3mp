@@ -133,7 +133,7 @@ public:
     static void SetLevel(unsigned short pid, int value) noexcept;
     static void SetLevelProgress(unsigned short pid, int value) noexcept;
 
-    static void SetHealthBase(unsigned short pid, double value) noexcept;    
+    static void SetHealthBase(unsigned short pid, double value) noexcept;
     static void SetHealthCurrent(unsigned short pid, double value) noexcept;
     static void SetMagickaBase(unsigned short pid, double value) noexcept;
     static void SetMagickaCurrent(unsigned short pid, double value) noexcept;

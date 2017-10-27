@@ -43,6 +43,8 @@ namespace mwmp
         void removeMarker();
         void setMarkerState(bool state);
 
+        void playAnimation();
+
         MWWorld::Ptr getPtr();
         MWWorld::Ptr getLiveCellPtr();
         MWWorld::ManualRef* getRef();

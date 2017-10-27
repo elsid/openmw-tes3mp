@@ -10,5 +10,8 @@ void mwmp::PacketPlayerAnimPlay::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    // Placeholder to be filled in later
+    RW(player->animation.groupname, send);
+    RW(player->animation.mode, send);
+    RW(player->animation.count, send);
+    RW(player->animation.persist, send);
 }

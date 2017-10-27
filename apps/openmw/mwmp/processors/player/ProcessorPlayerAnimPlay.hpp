@@ -15,7 +15,13 @@ namespace mwmp
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
         {
-            // Placeholder to be filled in later
+            if (isLocal())
+            {
+                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_ANIM_PLAY about LocalPlayer from server");
+                static_cast<LocalPlayer*>(player)->playAnimation();
+            }
+            else if (player != 0)
+                static_cast<DedicatedPlayer*>(player)->playAnimation();
         }
     };
 }

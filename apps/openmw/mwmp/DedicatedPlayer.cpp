@@ -283,6 +283,12 @@ void DedicatedPlayer::setMarkerState(bool state)
         removeMarker();
 }
 
+void DedicatedPlayer::playAnimation()
+{
+    MWBase::Environment::get().getMechanicsManager()->playAnimationGroup(getPtr(),
+        animation.groupname, animation.mode, animation.count, animation.persist);
+}
+
 MWWorld::Ptr DedicatedPlayer::getPtr()
 {
     return ptr;

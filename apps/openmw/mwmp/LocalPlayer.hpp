@@ -90,6 +90,8 @@ namespace mwmp
         void storeCellState(ESM::Cell cell, int stateType);
         void storeCurrentContainer(const MWWorld::Ptr& container, bool loot);
 
+        void playAnimation();
+
     private:
         Networking *getNetworking();
         MWWorld::Ptr getPlayerPtr();

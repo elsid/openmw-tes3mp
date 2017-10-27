@@ -1446,3 +1446,9 @@ void LocalPlayer::storeCurrentContainer(const MWWorld::Ptr &container, bool loot
     currentContainer.mpNum = container.getCellRef().getMpNum();
     currentContainer.loot = loot;
 }
+
+void LocalPlayer::playAnimation()
+{
+    MWBase::Environment::get().getMechanicsManager()->playAnimationGroup(getPlayerPtr(),
+        animation.groupname, animation.mode, animation.count, animation.persist);
+}

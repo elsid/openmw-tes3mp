@@ -11,7 +11,7 @@
     \
     {"GetPreviousCellPosX", PositionFunctions::GetPreviousCellPosX},\
     {"GetPreviousCellPosY", PositionFunctions::GetPreviousCellPosY},\
-    {"GetPreviousCellPosZ", PositionFunctions::GetPreviousCellPosZ},\    
+    {"GetPreviousCellPosZ", PositionFunctions::GetPreviousCellPosZ},\
     \
     {"GetRot",              PositionFunctions::GetRot},\
     {"GetRotX",             PositionFunctions::GetRotX},\

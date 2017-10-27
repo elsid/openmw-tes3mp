@@ -53,3 +53,18 @@ void DialogueFunctions::SendTopicChanges(unsigned short pid, bool toOthers) noex
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_TOPIC)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_TOPIC)->Send(toOthers);
 }
+
+void DialogueFunctions::PlayAnimation(unsigned short pid, const char* groupname, int mode, int count, bool persist) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->animation.groupname = groupname;
+    player->animation.mode = mode;
+    player->animation.count = count;
+    player->animation.persist = persist;
+
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->setPlayer(player);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->Send(false);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->Send(true);
+}

@@ -271,6 +271,8 @@ namespace mwmp
         CGStage charGenStage;
         std::string passw;
 
+        Animation animation;
+
         bool isWerewolf;
         std::string creatureModel;
         bool useCreatureName;
