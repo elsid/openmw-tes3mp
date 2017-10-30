@@ -11,6 +11,5 @@ PacketActorSpeech::PacketActorSpeech(RakNet::RakPeerInterface *peer) : ActorPack
 
 void PacketActorSpeech::Actor(BaseActor &actor, bool send)
 {
-    RW(actor.response, send);
     RW(actor.sound, send);
 }

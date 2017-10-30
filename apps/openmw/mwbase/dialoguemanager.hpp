@@ -102,6 +102,16 @@ namespace MWBase
             /*
                 End of tes3mp addition
             */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to get the caption of a voice dialogue
+            */
+            virtual std::string getVoiceCaption(const std::string& sound) const = 0;
+            /*
+                End of tes3mp addition
+            */
     };
 }
 

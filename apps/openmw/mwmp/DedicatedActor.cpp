@@ -4,6 +4,8 @@
 #include "../mwbase/soundmanager.hpp"
 #include "../mwbase/windowmanager.hpp"
 
+#include "../mwdialogue/dialoguemanagerimp.hpp"
+
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
 #include "../mwmechanics/movement.hpp"
@@ -217,7 +219,7 @@ void DedicatedActor::playSound()
 
         MWBase::WindowManager *winMgr = MWBase::Environment::get().getWindowManager();
         if (winMgr->getSubtitlesEnabled())
-            winMgr->messageBox(response, MWGui::ShowInDialogueMode_Never);
+            winMgr->messageBox(MWBase::Environment::get().getDialogueManager()->getVoiceCaption(sound), MWGui::ShowInDialogueMode_Never);
 
         sound.clear();
     }

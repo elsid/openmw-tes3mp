@@ -711,7 +711,6 @@ namespace MWDialogue
             if (mwmp::Main::get().getCellController()->isLocalActor(actor))
             {
                 mwmp::LocalActor *localActor = mwmp::Main::get().getCellController()->getLocalActor(actor);
-                localActor->response = info->mResponse;
                 localActor->sound = info->mSound;
             }
             /*
@@ -816,4 +815,32 @@ namespace MWDialogue
                         mLastTopic, actor.getClass().getName(actor));
         }
     }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to get the caption of a voice dialogue
+    */
+    std::string DialogueManager::getVoiceCaption(const std::string& sound) const
+    {
+        const MWWorld::Store<ESM::Dialogue>& dialogues = MWBase::Environment::get().getWorld()->getStore().get<ESM::Dialogue>();
+
+        for (MWWorld::Store<ESM::Dialogue>::iterator dialogueIter = dialogues.begin(); dialogueIter != dialogues.end(); ++dialogueIter)
+        {
+            if (dialogueIter->mType == ESM::Dialogue::Voice)
+            {
+                for (ESM::Dialogue::InfoContainer::const_iterator infoIter = dialogueIter->mInfo.begin();
+                    infoIter != dialogueIter->mInfo.end(); ++infoIter)
+                {
+                    if (!infoIter->mSound.empty() && Misc::StringUtils::ciEqual(sound, infoIter->mSound))
+                        return infoIter->mResponse;
+                }
+            }
+        }
+
+        return "???";
+    }
+    /*
+        End of tes3mp addition
+    */
 }

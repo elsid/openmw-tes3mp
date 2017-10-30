@@ -237,7 +237,6 @@ void Cell::readSpeech(ActorList& actorList)
         if (dedicatedActors.count(mapIndex) > 0)
         {
             DedicatedActor *actor = dedicatedActors[mapIndex];
-            actor->response = baseActor.response;
             actor->sound = baseActor.sound;
         }
     }

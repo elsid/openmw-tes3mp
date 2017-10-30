@@ -114,6 +114,16 @@ namespace MWDialogue
 
             /// Removes the last added topic response for the given actor from the journal
             virtual void clearInfoActor (const MWWorld::Ptr& actor) const;
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to get the caption of a voice dialogue
+            */
+            virtual std::string getVoiceCaption(const std::string& sound) const;
+            /*
+                End of tes3mp addition
+            */
     };
 }
 
