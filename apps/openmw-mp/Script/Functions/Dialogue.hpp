@@ -12,7 +12,8 @@
     \
     {"SendTopicChanges",        DialogueFunctions::SendTopicChanges},\
     \
-    {"PlayAnimation",           DialogueFunctions::PlayAnimation}
+    {"PlayAnimation",           DialogueFunctions::PlayAnimation},\
+    {"PlaySpeech",              DialogueFunctions::PlaySpeech}
 
 class DialogueFunctions
 {
@@ -65,6 +66,7 @@ public:
     static void SendTopicChanges(unsigned short pid, bool toOthers = false) noexcept;
 
     static void PlayAnimation(unsigned short pid, const char* groupname, int mode = 0, int count = 1, bool persist = false) noexcept;
+    static void PlaySpeech(unsigned short pid, const char* sound) noexcept;
 
 private:
 

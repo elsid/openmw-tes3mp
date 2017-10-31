@@ -68,3 +68,15 @@ void DialogueFunctions::PlayAnimation(unsigned short pid, const char* groupname,
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->Send(true);
 }
+
+void DialogueFunctions::PlaySpeech(unsigned short pid, const char* sound) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->sound = sound;
+
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH)->setPlayer(player);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH)->Send(false);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH)->Send(true);
+}

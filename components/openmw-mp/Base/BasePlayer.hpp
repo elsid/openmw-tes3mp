@@ -271,6 +271,7 @@ namespace mwmp
         CGStage charGenStage;
         std::string passw;
 
+        std::string sound;
         Animation animation;
 
         bool isWerewolf;

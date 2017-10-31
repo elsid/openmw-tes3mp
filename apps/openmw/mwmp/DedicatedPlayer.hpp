@@ -44,6 +44,7 @@ namespace mwmp
         void setMarkerState(bool state);
 
         void playAnimation();
+        void playSpeech();
 
         MWWorld::Ptr getPtr();
         MWWorld::Ptr getLiveCellPtr();

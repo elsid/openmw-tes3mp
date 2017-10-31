@@ -91,6 +91,7 @@ namespace mwmp
         void storeCurrentContainer(const MWWorld::Ptr& container, bool loot);
 
         void playAnimation();
+        void playSpeech();
 
     private:
         Networking *getNetworking();

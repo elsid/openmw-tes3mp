@@ -7,6 +7,7 @@
 
 #include "../mwbase/environment.hpp"
 #include "../mwbase/journal.hpp"
+#include "../mwbase/soundmanager.hpp"
 
 #include "../mwclass/creature.hpp"
 #include "../mwclass/npc.hpp"
@@ -1451,4 +1452,13 @@ void LocalPlayer::playAnimation()
 {
     MWBase::Environment::get().getMechanicsManager()->playAnimationGroup(getPlayerPtr(),
         animation.groupname, animation.mode, animation.count, animation.persist);
+}
+
+void LocalPlayer::playSpeech()
+{
+    MWBase::Environment::get().getSoundManager()->say(getPlayerPtr(), sound);
+
+    MWBase::WindowManager *winMgr = MWBase::Environment::get().getWindowManager();
+    if (winMgr->getSubtitlesEnabled())
+        winMgr->messageBox(MWBase::Environment::get().getDialogueManager()->getVoiceCaption(sound), MWGui::ShowInDialogueMode_Never);
 }

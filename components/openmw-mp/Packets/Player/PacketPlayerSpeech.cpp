@@ -10,5 +10,5 @@ void mwmp::PacketPlayerSpeech::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    // Placeholder to be filled in later
+    RW(player->sound, send);
 }
