@@ -67,6 +67,7 @@ LocalPlayer::LocalPlayer()
 
     diedSinceArrestAttempt = false;
     isReceivingQuickKeys = false;
+    isPlayingAnimation = false;
 }
 
 LocalPlayer::~LocalPlayer()
@@ -338,6 +339,16 @@ void LocalPlayer::updatePosition(bool forceUpdate)
 
     bool posIsChanging = (direction.pos[0] != 0 || direction.pos[1] != 0 ||
             position.rot[0] != oldRot[0] || position.rot[2] != oldRot[1]);
+
+    // Animations can change a player's position without actually creating directional movement,
+    // so update positions accordingly
+    if (!posIsChanging && isPlayingAnimation)
+    {
+        if (MWBase::Environment::get().getMechanicsManager()->checkAnimationPlaying(ptrPlayer, animation.groupname))
+            posIsChanging = true;
+        else
+            isPlayingAnimation = false;
+    }
 
     if (forceUpdate || posIsChanging || posWasChanged)
     {
@@ -1452,6 +1463,8 @@ void LocalPlayer::playAnimation()
 {
     MWBase::Environment::get().getMechanicsManager()->playAnimationGroup(getPlayerPtr(),
         animation.groupname, animation.mode, animation.count, animation.persist);
+
+    isPlayingAnimation = true;
 }
 
 void LocalPlayer::playSpeech()

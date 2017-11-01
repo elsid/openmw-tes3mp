@@ -292,6 +292,7 @@ namespace mwmp
 
         bool diedSinceArrestAttempt;
         bool isReceivingQuickKeys;
+        bool isPlayingAnimation;
     };
 }
 
