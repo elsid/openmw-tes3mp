@@ -104,6 +104,7 @@ namespace MWDialogue
 
     void DialogueManager::parseText (const std::string& text)
     {
+        updateActorKnownTopics();
         std::vector<HyperTextParser::Token> hypertext = HyperTextParser::parseHyperText(text);
 
         for (std::vector<HyperTextParser::Token>::iterator tok = hypertext.begin(); tok != hypertext.end(); ++tok)
@@ -183,18 +184,13 @@ namespace MWDialogue
                         // TODO play sound
                     }
 
-                    // first topics update so that parseText knows the keywords to highlight
-                    updateActorKnownTopics();
-
-                    parseText (info->mResponse);
 
                     MWScript::InterpreterContext interpreterContext(&mActor.getRefData().getLocals(),mActor);
                     callback->addResponse("", Interpreter::fixDefinesDialog(info->mResponse, interpreterContext));
                     executeScript (info->mResultScript, mActor);
                     mLastTopic = it->mId;
 
-                    // update topics again to accommodate changes resulting from executeScript
-                    updateActorKnownTopics();
+                    parseText (info->mResponse);
 
                     return true;
                 }
@@ -290,8 +286,6 @@ namespace MWDialogue
         const ESM::DialInfo* info = filter.search(dialogue, true);
         if (info)
         {
-            parseText (info->mResponse);
-
             std::string title;
             if (dialogue.mType==ESM::Dialogue::Persuasion)
             {
@@ -329,6 +323,8 @@ namespace MWDialogue
             }
 
             executeScript (info->mResultScript, mActor);
+
+            parseText (info->mResponse);
 
             mLastTopic = topic;
         }
