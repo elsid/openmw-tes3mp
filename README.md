@@ -18,7 +18,7 @@ Project Status
 
 TES3MP is now playable in most respects. Player and NPC movement, animations, combat and spell casting are properly synchronized with small exceptions, as is picking up and dropping items in the world, using doors and levers, and adding and removing items from containers. Journal entries, faction stats and dialogue topics are also synchronized, allowing the majority of quests to work fine.
 
-[Serverside Lua scripts](https://github.com/TES3MP/PluginExamples) are used to save and load the state of most of the aforementioned.
+[Serverside Lua scripts](https://github.com/TES3MP/CoreScripts) are used to save and load the state of most of the aforementioned.
 
 Contributing
 --------------
