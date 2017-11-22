@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORCONSOLECOMMAND_HPP
 #define OPENMW_PROCESSORCONSOLECOMMAND_HPP
 
-#include "../WorldProcessor.hpp"
+#include "BaseObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorConsoleCommand : public WorldProcessor
+    class ProcessorConsoleCommand : public BaseObjectProcessor
     {
     public:
         ProcessorConsoleCommand()
@@ -15,8 +15,9 @@ namespace mwmp
 
         virtual void Do(WorldPacket &packet, WorldEvent &event)
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Received %s", strPacketID.c_str());
-            //event.runConsoleCommand();
+            BaseObjectProcessor::Do(packet, event);
+
+            event.runConsoleCommands(ptrCellStore);
         }
     };
 }

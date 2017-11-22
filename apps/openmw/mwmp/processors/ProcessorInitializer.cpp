@@ -125,6 +125,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerStatsDynamic());
     PlayerProcessor::AddProcessor(new ProcessorPlayerTopic());
 
+    WorldProcessor::AddProcessor(new ProcessorConsoleCommand());
     WorldProcessor::AddProcessor(new ProcessorContainer());
     WorldProcessor::AddProcessor(new ProcessorDoorState());
     WorldProcessor::AddProcessor(new ProcessorMusicPlay());

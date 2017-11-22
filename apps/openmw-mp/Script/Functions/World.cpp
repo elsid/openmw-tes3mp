@@ -163,6 +163,11 @@ void WorldFunctions::SetEventAction(unsigned char action) noexcept
     writeEvent.action = action;
 }
 
+void WorldFunctions::SetEventConsoleCommand(const char* consoleCommand) noexcept
+{
+    writeEvent.consoleCommand = consoleCommand;
+}
+
 void WorldFunctions::SetObjectRefId(const char* refId) noexcept
 {
     tempWorldObject.refId = refId;
@@ -235,6 +240,15 @@ void WorldFunctions::SetObjectRotation(double x, double y, double z) noexcept
     tempWorldObject.position.rot[0] = x;
     tempWorldObject.position.rot[1] = y;
     tempWorldObject.position.rot[2] = z;
+}
+
+void WorldFunctions::SetPlayerAsObject(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    tempWorldObject.guid = player->guid;
+    tempWorldObject.isPlayer = true;
 }
 
 void WorldFunctions::SetContainerItemRefId(const char* refId) noexcept
@@ -318,6 +332,12 @@ void WorldFunctions::SendContainer() noexcept
 {
     mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONTAINER)->setEvent(&writeEvent);
     mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONTAINER)->Send(writeEvent.guid);
+}
+
+void WorldFunctions::SendConsoleCommand() noexcept
+{
+    mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONSOLE_COMMAND)->setEvent(&writeEvent);
+    mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONSOLE_COMMAND)->Send(writeEvent.guid);
 }
 
 void WorldFunctions::SetHour(unsigned short pid, double hour) noexcept

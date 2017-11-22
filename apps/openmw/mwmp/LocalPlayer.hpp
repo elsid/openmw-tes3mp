@@ -93,9 +93,10 @@ namespace mwmp
         void playAnimation();
         void playSpeech();
 
+        MWWorld::Ptr getPlayerPtr();
+
     private:
         Networking *getNetworking();
-        MWWorld::Ptr getPlayerPtr();
 
     };
 }

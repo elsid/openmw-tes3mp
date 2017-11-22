@@ -33,6 +33,7 @@
     \
     {"SetEventCell",                WorldFunctions::SetEventCell},\
     {"SetEventAction",              WorldFunctions::SetEventAction},\
+    {"SetEventConsoleCommand",      WorldFunctions::SetEventConsoleCommand},\
     \
     {"SetObjectRefId",              WorldFunctions::SetObjectRefId},\
     {"SetObjectRefNumIndex",        WorldFunctions::SetObjectRefNumIndex},\
@@ -48,6 +49,7 @@
     {"SetObjectMasterState",        WorldFunctions::SetObjectMasterState},\
     {"SetObjectPosition",           WorldFunctions::SetObjectPosition},\
     {"SetObjectRotation",           WorldFunctions::SetObjectRotation},\
+    {"SetPlayerAsObject",           WorldFunctions::SetPlayerAsObject},\
     \
     {"SetContainerItemRefId",       WorldFunctions::SetContainerItemRefId},\
     {"SetContainerItemCount",       WorldFunctions::SetContainerItemCount},\
@@ -65,6 +67,7 @@
     {"SendObjectState",             WorldFunctions::SendObjectState},\
     {"SendDoorState",               WorldFunctions::SendDoorState},\
     {"SendContainer",               WorldFunctions::SendContainer},\
+    {"SendConsoleCommand",          WorldFunctions::SendConsoleCommand},\
     \
     {"SetHour",                     WorldFunctions::SetHour},\
     {"SetMonth",                    WorldFunctions::SetMonth},\
@@ -314,6 +317,17 @@ public:
     static void SetEventAction(unsigned char action) noexcept;
 
     /**
+    * \brief Set the console command of the temporary event stored on the server.
+    *
+    * When sent, the command will run once on every object added to the event. If no objects
+    * have been added, it will run once without any object reference.
+    *
+    * \param consoleCommand The console command.
+    * \return void
+    */
+    static void SetEventConsoleCommand(const char* consoleCommand) noexcept;
+
+    /**
     * \brief Set the refId of the temporary world object stored on the server.
     *
     * \param refId The refId.
@@ -458,6 +472,15 @@ public:
     static void SetObjectRotation(double x, double y, double z) noexcept;
 
     /**
+    * \brief Set a player as the object in the temporary world object stored on the server.
+    *        Currently only used for ConsoleCommand packets.
+    *
+    * \param pid The pid of the player.
+    * \return void
+    */
+    static void SetPlayerAsObject(unsigned short pid) noexcept;
+
+    /**
     * \brief Set the refId of the temporary container item stored on the server.
     *
     * \param refId The refId.
@@ -582,6 +605,15 @@ public:
     * \return void
     */
     static void SendContainer() noexcept;
+
+    /**
+    * \brief Send a ConsoleCommand packet.
+    *
+    * It is sent only to the player for whom the current event was initialized.
+    *
+    * \return void
+    */
+    static void SendConsoleCommand() noexcept;
 
     /**
     * \brief Set the game hour for a player and send a GameTime packet to that player.

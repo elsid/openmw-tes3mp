@@ -305,6 +305,16 @@ namespace MWBase
 
             virtual void executeInConsole (const std::string& path) = 0;
 
+            /*
+                Start of tes3mp addition
+
+                Allow the execution of console commands from elsewhere in the code
+            */
+            virtual void executeCommandInConsole(const std::string& command) = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual void enableRest() = 0;
             virtual bool getRestEnabled() = 0;
             virtual bool getJournalAllowed() = 0; 

@@ -55,6 +55,9 @@ namespace mwmp
 
         std::vector<ContainerItem> containerItems;
         unsigned int containerItemCount;
+
+        RakNet::RakNetGUID guid; // only for events that can also affect players
+        bool isPlayer;
     };
 
     class BaseEvent
@@ -85,6 +88,7 @@ namespace mwmp
         unsigned int worldObjectCount;
 
         ESM::Cell cell;
+        std::string consoleCommand;
 
         unsigned char action; // 0 - Clear and set in entirety, 1 - Add item, 2 - Remove item, 3 - Request items
 

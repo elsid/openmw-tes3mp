@@ -432,6 +432,51 @@ void WorldEvent::activateDoors(MWWorld::CellStore* cellStore)
     }
 }
 
+void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
+{
+    MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
+
+    LOG_APPEND(Log::LOG_VERBOSE, "- console command: %s", consoleCommand.c_str());
+
+    if (worldObjects.empty())
+    {
+        LOG_APPEND(Log::LOG_VERBOSE, "-- running with no object reference");
+        windowManager->executeCommandInConsole(consoleCommand);
+    }
+    else
+    {
+        for (const auto &worldObject : worldObjects)
+        {
+            if (worldObject.isPlayer)
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s");
+
+                if (worldObject.guid != Main::get().getLocalPlayer()->guid)
+                    windowManager->setConsoleSelectedObject(PlayerList::getPlayer(worldObject.guid)->getPtr());
+                else
+                    windowManager->setConsoleSelectedObject(Main::get().getLocalPlayer()->getPlayerPtr());
+
+                windowManager->executeCommandInConsole(consoleCommand);
+            }
+            else
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "-- running on cellRef: %s, %i, %i", worldObject.refId.c_str(), worldObject.refNumIndex, worldObject.mpNum);
+
+                MWWorld::Ptr ptrFound = cellStore->searchExact(worldObject.refNumIndex, worldObject.mpNum);
+
+                if (ptrFound)
+                {
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Found %s, %i, %i", ptrFound.getCellRef().getRefId().c_str(),
+                        ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
+
+                    windowManager->setConsoleSelectedObject(ptrFound);
+                    windowManager->executeCommandInConsole(consoleCommand);
+                }
+            }
+        }
+    } 
+}
+
 void WorldEvent::setLocalShorts(MWWorld::CellStore* cellStore)
 {
     for (const auto &worldObject : worldObjects)

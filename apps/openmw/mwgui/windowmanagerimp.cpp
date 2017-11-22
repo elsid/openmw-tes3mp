@@ -1450,6 +1450,19 @@ namespace MWGui
         mConsole->executeFile (path);
     }
 
+    /*
+        Start of tes3mp addition
+
+        Allow the execution of console commands from elsewhere in the code
+    */
+    void WindowManager::executeCommandInConsole(const std::string& command)
+    {
+        mConsole->execute(command);
+    }
+    /*
+        End of tes3mp addition
+    */
+
     MWGui::DialogueWindow* WindowManager::getDialogueWindow() { return mDialogueWindow;  }
     MWGui::InventoryWindow* WindowManager::getInventoryWindow() { return mInventoryWindow; }
     MWGui::CountDialog* WindowManager::getCountDialog() { return mCountDialog; }

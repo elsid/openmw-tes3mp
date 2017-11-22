@@ -334,6 +334,16 @@ namespace MWGui
 
     virtual void executeInConsole (const std::string& path);
 
+    /*
+        Start of tes3mp addition
+
+        Allow the execution of console commands from elsewhere in the code
+    */
+    virtual void executeCommandInConsole(const std::string& command);
+    /*
+        End of tes3mp addition
+    */
+
     virtual void enableRest() { mRestAllowed = true; }
     virtual bool getRestEnabled();
 
