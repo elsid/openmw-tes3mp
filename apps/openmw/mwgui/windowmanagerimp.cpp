@@ -541,6 +541,7 @@ namespace MWGui
         delete mDragAndDrop;
         delete mSoulgemDialog;
         delete mCursorManager;
+        delete mToolTips;
 
         cleanupGarbage();
 
