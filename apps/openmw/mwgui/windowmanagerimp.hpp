@@ -531,6 +531,8 @@ namespace MWGui
     
     int mShowOwned;
 
+    ToUTF8::FromType mEncoding;
+
     std::string mVersionDescription;
 
     MWGui::TextColours mTextColours;
