@@ -120,8 +120,17 @@ void OMW::Engine::frame(float frametime)
         // When the window is minimized, pause the game. Currently this *has* to be here to work around a MyGUI bug.
         // If we are not currently rendering, then RenderItems will not be reused resulting in a memory leak upon changing widget textures (fixed in MyGUI 3.3.2),
         // and destroyed widgets will not be deleted (not fixed yet, https://github.com/MyGUI/mygui/issues/21)
-        if (!mEnvironment.getInputManager()->isWindowVisible())
-            return;
+        
+        /*
+            Start of tes3mp change (major)
+
+            The game cannot be paused in multiplayer, so prevent that from happening even here
+        */
+        //if (!mEnvironment.getInputManager()->isWindowVisible())
+        //    return;
+        /*
+            End of tes3mp change (major)
+        */
 
         // sound
         if (mUseSound)
