@@ -48,8 +48,10 @@ LocalPlayer::LocalPlayer()
     charGenStage.current = 0;
     charGenStage.end = 1;
 
-    consoleAllowed = false;
     difficulty = 0;
+    consoleAllowed = false;
+    restAllowed = true;
+    waitAllowed = true;
 
     ignorePosPacket = false;
     ignoreJailTeleportation = false;

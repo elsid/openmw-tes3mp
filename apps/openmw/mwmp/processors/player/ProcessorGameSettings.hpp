@@ -26,6 +26,12 @@ namespace mwmp
                     {
                         MWBase::Environment::get().getWindowManager()->popGuiMode();
                     }
+                    else if ((MWBase::Environment::get().getWindowManager()->getMode() == MWGui::GM_Rest ||
+                        MWBase::Environment::get().getWindowManager()->getMode() == MWGui::GM_RestBed) &&
+                        (!player->restAllowed || !player->waitAllowed))
+                    {
+                        MWBase::Environment::get().getWindowManager()->popGuiMode();
+                    }
                 }
             }
         }

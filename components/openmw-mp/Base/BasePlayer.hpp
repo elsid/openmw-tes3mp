@@ -246,8 +246,10 @@ namespace mwmp
         ESM::ActiveSpells activeSpells;
         CurrentContainer currentContainer;
 
-        bool consoleAllowed;
         int difficulty;
+        bool consoleAllowed;
+        bool restAllowed;
+        bool waitAllowed;
 
         bool ignorePosPacket;
 

@@ -1,5 +1,16 @@
 #include "guiextensions.hpp"
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include <components/compiler/extensions.hpp>
 #include <components/compiler/opcodes.hpp>
 
@@ -56,8 +67,21 @@ namespace MWScript
                 MWWorld::Ptr bed = R()(runtime, false);
 
                 if (bed.isEmpty() || !MWBase::Environment::get().getMechanicsManager()->sleepInBed(MWMechanics::getPlayer(),
-                                                                             bed))
-                    MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_RestBed);
+                    bed))
+                /*
+                    Start of tes3mp change (minor)
+
+                    Prevent resting if it has been disabled by the server for the local player
+                */
+                {
+                    if (!mwmp::Main::get().getLocalPlayer()->restAllowed)
+                        MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest.");
+                    else
+                        MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_RestBed);
+                }
+                /*
+                    End of tes3mp change (minor)
+                */
             }
         };
 

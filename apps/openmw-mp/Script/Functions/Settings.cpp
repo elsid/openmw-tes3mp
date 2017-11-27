@@ -9,7 +9,15 @@
 #include <iostream>
 using namespace std;
 
-void SettingFunctions::SetConsoleAllow(unsigned short pid, bool state)
+void SettingFunctions::SetDifficulty(unsigned short pid, int difficulty)
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->difficulty = difficulty;
+}
+
+void SettingFunctions::SetConsoleAllowed(unsigned short pid, bool state)
 {
     Player *player;
     GET_PLAYER(pid, player,);
@@ -17,12 +25,20 @@ void SettingFunctions::SetConsoleAllow(unsigned short pid, bool state)
     player->consoleAllowed = state;
 }
 
-void SettingFunctions::SetDifficulty(unsigned short pid, int difficulty)
+void SettingFunctions::SetRestAllowed(unsigned short pid, bool state)
 {
     Player *player;
-    GET_PLAYER(pid, player,);
+    GET_PLAYER(pid, player, );
 
-    player->difficulty = difficulty;
+    player->restAllowed = state;
+}
+
+void SettingFunctions::SetWaitAllowed(unsigned short pid, bool state)
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->waitAllowed = state;
 }
 
 void SettingFunctions::SendSettings(unsigned short pid) noexcept
