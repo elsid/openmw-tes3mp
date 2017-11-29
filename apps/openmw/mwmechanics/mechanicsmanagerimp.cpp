@@ -1635,6 +1635,11 @@ namespace MWMechanics
         mActors.getObjectsInRange(position, radius, objects);
     }
 
+    bool MechanicsManager::isAnyActorInRange(const osg::Vec3f &position, float radius)
+    {
+        return mActors.isAnyObjectInRange(position, radius);
+    }
+
     std::list<MWWorld::Ptr> MechanicsManager::getActorsSidingWith(const MWWorld::Ptr& actor)
     {
         return mActors.getActorsSidingWith(actor);
