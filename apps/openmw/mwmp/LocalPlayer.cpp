@@ -243,7 +243,8 @@ void LocalPlayer::updateAttributes(bool forceUpdate)
 
     for (int i = 0; i < 8; ++i)
     {
-        if (ptrNpcStats.getAttribute(i).getBase() != creatureStats.mAttributes[i].mBase)
+        if (ptrNpcStats.getAttribute(i).getBase() != creatureStats.mAttributes[i].mBase ||
+            ptrNpcStats.getAttribute(i).getModifier() != creatureStats.mAttributes[i].mMod)
         {
             ptrNpcStats.getAttribute(i).writeState(creatureStats.mAttributes[i]);
             attributesChanged = true;
