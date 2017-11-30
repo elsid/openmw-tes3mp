@@ -36,7 +36,7 @@
     {"GetFatigueCurrent",       StatsFunctions::GetFatigueCurrent},\
     \
     {"GetAttributeBase",        StatsFunctions::GetAttributeBase},\
-    {"GetAttributeCurrent",     StatsFunctions::GetAttributeCurrent},\
+    {"GetAttributeModifier",    StatsFunctions::GetAttributeModifier},\
     \
     {"GetSkillBase",            StatsFunctions::GetSkillBase},\
     {"GetSkillCurrent",         StatsFunctions::GetSkillCurrent},\
@@ -64,7 +64,7 @@
     {"SetFatigueCurrent",       StatsFunctions::SetFatigueCurrent},\
     \
     {"SetAttributeBase",        StatsFunctions::SetAttributeBase},\
-    {"SetAttributeCurrent",     StatsFunctions::SetAttributeCurrent},\
+    {"SetAttributeModifier",    StatsFunctions::SetAttributeModifier},\
     \
     {"SetSkillBase",            StatsFunctions::SetSkillBase},\
     {"SetSkillCurrent",         StatsFunctions::SetSkillCurrent},\
@@ -113,7 +113,7 @@ public:
     static double GetFatigueCurrent(unsigned short pid) noexcept;
 
     static int GetAttributeBase(unsigned short pid, unsigned short attribute) noexcept;
-    static int GetAttributeCurrent(unsigned short pid, unsigned short attribute) noexcept;
+    static int GetAttributeModifier(unsigned short pid, unsigned short attribute) noexcept;
 
     static int GetSkillBase(unsigned short pid, unsigned short skill) noexcept;
     static int GetSkillCurrent(unsigned short pid, unsigned short skill) noexcept;
@@ -141,7 +141,7 @@ public:
     static void SetFatigueCurrent(unsigned short pid, double value) noexcept;
 
     static void SetAttributeBase(unsigned short pid, unsigned short attribute, int value) noexcept;
-    static void SetAttributeCurrent(unsigned short pid, unsigned short attribute, int value) noexcept;
+    static void SetAttributeModifier(unsigned short pid, unsigned short attribute, int value) noexcept;
 
     static void SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept;    
     static void SetSkillCurrent(unsigned short pid, unsigned short skill, int value) noexcept;

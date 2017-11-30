@@ -217,7 +217,7 @@ int StatsFunctions::GetAttributeBase(unsigned short pid, unsigned short attribut
     return player->creatureStats.mAttributes[attribute].mBase;
 }
 
-int StatsFunctions::GetAttributeCurrent(unsigned short pid, unsigned short attribute) noexcept
+int StatsFunctions::GetAttributeModifier(unsigned short pid, unsigned short attribute) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
@@ -225,7 +225,7 @@ int StatsFunctions::GetAttributeCurrent(unsigned short pid, unsigned short attri
     if (attribute >= Attribute::Length)
         return 0;
 
-    return player->creatureStats.mAttributes[attribute].mCurrent;
+    return player->creatureStats.mAttributes[attribute].mMod;
 }
 
 int StatsFunctions::GetSkillBase(unsigned short pid, unsigned short skill) noexcept
@@ -431,7 +431,7 @@ void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attribu
     player->creatureStats.mAttributes[attribute].mBase = value;
 }
 
-void StatsFunctions::SetAttributeCurrent(unsigned short pid, unsigned short attribute, int value) noexcept
+void StatsFunctions::SetAttributeModifier(unsigned short pid, unsigned short attribute, int value) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
@@ -439,7 +439,7 @@ void StatsFunctions::SetAttributeCurrent(unsigned short pid, unsigned short attr
     if (attribute >= Attribute::Length)
         return;
 
-    player->creatureStats.mAttributes[attribute].mCurrent = value;
+    player->creatureStats.mAttributes[attribute].mMod = value;
 }
 
 void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept  //TODO: need packet for one value
