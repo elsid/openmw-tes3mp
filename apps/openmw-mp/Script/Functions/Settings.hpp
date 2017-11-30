@@ -4,12 +4,13 @@
 #include "../Types.hpp"
 
 #define SETTINGSAPI \
-    {"SetDifficulty",     SettingFunctions::SetDifficulty},\
-    {"SetConsoleAllowed", SettingFunctions::SetConsoleAllowed},\
-    {"SetRestAllowed",    SettingFunctions::SetRestAllowed},\
-    {"SetWaitAllowed",    SettingFunctions::SetWaitAllowed},\
+    {"SetDifficulty",               SettingFunctions::SetDifficulty},\
+    {"SetConsoleAllowed",           SettingFunctions::SetConsoleAllowed},\
+    {"SetBedRestAllowed",           SettingFunctions::SetBedRestAllowed},\
+    {"SetWildernessRestAllowed",    SettingFunctions::SetWildernessRestAllowed},\
+    {"SetWaitAllowed",              SettingFunctions::SetWaitAllowed},\
     \
-    {"SendSettings",      SettingFunctions::SendSettings}
+    {"SendSettings",                SettingFunctions::SendSettings}
 
 class SettingFunctions
 {
@@ -40,7 +41,7 @@ public:
     static void SetConsoleAllowed(unsigned short pid, bool state);
 
     /**
-    * \brief Set whether resting is allowed for a player.
+    * \brief Set whether resting in beds is allowed for a player.
     *
     * This changes the resting permission for that player in the server memory, but does not
     * by itself send a packet.
@@ -49,7 +50,19 @@ public:
     * \param bool The resting permission state.
     * \return void
     */
-    static void SetRestAllowed(unsigned short pid, bool state);
+    static void SetBedRestAllowed(unsigned short pid, bool state);
+
+    /**
+    * \brief Set whether resting in the wilderness is allowed for a player.
+    *
+    * This changes the resting permission for that player in the server memory, but does not
+    * by itself send a packet.
+    *
+    * \param pid The player ID.
+    * \param bool The resting permission state.
+    * \return void
+    */
+    static void SetWildernessRestAllowed(unsigned short pid, bool state);
 
     /**
     * \brief Set whether waiting is allowed for a player.

@@ -74,8 +74,8 @@ namespace MWScript
                     Prevent resting if it has been disabled by the server for the local player
                 */
                 {
-                    if (!mwmp::Main::get().getLocalPlayer()->restAllowed)
-                        MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest.");
+                    if (!mwmp::Main::get().getLocalPlayer()->bedRestAllowed)
+                        MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest in beds.");
                     else
                         MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_RestBed);
                 }

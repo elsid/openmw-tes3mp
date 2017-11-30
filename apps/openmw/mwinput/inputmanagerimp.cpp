@@ -1019,9 +1019,9 @@ namespace MWInput
         */
         int canRest = MWBase::Environment::get().getWorld()->canRest();
 
-        if (canRest == 0 && !mwmp::Main::get().getLocalPlayer()->restAllowed)
+        if (canRest == 0 && !mwmp::Main::get().getLocalPlayer()->wildernessRestAllowed)
         {
-            MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest.");
+            MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest in the wilderness.");
             return;
         }
         else if (canRest == 1 && !mwmp::Main::get().getLocalPlayer()->waitAllowed)

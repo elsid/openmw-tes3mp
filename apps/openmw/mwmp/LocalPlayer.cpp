@@ -50,7 +50,8 @@ LocalPlayer::LocalPlayer()
 
     difficulty = 0;
     consoleAllowed = false;
-    restAllowed = true;
+    bedRestAllowed = true;
+    wildernessRestAllowed = true;
     waitAllowed = true;
 
     ignorePosPacket = false;

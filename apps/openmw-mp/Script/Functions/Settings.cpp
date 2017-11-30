@@ -25,12 +25,20 @@ void SettingFunctions::SetConsoleAllowed(unsigned short pid, bool state)
     player->consoleAllowed = state;
 }
 
-void SettingFunctions::SetRestAllowed(unsigned short pid, bool state)
+void SettingFunctions::SetBedRestAllowed(unsigned short pid, bool state)
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    player->restAllowed = state;
+    player->bedRestAllowed = state;
+}
+
+void SettingFunctions::SetWildernessRestAllowed(unsigned short pid, bool state)
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->wildernessRestAllowed = state;
 }
 
 void SettingFunctions::SetWaitAllowed(unsigned short pid, bool state)

@@ -248,7 +248,8 @@ namespace mwmp
 
         int difficulty;
         bool consoleAllowed;
-        bool restAllowed;
+        bool bedRestAllowed;
+        bool wildernessRestAllowed;
         bool waitAllowed;
 
         bool ignorePosPacket;
