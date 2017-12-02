@@ -64,7 +64,7 @@
     {"SetFatigueCurrent",       StatsFunctions::SetFatigueCurrent},\
     \
     {"SetAttributeBase",        StatsFunctions::SetAttributeBase},\
-    {"SetAttributeModifier",    StatsFunctions::SetAttributeModifier},\
+    {"ClearAttributeModifier",  StatsFunctions::ClearAttributeModifier},\
     \
     {"SetSkillBase",            StatsFunctions::SetSkillBase},\
     {"SetSkillCurrent",         StatsFunctions::SetSkillCurrent},\
@@ -141,7 +141,7 @@ public:
     static void SetFatigueCurrent(unsigned short pid, double value) noexcept;
 
     static void SetAttributeBase(unsigned short pid, unsigned short attribute, int value) noexcept;
-    static void SetAttributeModifier(unsigned short pid, unsigned short attribute, int value) noexcept;
+    static void ClearAttributeModifier(unsigned short pid, unsigned short attribute) noexcept;
 
     static void SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept;    
     static void SetSkillCurrent(unsigned short pid, unsigned short skill, int value) noexcept;

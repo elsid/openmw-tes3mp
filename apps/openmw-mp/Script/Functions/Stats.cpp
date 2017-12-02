@@ -431,7 +431,7 @@ void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attribu
     player->creatureStats.mAttributes[attribute].mBase = value;
 }
 
-void StatsFunctions::SetAttributeModifier(unsigned short pid, unsigned short attribute, int value) noexcept
+void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short attribute) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
@@ -439,7 +439,7 @@ void StatsFunctions::SetAttributeModifier(unsigned short pid, unsigned short att
     if (attribute >= Attribute::Length)
         return;
 
-    player->creatureStats.mAttributes[attribute].mMod = value;
+    player->creatureStats.mAttributes[attribute].mMod = 0;
 }
 
 void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept  //TODO: need packet for one value
