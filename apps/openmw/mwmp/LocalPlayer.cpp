@@ -19,6 +19,7 @@
 
 #include "../mwinput/inputmanagerimp.hpp"
 
+#include "../mwmechanics/activespells.hpp"
 #include "../mwmechanics/aitravel.hpp"
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
@@ -790,6 +791,12 @@ void LocalPlayer::setAttributes()
 
     for (int i = 0; i < 8; ++i)
     {
+        // If the server wants to clear our attribute's non-zero modifier, we need to remove
+        // the spell effect causing it, to avoid an infinite loop where the effect keeps resetting
+        // the modifier
+        if (creatureStats.mAttributes[i].mMod == 0 && ptrCreatureStats->getAttribute(i).getModifier() > 0)
+            ptrCreatureStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifyAttribute, i);
+
         attributeValue.readState(creatureStats.mAttributes[i]);
         ptrCreatureStats->setAttribute(i, attributeValue);
     }

@@ -94,6 +94,16 @@ namespace MWMechanics
             /// Remove all effects with CASTER_LINKED flag that were cast by \a casterActorId
             void purge (int casterActorId);
 
+            /*
+                Start of tes3mp addition
+
+                Allow the purging of an effect for a specific arg (attribute or skill)
+            */
+            void purgeEffectByArg(short effectId, int effectArg);
+            /*
+                End of tes3mp addition
+            */
+
             /// Remove all spells
             void clear();
 

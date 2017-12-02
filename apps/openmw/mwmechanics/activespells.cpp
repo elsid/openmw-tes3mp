@@ -295,6 +295,30 @@ namespace MWMechanics
         mSpellsChanged = true;
     }
 
+    /*
+        Start of tes3mp addition
+
+        Allow the purging of an effect for a specific arg (attribute or skill)
+    */
+    void ActiveSpells::purgeEffectByArg(short effectId, int effectArg)
+    {
+        for (TContainer::iterator it = mSpells.begin(); it != mSpells.end(); ++it)
+        {
+            for (std::vector<ActiveEffect>::iterator effectIt = it->second.mEffects.begin();
+                effectIt != it->second.mEffects.end();)
+            {
+                if (effectIt->mEffectId == effectId && effectIt->mArg == effectArg)
+                    effectIt = it->second.mEffects.erase(effectIt);
+                else
+                    ++effectIt;
+            }
+        }
+        mSpellsChanged = true;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     void ActiveSpells::clear()
     {
         mSpells.clear();
