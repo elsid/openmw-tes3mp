@@ -39,7 +39,7 @@
     {"GetAttributeModifier",    StatsFunctions::GetAttributeModifier},\
     \
     {"GetSkillBase",            StatsFunctions::GetSkillBase},\
-    {"GetSkillCurrent",         StatsFunctions::GetSkillCurrent},\
+    {"GetSkillModifier",        StatsFunctions::GetSkillModifier},\
     {"GetSkillProgress",        StatsFunctions::GetSkillProgress},\
     {"GetSkillIncrease",        StatsFunctions::GetSkillIncrease},\
     \
@@ -67,7 +67,7 @@
     {"ClearAttributeModifier",  StatsFunctions::ClearAttributeModifier},\
     \
     {"SetSkillBase",            StatsFunctions::SetSkillBase},\
-    {"SetSkillCurrent",         StatsFunctions::SetSkillCurrent},\
+    {"ClearSkillModifier",      StatsFunctions::ClearSkillModifier},\
     {"SetSkillProgress",        StatsFunctions::SetSkillProgress},\
     {"SetSkillIncrease",        StatsFunctions::SetSkillIncrease},\
     \
@@ -116,7 +116,7 @@ public:
     static int GetAttributeModifier(unsigned short pid, unsigned short attribute) noexcept;
 
     static int GetSkillBase(unsigned short pid, unsigned short skill) noexcept;
-    static int GetSkillCurrent(unsigned short pid, unsigned short skill) noexcept;
+    static int GetSkillModifier(unsigned short pid, unsigned short skill) noexcept;
     static double GetSkillProgress(unsigned short pid, unsigned short skill) noexcept;
     static int GetSkillIncrease(unsigned short pid, unsigned int pos) noexcept;
 
@@ -144,7 +144,7 @@ public:
     static void ClearAttributeModifier(unsigned short pid, unsigned short attribute) noexcept;
 
     static void SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept;    
-    static void SetSkillCurrent(unsigned short pid, unsigned short skill, int value) noexcept;
+    static void ClearSkillModifier(unsigned short pid, unsigned short skill) noexcept;
     static void SetSkillProgress(unsigned short pid, unsigned short skill, double value) noexcept;
     static void SetSkillIncrease(unsigned short pid, unsigned int pos, int value) noexcept;
 

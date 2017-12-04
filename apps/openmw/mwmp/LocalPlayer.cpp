@@ -275,7 +275,8 @@ void LocalPlayer::updateSkills(bool forceUpdate)
 
     for (int i = 0; i < 27; ++i)
     {
-        if (ptrNpcStats.getSkill(i).getBase() != npcStats.mSkills[i].mBase)
+        if (ptrNpcStats.getSkill(i).getBase() != npcStats.mSkills[i].mBase ||
+            ptrNpcStats.getSkill(i).getModifier() != npcStats.mSkills[i].mMod)
         {
             ptrNpcStats.getSkill(i).writeState(npcStats.mSkills[i]);
             skillsChanged = true;
@@ -812,6 +813,12 @@ void LocalPlayer::setSkills()
 
     for (int i = 0; i < 27; ++i)
     {
+        // If the server wants to clear our skill's non-zero modifier, we need to remove
+        // the spell effect causing it, to avoid an infinite loop where the effect keeps resetting
+        // the modifier
+        if (npcStats.mSkills[i].mMod == 0 && ptrNpcStats->getSkill(i).getModifier() > 0)
+            ptrNpcStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifySkill, i);
+
         skillValue.readState(npcStats.mSkills[i]);
         ptrNpcStats->setSkill(i, skillValue);
     }

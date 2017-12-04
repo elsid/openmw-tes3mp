@@ -239,7 +239,7 @@ int StatsFunctions::GetSkillBase(unsigned short pid, unsigned short skill) noexc
     return player->npcStats.mSkills[skill].mBase;
 }
 
-int StatsFunctions::GetSkillCurrent(unsigned short pid, unsigned short skill) noexcept
+int StatsFunctions::GetSkillModifier(unsigned short pid, unsigned short skill) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
@@ -247,7 +247,7 @@ int StatsFunctions::GetSkillCurrent(unsigned short pid, unsigned short skill) no
     if (skill >= Skill::Length)
         return 0;
 
-    return player->npcStats.mSkills[skill].mCurrent;
+    return player->npcStats.mSkills[skill].mMod;
 }
 
 double StatsFunctions::GetSkillProgress(unsigned short pid, unsigned short skill) noexcept
@@ -442,7 +442,7 @@ void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short a
     player->creatureStats.mAttributes[attribute].mMod = 0;
 }
 
-void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept  //TODO: need packet for one value
+void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
@@ -453,7 +453,7 @@ void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skill, int 
     player->npcStats.mSkills[skill].mBase = value;
 }
 
-void StatsFunctions::SetSkillCurrent(unsigned short pid, unsigned short skill, int value) noexcept //TODO: need packet for one value
+void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skill) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
@@ -461,7 +461,7 @@ void StatsFunctions::SetSkillCurrent(unsigned short pid, unsigned short skill, i
     if (skill >= Skill::Length)
         return;
 
-    player->npcStats.mSkills[skill].mCurrent = value;
+    player->npcStats.mSkills[skill].mMod = 0;
 }
 
 void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skill, double value) noexcept
