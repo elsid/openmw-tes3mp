@@ -2,6 +2,17 @@
 
 #include <MyGUI_Gui.h>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/windowmanager.hpp"
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
@@ -167,6 +178,16 @@ namespace MWGui
 
         // remove gold
         player.getClass().getContainerStore(player).remove(MWWorld::ContainerStore::sGoldId, price, player);
+
+        /*
+            Start of tes3mp addition
+
+            Send an ID_PLAYER_INVENTORY packet every time a player buys training
+        */
+        mwmp::Main::get().getLocalPlayer()->sendInventory();
+        /*
+            End of tes3mp addition
+        */
 
         // add gold to NPC trading gold pool
         npcStats.setGoldPool(npcStats.getGoldPool() + price);
