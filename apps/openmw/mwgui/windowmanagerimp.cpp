@@ -1204,6 +1204,20 @@ namespace MWGui
         MWBase::Environment::get().getInputManager()->setDragDrop(dragDrop);
     }
 
+    /*
+        Start of tes3mp addition
+
+        Allow the completion of a drag and drop from elsewhere in the code
+    */
+    void WindowManager::finishDragDrop()
+    {
+        if (mDragAndDrop->mIsOnDragAndDrop)
+            mDragAndDrop->finish();
+    }
+    /*
+        End of tes3mp addition
+    */
+
     void WindowManager::setCursorVisible(bool visible)
     {
         mCursorVisible = visible;

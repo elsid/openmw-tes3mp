@@ -231,6 +231,17 @@ namespace MWGui
     virtual void getMousePosition(int &x, int &y);
     virtual void getMousePosition(float &x, float &y);
     virtual void setDragDrop(bool dragDrop);
+
+    /*
+        Start of tes3mp addition
+
+        Allow the completion of a drag and drop from elsewhere in the code
+    */
+    virtual void finishDragDrop();
+    /*
+        End of tes3mp addition
+    */
+
     virtual bool getWorldMouseOver();
 
     virtual bool toggleFogOfWar();

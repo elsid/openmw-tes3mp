@@ -83,18 +83,20 @@ bool AiPursue::execute (const MWWorld::Ptr& actor, CharacterController& characte
 
 
     if (pathTo(actor, dest, duration, 100)) {
-        target.getClass().activate(target,actor).get()->execute(actor); //Arrest player when reached
-
         /*
             Start of tes3mp addition
 
             Record that the player has not died since the last attempt to arrest them
+
+            Close the player's inventory or open container and cancel any drag and drops
         */
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "After being pursued by %s, diedSinceArrestAttempt is now false", actor.getCellRef().getRefId().c_str());
         mwmp::Main::get().getLocalPlayer()->diedSinceArrestAttempt = false;
+        mwmp::Main::get().getLocalPlayer()->closeInventoryWindows();
         /*
             End of tes3mp addition
         */
+        target.getClass().activate(target,actor).get()->execute(actor); //Arrest player when reached
 
         return true;
     }

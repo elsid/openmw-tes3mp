@@ -198,6 +198,17 @@ namespace MWBase
             virtual void getMousePosition(int &x, int &y) = 0;
             virtual void getMousePosition(float &x, float &y) = 0;
             virtual void setDragDrop(bool dragDrop) = 0;
+
+            /*
+                Start of tes3mp addition
+
+                Allow the completion of a drag and drop from elsewhere in the code
+            */
+            virtual void finishDragDrop() = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual bool getWorldMouseOver() = 0;
 
             virtual bool toggleFogOfWar() = 0;

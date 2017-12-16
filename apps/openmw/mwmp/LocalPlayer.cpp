@@ -1,7 +1,3 @@
-//
-// Created by koncord on 14.01.16.
-//
-
 #include <components/esm/esmwriter.hpp>
 #include <components/openmw-mp/Log.hpp>
 
@@ -765,6 +761,15 @@ void LocalPlayer::removeSpells()
     }
 }
 
+void LocalPlayer::closeInventoryWindows()
+{
+    if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Container) ||
+        MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Inventory))
+        MWBase::Environment::get().getWindowManager()->popGuiMode();
+
+    MWBase::Environment::get().getWindowManager()->cancelDragDrop();
+}
+
 void LocalPlayer::setDynamicStats()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -877,12 +882,8 @@ void LocalPlayer::setCell()
     MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
     ESM::Position pos;
 
-    // To avoid crashes, close any container menus this player may be in
-    if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Container))
-    {
-        MWBase::Environment::get().getWindowManager()->removeGuiMode(MWGui::GM_Container);
-        MWBase::Environment::get().getWindowManager()->setDragDrop(false);
-    }
+    // To avoid crashes, close container windows this player may be in
+    closeInventoryWindows();
 
     world->getPlayer().setTeleported(true);
 
