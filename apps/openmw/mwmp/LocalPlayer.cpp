@@ -767,7 +767,7 @@ void LocalPlayer::closeInventoryWindows()
         MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Inventory))
         MWBase::Environment::get().getWindowManager()->popGuiMode();
 
-    MWBase::Environment::get().getWindowManager()->cancelDragDrop();
+    MWBase::Environment::get().getWindowManager()->finishDragDrop();
 }
 
 void LocalPlayer::setDynamicStats()
