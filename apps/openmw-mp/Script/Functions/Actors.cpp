@@ -163,6 +163,11 @@ int ActorFunctions::GetActorEquipmentItemCharge(unsigned int i, unsigned short s
     return readActorList->baseActors.at(i).equipedItems[slot].charge;
 }
 
+int ActorFunctions::GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept
+{
+    return readActorList->baseActors.at(i).equipedItems[slot].enchantmentCharge;
+}
+
 bool ActorFunctions::DoesActorHavePosition(unsigned int i) noexcept
 {
     return readActorList->baseActors.at(i).hasPositionData;
@@ -262,16 +267,17 @@ void ActorFunctions::SetActorFatigueModified(double value) noexcept
     tempActor.creatureStats.mDynamic[2].mMod = value;
 }
 
-void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge) noexcept
+void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, int enchantmentCharge) noexcept
 {
     tempActor.equipedItems[slot].refId = refId;
     tempActor.equipedItems[slot].count = count;
     tempActor.equipedItems[slot].charge = charge;
+    tempActor.equipedItems[slot].enchantmentCharge = enchantmentCharge;
 }
 
 void ActorFunctions::UnequipActorItem(unsigned short slot) noexcept
 {
-    ActorFunctions::EquipActorItem(slot, "", 0, -1);
+    ActorFunctions::EquipActorItem(slot, "", 0, -1, -1);
 }
 
 void ActorFunctions::AddActor() noexcept

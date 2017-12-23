@@ -450,6 +450,8 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
 
                 item.refId = it->getCellRef().getRefId();
                 item.charge = it->getCellRef().getCharge();
+                item.enchantmentCharge = it->getCellRef().getEnchantmentCharge();
+
                 if (slot == MWWorld::InventoryStore::Slot_CarriedRight)
                 {
                     MWMechanics::WeaponType weaptype;
@@ -467,7 +469,8 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
             equipmentChanged = true;
             item.refId = "";
             item.count = 0;
-            item.charge = 0;
+            item.charge = -1;
+            item.enchantmentCharge = -1;
         }
     }
 
@@ -496,6 +499,7 @@ void LocalPlayer::updateInventory(bool forceUpdate)
             return true;
         item.count = iter.getRefData().getCount();
         item.charge = iter.getCellRef().getCharge();
+        item.enchantmentCharge = iter.getCellRef().getEnchantmentCharge();
         return false;
     };
 
@@ -671,6 +675,9 @@ void LocalPlayer::addItems()
             MWWorld::Ptr itemPtr = *ptrStore.add(item.refId, item.count, ptrPlayer);
             if (item.charge != -1)
                 itemPtr.getCellRef().setCharge(item.charge);
+
+            if (item.enchantmentCharge != -1)
+                itemPtr.getCellRef().setEnchantmentCharge(item.enchantmentCharge);
         }
         catch (std::exception&)
         {
@@ -1188,6 +1195,7 @@ void LocalPlayer::sendInventory()
 
         item.count = iter.getRefData().getCount();
         item.charge = iter.getCellRef().getCharge();
+        item.enchantmentCharge = iter.getCellRef().getEnchantmentCharge();
 
         inventoryChanges.items.push_back(item);
     }

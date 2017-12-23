@@ -2,76 +2,77 @@
 #define OPENMW_ACTORAPI_HPP
 
 #define ACTORAPI \
-    {"ReadLastActorList",           ActorFunctions::ReadLastActorList},\
-    {"ReadCellActorList",           ActorFunctions::ReadCellActorList},\
-    {"InitializeActorList",         ActorFunctions::InitializeActorList},\
+    {"ReadLastActorList",                      ActorFunctions::ReadLastActorList},\
+    {"ReadCellActorList",                      ActorFunctions::ReadCellActorList},\
+    {"InitializeActorList",                    ActorFunctions::InitializeActorList},\
     \
-    {"GetActorListSize",            ActorFunctions::GetActorListSize},\
-    {"GetActorListAction",          ActorFunctions::GetActorListAction},\
+    {"GetActorListSize",                       ActorFunctions::GetActorListSize},\
+    {"GetActorListAction",                     ActorFunctions::GetActorListAction},\
     \
-    {"GetActorCell",                ActorFunctions::GetActorCell},\
-    {"GetActorRefId",               ActorFunctions::GetActorRefId},\
-    {"GetActorRefNumIndex",         ActorFunctions::GetActorRefNumIndex},\
-    {"GetActorMpNum",               ActorFunctions::GetActorMpNum},\
+    {"GetActorCell",                           ActorFunctions::GetActorCell},\
+    {"GetActorRefId",                          ActorFunctions::GetActorRefId},\
+    {"GetActorRefNumIndex",                    ActorFunctions::GetActorRefNumIndex},\
+    {"GetActorMpNum",                          ActorFunctions::GetActorMpNum},\
     \
-    {"GetActorPosX",                ActorFunctions::GetActorPosX},\
-    {"GetActorPosY",                ActorFunctions::GetActorPosY},\
-    {"GetActorPosZ",                ActorFunctions::GetActorPosZ},\
-    {"GetActorRotX",                ActorFunctions::GetActorRotX},\
-    {"GetActorRotY",                ActorFunctions::GetActorRotY},\
-    {"GetActorRotZ",                ActorFunctions::GetActorRotZ},\
+    {"GetActorPosX",                           ActorFunctions::GetActorPosX},\
+    {"GetActorPosY",                           ActorFunctions::GetActorPosY},\
+    {"GetActorPosZ",                           ActorFunctions::GetActorPosZ},\
+    {"GetActorRotX",                           ActorFunctions::GetActorRotX},\
+    {"GetActorRotY",                           ActorFunctions::GetActorRotY},\
+    {"GetActorRotZ",                           ActorFunctions::GetActorRotZ},\
     \
-    {"GetActorHealthBase",          ActorFunctions::GetActorHealthBase},\
-    {"GetActorHealthCurrent",       ActorFunctions::GetActorHealthCurrent},\
-    {"GetActorHealthModified",      ActorFunctions::GetActorHealthModified},\
-    {"GetActorMagickaBase",         ActorFunctions::GetActorMagickaBase},\
-    {"GetActorMagickaCurrent",      ActorFunctions::GetActorMagickaCurrent},\
-    {"GetActorMagickaModified",     ActorFunctions::GetActorMagickaModified},\
-    {"GetActorFatigueBase",         ActorFunctions::GetActorFatigueBase},\
-    {"GetActorFatigueCurrent",      ActorFunctions::GetActorFatigueCurrent},\
-    {"GetActorFatigueModified",     ActorFunctions::GetActorFatigueModified},\
+    {"GetActorHealthBase",                     ActorFunctions::GetActorHealthBase},\
+    {"GetActorHealthCurrent",                  ActorFunctions::GetActorHealthCurrent},\
+    {"GetActorHealthModified",                 ActorFunctions::GetActorHealthModified},\
+    {"GetActorMagickaBase",                    ActorFunctions::GetActorMagickaBase},\
+    {"GetActorMagickaCurrent",                 ActorFunctions::GetActorMagickaCurrent},\
+    {"GetActorMagickaModified",                ActorFunctions::GetActorMagickaModified},\
+    {"GetActorFatigueBase",                    ActorFunctions::GetActorFatigueBase},\
+    {"GetActorFatigueCurrent",                 ActorFunctions::GetActorFatigueCurrent},\
+    {"GetActorFatigueModified",                ActorFunctions::GetActorFatigueModified},\
     \
-    {"GetActorEquipmentItemRefId",  ActorFunctions::GetActorEquipmentItemRefId},\
-    {"GetActorEquipmentItemCount",  ActorFunctions::GetActorEquipmentItemCount},\
-    {"GetActorEquipmentItemCharge", ActorFunctions::GetActorEquipmentItemCharge},\
+    {"GetActorEquipmentItemRefId",             ActorFunctions::GetActorEquipmentItemRefId},\
+    {"GetActorEquipmentItemCount",             ActorFunctions::GetActorEquipmentItemCount},\
+    {"GetActorEquipmentItemCharge",            ActorFunctions::GetActorEquipmentItemCharge},\
+    {"GetActorEquipmentItemEnchantmentCharge", ActorFunctions::GetActorEquipmentItemEnchantmentCharge},\
     \
-    {"DoesActorHavePosition",       ActorFunctions::DoesActorHavePosition},\
-    {"DoesActorHaveStatsDynamic",   ActorFunctions::DoesActorHaveStatsDynamic},\
+    {"DoesActorHavePosition",                  ActorFunctions::DoesActorHavePosition},\
+    {"DoesActorHaveStatsDynamic",              ActorFunctions::DoesActorHaveStatsDynamic},\
     \
-    {"SetActorListCell",            ActorFunctions::SetActorListCell},\
-    {"SetActorListAction",          ActorFunctions::SetActorListAction},\
+    {"SetActorListCell",                       ActorFunctions::SetActorListCell},\
+    {"SetActorListAction",                     ActorFunctions::SetActorListAction},\
     \
-    {"SetActorCell",                ActorFunctions::SetActorCell},\
-    {"SetActorRefId",               ActorFunctions::SetActorRefId},\
-    {"SetActorRefNumIndex",         ActorFunctions::SetActorRefNumIndex},\
-    {"SetActorMpNum",               ActorFunctions::SetActorMpNum},\
+    {"SetActorCell",                           ActorFunctions::SetActorCell},\
+    {"SetActorRefId",                          ActorFunctions::SetActorRefId},\
+    {"SetActorRefNumIndex",                    ActorFunctions::SetActorRefNumIndex},\
+    {"SetActorMpNum",                          ActorFunctions::SetActorMpNum},\
     \
-    {"SetActorPosition",            ActorFunctions::SetActorPosition},\
-    {"SetActorRotation",            ActorFunctions::SetActorRotation},\
+    {"SetActorPosition",                       ActorFunctions::SetActorPosition},\
+    {"SetActorRotation",                       ActorFunctions::SetActorRotation},\
     \
-    {"SetActorHealthBase",          ActorFunctions::SetActorHealthBase},\
-    {"SetActorHealthCurrent",       ActorFunctions::SetActorHealthCurrent},\
-    {"SetActorHealthModified",      ActorFunctions::SetActorHealthModified},\
-    {"SetActorMagickaBase",         ActorFunctions::SetActorMagickaBase},\
-    {"SetActorMagickaCurrent",      ActorFunctions::SetActorMagickaCurrent},\
-    {"SetActorMagickaModified",     ActorFunctions::SetActorMagickaModified},\
-    {"SetActorFatigueBase",         ActorFunctions::SetActorFatigueBase},\
-    {"SetActorFatigueCurrent",      ActorFunctions::SetActorFatigueCurrent},\
-    {"SetActorFatigueModified",     ActorFunctions::SetActorFatigueModified},\
+    {"SetActorHealthBase",                     ActorFunctions::SetActorHealthBase},\
+    {"SetActorHealthCurrent",                  ActorFunctions::SetActorHealthCurrent},\
+    {"SetActorHealthModified",                 ActorFunctions::SetActorHealthModified},\
+    {"SetActorMagickaBase",                    ActorFunctions::SetActorMagickaBase},\
+    {"SetActorMagickaCurrent",                 ActorFunctions::SetActorMagickaCurrent},\
+    {"SetActorMagickaModified",                ActorFunctions::SetActorMagickaModified},\
+    {"SetActorFatigueBase",                    ActorFunctions::SetActorFatigueBase},\
+    {"SetActorFatigueCurrent",                 ActorFunctions::SetActorFatigueCurrent},\
+    {"SetActorFatigueModified",                ActorFunctions::SetActorFatigueModified},\
     \
-    {"EquipActorItem",              ActorFunctions::EquipActorItem},\
-    {"UnequipActorItem",            ActorFunctions::UnequipActorItem},\
+    {"EquipActorItem",                         ActorFunctions::EquipActorItem},\
+    {"UnequipActorItem",                       ActorFunctions::UnequipActorItem},\
     \
-    {"AddActor",                    ActorFunctions::AddActor},\
+    {"AddActor",                               ActorFunctions::AddActor},\
     \
-    {"SendActorList",               ActorFunctions::SendActorList},\
-    {"SendActorAuthority",          ActorFunctions::SendActorAuthority},\
-    {"SendActorPosition",           ActorFunctions::SendActorPosition},\
-    {"SendActorStatsDynamic",       ActorFunctions::SendActorStatsDynamic},\
-    {"SendActorEquipment",          ActorFunctions::SendActorEquipment},\
-    {"SendActorCellChange",         ActorFunctions::SendActorCellChange}
+    {"SendActorList",                          ActorFunctions::SendActorList},\
+    {"SendActorAuthority",                     ActorFunctions::SendActorAuthority},\
+    {"SendActorPosition",                      ActorFunctions::SendActorPosition},\
+    {"SendActorStatsDynamic",                  ActorFunctions::SendActorStatsDynamic},\
+    {"SendActorEquipment",                     ActorFunctions::SendActorEquipment},\
+    {"SendActorCellChange",                    ActorFunctions::SendActorCellChange}
 
-class ActorFunctions
+class            ActorFunctions
 {
 public:
 
@@ -300,6 +301,16 @@ public:
     static int GetActorEquipmentItemCharge(unsigned int i, unsigned short slot) noexcept;
 
     /**
+    * \brief Get the enchantment charge of the item in a certain slot of the equipment of the actor at a
+    * certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \param slot The slot of the equipment item.
+    * \return The enchantment charge.
+    */
+    static int GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept;
+
+    /**
     * \brief Check whether there is any positional data for the actor at a certain index in
     * the read actor list.
     *
@@ -478,9 +489,10 @@ public:
     * \param refId The refId of the item.
     * \param count The count of the item.
     * \param charge The charge of the item.
+    * \param enchantmentCharge The enchantment charge of the item.
     * \return void
     */
-    static void EquipActorItem(unsigned short slot, const char* refId, unsigned int count, int charge) noexcept;
+    static void EquipActorItem(unsigned short slot, const char* refId, unsigned int count, int charge, int enchantmentCharge = -1) noexcept;
 
     /**
     * \brief Unequip the item in a certain slot of the equipment of the temporary actor stored

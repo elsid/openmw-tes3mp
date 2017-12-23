@@ -2,78 +2,82 @@
 #define OPENMW_WORLDAPI_HPP
 
 #define WORLDAPI \
-    {"ReadLastEvent",               WorldFunctions::ReadLastEvent},\
-    {"InitializeEvent",             WorldFunctions::InitializeEvent},\
+    {"ReadLastEvent",                         WorldFunctions::ReadLastEvent},\
+    {"InitializeEvent",                       WorldFunctions::InitializeEvent},\
     \
-    {"GetObjectChangesSize",        WorldFunctions::GetObjectChangesSize},\
-    {"GetEventAction",              WorldFunctions::GetEventAction},\
+    {"GetObjectChangesSize",                  WorldFunctions::GetObjectChangesSize},\
+    {"GetEventAction",                        WorldFunctions::GetEventAction},\
     \
-    {"GetObjectRefId",              WorldFunctions::GetObjectRefId},\
-    {"GetObjectRefNumIndex",        WorldFunctions::GetObjectRefNumIndex},\
-    {"GetObjectMpNum",              WorldFunctions::GetObjectMpNum},\
-    {"GetObjectCount",              WorldFunctions::GetObjectCount},\
-    {"GetObjectCharge",             WorldFunctions::GetObjectCharge},\
-    {"GetObjectGoldValue",          WorldFunctions::GetObjectGoldValue},\
-    {"GetObjectScale",              WorldFunctions::GetObjectScale},\
-    {"GetObjectState",              WorldFunctions::GetObjectState},\
-    {"GetObjectDoorState",          WorldFunctions::GetObjectDoorState},\
-    {"GetObjectLockLevel",          WorldFunctions::GetObjectLockLevel},\
-    {"GetObjectPosX",               WorldFunctions::GetObjectPosX},\
-    {"GetObjectPosY",               WorldFunctions::GetObjectPosY},\
-    {"GetObjectPosZ",               WorldFunctions::GetObjectPosZ},\
-    {"GetObjectRotX",               WorldFunctions::GetObjectRotX},\
-    {"GetObjectRotY",               WorldFunctions::GetObjectRotY},\
-    {"GetObjectRotZ",               WorldFunctions::GetObjectRotZ},\
+    {"GetObjectRefId",                        WorldFunctions::GetObjectRefId},\
+    {"GetObjectRefNumIndex",                  WorldFunctions::GetObjectRefNumIndex},\
+    {"GetObjectMpNum",                        WorldFunctions::GetObjectMpNum},\
+    {"GetObjectCount",                        WorldFunctions::GetObjectCount},\
+    {"GetObjectCharge",                       WorldFunctions::GetObjectCharge},\
+    {"GetObjectEnchantmentCharge",            WorldFunctions::GetObjectEnchantmentCharge},\
+    {"GetObjectGoldValue",                    WorldFunctions::GetObjectGoldValue},\
+    {"GetObjectScale",                        WorldFunctions::GetObjectScale},\
+    {"GetObjectState",                        WorldFunctions::GetObjectState},\
+    {"GetObjectDoorState",                    WorldFunctions::GetObjectDoorState},\
+    {"GetObjectLockLevel",                    WorldFunctions::GetObjectLockLevel},\
+    {"GetObjectPosX",                         WorldFunctions::GetObjectPosX},\
+    {"GetObjectPosY",                         WorldFunctions::GetObjectPosY},\
+    {"GetObjectPosZ",                         WorldFunctions::GetObjectPosZ},\
+    {"GetObjectRotX",                         WorldFunctions::GetObjectRotX},\
+    {"GetObjectRotY",                         WorldFunctions::GetObjectRotY},\
+    {"GetObjectRotZ",                         WorldFunctions::GetObjectRotZ},\
     \
-    {"GetContainerChangesSize",     WorldFunctions::GetContainerChangesSize},\
-    {"GetContainerItemRefId",       WorldFunctions::GetContainerItemRefId},\
-    {"GetContainerItemCount",       WorldFunctions::GetContainerItemCount},\
-    {"GetContainerItemCharge",      WorldFunctions::GetContainerItemCharge},\
-    {"GetContainerItemActionCount", WorldFunctions::GetContainerItemActionCount},\
+    {"GetContainerChangesSize",               WorldFunctions::GetContainerChangesSize},\
+    {"GetContainerItemRefId",                 WorldFunctions::GetContainerItemRefId},\
+    {"GetContainerItemCount",                 WorldFunctions::GetContainerItemCount},\
+    {"GetContainerItemCharge",                WorldFunctions::GetContainerItemCharge},\
+    {"GetContainerItemEnchantmentCharge",     WorldFunctions::GetContainerItemEnchantmentCharge},\
+    {"GetContainerItemActionCount",           WorldFunctions::GetContainerItemActionCount},\
     \
-    {"SetEventCell",                WorldFunctions::SetEventCell},\
-    {"SetEventAction",              WorldFunctions::SetEventAction},\
-    {"SetEventConsoleCommand",      WorldFunctions::SetEventConsoleCommand},\
+    {"SetEventCell",                          WorldFunctions::SetEventCell},\
+    {"SetEventAction",                        WorldFunctions::SetEventAction},\
+    {"SetEventConsoleCommand",                WorldFunctions::SetEventConsoleCommand},\
     \
-    {"SetObjectRefId",              WorldFunctions::SetObjectRefId},\
-    {"SetObjectRefNumIndex",        WorldFunctions::SetObjectRefNumIndex},\
-    {"SetObjectMpNum",              WorldFunctions::SetObjectMpNum},\
-    {"SetObjectCount",              WorldFunctions::SetObjectCount},\
-    {"SetObjectCharge",             WorldFunctions::SetObjectCharge},\
-    {"SetObjectGoldValue",          WorldFunctions::SetObjectGoldValue},\
-    {"SetObjectScale",              WorldFunctions::SetObjectScale},\
-    {"SetObjectState",              WorldFunctions::SetObjectState},\
-    {"SetObjectDoorState",          WorldFunctions::SetObjectDoorState},\
-    {"SetObjectLockLevel",          WorldFunctions::SetObjectLockLevel},\
-    {"SetObjectDisarmState",        WorldFunctions::SetObjectDisarmState},\
-    {"SetObjectMasterState",        WorldFunctions::SetObjectMasterState},\
-    {"SetObjectPosition",           WorldFunctions::SetObjectPosition},\
-    {"SetObjectRotation",           WorldFunctions::SetObjectRotation},\
-    {"SetPlayerAsObject",           WorldFunctions::SetPlayerAsObject},\
+    {"SetObjectRefId",                        WorldFunctions::SetObjectRefId},\
+    {"SetObjectRefNumIndex",                  WorldFunctions::SetObjectRefNumIndex},\
+    {"SetObjectMpNum",                        WorldFunctions::SetObjectMpNum},\
+    {"SetObjectCount",                        WorldFunctions::SetObjectCount},\
+    {"SetObjectCharge",                       WorldFunctions::SetObjectCharge},\
+    {"SetObjectEnchantmentCharge",            WorldFunctions::SetObjectEnchantmentCharge},\
+    {"SetObjectGoldValue",                    WorldFunctions::SetObjectGoldValue},\
+    {"SetObjectScale",                        WorldFunctions::SetObjectScale},\
+    {"SetObjectState",                        WorldFunctions::SetObjectState},\
+    {"SetObjectDoorState",                    WorldFunctions::SetObjectDoorState},\
+    {"SetObjectLockLevel",                    WorldFunctions::SetObjectLockLevel},\
+    {"SetObjectDisarmState",                  WorldFunctions::SetObjectDisarmState},\
+    {"SetObjectMasterState",                  WorldFunctions::SetObjectMasterState},\
+    {"SetObjectPosition",                     WorldFunctions::SetObjectPosition},\
+    {"SetObjectRotation",                     WorldFunctions::SetObjectRotation},\
+    {"SetPlayerAsObject",                     WorldFunctions::SetPlayerAsObject},\
     \
-    {"SetContainerItemRefId",       WorldFunctions::SetContainerItemRefId},\
-    {"SetContainerItemCount",       WorldFunctions::SetContainerItemCount},\
-    {"SetContainerItemCharge",      WorldFunctions::SetContainerItemCharge},\
+    {"SetContainerItemRefId",                 WorldFunctions::SetContainerItemRefId},\
+    {"SetContainerItemCount",                 WorldFunctions::SetContainerItemCount},\
+    {"SetContainerItemCharge",                WorldFunctions::SetContainerItemCharge},\
+    {"SetContainerItemEnchantmentCharge",     WorldFunctions::SetContainerItemEnchantmentCharge},\
     \
-    {"AddWorldObject",              WorldFunctions::AddWorldObject},\
-    {"AddContainerItem",            WorldFunctions::AddContainerItem},\
+    {"AddWorldObject",                        WorldFunctions::AddWorldObject},\
+    {"AddContainerItem",                      WorldFunctions::AddContainerItem},\
     \
-    {"SendObjectPlace",             WorldFunctions::SendObjectPlace},\
-    {"SendObjectSpawn",             WorldFunctions::SendObjectSpawn},\
-    {"SendObjectDelete",            WorldFunctions::SendObjectDelete},\
-    {"SendObjectLock",              WorldFunctions::SendObjectLock},\
-    {"SendObjectTrap",              WorldFunctions::SendObjectTrap},\
-    {"SendObjectScale",             WorldFunctions::SendObjectScale},\
-    {"SendObjectState",             WorldFunctions::SendObjectState},\
-    {"SendDoorState",               WorldFunctions::SendDoorState},\
-    {"SendContainer",               WorldFunctions::SendContainer},\
-    {"SendConsoleCommand",          WorldFunctions::SendConsoleCommand},\
+    {"SendObjectPlace",                       WorldFunctions::SendObjectPlace},\
+    {"SendObjectSpawn",                       WorldFunctions::SendObjectSpawn},\
+    {"SendObjectDelete",                      WorldFunctions::SendObjectDelete},\
+    {"SendObjectLock",                        WorldFunctions::SendObjectLock},\
+    {"SendObjectTrap",                        WorldFunctions::SendObjectTrap},\
+    {"SendObjectScale",                       WorldFunctions::SendObjectScale},\
+    {"SendObjectState",                       WorldFunctions::SendObjectState},\
+    {"SendDoorState",                         WorldFunctions::SendDoorState},\
+    {"SendContainer",                         WorldFunctions::SendContainer},\
+    {"SendConsoleCommand",                    WorldFunctions::SendConsoleCommand},\
     \
-    {"SetHour",                     WorldFunctions::SetHour},\
-    {"SetMonth",                    WorldFunctions::SetMonth},\
-    {"SetDay",                      WorldFunctions::SetDay}
+    {"SetHour",                               WorldFunctions::SetHour},\
+    {"SetMonth",                              WorldFunctions::SetMonth},\
+    {"SetDay",                                WorldFunctions::SetDay}
 
-class WorldFunctions
+class           WorldFunctions
 {
 public:
 
@@ -147,6 +151,14 @@ public:
     * \return The charge.
     */
     static int GetObjectCharge(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the enchantment charge of the object at a certain index in the read event's object changes.
+    *
+    * \param i The index of the object.
+    * \return The enchantment charge.
+    */
+    static int GetObjectEnchantmentCharge(unsigned int i) noexcept;
 
     /**
     * \brief Get the gold value of the object at a certain index in the read event's object
@@ -288,6 +300,16 @@ public:
     static int GetContainerItemCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept;
 
     /**
+    * \brief Get the enchantment charge of the container item at a certain itemIndex in the container changes
+    * of the object at a certain objectIndex in the read event's object changes.
+    *
+    * \param objectIndex The index of the object.
+    * \param itemIndex The index of the container item.
+    * \return The enchantment charge.
+    */
+    static int GetContainerItemEnchantmentCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept;
+
+    /**
     * \brief Get the action count of the container item at a certain itemIndex in the container
     * changes of the object at a certain objectIndex in the read event's object changes.
     *
@@ -383,6 +405,16 @@ public:
     * \return void
     */
     static void SetObjectCharge(int charge) noexcept;
+
+    /**
+    * \brief Set the enchantment charge of the temporary world object stored on the server.
+    *
+    * Object durabilities are set through this value.
+    *
+    * \param charge The enchantment charge.
+    * \return void
+    */
+    static void SetObjectEnchantmentCharge(int enchantmentCharge) noexcept;
 
     /**
     * \brief Set the gold value of the temporary world object stored on the server.
@@ -503,6 +535,14 @@ public:
     * \return void
     */
     static void SetContainerItemCharge(int charge) noexcept;
+
+    /**
+    * \brief Set the enchantment charge of the temporary container item stored on the server.
+    *
+    * \param charge The enchantment charge.
+    * \return void
+    */
+    static void SetContainerItemEnchantmentCharge(int enchantmentCharge) noexcept;
 
     /**
     * \brief Add a copy of the server's temporary world object to the server's temporary event.

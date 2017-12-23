@@ -12,10 +12,11 @@ namespace mwmp
         std::string refId;
         int count;
         int charge;
+        int enchantmentCharge;
 
         inline bool operator==(const Item& rhs)
         {
-            return refId == rhs.refId && count == rhs.count && charge == rhs.charge;
+            return refId == rhs.refId && count == rhs.count && charge == rhs.charge && enchantmentCharge == rhs.enchantmentCharge;
         }
     };
     

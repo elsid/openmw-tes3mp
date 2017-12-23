@@ -69,6 +69,11 @@ int WorldFunctions::GetObjectCharge(unsigned int i) noexcept
     return readEvent->worldObjects.at(i).charge;
 }
 
+int WorldFunctions::GetObjectEnchantmentCharge(unsigned int i) noexcept
+{
+    return readEvent->worldObjects.at(i).enchantmentCharge;
+}
+
 int WorldFunctions::GetObjectGoldValue(unsigned int i) noexcept
 {
     return readEvent->worldObjects.at(i).goldValue;
@@ -147,6 +152,12 @@ int WorldFunctions::GetContainerItemCharge(unsigned int objectIndex, unsigned in
         .containerItems.at(itemIndex).charge;
 }
 
+int WorldFunctions::GetContainerItemEnchantmentCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept
+{
+    return readEvent->worldObjects.at(objectIndex)
+        .containerItems.at(itemIndex).enchantmentCharge;
+}
+
 int WorldFunctions::GetContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
     return readEvent->worldObjects.at(objectIndex)
@@ -191,6 +202,11 @@ void WorldFunctions::SetObjectCount(int count) noexcept
 void WorldFunctions::SetObjectCharge(int charge) noexcept
 {
     tempWorldObject.charge = charge;
+}
+
+void WorldFunctions::SetObjectEnchantmentCharge(int enchantmentCharge) noexcept
+{
+    tempWorldObject.enchantmentCharge = enchantmentCharge;
 }
 
 void WorldFunctions::SetObjectGoldValue(int goldValue) noexcept
@@ -264,6 +280,11 @@ void WorldFunctions::SetContainerItemCount(int count) noexcept
 void WorldFunctions::SetContainerItemCharge(int charge) noexcept
 {
     tempContainerItem.charge = charge;
+}
+
+void WorldFunctions::SetContainerItemEnchantmentCharge(int enchantmentCharge) noexcept
+{
+    tempContainerItem.enchantmentCharge = enchantmentCharge;
 }
 
 void WorldFunctions::AddWorldObject() noexcept
