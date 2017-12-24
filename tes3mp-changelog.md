@@ -1,3 +1,19 @@
+0.6.2
+-----
+
+* Packet for quick keys
+* Packet for player sounds
+* Packet for player animations
+* Packet for console commands
+* Enchantment charge values are now included in item and object placement packets
+* Settings packet can now be used to separately enable or disable resting in beds, resting in the wilderness and waiting
+* Changes in attribute and skill modifiers now send their respective packets
+* Attribute and skill packets using 0 as a modifier can now remove all attribute or skill fortification effects from a player
+* Completion of vendor trades and skill training now sends inventory packets
+* Item drag and dropping is now finished when arrested or when moved to another cell by the server
+* Window minimization no longer pauses the game
+* Actor speech captions are now searched for in dialogues instead of being sent in packets
+
 0.6.1
 -----
 
