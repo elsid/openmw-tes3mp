@@ -31,11 +31,12 @@ namespace MWMechanics
      * @param actor calculate spell success chance for this actor (depends on actor's skills)
      * @param effectiveSchool the spell's effective school (relevant for skill progress) will be written here
      * @param cap cap the result to 100%?
+     * @param checkMagicka check magicka?
      * @note actor can be an NPC or a creature
      * @return success chance from 0 to 100 (in percent), if cap=false then chance above 100 may be returned.
      */
-    float getSpellSuccessChance (const ESM::Spell* spell, const MWWorld::Ptr& actor, int* effectiveSchool = NULL, bool cap=true);
-    float getSpellSuccessChance (const std::string& spellId, const MWWorld::Ptr& actor, int* effectiveSchool = NULL, bool cap=true);
+    float getSpellSuccessChance (const ESM::Spell* spell, const MWWorld::Ptr& actor, int* effectiveSchool = NULL, bool cap=true, bool checkMagicka=false);
+    float getSpellSuccessChance (const std::string& spellId, const MWWorld::Ptr& actor, int* effectiveSchool = NULL, bool cap=true, bool checkMagicka=false);
 
     int getSpellSchool(const std::string& spellId, const MWWorld::Ptr& actor);
     int getSpellSchool(const ESM::Spell* spell, const MWWorld::Ptr& actor);
@@ -106,7 +107,7 @@ namespace MWMechanics
         void playSpellCastingEffects(const std::string &spellid);
 
         /// Launch a bolt with the given effects.
-        void launchMagicBolt (const ESM::EffectList& effects);
+        void launchMagicBolt ();
 
         /// @note \a target can be any type of object, not just actors.
         /// @note \a caster can be any type of object, or even an empty object.

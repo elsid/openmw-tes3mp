@@ -80,9 +80,13 @@ bool AiPursue::execute (const MWWorld::Ptr& actor, CharacterController& characte
 
     //Set the target desition from the actor
     ESM::Pathgrid::Point dest = target.getRefData().getPosition().pos;
+    ESM::Position aPos = actor.getRefData().getPosition();
 
+    float pathTolerance = 100.0;
 
-    if (pathTo(actor, dest, duration, 100)) {
+    if (pathTo(actor, dest, duration, pathTolerance) &&
+        std::abs(dest.mZ - aPos.pos[2]) < pathTolerance)      // check the true distance in case the target is far away in Z-direction
+    {
         /*
             Start of tes3mp addition
 

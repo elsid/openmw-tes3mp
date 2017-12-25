@@ -131,7 +131,7 @@ namespace MWMechanics
         return castChance;
     }
 
-    float getSpellSuccessChance (const ESM::Spell* spell, const MWWorld::Ptr& actor, int* effectiveSchool, bool cap)
+    float getSpellSuccessChance (const ESM::Spell* spell, const MWWorld::Ptr& actor, int* effectiveSchool, bool cap, bool checkMagicka)
     {
         bool godmode = actor == MWMechanics::getPlayer() && MWBase::Environment::get().getWorld()->getGodModeState();
 
@@ -151,6 +151,9 @@ namespace MWMechanics
         if (spell->mData.mType != ESM::Spell::ST_Spell)
             return 100;
 
+        if (checkMagicka && stats.getMagicka().getCurrent() < spell->mData.mCost && !godmode)
+            return 0;
+
         if (spell->mData.mFlags & ESM::Spell::F_Always)
             return 100;
 
@@ -165,11 +168,11 @@ namespace MWMechanics
             return std::max(0.f, std::min(100.f, castChance));
     }
 
-    float getSpellSuccessChance (const std::string& spellId, const MWWorld::Ptr& actor, int* effectiveSchool, bool cap)
+    float getSpellSuccessChance (const std::string& spellId, const MWWorld::Ptr& actor, int* effectiveSchool, bool cap, bool checkMagicka)
     {
         const ESM::Spell* spell =
             MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().find(spellId);
-        return getSpellSuccessChance(spell, actor, effectiveSchool, cap);
+        return getSpellSuccessChance(spell, actor, effectiveSchool, cap, checkMagicka);
     }
 
 
@@ -345,7 +348,7 @@ namespace MWMechanics
     {
     }
 
-    void CastSpell::launchMagicBolt (const ESM::EffectList& effects)
+    void CastSpell::launchMagicBolt ()
     {        
         osg::Vec3f fallbackDirection (0,1,0);     
 
@@ -356,8 +359,7 @@ namespace MWMechanics
                 osg::Vec3f(mTarget.getRefData().getPosition().asVec3())-
                 osg::Vec3f(mCaster.getRefData().getPosition().asVec3());
             
-        MWBase::Environment::get().getWorld()->launchMagicBolt(mId, false, effects,
-                                                   mCaster, mSourceName, fallbackDirection);
+        MWBase::Environment::get().getWorld()->launchMagicBolt(mId, mCaster, fallbackDirection);
     }
 
     void CastSpell::inflict(const MWWorld::Ptr &target, const MWWorld::Ptr &caster,
@@ -552,6 +554,13 @@ namespace MWMechanics
                         targetEffects.add(MWMechanics::EffectKey(*effectIt), MWMechanics::EffectParam(effect.mMagnitude));
 
                         appliedLastingEffects.push_back(effect);
+
+                        // Unequip all items, if a spell with the ExtraSpell effect was casted
+                        if (effectIt->mEffectID == ESM::MagicEffect::ExtraSpell && target.getClass().hasInventoryStore(target))
+                        {
+                            MWWorld::InventoryStore& store = target.getClass().getInventoryStore(target);
+                            store.unequipAll(target);
+                        }
 
                         // Command spells should have their effect, including taking the target out of combat, each time the spell successfully affects the target
                         if (((effectIt->mEffectID == ESM::MagicEffect::CommandHumanoid && target.getClass().isNpc())
@@ -865,7 +874,7 @@ namespace MWMechanics
             inflict(mTarget, mCaster, enchantment->mEffects, ESM::RT_Touch);
 
         if (launchProjectile)
-            launchMagicBolt(enchantment->mEffects);
+            launchMagicBolt();
         else if (isProjectile || !mTarget.isEmpty())
             inflict(mTarget, mCaster, enchantment->mEffects, ESM::RT_Target);
 
@@ -973,7 +982,7 @@ namespace MWMechanics
         if (!mTarget.isEmpty())
             inflict(mTarget, mCaster, spell->mEffects, ESM::RT_Touch);
 
-        launchMagicBolt(spell->mEffects);
+        launchMagicBolt();
 
         return true;
     }
@@ -1017,9 +1026,9 @@ namespace MWMechanics
         float y = roll / std::min(x, 100.f);
         y *= 0.25f * x;
         if (magicEffect->mData.mFlags & ESM::MagicEffect::NoDuration)
-            effect.mDuration = static_cast<int>(y);
-        else
             effect.mDuration = 1;
+        else
+            effect.mDuration = static_cast<int>(y);
         if (!(magicEffect->mData.mFlags & ESM::MagicEffect::NoMagnitude))
         {
             if (!(magicEffect->mData.mFlags & ESM::MagicEffect::NoDuration))

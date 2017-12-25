@@ -57,6 +57,10 @@ namespace MWMechanics
             PtrActorMap::const_iterator begin() { return mActors.begin(); }
             PtrActorMap::const_iterator end() { return mActors.end(); }
 
+            /// Check if the target actor was detected by an observer
+            /// If the observer is a non-NPC, check all actors in AI processing distance as observers
+            bool isActorDetected(const MWWorld::Ptr& actor, const MWWorld::Ptr& observer);
+
             /// Update magic effects for an actor. Usually done automatically once per frame, but if we're currently
             /// paused we may want to do it manually (after equipping permanent enchantment)
             void updateMagicEffects (const MWWorld::Ptr& ptr);
@@ -76,6 +80,9 @@ namespace MWMechanics
 
             void dropActors (const MWWorld::CellStore *cellStore, const MWWorld::Ptr& ignore);
             ///< Deregister all actors (except for \a ignore) in the given cell.
+
+            void updateCombatMusic();
+            ///< Update combat music state
 
             void update (float duration, bool paused);
             ///< Update actor stats and store desired velocity vectors in \a movement
@@ -121,14 +128,16 @@ namespace MWMechanics
             bool isRunning(const MWWorld::Ptr& ptr);
             bool isSneaking(const MWWorld::Ptr& ptr);
 
-        void forceStateUpdate(const MWWorld::Ptr &ptr);
+            void forceStateUpdate(const MWWorld::Ptr &ptr);
 
-        bool playAnimationGroup(const MWWorld::Ptr& ptr, const std::string& groupName, int mode, int number, bool persist=false);
-        void skipAnimation(const MWWorld::Ptr& ptr);
-        bool checkAnimationPlaying(const MWWorld::Ptr& ptr, const std::string& groupName);
-        void persistAnimationStates();
+            bool playAnimationGroup(const MWWorld::Ptr& ptr, const std::string& groupName, int mode, int number, bool persist=false);
+            void skipAnimation(const MWWorld::Ptr& ptr);
+            bool checkAnimationPlaying(const MWWorld::Ptr& ptr, const std::string& groupName);
+            void persistAnimationStates();
 
             void getObjectsInRange(const osg::Vec3f& position, float radius, std::vector<MWWorld::Ptr>& out);
+
+            bool isAnyObjectInRange(const osg::Vec3f& position, float radius);
 
             void cleanupSummonedCreature (CreatureStats& casterStats, int creatureActorId);
 

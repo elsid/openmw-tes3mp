@@ -760,7 +760,7 @@ namespace MWGui
     void MapWindow::onNoteEditDelete()
     {
         ConfirmationDialog* confirmation = MWBase::Environment::get().getWindowManager()->getConfirmationDialog();
-        confirmation->askForConfirmation("#{sDeleteNote}", "#{sYes}", "#{sNo}");
+        confirmation->askForConfirmation("#{sDeleteNote}");
         confirmation->eventCancelClicked.clear();
         confirmation->eventOkClicked.clear();
         confirmation->eventOkClicked += MyGUI::newDelegate(this, &MapWindow::onNoteEditDeleteConfirm);
@@ -1002,7 +1002,7 @@ namespace MWGui
             MWBase::Environment::get().getWindowManager()->toggleVisible(GW_Map);
     }
 
-    void MapWindow::open()
+    void MapWindow::onOpen()
     {
         ensureGlobalMapLoaded();
 
@@ -1061,6 +1061,9 @@ namespace MWGui
             mGlobalMapOverlayTexture.reset(new osgMyGUI::OSGTexture(mGlobalMapRender->getOverlayTexture()));
             mGlobalMapOverlay->setRenderItemTexture(mGlobalMapOverlayTexture.get());
             mGlobalMapOverlay->getSubWidgetMain()->_setUVSet(MyGUI::FloatRect(0.f, 0.f, 1.f, 1.f));
+
+            // Redraw children in proper order
+            mGlobalMap->getParent()->_updateChilds();
         }
     }
 
@@ -1163,16 +1166,11 @@ namespace MWGui
         return MyGUI::TextIterator::getOnlyText(mTextEdit->getCaption());
     }
 
-    void EditNoteDialog::open()
+    void EditNoteDialog::onOpen()
     {
-        WindowModal::open();
+        WindowModal::onOpen();
         center();
         MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mTextEdit);
-    }
-
-    void EditNoteDialog::exit()
-    {
-        setVisible(false);
     }
 
     void EditNoteDialog::onCancelButtonClicked(MyGUI::Widget *sender)

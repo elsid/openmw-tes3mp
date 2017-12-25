@@ -436,6 +436,11 @@ namespace MWMechanics
         mObjects.update(duration, paused);
     }
 
+    bool MechanicsManager::isActorDetected(const MWWorld::Ptr& actor, const MWWorld::Ptr& observer)
+    {
+        return mActors.isActorDetected(actor, observer);
+    }
+
     bool MechanicsManager::isAttackPrepairing(const MWWorld::Ptr& ptr)
     {
         return mActors.isAttackPrepairing(ptr);
@@ -861,16 +866,74 @@ namespace MWMechanics
         mAI = true;
     }
 
-    bool MechanicsManager::isAllowedToUse (const MWWorld::Ptr& ptr, const MWWorld::ConstPtr& item, MWWorld::Ptr& victim)
+    bool MechanicsManager::isBoundItem(const MWWorld::Ptr& item)
     {
-        const MWWorld::CellRef& cellref = item.getCellRef();
-        // there is no harm to use unlocked doors
-        if (item.getClass().isDoor() && cellref.getLockLevel() <= 0 && ptr.getCellRef().getTrap().empty())
+        static std::set<std::string> boundItemIDCache;
+
+        // If this is empty then we haven't executed the GMST cache logic yet; or there isn't any sMagicBound* GMST's for some reason
+        if (boundItemIDCache.empty())
+        {
+            // Build a list of known bound item ID's
+            const MWWorld::Store<ESM::GameSetting> &gameSettings = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>();
+
+            for (MWWorld::Store<ESM::GameSetting>::iterator currentIteration = gameSettings.begin(); currentIteration != gameSettings.end(); ++currentIteration)
+            {
+                const ESM::GameSetting &currentSetting = *currentIteration;
+                std::string currentGMSTID = currentSetting.mId;
+                Misc::StringUtils::lowerCaseInPlace(currentGMSTID);
+
+                // Don't bother checking this GMST if it's not a sMagicBound* one.
+                const std::string& toFind = "smagicbound";
+                if (currentGMSTID.compare(0, toFind.length(), toFind) != 0)
+                    continue;
+
+                // All sMagicBound* GMST's should be of type string
+                std::string currentGMSTValue = currentSetting.getString();
+                Misc::StringUtils::lowerCaseInPlace(currentGMSTValue);
+
+                boundItemIDCache.insert(currentGMSTValue);
+            }
+        }
+
+        // Perform bound item check and assign the Flag_Bound bit if it passes
+        std::string tempItemID = item.getCellRef().getRefId();
+        Misc::StringUtils::lowerCaseInPlace(tempItemID);
+
+        if (boundItemIDCache.count(tempItemID) != 0)
             return true;
 
-        // TODO: implement a better check to check if item is owned bed
-        if (item.getClass().isActivator() && item.getClass().getScript(item).compare(0, 3, "Bed") != 0)
+        return false;
+    }
+
+    bool MechanicsManager::isAllowedToUse (const MWWorld::Ptr& ptr, const MWWorld::Ptr& target, MWWorld::Ptr& victim)
+    {
+        if (target.isEmpty())
             return true;
+
+        const MWWorld::CellRef& cellref = target.getCellRef();
+        // there is no harm to use unlocked doors
+        if (target.getClass().isDoor() && cellref.getLockLevel() <= 0 && ptr.getCellRef().getTrap().empty())
+            return true;
+
+        // TODO: implement a better check to check if target is owned bed
+        if (target.getClass().isActivator() && target.getClass().getScript(target).compare(0, 3, "Bed") != 0)
+            return true;
+
+        if (target.getClass().isNpc())
+        {
+            if (target.getClass().getCreatureStats(target).isDead())
+                return true;
+
+            if (target.getClass().getCreatureStats(target).getAiSequence().isInCombat())
+                return true;
+
+            // check if a player tries to pickpocket a target NPC
+            if(ptr.getClass().getCreatureStats(ptr).getStance(MWMechanics::CreatureStats::Stance_Sneak)
+                || target.getClass().getCreatureStats(target).getKnockedDown())
+                return false;
+
+            return true;
+        }
 
         const std::string& owner = cellref.getOwner();
         bool isOwned = !owner.empty() && owner != "player";
@@ -1026,21 +1089,24 @@ namespace MWMechanics
     }
 
     void MechanicsManager::itemTaken(const MWWorld::Ptr &ptr, const MWWorld::Ptr &item, const MWWorld::Ptr& container,
-                                     int count)
+                                     int count, bool alarm)
     {
         if (ptr != getPlayer())
             return;
 
         MWWorld::Ptr victim;
 
+        bool isAllowed = true;
         const MWWorld::CellRef* ownerCellRef = &item.getCellRef();
         if (!container.isEmpty())
         {
             // Inherit the owner of the container
             ownerCellRef = &container.getCellRef();
+            isAllowed = isAllowedToUse(ptr, container, victim);
         }
         else
         {
+            isAllowed = isAllowedToUse(ptr, item, victim);
             if (!item.getCellRef().hasContentFile())
             {
                 // this is a manually placed item, which means it was already stolen
@@ -1048,23 +1114,33 @@ namespace MWMechanics
             }
         }
 
-        if (isAllowedToUse(ptr, item, victim))
+        if (isAllowed)
             return;
 
         Owner owner;
-        owner.first = ownerCellRef->getOwner();
         owner.second = false;
-        if (owner.first.empty())
+        if (!container.isEmpty() && container.getClass().isActor())
         {
-            owner.first = ownerCellRef->getFaction();
-            owner.second = true;
+            // "container" is an actor inventory, so just take actor's ID
+            owner.first = ownerCellRef->getRefId();
         }
+        else
+        {
+            owner.first = ownerCellRef->getOwner();
+            if (owner.first.empty())
+            {
+                owner.first = ownerCellRef->getFaction();
+                owner.second = true;
+            }
+        }
+
         Misc::StringUtils::lowerCaseInPlace(owner.first);
 
         if (!Misc::StringUtils::ciEqual(item.getCellRef().getRefId(), MWWorld::ContainerStore::sGoldId))
             mStolenItems[Misc::StringUtils::lowerCase(item.getCellRef().getRefId())][owner] += count;
 
-        commitCrime(ptr, victim, OT_Theft, item.getClass().getValue(item) * count);
+        if (alarm)
+            commitCrime(ptr, victim, OT_Theft, item.getClass().getValue(item) * count);
     }
 
 
@@ -1102,6 +1178,10 @@ namespace MWMechanics
             if (it->getClass().getCreatureStats(*it).isDead())
                 continue;
 
+            // Unconsious actor can not report about crime
+            if (it->getClass().getCreatureStats(*it).getKnockedDown())
+                continue;
+
             if ((*it == victim && victimAware)
                     || (MWBase::Environment::get().getWorld()->getLOS(player, *it) && awarenessCheck(player, *it) )
                     // Murder crime can be reported even if no one saw it (hearing is enough, I guess).
@@ -1128,6 +1208,10 @@ namespace MWMechanics
                 /*
                     End of tes3mp addition
                 */
+
+                // NPC will complain about theft even if he will do nothing about it
+                if (type == OT_Theft || type == OT_Pickpocket)
+                    MWBase::Environment::get().getDialogueManager()->say(*it, "thief");
 
                 crimeSeen = true;
             }
@@ -1224,10 +1308,14 @@ namespace MWMechanics
         // Tell everyone (including the original reporter) in alarm range
         for (std::vector<MWWorld::Ptr>::iterator it = neighbors.begin(); it != neighbors.end(); ++it)
         {
-            if (   *it == player
+            if (*it == player
                 || !it->getClass().isNpc() || it->getClass().getCreatureStats(*it).isDead()) continue;
 
             if (it->getClass().getCreatureStats(*it).getAiSequence().isInCombat(victim))
+                continue;
+
+            // Unconsious actor can not report about crime and should not become hostile
+            if (it->getClass().getCreatureStats(*it).getKnockedDown())
                 continue;
 
             // Player's followers should not attack player, or try to arrest him
@@ -1245,9 +1333,7 @@ namespace MWMechanics
             {
                 reported = true;
 
-                if (type == OT_Theft || type == OT_Pickpocket)
-                    MWBase::Environment::get().getDialogueManager()->say(*it, "thief");
-                else if (type == OT_Trespassing)
+                if (type == OT_Trespassing)
                     MWBase::Environment::get().getDialogueManager()->say(*it, "intruder");
             }
 
@@ -1549,6 +1635,11 @@ namespace MWMechanics
         mActors.getObjectsInRange(position, radius, objects);
     }
 
+    bool MechanicsManager::isAnyActorInRange(const osg::Vec3f &position, float radius)
+    {
+        return mActors.isAnyObjectInRange(position, radius);
+    }
+
     std::list<MWWorld::Ptr> MechanicsManager::getActorsSidingWith(const MWWorld::Ptr& actor)
     {
         return mActors.getActorsSidingWith(actor);
@@ -1619,6 +1710,12 @@ namespace MWMechanics
 
     bool MechanicsManager::isAggressive(const MWWorld::Ptr &ptr, const MWWorld::Ptr &target)
     {
+        // Don't become aggressive if a calm effect is active, since it would cause combat to cycle on/off as
+        // combat is activated here and then canceled by the calm effect
+        if ((ptr.getClass().isNpc() && ptr.getClass().getCreatureStats(ptr).getMagicEffects().get(ESM::MagicEffect::CalmHumanoid).getMagnitude() > 0)
+            || (!ptr.getClass().isNpc() && ptr.getClass().getCreatureStats(ptr).getMagicEffects().get(ESM::MagicEffect::CalmCreature).getMagnitude() > 0))
+            return false;
+
         int disposition = 50;
         if (ptr.getClass().isNpc())
             disposition = getDerivedDisposition(ptr, true);

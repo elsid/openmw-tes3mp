@@ -49,9 +49,11 @@ extern int is_debugger_attached(void);
 /*
     Start of tes3mp addition
 
-    Include the header of the logger added for multiplayer
+    Include additional headers for multiplayer purposes
 */
 #include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/Utils.hpp>
+#include <components/openmw-mp/Version.hpp>
 /*
     End of tes3mp addition
 */
@@ -207,7 +209,26 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
     cfgMgr.readConfiguration(variables, desc);
 
     Version::Version v = Version::getOpenmwVersion(variables["resources"].as<Files::EscapeHashString>().toStdString());
-    std::cout << v.describe() << std::endl;
+
+    /*
+        Start of tes3mp addition
+
+        Print the multiplayer version first
+    */
+    Utils::printVersion("TES3MP client", TES3MP_VERSION, v.mCommitHash, TES3MP_PROTO_VERSION);
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp change (minor)
+
+        Because there is no need to print the commit hash again, only print OpenMW's version
+    */
+    std::cout << "OpenMW version " << v.mVersion << std::endl;
+    /*
+        End of tes3mp change (minor)
+    */
 
     engine.setGrabMouse(!variables["no-grab"].as<bool>());
 
@@ -224,6 +245,9 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
     std::string local(variables["data-local"].as<Files::EscapeHashString>().toStdString());
     if (!local.empty())
     {
+        if (local.front() == '\"')
+            local = local.substr(1, local.length() - 2);
+
         dataDirs.push_back(Files::PathContainer::value_type(local));
     }
 

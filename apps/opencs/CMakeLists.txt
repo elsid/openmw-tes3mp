@@ -18,7 +18,7 @@ opencs_hdrs_noqt (model/doc
 
 
 opencs_units (model/world
-    idtable idtableproxymodel regionmap data commanddispatcher idtablebase resourcetable nestedtableproxymodel idtree infotableproxymodel
+    idtable idtableproxymodel regionmap data commanddispatcher idtablebase resourcetable nestedtableproxymodel idtree infotableproxymodel landtexturetableproxymodel
     )
 
 
@@ -70,7 +70,7 @@ opencs_units (view/world
     cellcreator pathgridcreator referenceablecreator startscriptcreator referencecreator scenesubview
     infocreator scriptedit dialoguesubview previewsubview regionmap dragrecordtable nestedtable
     dialoguespinbox recordbuttonbar tableeditidaction scripterrortable extendedcommandconfigurator
-    bodypartcreator
+    bodypartcreator landtexturecreator landcreator
     )
 
 opencs_units_noqt (view/world
@@ -174,7 +174,7 @@ else()
     set (OPENCS_OPENMW_CFG "")
 endif(APPLE)
 
-add_executable(openmw-cs
+openmw_add_executable(openmw-cs
     MACOSX_BUNDLE
     ${OPENCS_SRC}
     ${OPENCS_UI_HDR}
@@ -252,7 +252,8 @@ endif()
 if (WIN32)
     target_link_libraries(openmw-cs ${Boost_LOCALE_LIBRARY})
     INSTALL(TARGETS openmw-cs RUNTIME DESTINATION ".")
-    INSTALL(FILES "${OpenMW_BINARY_DIR}/openmw-cs.cfg" DESTINATION ".")
+    INSTALL(FILES "${OpenMW_BINARY_DIR}/Debug/openmw-cs.cfg" DESTINATION "." CONFIGURATIONS Debug)
+    INSTALL(FILES "${OpenMW_BINARY_DIR}/Release/openmw-cs.cfg" DESTINATION "." CONFIGURATIONS Release;RelWithDebInfo;MinSizeRel)
 endif()
 
 if (MSVC)

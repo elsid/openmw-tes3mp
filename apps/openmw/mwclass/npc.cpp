@@ -1008,11 +1008,11 @@ namespace MWClass
 
             // by default user can loot friendly actors during death animation
             if (canLoot && !stats.getAiSequence().isInCombat())
-                return std::shared_ptr<MWWorld::Action>(new MWWorld::ActionOpen(ptr, true));
+                return std::shared_ptr<MWWorld::Action>(new MWWorld::ActionOpen(ptr));
 
             // otherwise wait until death animation
             if(stats.isDeathAnimationFinished())
-                return std::shared_ptr<MWWorld::Action>(new MWWorld::ActionOpen(ptr, true));
+                return std::shared_ptr<MWWorld::Action>(new MWWorld::ActionOpen(ptr));
 
             // death animation is not finished, do nothing
             return std::shared_ptr<MWWorld::Action> (new MWWorld::FailedAction(""));
@@ -1265,6 +1265,15 @@ namespace MWClass
             else
             {
                 ratings[i] = it->getClass().getEffectiveArmorRating(*it, ptr);
+
+                // Take in account armor condition
+                const bool hasHealth = it->getClass().hasItemHealth(*it);
+                if (hasHealth)
+                {
+                    int armorHealth = it->getClass().getItemHealth(*it);
+                    int armorMaxHealth = it->getClass().getItemMaxHealth(*it);
+                    ratings[i] *= (float(armorHealth) / armorMaxHealth);
+                }
             }
         }
 

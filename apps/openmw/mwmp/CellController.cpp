@@ -338,14 +338,14 @@ bool CellController::isSameCell(const ESM::Cell& cell, const ESM::Cell& otherCel
     return false;
 }
 
-void CellController::openContainer(const MWWorld::Ptr &container, bool loot)
+void CellController::openContainer(const MWWorld::Ptr &container)
 {
     // Record this as the player's current open container
-    Main::get().getLocalPlayer()->storeCurrentContainer(container, loot);
+    Main::get().getLocalPlayer()->storeCurrentContainer(container);
 
     const auto &cellRef = container.getCellRef();
-    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Container \"%s\" (%d) is opened. Loot: %s",
-                       cellRef.getRefId().c_str(), cellRef.getRefNum().mIndex, loot ? "true" : "false");
+    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Container \"%s\" (%d) is opened",
+                       cellRef.getRefId().c_str(), cellRef.getRefNum().mIndex);
 
     for (const auto &ptr : container.getClass().getContainerStore(container))
     {

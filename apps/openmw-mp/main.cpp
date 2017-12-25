@@ -1,26 +1,29 @@
-#include <RakPeerInterface.h>
+#include <iostream>
+
+#include <boost/filesystem/fstream.hpp>
+#include <boost/iostreams/concepts.hpp>
+#include <boost/iostreams/stream_buffer.hpp>
+
+#include <components/files/configurationmanager.hpp>
+#include <components/files/escape.hpp>
+#include <components/settings/settings.hpp>
+#include <components/version/version.hpp>
+
+#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/NetworkMessages.hpp>
+#include <components/openmw-mp/Version.hpp>
+
 #include <BitStream.h>
+#include <MessageIdentifiers.h>
+#include <RakPeer.h>
+#include <RakPeerInterface.h>
+
 #include "Player.hpp"
 #include "Networking.hpp"
 #include "MasterClient.hpp"
-#include <RakPeer.h>
-#include <MessageIdentifiers.h>
-#include <components/openmw-mp/Log.hpp>
-#include <components/openmw-mp/NetworkMessages.hpp>
-#include <apps/openmw-mp/Script/Script.hpp>
-#include <iostream>
-#include <components/files/configurationmanager.hpp>
-#include <components/settings/settings.hpp>
-#include <boost/iostreams/concepts.hpp>
-#include <boost/iostreams/stream_buffer.hpp>
-#include <boost/filesystem/fstream.hpp>
-#include <components/openmw-mp/Version.hpp>
 #include "Utils.hpp"
 
-#include "MasterClient.hpp"
-
-#include <components/version/version.hpp>
-#include <components/files/escape.hpp>
+#include <apps/openmw-mp/Script/Script.hpp>
 
 #ifdef ENABLE_BREAKPAD
 #include <handler/exception_handler.h>
@@ -28,41 +31,6 @@
 
 using namespace std;
 using namespace mwmp;
-
-void printVersion(string version, Version::Version ver, int protocol)
-{
-    cout << "TES3:MP dedicated server " << version;
-    cout << " (";
-#if defined(_WIN32)
-    cout << "Windows";
-#elif defined(__linux)
-    cout << "Linux";
-#elif defined(__APPLE__)
-    cout << "OS X";
-#else
-    cout << "Unknown OS";
-#endif
-    cout << " ";
-#ifdef __x86_64__
-    cout << "64-bit";
-#elif defined(__i386__) || defined(_M_I86)
-    cout << "32-bit";
-#elif defined(__ARM_ARCH)
-    cout << "ARMv" << __ARM_ARCH << " ";
-    #ifdef __aarch64__
-        cout << "64-bit";
-    #else
-        cout << "32-bit";
-    #endif
-#else
-    cout << "Unknown architecture";
-#endif
-    cout << ")" << endl;
-    cout << "Protocol version: " << protocol << endl;
-    cout << "Commit hash: " <<  ver.mCommitHash.substr(0, 10) << endl;
-
-    cout << "------------------------------------------------------------" << endl;
-}
 
 #ifdef ENABLE_BREAKPAD
 google_breakpad::ExceptionHandler *pHandler = 0;
@@ -230,9 +198,7 @@ int main(int argc, char *argv[])
 
     vector<string> plugins (Utils::split(mgr.getString("plugins", "Plugins"), ','));
 
-
-    printVersion(TES3MP_VERSION, version, TES3MP_PROTO_VERSION);
-
+    Utils::printVersion("TES3MP dedicated server", TES3MP_VERSION, version.mCommitHash, TES3MP_PROTO_VERSION);
 
     setenv("AMXFILE", moddir.c_str(), 1);
     setenv("MOD_DIR", moddir.c_str(), 1); // hack for lua

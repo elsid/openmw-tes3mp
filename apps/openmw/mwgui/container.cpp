@@ -22,11 +22,10 @@
 #include "../mwbase/windowmanager.hpp"
 #include "../mwbase/dialoguemanager.hpp"
 #include "../mwbase/mechanicsmanager.hpp"
-#include "../mwmechanics/actorutil.hpp"
 
 #include "../mwworld/class.hpp"
+#include "../mwworld/inventorystore.hpp"
 
-#include "../mwmechanics/pickpocket.hpp"
 #include "../mwmechanics/creaturestats.hpp"
 
 #include "countdialog.hpp"
@@ -35,6 +34,7 @@
 #include "itemview.hpp"
 #include "itemwidget.hpp"
 #include "inventoryitemmodel.hpp"
+#include "containeritemmodel.hpp"
 #include "sortfilteritemmodel.hpp"
 #include "pickpocketitemmodel.hpp"
 #include "draganddrop.hpp"
@@ -45,7 +45,6 @@ namespace MWGui
     ContainerWindow::ContainerWindow(DragAndDrop* dragAndDrop)
         : WindowBase("openmw_container_window.layout")
         , mDragAndDrop(dragAndDrop)
-        , mPickpocketDetected(false)
         , mSortModel(NULL)
         , mModel(NULL)
         , mSelectedItem(-1)
@@ -60,7 +59,6 @@ namespace MWGui
 
         mDisposeCorpseButton->eventMouseButtonClick += MyGUI::newDelegate(this, &ContainerWindow::onDisposeCorpseButtonClicked);
         mCloseButton->eventMouseButtonClick += MyGUI::newDelegate(this, &ContainerWindow::onCloseButtonClicked);
-        mCloseButton->eventKeyButtonPressed += MyGUI::newDelegate(this, &ContainerWindow::onKeyPressed);
         mTakeButton->eventMouseButtonClick += MyGUI::newDelegate(this, &ContainerWindow::onTakeAllButtonClicked);
 
         setCoord(200,0,600,300);
@@ -68,10 +66,9 @@ namespace MWGui
 
     void ContainerWindow::onItemSelected(int index)
     {
-        if (mDragAndDrop->mIsOnDragAndDrop)
+        if (mDragAndDrop->mIsOnDragAndDrop && mModel)
         {
-            if (mModel && mModel->allowedToInsertItems())
-                dropItem();
+            dropItem();
             return;
         }
 
@@ -150,90 +147,90 @@ namespace MWGui
 
     void ContainerWindow::dropItem()
     {
-        if (mPtr.getTypeName() == typeid(ESM::Container).name())
-        {
-            // check container organic flag
-            MWWorld::LiveCellRef<ESM::Container>* ref = mPtr.get<ESM::Container>();
-            if (ref->mBase->mFlags & ESM::Container::Organic)
-            {
-                MWBase::Environment::get().getWindowManager()->
-                    messageBox("#{sContentsMessage2}");
-                return;
-            }
-
-            // check that we don't exceed container capacity
-            MWWorld::Ptr item = mDragAndDrop->mItem.mBase;
-            float weight = item.getClass().getWeight(item) * mDragAndDrop->mDraggedCount;
-            if (mPtr.getClass().getCapacity(mPtr) < mPtr.getClass().getEncumbrance(mPtr) + weight)
-            {
-                MWBase::Environment::get().getWindowManager()->messageBox("#{sContentsMessage3}");
-                return;
-            }
-        }
+        bool success = mModel->onDropItem(mDragAndDrop->mItem.mBase, mDragAndDrop->mDraggedCount);
 
         /*
             Start of tes3mp addition
 
             Send an ID_CONTAINER packet every time an item is dropped in a container
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->cell = *mPtr.getCell()->getCell();
-        worldEvent->action = mwmp::BaseEvent::ADD;
+        if (success)
+        {
+            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
+            worldEvent->reset();
+            worldEvent->cell = *mPtr.getCell()->getCell();
+            worldEvent->action = mwmp::BaseEvent::ADD;
 
-        mwmp::WorldObject worldObject;
-        worldObject.refId = mPtr.getCellRef().getRefId();
-        worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
-        worldObject.mpNum = mPtr.getCellRef().getMpNum();
+            mwmp::WorldObject worldObject;
+            worldObject.refId = mPtr.getCellRef().getRefId();
+            worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
+            worldObject.mpNum = mPtr.getCellRef().getMpNum();
 
-        MWWorld::Ptr itemPtr = mDragAndDrop->mItem.mBase;
+            MWWorld::Ptr itemPtr = mDragAndDrop->mItem.mBase;
 
-        mwmp::ContainerItem containerItem;
-        containerItem.refId = itemPtr.getCellRef().getRefId();
-        
-        // Make sure we get the drag and drop count, not the count of the original item
-        containerItem.count = mDragAndDrop->mDraggedCount;
+            mwmp::ContainerItem containerItem;
+            containerItem.refId = itemPtr.getCellRef().getRefId();
+            
+            // Make sure we get the drag and drop count, not the count of the original item
+            containerItem.count = mDragAndDrop->mDraggedCount;
 
-        containerItem.charge = itemPtr.getCellRef().getCharge();
+            containerItem.charge = itemPtr.getCellRef().getCharge();
 
-        worldObject.containerItems.push_back(containerItem);
-        worldEvent->addObject(worldObject);
+            worldObject.containerItems.push_back(containerItem);
+            worldEvent->addObject(worldObject);
 
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
+            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
 
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
-                           worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
-                           containerItem.refId.c_str(), containerItem.count);
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
+                               worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
+                               containerItem.refId.c_str(), containerItem.count);
+        }
         /*
             End of tes3mp addition
         */
 
-        mDragAndDrop->drop(mModel, mItemView);
+        if (success)
+            mDragAndDrop->drop(mModel, mItemView);
     }
 
     void ContainerWindow::onBackgroundSelected()
     {
-        if (mDragAndDrop->mIsOnDragAndDrop && mModel && mModel->allowedToInsertItems())
+        if (mDragAndDrop->mIsOnDragAndDrop && mModel)
             dropItem();
     }
 
-    void ContainerWindow::openContainer(const MWWorld::Ptr& container, bool loot)
+    void ContainerWindow::setPtr(const MWWorld::Ptr& container)
     {
-        mwmp::Main::get().getCellController()->openContainer(container, loot);
+        /*
+            Start of tes3mp addition
 
-        mPickpocketDetected = false;
+            Mark this container as open for multiplayer logic purposes
+        */
+        mwmp::Main::get().getCellController()->openContainer(container);
+        /*
+            End of tes3mp addition
+        */
+
         mPtr = container;
 
-        if (mPtr.getTypeName() == typeid(ESM::NPC).name() && !loot)
+        bool loot = mPtr.getClass().isActor() && mPtr.getClass().getCreatureStats(mPtr).isDead();
+
+        if (mPtr.getClass().hasInventoryStore(mPtr))
         {
-            // we are stealing stuff
-            MWWorld::Ptr player = MWMechanics::getPlayer();
-            mModel = new PickpocketItemModel(player, new InventoryItemModel(container),
-                                             !mPtr.getClass().getCreatureStats(mPtr).getKnockedDown());
+            if (mPtr.getClass().isNpc() && !loot)
+            {
+                // we are stealing stuff
+                mModel = new PickpocketItemModel(mPtr, new InventoryItemModel(container),
+                                                 !mPtr.getClass().getCreatureStats(mPtr).getKnockedDown());
+            }
+            else
+                mModel = new InventoryItemModel(container);
         }
         else
-            mModel = new InventoryItemModel(container);
+        {
+            mModel = new ContainerItemModel(container);
+        }
 
         mDisposeCorpseButton->setVisible(loot);
 
@@ -247,14 +244,6 @@ namespace MWGui
         setTitle(container.getClass().getName(container));
     }
 
-    void ContainerWindow::onKeyPressed(MyGUI::Widget *_sender, MyGUI::KeyCode _key, MyGUI::Char _char)
-    {
-        if (_key == MyGUI::KeyCode::Space)
-            onCloseButtonClicked(mCloseButton);
-        if (_key == MyGUI::KeyCode::Return || _key == MyGUI::KeyCode::NumpadEnter)
-            onTakeAllButtonClicked(mTakeButton);
-    }
-
     void ContainerWindow::resetReference()
     {
         ReferenceInterface::resetReference();
@@ -263,97 +252,99 @@ namespace MWGui
         mSortModel = NULL;
     }
 
-    void ContainerWindow::close()
+    void ContainerWindow::onClose()
     {
+        /*
+            Start of tes3mp addition
+
+            Mark this container as closed for multiplayer logic purposes
+        */
         mwmp::Main::get().getCellController()->closeContainer(mPtr);
-        WindowBase::close();
+        /*
+            End of tes3mp addition
+        */
 
-        if (dynamic_cast<PickpocketItemModel*>(mModel)
-                // Make sure we were actually closed, rather than just temporarily hidden (e.g. console or main menu opened)
-                && !MWBase::Environment::get().getWindowManager()->containsMode(GM_Container)
-                // If it was already detected while taking an item, no need to check now
-                && !mPickpocketDetected
-                )
-        {
-            MWWorld::Ptr player = MWMechanics::getPlayer();
-            MWMechanics::Pickpocket pickpocket(player, mPtr);
-            if (pickpocket.finish())
-            {
-                MWBase::Environment::get().getMechanicsManager()->commitCrime(
-                            player, mPtr, MWBase::MechanicsManager::OT_Pickpocket, 0, true);
-                MWBase::Environment::get().getWindowManager()->removeGuiMode(MWGui::GM_Container);
-                mPickpocketDetected = true;
-                return;
-            }
-        }
-    }
+        WindowBase::onClose();
 
-    void ContainerWindow::exit()
-    {
-        if(mDragAndDrop == NULL || !mDragAndDrop->mIsOnDragAndDrop)
-        {
-            MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
-        }
+        if (mModel)
+            mModel->onClose();
     }
 
     void ContainerWindow::onCloseButtonClicked(MyGUI::Widget* _sender)
     {
-        exit();
+        MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
     }
 
     void ContainerWindow::onTakeAllButtonClicked(MyGUI::Widget* _sender)
     {
-        if(mDragAndDrop == NULL || !mDragAndDrop->mIsOnDragAndDrop)
+        if(mDragAndDrop != NULL && mDragAndDrop->mIsOnDragAndDrop)
+            return;
+
+        // transfer everything into the player's inventory
+        ItemModel* playerModel = MWBase::Environment::get().getWindowManager()->getInventoryWindow()->getModel();
+        mModel->update();
+
+        // unequip all items to avoid unequipping/reequipping
+        if (mPtr.getClass().hasInventoryStore(mPtr))
         {
-            // transfer everything into the player's inventory
-            ItemModel* playerModel = MWBase::Environment::get().getWindowManager()->getInventoryWindow()->getModel();
-            mModel->update();
+            MWWorld::InventoryStore& invStore = mPtr.getClass().getInventoryStore(mPtr);
             for (size_t i=0; i<mModel->getItemCount(); ++i)
             {
-                if (i==0)
-                {
-                    // play the sound of the first object
-                    MWWorld::Ptr item = mModel->getItem(i).mBase;
-                    std::string sound = item.getClass().getUpSoundId(item);
-                    MWBase::Environment::get().getWindowManager()->playSound(sound);
-                }
-
                 const ItemStack& item = mModel->getItem(i);
+                if (invStore.isEquipped(item.mBase) == false)
+                    continue;
 
-                if (!onTakeItem(item, item.mCount))
-                    break;
+                invStore.unequipItem(item.mBase, mPtr);
+            }
+        }
 
-                mModel->moveItem(item, item.mCount, playerModel);
+        mModel->update();
+
+        for (size_t i=0; i<mModel->getItemCount(); ++i)
+        {
+            if (i==0)
+            {
+                // play the sound of the first object
+                MWWorld::Ptr item = mModel->getItem(i).mBase;
+                std::string sound = item.getClass().getUpSoundId(item);
+                MWBase::Environment::get().getWindowManager()->playSound(sound);
             }
 
-            MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
+            const ItemStack& item = mModel->getItem(i);
 
-            /*
-                Start of tes3mp addition
+            if (!onTakeItem(item, item.mCount))
+                break;
 
-                Send an ID_CONTAINER packet every time the Take All button is used on
-                a container
-            */
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->cell = *mPtr.getCell()->getCell();
-            worldEvent->action = mwmp::BaseEvent::SET;
-
-            mwmp::WorldObject worldObject;
-            worldObject.refId = mPtr.getCellRef().getRefId();
-            worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
-            worldObject.mpNum = mPtr.getCellRef().getMpNum();
-            worldEvent->addObject(worldObject);
-
-            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
-
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s",
-                               worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str());
-            /*
-                End of tes3mp addition
-            */
+            mModel->moveItem(item, item.mCount, playerModel);
         }
+
+        MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
+
+        /*
+            Start of tes3mp addition
+
+            Send an ID_CONTAINER packet every time the Take All button is used on
+            a container
+        */
+        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
+        worldEvent->reset();
+        worldEvent->cell = *mPtr.getCell()->getCell();
+        worldEvent->action = mwmp::BaseEvent::SET;
+
+        mwmp::WorldObject worldObject;
+        worldObject.refId = mPtr.getCellRef().getRefId();
+        worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
+        worldObject.mpNum = mPtr.getCellRef().getMpNum();
+        worldEvent->addObject(worldObject);
+
+        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s",
+                           worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str());
+        /*
+            End of tes3mp addition
+        */
     }
 
     void ContainerWindow::onDisposeCorpseButtonClicked(MyGUI::Widget *sender)
@@ -394,33 +385,7 @@ namespace MWGui
 
     bool ContainerWindow::onTakeItem(const ItemStack &item, int count)
     {
-        MWWorld::Ptr player = MWMechanics::getPlayer();
-        // TODO: move to ItemModels
-        if (dynamic_cast<PickpocketItemModel*>(mModel)
-                && !mPtr.getClass().getCreatureStats(mPtr).getKnockedDown())
-        {
-            MWMechanics::Pickpocket pickpocket(player, mPtr);
-            if (pickpocket.pick(item.mBase, count))
-            {
-                int value = item.mBase.getClass().getValue(item.mBase) * count;
-                MWBase::Environment::get().getMechanicsManager()->commitCrime(
-                            player, mPtr, MWBase::MechanicsManager::OT_Theft, value, true);
-                MWBase::Environment::get().getWindowManager()->removeGuiMode(MWGui::GM_Container);
-                mPickpocketDetected = true;
-                return false;
-            }
-            else
-                player.getClass().skillUsageSucceeded(player, ESM::Skill::Sneak, 1);
-        }
-        else
-        {
-            // Looting a dead corpse is considered OK
-            if (mPtr.getClass().isActor() && mPtr.getClass().getCreatureStats(mPtr).isDead())
-                return true;
-            else
-                MWBase::Environment::get().getMechanicsManager()->itemTaken(player, item.mBase, mPtr, count);
-        }
-        return true;
+        return mModel->onTakeItem(item.mBase, count);
     }
 
 }

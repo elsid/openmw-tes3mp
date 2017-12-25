@@ -7,6 +7,9 @@
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
 #include "../mwbase/windowmanager.hpp"
+
+#include "../mwmechanics/actorutil.hpp"
+
 #include "../mwworld/esmstore.hpp"
 
 #include "tooltips.hpp"
@@ -125,13 +128,22 @@ namespace MWGui
             okButton->setCaption(MWBase::Environment::get().getWindowManager()->getGameSettingString("sOK", ""));
     }
 
-    void PickClassDialog::open()
+    void PickClassDialog::onOpen()
     {
-        WindowModal::open ();
+        WindowModal::onOpen ();
         updateClasses();
         updateStats();
-    }
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mClassList);
 
+        // Show the current class by default
+        MWWorld::Ptr player = MWMechanics::getPlayer();
+
+        const std::string &classId =
+            player.get<ESM::NPC>()->mBase->mClass;
+
+        if (!classId.empty())
+            setClassId(classId);
+    }
 
     void PickClassDialog::setClassId(const std::string &classId)
     {
@@ -341,9 +353,9 @@ namespace MWGui
         }
     }
 
-    void InfoBoxDialog::open()
+    void InfoBoxDialog::onOpen()
     {
-        WindowModal::open();
+        WindowModal::onOpen();
         // Fix layout
         layoutVertically(mTextBox, 4);
         layoutVertically(mButtonBar, 6);
@@ -730,9 +742,10 @@ namespace MWGui
         exit();
     }
 
-    void SelectSpecializationDialog::exit()
+    bool SelectSpecializationDialog::exit()
     {
         eventCancel();
+        return true;
     }
 
     /* SelectAttributeDialog */
@@ -778,9 +791,10 @@ namespace MWGui
         exit();
     }
 
-    void SelectAttributeDialog::exit()
+    bool SelectAttributeDialog::exit()
     {
         eventCancel();
+        return true;
     }
 
 
@@ -869,9 +883,10 @@ namespace MWGui
         exit();
     }
 
-    void SelectSkillDialog::exit()
+    bool SelectSkillDialog::exit()
     {
         eventCancel();
+        return true;
     }
 
     /* DescriptionDialog */

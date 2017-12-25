@@ -108,7 +108,7 @@ namespace MWGui
 
 
     HUD::HUD(CustomMarkerCollection &customMarkers, DragAndDrop* dragAndDrop, MWRender::LocalMap* localMapRender)
-        : Layout("openmw_hud.layout")
+        : WindowBase("openmw_hud.layout")
         , LocalMapBase(customMarkers, localMapRender, Settings::Manager::getBool("local map hud fog of war", "Map"))
         , mHealth(NULL)
         , mMagicka(NULL)
@@ -120,7 +120,6 @@ namespace MWGui
         , mSpellStatus(NULL)
         , mEffectBox(NULL)
         , mMinimap(NULL)
-        , mCompass(NULL)
         , mCrosshair(NULL)
         , mCellNameBox(NULL)
         , mDrowningFrame(NULL)
@@ -422,6 +421,20 @@ namespace MWGui
 
         if (mIsDrowning)
             mDrowningFlashTheta += dt * osg::PI*2;
+
+        mSpellIcons->updateWidgets(mEffectBox, true);
+
+        if (mEnemyActorId != -1 && mEnemyHealth->getVisible())
+        {
+            updateEnemyHealthBar();
+        }
+
+        if (mIsDrowning)
+        {
+            float intensity = (cos(mDrowningFlashTheta) + 2.0f) / 3.0f;
+
+            mDrowningFlash->setAlpha(intensity);
+        }
     }
 
     void HUD::setSelectedSpell(const std::string& spellId, int successChancePercent)
@@ -653,23 +666,6 @@ namespace MWGui
 
     }
 
-    void HUD::update()
-    {
-        mSpellIcons->updateWidgets(mEffectBox, true);
-
-        if (mEnemyActorId != -1 && mEnemyHealth->getVisible())
-        {
-            updateEnemyHealthBar();
-        }
-
-        if (mIsDrowning)
-        {
-            float intensity = (cos(mDrowningFlashTheta) + 2.0f) / 3.0f;
-
-            mDrowningFlash->setAlpha(intensity);
-        }
-    }
-
     void HUD::setEnemy(const MWWorld::Ptr &enemy)
     {
         mEnemyActorId = enemy.getClass().getCreatureStats(enemy).getActorId();
@@ -684,6 +680,13 @@ namespace MWGui
     {
         mEnemyActorId = -1;
         mEnemyHealthTimer = -1;
+    }
+
+    void HUD::clear()
+    {
+        unsetSelectedSpell();
+        unsetSelectedWeapon();
+        resetEnemy();
     }
 
     void HUD::customMarkerCreated(MyGUI::Widget *marker)

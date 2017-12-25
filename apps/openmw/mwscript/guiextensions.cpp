@@ -67,7 +67,7 @@ namespace MWScript
                 MWWorld::Ptr bed = R()(runtime, false);
 
                 if (bed.isEmpty() || !MWBase::Environment::get().getMechanicsManager()->sleepInBed(MWMechanics::getPlayer(),
-                    bed))
+                                                                             bed))
                 /*
                     Start of tes3mp change (minor)
 
@@ -77,7 +77,7 @@ namespace MWScript
                     if (!mwmp::Main::get().getLocalPlayer()->bedRestAllowed)
                         MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest in beds.");
                     else
-                        MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_RestBed);
+                        MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_Rest, bed);
                 }
                 /*
                     End of tes3mp change (minor)
@@ -233,7 +233,7 @@ namespace MWScript
         public:
             virtual void execute(Interpreter::Runtime &runtime)
             {
-                bool state = MWBase::Environment::get().getWindowManager()->toggleGui();
+                bool state = MWBase::Environment::get().getWindowManager()->toggleHud();
                 runtime.getContext().report(state ? "GUI -> On" : "GUI -> Off");
 
                 if (!state)
