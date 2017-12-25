@@ -23,6 +23,13 @@ Community administrators
     Testman
 
 
+Community moderators
+--------------------
+
+    Capostrophic
+    Michael Fitzmayer (mupf)
+
+
 Art
 ---
 
@@ -33,8 +40,7 @@ Special thanks (in alphabetical order)
 --------------------------------------
 
     Camul
-    Capostrophic
-    Dave
+    David Wery
     DestinedToDie
     Gluka
     Goodevil
@@ -45,6 +51,7 @@ Special thanks (in alphabetical order)
     Jeremiah
     Lewis Sadlier
     Luc Keating
+    Malseph
     Michael Zagar (Zoops)
     Olaxan
     psi29a
