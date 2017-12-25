@@ -993,6 +993,9 @@ void LocalPlayer::setInventory()
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     MWWorld::ContainerStore &ptrStore = ptrPlayer.getClass().getContainerStore(ptrPlayer);
 
+    // Ensure no item is being drag and dropped
+    MWBase::Environment::get().getWindowManager()->finishDragDrop();
+
     // Clear items in inventory
     ptrStore.clear();
 
