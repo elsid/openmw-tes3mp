@@ -447,6 +447,8 @@ void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
 
     if (worldObjects.empty())
     {
+        windowManager->clearConsolePtr();
+
         LOG_APPEND(Log::LOG_VERBOSE, "-- running with no object reference");
         windowManager->executeCommandInConsole(consoleCommand);
     }
@@ -454,16 +456,28 @@ void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
     {
         for (const auto &worldObject : worldObjects)
         {
+            windowManager->clearConsolePtr();
+
             if (worldObject.isPlayer)
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s");
+                BasePlayer *player = 0;
+                
+                if (worldObject.guid == Main::get().getLocalPlayer()->guid)
+                {
+                    player = Main::get().getLocalPlayer();
 
-                if (worldObject.guid != Main::get().getLocalPlayer()->guid)
-                    windowManager->setConsoleSelectedObject(PlayerList::getPlayer(worldObject.guid)->getPtr());
-                else
-                    windowManager->setConsoleSelectedObject(Main::get().getLocalPlayer()->getPlayerPtr());
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- running on local player");
+                    windowManager->setConsolePtr(static_cast<LocalPlayer*>(player)->getPlayerPtr());
+                    windowManager->executeCommandInConsole(consoleCommand);
+                }
+                else if (player != 0)
+                {
+                    player = PlayerList::getPlayer(guid);
 
-                windowManager->executeCommandInConsole(consoleCommand);
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s", player->npc.mName.c_str());
+                    windowManager->setConsolePtr(static_cast<DedicatedPlayer*>(player)->getPtr());
+                    windowManager->executeCommandInConsole(consoleCommand);
+                }
             }
             else
             {
@@ -476,11 +490,13 @@ void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
                     LOG_APPEND(Log::LOG_VERBOSE, "-- Found %s, %i, %i", ptrFound.getCellRef().getRefId().c_str(),
                         ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
 
-                    windowManager->setConsoleSelectedObject(ptrFound);
+                    windowManager->setConsolePtr(ptrFound);
                     windowManager->executeCommandInConsole(consoleCommand);
                 }
             }
         }
+
+        windowManager->clearConsolePtr();
     } 
 }
 
