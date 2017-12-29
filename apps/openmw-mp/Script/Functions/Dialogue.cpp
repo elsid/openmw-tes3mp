@@ -64,9 +64,10 @@ void DialogueFunctions::PlayAnimation(unsigned short pid, const char* groupname,
     player->animation.count = count;
     player->animation.persist = persist;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->Send(false);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY)->Send(true);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY);
+    packet->setPlayer(player);
+    packet->Send(false);
+    player->sendToLoaded(packet);
 }
 
 void DialogueFunctions::PlaySpeech(unsigned short pid, const char* sound) noexcept
@@ -76,7 +77,8 @@ void DialogueFunctions::PlaySpeech(unsigned short pid, const char* sound) noexce
 
     player->sound = sound;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH)->Send(false);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH)->Send(true);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH);
+    packet->setPlayer(player);
+    packet->Send(false);
+    player->sendToLoaded(packet);
 }
