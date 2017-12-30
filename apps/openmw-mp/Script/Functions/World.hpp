@@ -568,92 +568,102 @@ public:
     /**
     * \brief Send an ObjectPlace packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectPlace() noexcept;
+    static void SendObjectPlace(bool broadcast = false) noexcept;
 
     /**
     * \brief Send an ObjectSpawn packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectSpawn() noexcept;
+    static void SendObjectSpawn(bool broadcast = false) noexcept;
 
     /**
     * \brief Send an ObjectDelete packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectDelete() noexcept;
+    static void SendObjectDelete(bool broadcast = false) noexcept;
 
     /**
     * \brief Send an ObjectLock packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectLock() noexcept;
+    static void SendObjectLock(bool broadcast = false) noexcept;
 
     /**
     * \brief Send an ObjectTrap packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectTrap() noexcept;
+    static void SendObjectTrap(bool broadcast = false) noexcept;
 
     /**
     * \brief Send an ObjectScale packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectScale() noexcept;
+    static void SendObjectScale(bool broadcast = false) noexcept;
 
     /**
     * \brief Send an ObjectState packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendObjectState() noexcept;
+    static void SendObjectState(bool broadcast = false) noexcept;
 
     /**
     * \brief Send a DoorState packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendDoorState() noexcept;
+    static void SendDoorState(bool broadcast = false) noexcept;
 
     /**
     * \brief Send a Container packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendContainer() noexcept;
+    static void SendContainer(bool broadcast = false) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.
     *
-    * It is sent only to the player for whom the current event was initialized.
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendConsoleCommand() noexcept;
+    static void SendConsoleCommand(bool broadcast = false) noexcept;
 
     /**
     * \brief Set the game hour for a player and send a GameTime packet to that player.

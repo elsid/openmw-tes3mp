@@ -18,6 +18,7 @@ void ScriptFunctions::SendMessage(unsigned short pid, const char *message, bool 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_CHAT_MESSAGE)->setPlayer(player);
 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_CHAT_MESSAGE)->Send(false);
+
     if (broadcast)
         mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_CHAT_MESSAGE)->Send(true);
 }
