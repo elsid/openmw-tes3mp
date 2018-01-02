@@ -11,6 +11,9 @@
     {"GetCurrentMpNum",             MiscellaneousFunctions::GetCurrentMpNum},\
     {"SetCurrentMpNum",             MiscellaneousFunctions::SetCurrentMpNum},\
     \
+    {"GetPluginEnforcementState",   MiscellaneousFunctions::GetPluginEnforcementState},\
+    {"SetPluginEnforcementState",   MiscellaneousFunctions::SetPluginEnforcementState},\
+    \
     {"LogMessage",                  MiscellaneousFunctions::LogMessage},\
     {"LogAppend",                   MiscellaneousFunctions::LogAppend}
 
@@ -63,6 +66,25 @@ public:
     * \return void
     */
     static void SetCurrentMpNum(int mpNum) noexcept;
+
+    /**
+    * \brief Get the plugin enforcement state of the server.
+    *
+    * If true, clients are required to use the same plugins as set for the server.
+    *
+    * \return The enforcement state.
+    */
+    static int GetPluginEnforcementState() noexcept;
+
+    /**
+    * \brief Set the plugin enforcement state of the server.
+    *
+    * If true, clients are required to use the same plugins as set for the server.
+    *
+    * \param state The new enforcement state.
+    * \return void
+    */
+    static void SetPluginEnforcementState(bool state) noexcept;
 
     /**
     * \brief Write a log message with its own timestamp.

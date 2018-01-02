@@ -52,6 +52,9 @@ namespace  mwmp
         void setCurrentMpNum(int value);
         int incrementMpNum();
 
+        bool getPluginEnforcementState();
+        void setPluginEnforcementState(bool state);
+
         MasterClient *getMasterClient();
         void InitQuery(std::string queryAddr, unsigned short queryPort);
         void setServerPassword(std::string passw) noexcept;

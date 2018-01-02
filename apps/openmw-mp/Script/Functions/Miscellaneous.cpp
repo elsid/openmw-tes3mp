@@ -43,6 +43,16 @@ void MiscellaneousFunctions::SetCurrentMpNum(int mpNum) noexcept
     mwmp::Networking::getPtr()->setCurrentMpNum(mpNum);
 }
 
+int MiscellaneousFunctions::GetPluginEnforcementState() noexcept
+{
+    return mwmp::Networking::getPtr()->getPluginEnforcementState();
+}
+
+void MiscellaneousFunctions::SetPluginEnforcementState(bool state) noexcept
+{
+    mwmp::Networking::getPtr()->setPluginEnforcementState(state);
+}
+
 void MiscellaneousFunctions::LogMessage(unsigned short level, const char *message) noexcept
 {
     LOG_MESSAGE_SIMPLE(level, "[Script]: %s", message);
