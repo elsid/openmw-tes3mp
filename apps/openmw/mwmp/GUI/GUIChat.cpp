@@ -52,7 +52,7 @@ namespace mwmp
     {
         // Give keyboard focus to the combo box whenever the console is
         // turned on
-        SetEditState(0);
+        setEditState(0);
         windowState = CHAT_ENABLED;
     }
 
@@ -61,7 +61,7 @@ namespace mwmp
         // Apparently, hidden widgets can retain key focus
         // Remove for MyGUI 3.2.2
         windowState = CHAT_DISABLED;
-        SetEditState(0);
+        setEditState(0);
     }
 
     bool GUIChat::exit()
@@ -79,7 +79,7 @@ namespace mwmp
         if (cm.empty())
         {
             mCommandLine->setCaption("");
-            SetEditState(0);
+            setEditState(0);
             return;
         }
 
@@ -96,7 +96,7 @@ namespace mwmp
         // It prevents the re-triggering of the acceptCommand() event for the same command
         // during the actual command execution
         mCommandLine->setCaption("");
-        SetEditState(0);
+        setEditState(0);
         send (cm);
     }
 
@@ -173,7 +173,7 @@ namespace mwmp
         {
             case CHAT_DISABLED:
                 this->mMainWidget->setVisible(false);
-                SetEditState(0);
+                setEditState(0);
                 break;
             case CHAT_ENABLED:
                 this->mMainWidget->setVisible(true);
@@ -184,7 +184,7 @@ namespace mwmp
         }
     }
 
-    void GUIChat::SetEditState(bool state)
+    void GUIChat::setEditState(bool state)
     {
         editState = state;
         mCommandLine->setVisible(editState);
@@ -195,17 +195,17 @@ namespace mwmp
     {
         if (windowState == CHAT_DISABLED)
             return;
-        else if (windowState == CHAT_HIDDENMODE)
+
+        if (!mCommandLine->getVisible())
+            LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Opening chat.");
+
+        if (windowState == CHAT_HIDDENMODE)
         {
             setVisible(true);
             curTime = 0;
-            editState = true;
         }
-        else // CHAT_ENABLED
-            editState = true;
 
-        LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Opening chat.");
-        SetEditState(editState);
+        setEditState(true);
     }
 
     void GUIChat::keyPress(MyGUI::Widget *_sender, MyGUI::KeyCode key, MyGUI::Char _char)
@@ -241,14 +241,14 @@ namespace mwmp
 
     }
 
-    void GUIChat::Update(float dt)
+    void GUIChat::update(float dt)
     {
         if (windowState == CHAT_HIDDENMODE && !editState && isVisible())
         {
             curTime += dt;
             if (curTime >= delay)
             {
-                SetEditState(false);
+                setEditState(false);
                 this->mMainWidget->setVisible(false);
             }
         }

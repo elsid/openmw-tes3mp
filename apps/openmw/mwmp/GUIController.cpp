@@ -198,7 +198,7 @@ bool mwmp::GUIController::hasFocusedElement()
 void mwmp::GUIController::update(float dt)
 {
     if (mChat != nullptr)
-        mChat->Update(dt);
+        mChat->update(dt);
 
     // Make sure we read the pressed button without resetting it, because it may also get
     // checked somewhere else
