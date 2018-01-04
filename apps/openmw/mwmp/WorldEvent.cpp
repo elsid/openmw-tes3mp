@@ -470,13 +470,16 @@ void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
                     windowManager->setConsolePtr(static_cast<LocalPlayer*>(player)->getPlayerPtr());
                     windowManager->executeCommandInConsole(consoleCommand);
                 }
-                else if (player != 0)
+                else
                 {
-                    player = PlayerList::getPlayer(guid);
+                    player = PlayerList::getPlayer(worldObject.guid);
 
-                    LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s", player->npc.mName.c_str());
-                    windowManager->setConsolePtr(static_cast<DedicatedPlayer*>(player)->getPtr());
-                    windowManager->executeCommandInConsole(consoleCommand);
+                    if (player != 0)
+                    {
+                        LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s", player->npc.mName.c_str());
+                        windowManager->setConsolePtr(static_cast<DedicatedPlayer*>(player)->getPtr());
+                        windowManager->executeCommandInConsole(consoleCommand);
+                    }
                 }
             }
             else
