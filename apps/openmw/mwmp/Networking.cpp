@@ -45,72 +45,99 @@
 using namespace std;
 using namespace mwmp;
 
-string comparePlugins(PacketPreInit::PluginContainer checksums, PacketPreInit::PluginContainer checksumsResponse)
+string listDiscrepancies(PacketPreInit::PluginContainer checksums, PacketPreInit::PluginContainer checksumsResponse)
 {
     std::ostringstream sstr;
-    sstr << "Your plugins or their load order don't match the server's.\n\n";
-    sstr << "Your current plugins are:\n";
-    
-    const int maxLineLength = 100;
-    int lineLength = 0;
+    sstr << "Your plugins or their load order don't match the server's. A full comparison is included in your client console and latest log file. In short, the following discrepancies have been found:\n\n";
 
-    for (size_t i = 0; i < checksums.size(); i++)
+    int discrepancyCount = 0;
+
+    for (size_t fileIndex = 0; fileIndex < checksums.size() || fileIndex < checksumsResponse.size(); fileIndex++)
     {
-        if (i != 0)
-            sstr << ", ";
-
-        if (lineLength > maxLineLength)
+        if (fileIndex >= checksumsResponse.size())
         {
-            sstr << "\n";
-            lineLength = 0;
+            discrepancyCount++;
+
+            if (discrepancyCount > 1)
+                sstr << "\n";
+
+            string clientFilename = checksums.at(fileIndex).first;
+
+            sstr << fileIndex << ": ";
+            sstr << clientFilename << " is past the number of plugins used by the server";
         }
-
-        string plugin = checksums.at(i).first;
-
-        sstr << plugin << " (" << Utils::intToHexStr(checksums.at(i).second[0]) << ")";
-
-        lineLength += + plugin.size() + 13;
-    }
-
-    sstr << "\n\nTo join this server, use:\n";
-    lineLength = 0;
-
-    for (size_t i = 0; i < checksumsResponse.size(); i++)
-    {
-        if (i != 0)
-            sstr << ", ";
-
-        if (lineLength > maxLineLength)
+        else if (fileIndex >= checksums.size())
         {
-            sstr << "\n";
-            lineLength = 0;
-        }
+            discrepancyCount++;
 
-        string plugin = checksumsResponse.at(i).first;
+            if (discrepancyCount > 1)
+                sstr << "\n";
 
-        sstr << plugin << " (";
+            string serverFilename = checksumsResponse.at(fileIndex).first;
 
-        int responseHashSize = checksumsResponse[i].second.size();
-        
-        if (responseHashSize > 0)
-        {
-            sstr << Utils::intToHexStr(checksumsResponse.at(i).second[0]);
-
-            if (responseHashSize > 1)
-                sstr << " & " << (responseHashSize - 1) << " more";
+            sstr << fileIndex << ": ";
+            sstr << serverFilename << " is completely missing from the client but required by the server";
         }
         else
-            sstr << "any";
+        {
+            string clientFilename = checksums.at(fileIndex).first;
+            string serverFilename = checksumsResponse.at(fileIndex).first;
 
-        sstr << ")";
+            string clientChecksum = Utils::intToHexStr(checksums.at(fileIndex).second.at(0));
 
-        lineLength += + plugin.size() + 13;
+            bool filenameMatches = false;
+            bool checksumMatches = false;
+            string eligibleChecksums = "";
+
+            if (Misc::StringUtils::ciEqual(clientFilename, serverFilename))
+                filenameMatches = true;
+
+            if (checksumsResponse.at(fileIndex).second.size() > 0)
+            {
+                for (size_t checksumIndex = 0; checksumIndex < checksumsResponse.at(fileIndex).second.size(); checksumIndex++)
+                {
+                    string serverChecksum = Utils::intToHexStr(checksumsResponse.at(fileIndex).second.at(checksumIndex));
+
+                    if (checksumIndex != 0)
+                        eligibleChecksums = eligibleChecksums + " or ";
+
+                    eligibleChecksums = eligibleChecksums + serverChecksum;
+
+                    if (Misc::StringUtils::ciEqual(clientChecksum, serverChecksum))
+                    {
+                        checksumMatches = true;
+                        break;
+                    }
+                }
+            }
+            else
+                checksumMatches = true;
+
+            if (!filenameMatches || !checksumMatches)
+            {
+                discrepancyCount++;
+
+                if (discrepancyCount > 1)
+                    sstr << "\n";
+
+                sstr << fileIndex << ": ";
+
+                if (!filenameMatches)
+                    sstr << clientFilename << " doesn't match " << serverFilename;
+
+                if (!filenameMatches && !checksumMatches)
+                    sstr << ", ";
+
+                if (!checksumMatches)
+                    sstr << "checksum " << clientChecksum << " doesn't match " << eligibleChecksums;
+            }
+        }
     }
 
     return sstr.str();
 }
 
-string comparePluginsMonospaced(PacketPreInit::PluginContainer checksums, PacketPreInit::PluginContainer checksumsResponse,
+string listComparison(PacketPreInit::PluginContainer checksums, PacketPreInit::PluginContainer checksumsResponse,
                       bool full = false)
 {
     std::ostringstream sstr;
@@ -124,7 +151,6 @@ string comparePluginsMonospaced(PacketPreInit::PluginContainer checksums, Packet
         if (pluginNameLen2 < checksum.first.size())
             pluginNameLen2 = checksum.first.size();
 
-    sstr << "Your plugins or their load order don't match the server's.\n\n";
     Utils::printWithWidth(sstr, "Your current plugins are:", pluginNameLen1 + 16);
     sstr << "To join this server, use:\n";
 
@@ -318,7 +344,6 @@ void Networking::connect(const std::string &ip, unsigned short port, std::vector
 
 void Networking::preInit(std::vector<std::string> &content, Files::Collections &collections)
 {
-    std::string errmsg = "";
     PacketPreInit::PluginContainer checksums;
     vector<string>::const_iterator it(content.begin());
     for (int idx = 0; it != content.end(); ++it, ++idx)
@@ -379,16 +404,10 @@ void Networking::preInit(std::vector<std::string> &content, Files::Collections &
 
     if (!checksumsResponse.empty()) // something wrong
     {
-#if defined(__WINDOWS)
-        errmsg = comparePlugins(checksums, checksumsResponse);
-#else
-        errmsg = comparePluginsMonospaced(checksums, checksumsResponse);
-#endif
-    }
+        std::string errmsg = listDiscrepancies(checksums, checksumsResponse);
 
-    if (!errmsg.empty())
-    {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, comparePluginsMonospaced(checksums, checksumsResponse, true).c_str());
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, listDiscrepancies(checksums, checksumsResponse).c_str());
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, listComparison(checksums, checksumsResponse, true).c_str());
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "tes3mp", errmsg.c_str(), 0);
         connected = false;
     }
