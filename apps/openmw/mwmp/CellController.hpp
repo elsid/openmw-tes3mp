@@ -51,6 +51,7 @@ namespace mwmp
         std::string generateMapIndex(mwmp::BaseActor baseActor);
 
         bool hasLocalAuthority(const ESM::Cell& cell);
+        bool isInitializedCell(const std::string& cellDescription);
         bool isInitializedCell(const ESM::Cell& cell);
         bool isActiveWorldCell(const ESM::Cell& cell);
         virtual Cell *getCell(const ESM::Cell& cell);

@@ -191,15 +191,16 @@ bool CellController::isLocalActor(MWWorld::Ptr ptr)
     if (ptr.mRef == nullptr)
         return false;
 
-    std::string mapIndex = generateMapIndex(ptr);
+    std::string actorIndex = generateMapIndex(ptr);
 
-    return (localActorsToCells.count(mapIndex) > 0);
+    return (localActorsToCells.count(actorIndex) > 0 && isInitializedCell(localActorsToCells.at(actorIndex)));
 }
 
 bool CellController::isLocalActor(int refNumIndex, int mpNum)
 {
-    std::string mapIndex = generateMapIndex(refNumIndex, mpNum);
-    return (localActorsToCells.count(mapIndex) > 0);
+    std::string actorIndex = generateMapIndex(refNumIndex, mpNum);
+
+    return (localActorsToCells.count(actorIndex) > 0 && isInitializedCell(localActorsToCells.at(actorIndex)));
 }
 
 LocalActor *CellController::getLocalActor(MWWorld::Ptr ptr)
@@ -228,20 +229,21 @@ void CellController::removeDedicatedActorRecord(std::string actorIndex)
     dedicatedActorsToCells.erase(actorIndex);
 }
 
-bool CellController::isDedicatedActor(int refNumIndex, int mpNum)
-{
-    std::string mapIndex = generateMapIndex(refNumIndex, mpNum);
-    return (dedicatedActorsToCells.count(mapIndex) > 0);
-}
-
 bool CellController::isDedicatedActor(MWWorld::Ptr ptr)
 {
     if (ptr.mRef == nullptr)
         return false;
 
-    std::string mapIndex = generateMapIndex(ptr);
+    std::string actorIndex = generateMapIndex(ptr);
 
-    return (dedicatedActorsToCells.count(mapIndex) > 0);
+    return (dedicatedActorsToCells.count(actorIndex) > 0 && isInitializedCell(dedicatedActorsToCells.at(actorIndex)));
+}
+
+bool CellController::isDedicatedActor(int refNumIndex, int mpNum)
+{
+    std::string actorIndex = generateMapIndex(refNumIndex, mpNum);
+
+    return (dedicatedActorsToCells.count(actorIndex) > 0 && isInitializedCell(dedicatedActorsToCells.at(actorIndex)));
 }
 
 DedicatedActor *CellController::getDedicatedActor(MWWorld::Ptr ptr)
@@ -285,9 +287,14 @@ bool CellController::hasLocalAuthority(const ESM::Cell& cell)
     return false;
 }
 
+bool CellController::isInitializedCell(const std::string& cellDescription)
+{
+    return (cellsInitialized.count(cellDescription) > 0);
+}
+
 bool CellController::isInitializedCell(const ESM::Cell& cell)
 {
-    return (cellsInitialized.count(cell.getDescription()) > 0);
+    return isInitializedCell(cell.getDescription());
 }
 
 bool CellController::isActiveWorldCell(const ESM::Cell& cell)
