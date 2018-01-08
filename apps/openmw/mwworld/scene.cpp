@@ -322,9 +322,16 @@ namespace MWWorld
             // ... then references. This is important for adjustPosition to work correctly.
             /// \todo rescale depending on the state of a new GMST
 
-            // Minor change done by tes3mp:
-            // Instead of always rescaling objects as in the original code, never rescale them
+            /*
+                Start of tes3mp change (major)
+
+                Instead of always rescaling objects as in the original code, never rescale them,
+                so they can maintain their server-set scales when their cells are reloaded
+            */
             insertCell(*cell, false, loadingListener);
+            /*
+                End of tes3mp change (major)
+            */
             
 
             mRendering.addCell(cell);
