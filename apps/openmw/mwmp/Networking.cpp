@@ -300,8 +300,8 @@ void Networking::connect(const std::string &ip, unsigned short port, std::vector
                 }
                 case ID_INVALID_PASSWORD:
                 {
-                    errmsg = "Connection failed.\n"
-                            "The client or server is outdated.";
+                    errmsg = "Version mismatch!\nYour client is on version " TES3MP_VERSION "\n"
+                        "Please make sure the server is on the same version.";
                     queue = false;
                     break;
                 }
