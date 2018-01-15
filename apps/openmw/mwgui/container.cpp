@@ -127,6 +127,7 @@ namespace MWGui
         containerItem.refId =itemPtr.getCellRef().getRefId();
         containerItem.count = itemPtr.getRefData().getCount();
         containerItem.charge = itemPtr.getCellRef().getCharge();
+        containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
         containerItem.actionCount = count;
 
         worldObject.containerItems.push_back(containerItem);
@@ -175,6 +176,7 @@ namespace MWGui
             containerItem.count = mDragAndDrop->mDraggedCount;
 
             containerItem.charge = itemPtr.getCellRef().getCharge();
+            containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
 
             worldObject.containerItems.push_back(containerItem);
             worldEvent->addObject(worldObject);
