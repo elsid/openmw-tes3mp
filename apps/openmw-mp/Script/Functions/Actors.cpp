@@ -163,7 +163,7 @@ int ActorFunctions::GetActorEquipmentItemCharge(unsigned int i, unsigned short s
     return readActorList->baseActors.at(i).equipedItems[slot].charge;
 }
 
-int ActorFunctions::GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept
+double ActorFunctions::GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept
 {
     return readActorList->baseActors.at(i).equipedItems[slot].enchantmentCharge;
 }
@@ -267,7 +267,7 @@ void ActorFunctions::SetActorFatigueModified(double value) noexcept
     tempActor.creatureStats.mDynamic[2].mMod = value;
 }
 
-void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, int enchantmentCharge) noexcept
+void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, double enchantmentCharge) noexcept
 {
     tempActor.equipedItems[slot].refId = refId;
     tempActor.equipedItems[slot].count = count;

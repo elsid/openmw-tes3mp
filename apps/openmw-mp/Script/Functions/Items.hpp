@@ -41,10 +41,10 @@ public:
     static int GetEquipmentSize() noexcept;
     static unsigned int GetInventoryChangesSize(unsigned short pid) noexcept;
 
-    static void EquipItem(unsigned short pid, unsigned short slot, const char* refId, unsigned int count, int charge, int enchantmentCharge = -1) noexcept;
+    static void EquipItem(unsigned short pid, unsigned short slot, const char* refId, unsigned int count, int charge, double enchantmentCharge = -1) noexcept;
     static void UnequipItem(unsigned short pid, unsigned short slot) noexcept;
 
-    static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge, int enchantmentCharge = -1) noexcept;
+    static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge, double enchantmentCharge = -1) noexcept;
     static void RemoveItem(unsigned short pid, const char* refId, unsigned short count) noexcept;
 
     static bool HasItemEquipped(unsigned short pid, const char* refId);
@@ -52,12 +52,12 @@ public:
     static const char *GetEquipmentItemRefId(unsigned short pid, unsigned short slot) noexcept;
     static int GetEquipmentItemCount(unsigned short pid, unsigned short slot) noexcept;
     static int GetEquipmentItemCharge(unsigned short pid, unsigned short slot) noexcept;
-    static int GetEquipmentItemEnchantmentCharge(unsigned short pid, unsigned short slot) noexcept;
+    static double GetEquipmentItemEnchantmentCharge(unsigned short pid, unsigned short slot) noexcept;
 
     static const char *GetInventoryItemRefId(unsigned short pid, unsigned int i) noexcept;
     static int GetInventoryItemCount(unsigned short pid, unsigned int i) noexcept;
     static int GetInventoryItemCharge(unsigned short pid, unsigned int i) noexcept;
-    static int GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int i) noexcept;
+    static double GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int i) noexcept;
 
     static void SendEquipment(unsigned short pid) noexcept;
     static void SendInventoryChanges(unsigned short pid, bool toOthers = false) noexcept;

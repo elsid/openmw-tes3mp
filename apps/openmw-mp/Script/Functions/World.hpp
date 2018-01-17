@@ -158,7 +158,7 @@ public:
     * \param i The index of the object.
     * \return The enchantment charge.
     */
-    static int GetObjectEnchantmentCharge(unsigned int i) noexcept;
+    static double GetObjectEnchantmentCharge(unsigned int i) noexcept;
 
     /**
     * \brief Get the gold value of the object at a certain index in the read event's object
@@ -307,7 +307,7 @@ public:
     * \param itemIndex The index of the container item.
     * \return The enchantment charge.
     */
-    static int GetContainerItemEnchantmentCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept;
+    static double GetContainerItemEnchantmentCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept;
 
     /**
     * \brief Get the action count of the container item at a certain itemIndex in the container
@@ -414,7 +414,7 @@ public:
     * \param charge The enchantment charge.
     * \return void
     */
-    static void SetObjectEnchantmentCharge(int enchantmentCharge) noexcept;
+    static void SetObjectEnchantmentCharge(double enchantmentCharge) noexcept;
 
     /**
     * \brief Set the gold value of the temporary world object stored on the server.
@@ -542,7 +542,7 @@ public:
     * \param charge The enchantment charge.
     * \return void
     */
-    static void SetContainerItemEnchantmentCharge(int enchantmentCharge) noexcept;
+    static void SetContainerItemEnchantmentCharge(double enchantmentCharge) noexcept;
 
     /**
     * \brief Add a copy of the server's temporary world object to the server's temporary event.

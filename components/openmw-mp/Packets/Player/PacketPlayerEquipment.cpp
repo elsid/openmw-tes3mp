@@ -5,6 +5,7 @@
 #include "PacketPlayerEquipment.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 
+
 using namespace mwmp;
 
 PacketPlayerEquipment::PacketPlayerEquipment(RakNet::RakPeerInterface *peer) : PlayerPacket(peer)
@@ -21,5 +22,6 @@ void PacketPlayerEquipment::Packet(RakNet::BitStream *bs, bool send)
         RW(player->equipedItems[i].refId, send, 1);
         RW(player->equipedItems[i].count, send);
         RW(player->equipedItems[i].charge, send);
+        RW(player->equipedItems[i].enchantmentCharge, send);
     }
 }

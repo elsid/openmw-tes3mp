@@ -12,7 +12,7 @@ namespace mwmp
         std::string refId;
         int count;
         int charge;
-        int enchantmentCharge;
+        double enchantmentCharge;
 
         int actionCount;
 
@@ -29,7 +29,7 @@ namespace mwmp
         int mpNum;
         int count;
         int charge;
-        int enchantmentCharge;
+        double enchantmentCharge;
         int goldValue;
 
         ESM::Position position;

@@ -308,7 +308,7 @@ public:
     * \param slot The slot of the equipment item.
     * \return The enchantment charge.
     */
-    static int GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept;
+    static double GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept;
 
     /**
     * \brief Check whether there is any positional data for the actor at a certain index in
@@ -492,7 +492,7 @@ public:
     * \param enchantmentCharge The enchantment charge of the item.
     * \return void
     */
-    static void EquipActorItem(unsigned short slot, const char* refId, unsigned int count, int charge, int enchantmentCharge = -1) noexcept;
+    static void EquipActorItem(unsigned short slot, const char* refId, unsigned int count, int charge, double enchantmentCharge = -1) noexcept;
 
     /**
     * \brief Unequip the item in a certain slot of the equipment of the temporary actor stored
