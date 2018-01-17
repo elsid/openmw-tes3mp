@@ -83,6 +83,9 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
             MWWorld::Ptr ownerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
             for (const auto &containerItem : worldObject.containerItems)
             {
+                if (containerItem.refId.find("$dynamic") != string::npos)
+                    continue;
+
                 if (action == BaseEvent::ADD || action == BaseEvent::SET)
                 {
                     // Create a ManualRef to be able to set item charge
@@ -160,6 +163,10 @@ void WorldEvent::placeObjects(MWWorld::CellStore* cellStore)
         LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s, %i, %i, count: %i, charge: %i, enchantmentCharge: %i", worldObject.refId.c_str(),
                    worldObject.refNumIndex, worldObject.mpNum, worldObject.count, worldObject.charge, worldObject.enchantmentCharge);
 
+        // Ignore generic dynamic refIds because they could be anything on other clients
+        if (worldObject.refId.find("$dynamic") != string::npos)
+            continue;
+
         MWWorld::Ptr ptrFound = cellStore->searchExact(0, worldObject.mpNum);
 
         // Only create this object if it doesn't already exist
@@ -194,6 +201,10 @@ void WorldEvent::spawnObjects(MWWorld::CellStore* cellStore)
     {
         LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s, %i, %i", worldObject.refId.c_str(),
             worldObject.refNumIndex, worldObject.mpNum);
+
+        // Ignore generic dynamic refIds because they could be anything on other clients
+        if (worldObject.refId.find("$dynamic") != string::npos)
+            continue;
 
         MWWorld::Ptr ptrFound = cellStore->searchExact(0, worldObject.mpNum);
 
@@ -599,6 +610,12 @@ void WorldEvent::playVideo()
 
 void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr)
 {
+    if (ptr.getCellRef().getRefId().find("$dynamic") != string::npos)
+    {
+        MWBase::Environment::get().getWindowManager()->messageBox("You're trying to place a custom item, but those are not synchronized in multiplayer yet.");
+        return;
+    }
+
     cell = *ptr.getCell()->getCell();
 
     mwmp::WorldObject worldObject;
@@ -624,6 +641,12 @@ void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr)
 
 void WorldEvent::addObjectSpawn(const MWWorld::Ptr& ptr)
 {
+    if (ptr.getCellRef().getRefId().find("$dynamic") != string::npos)
+    {
+        MWBase::Environment::get().getWindowManager()->messageBox("You're trying to spawn a custom object, but those are not synchronized in multiplayer yet.");
+        return;
+    }
+
     cell = *ptr.getCell()->getCell();
 
     mwmp::WorldObject worldObject;
@@ -821,6 +844,9 @@ void WorldEvent::addScriptGlobalShort(std::string varName, int shortVal)
 
 void WorldEvent::sendObjectPlace()
 {
+    if (worldObjects.size() == 0)
+        return;
+
     LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Sending ID_OBJECT_PLACE about %s", cell.getDescription().c_str());
 
     for (const auto &worldObject : worldObjects)
@@ -832,6 +858,9 @@ void WorldEvent::sendObjectPlace()
 
 void WorldEvent::sendObjectSpawn()
 {
+    if (worldObjects.size() == 0)
+        return;
+
     LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Sending ID_OBJECT_SPAWN about %s", cell.getDescription().c_str());
 
     for (const auto &worldObject : worldObjects)
