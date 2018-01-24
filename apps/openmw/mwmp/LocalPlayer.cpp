@@ -1091,8 +1091,18 @@ void LocalPlayer::setFactions()
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
 
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_FACTION from server\n- action: %i", factionChanges.action);
+
     for (const auto &faction : factionChanges.factions)
     {
+        const ESM::Faction *esmFaction = MWBase::Environment::get().getWorld()->getStore().get<ESM::Faction>().search(faction.factionId);
+
+        if (!esmFaction)
+        {
+            LOG_APPEND(Log::LOG_INFO, "- Ignored invalid faction %s", faction.factionId.c_str());
+            continue;
+        }
+
         // If the player isn't in this faction, make them join it
         if (!ptrNpcStats.isInFaction(faction.factionId))
             ptrNpcStats.joinFaction(faction.factionId);
