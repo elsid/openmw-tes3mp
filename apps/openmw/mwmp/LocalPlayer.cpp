@@ -933,6 +933,8 @@ void LocalPlayer::setCell()
 
 void LocalPlayer::setClass()
 {
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_CLASS from server");
+
     if (charClass.mId.empty()) // custom class
     {
         charClass.mData.mIsPlayable = 0x1;
@@ -941,12 +943,15 @@ void LocalPlayer::setClass()
     }
     else
     {
-        MWBase::Environment::get().getMechanicsManager()->setPlayerClass(charClass.mId);
-
-        const ESM::Class *existingCharClass = MWBase::Environment::get().getWorld()->getStore().get<ESM::Class>().find(charClass.mId);
+        const ESM::Class *existingCharClass = MWBase::Environment::get().getWorld()->getStore().get<ESM::Class>().search(charClass.mId);
 
         if (existingCharClass)
+        {
+            MWBase::Environment::get().getMechanicsManager()->setPlayerClass(charClass.mId);
             MWBase::Environment::get().getWindowManager()->setPlayerClass(charClass);
+        }
+        else
+            LOG_APPEND(Log::LOG_INFO, "- Ignored invalid default class %s", charClass.mId.c_str());
     }
 }
 
@@ -1175,18 +1180,18 @@ void LocalPlayer::setShapeshift()
 void LocalPlayer::sendClass()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
-    const ESM::NPC *cpl = world->getPlayerPtr().get<ESM::NPC>()->mBase;
-    const ESM::Class *cls = world->getStore().get<ESM::Class>().find(cpl->mClass);
+    const ESM::NPC *npcBase = world->getPlayerPtr().get<ESM::NPC>()->mBase;
+    const ESM::Class *esmClass = world->getStore().get<ESM::Class>().find(npcBase->mClass);
 
-    if (cpl->mClass.find("$dynamic") != string::npos) // custom class
+    if (npcBase->mClass.find("$dynamic") != string::npos) // custom class
     {
         charClass.mId = "";
-        charClass.mName = cls->mName;
-        charClass.mDescription = cls->mDescription;
-        charClass.mData = cls->mData;
+        charClass.mName = esmClass->mName;
+        charClass.mDescription = esmClass->mDescription;
+        charClass.mData = esmClass->mData;
     }
     else
-        charClass.mId = cls->mId;
+        charClass.mId = esmClass->mId;
 
     getNetworking()->getPlayerPacket(ID_PLAYER_CHARCLASS)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_CHARCLASS)->Send();
