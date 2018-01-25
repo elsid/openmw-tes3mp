@@ -23,6 +23,8 @@ namespace MechanicsHelper
     bool getSpellSuccess(std::string spellId, const MWWorld::Ptr& caster);
 
     void processAttack(mwmp::Attack attack, const MWWorld::Ptr& attacker);
+
+    void unequipItemsByEffect(const MWWorld::Ptr& ptr, short effectId, short attributeId = -1, short skillId = -1);
 }
 
 

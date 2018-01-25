@@ -35,6 +35,7 @@
 #include "Main.hpp"
 #include "Networking.hpp"
 #include "CellController.hpp"
+#include "GUIController.hpp"
 #include "MechanicsHelper.hpp"
 
 using namespace mwmp;
@@ -442,6 +443,7 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
     {
         auto &item = equipedItems[slot];
         MWWorld::ContainerStoreIterator it = invStore.getSlot(slot);
+
         if (it != invStore.end())
         {
             if (!::Misc::StringUtils::ciEqual(it->getCellRef().getRefId(), equipedItems[slot].refId))
@@ -796,47 +798,67 @@ void LocalPlayer::setDynamicStats()
 
 void LocalPlayer::setAttributes()
 {
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-    MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
+    MWWorld::Ptr ptrPlayer = getPlayerPtr();
 
     MWMechanics::CreatureStats *ptrCreatureStats = &ptrPlayer.getClass().getCreatureStats(ptrPlayer);
     MWMechanics::AttributeValue attributeValue;
 
-    for (int i = 0; i < 8; ++i)
+    for (int attributeIndex = 0; attributeIndex < 8; ++attributeIndex)
     {
         // If the server wants to clear our attribute's non-zero modifier, we need to remove
         // the spell effect causing it, to avoid an infinite loop where the effect keeps resetting
         // the modifier
-        if (creatureStats.mAttributes[i].mMod == 0 && ptrCreatureStats->getAttribute(i).getModifier() > 0)
-            ptrCreatureStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifyAttribute, i);
+        if (creatureStats.mAttributes[attributeIndex].mMod == 0 && ptrCreatureStats->getAttribute(attributeIndex).getModifier() > 0)
+        {
+            ptrCreatureStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifyAttribute, attributeIndex);
+            MWBase::Environment::get().getMechanicsManager()->updateMagicEffects(ptrPlayer);
 
-        attributeValue.readState(creatureStats.mAttributes[i]);
-        ptrCreatureStats->setAttribute(i, attributeValue);
+            // Is the modifier for this attribute still higher than 0? If so, unequip items that
+            // fortify the attribute
+            if (ptrCreatureStats->getAttribute(attributeIndex).getModifier() > 0)
+            {
+                MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::MagicEffect::FortifyAttribute, attributeIndex, -1);
+                mwmp::Main::get().getGUIController()->refreshGuiMode(MWGui::GM_Inventory);
+            }
+        }
+
+        attributeValue.readState(creatureStats.mAttributes[attributeIndex]);
+        ptrCreatureStats->setAttribute(attributeIndex, attributeValue);
     }
 }
 
 void LocalPlayer::setSkills()
 {
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-    MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
+    MWWorld::Ptr ptrPlayer = getPlayerPtr();
 
     MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
     MWMechanics::SkillValue skillValue;
 
-    for (int i = 0; i < 27; ++i)
+    for (int skillIndex = 0; skillIndex < 27; ++skillIndex)
     {
         // If the server wants to clear our skill's non-zero modifier, we need to remove
         // the spell effect causing it, to avoid an infinite loop where the effect keeps resetting
         // the modifier
-        if (npcStats.mSkills[i].mMod == 0 && ptrNpcStats->getSkill(i).getModifier() > 0)
-            ptrNpcStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifySkill, i);
+        if (npcStats.mSkills[skillIndex].mMod == 0 && ptrNpcStats->getSkill(skillIndex).getModifier() > 0)
+        {
+            ptrNpcStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifySkill, skillIndex);
+            MWBase::Environment::get().getMechanicsManager()->updateMagicEffects(ptrPlayer);
 
-        skillValue.readState(npcStats.mSkills[i]);
-        ptrNpcStats->setSkill(i, skillValue);
+            // Is the modifier for this skill still higher than 0? If so, unequip items that
+            // fortify the skill
+            if (ptrNpcStats->getSkill(skillIndex).getModifier() > 0)
+            {
+                MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::MagicEffect::FortifySkill, -1, skillIndex);
+                mwmp::Main::get().getGUIController()->refreshGuiMode(MWGui::GM_Inventory);
+            }
+        }
+
+        skillValue.readState(npcStats.mSkills[skillIndex]);
+        ptrNpcStats->setSkill(skillIndex, skillValue);
     }
 
-    for (int i = 0; i < 8; ++i)
-        ptrNpcStats->setSkillIncrease(i, npcStats.mSkillIncrease[i]);
+    for (int attributeIndex = 0; attributeIndex < 8; ++attributeIndex)
+        ptrNpcStats->setSkillIncrease(attributeIndex, npcStats.mSkillIncrease[attributeIndex]);
 
     ptrNpcStats->setLevelProgress(npcStats.mLevelProgress);
 }

@@ -59,6 +59,15 @@ void mwmp::GUIController::cleanUp()
     mChat = nullptr;
 }
 
+void mwmp::GUIController::refreshGuiMode(MWGui::GuiMode guiMode)
+{
+    if (MWBase::Environment::get().getWindowManager()->containsMode(guiMode))
+    {
+        MWBase::Environment::get().getWindowManager()->removeGuiMode(guiMode);
+        MWBase::Environment::get().getWindowManager()->pushGuiMode(guiMode);
+    }
+}
+
 void mwmp::GUIController::setupChat(const Settings::Manager &mgr)
 {
     assert(mChat == nullptr);
