@@ -214,6 +214,25 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
     }
 }
 
+bool MechanicsHelper::doesEffectListContainEffect(const ESM::EffectList& effectList, short effectId, short attributeId, short skillId)
+{
+    for (const auto &effect : effectList.mList)
+    {
+        if (effect.mEffectID == effectId)
+        {
+            if (attributeId == -1 || effect.mAttribute == attributeId)
+            {
+                if (skillId == -1 || effect.mSkill == skillId)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short effectId, short attributeId, short skillId)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -230,20 +249,8 @@ void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short effect
             {
                 const ESM::Enchantment* enchantment = world->getStore().get<ESM::Enchantment>().find(enchantmentName);
 
-                for (const auto &effect : enchantment->mEffects.mList)
-                {
-                    if (effect.mEffectID == effectId)
-                    {
-                        if (attributeId == -1 || effect.mAttribute == attributeId)
-                        {
-                            if (skillId == -1 || effect.mSkill == skillId)
-                            {
-                                ptrInventory.unequipSlot(slot, ptr);
-                                break;
-                            }
-                        }
-                    }
-                }
+                if (doesEffectListContainEffect(enchantment->mEffects, effectId, attributeId, skillId))
+                    ptrInventory.unequipSlot(slot, ptr);
             }
         }
     }

@@ -24,6 +24,7 @@ namespace MechanicsHelper
 
     void processAttack(mwmp::Attack attack, const MWWorld::Ptr& attacker);
 
+    bool doesEffectListContainEffect(const ESM::EffectList& effectList, short effectId, short attributeId = -1, short skillId = -1);
     void unequipItemsByEffect(const MWWorld::Ptr& ptr, short effectId, short attributeId = -1, short skillId = -1);
 }
 
