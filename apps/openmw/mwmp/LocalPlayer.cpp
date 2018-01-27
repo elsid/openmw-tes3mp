@@ -770,6 +770,45 @@ void LocalPlayer::removeSpells()
     }
 }
 
+void LocalPlayer::resurrect()
+{
+    creatureStats.mDead = false;
+
+    MWWorld::Ptr ptrPlayer = getPlayerPtr();
+
+    if (resurrectType == mwmp::RESURRECT_TYPE::IMPERIAL_SHRINE)
+        MWBase::Environment::get().getWorld()->teleportToClosestMarker(ptrPlayer, "divinemarker");
+    else if (resurrectType == mwmp::RESURRECT_TYPE::TRIBUNAL_TEMPLE)
+        MWBase::Environment::get().getWorld()->teleportToClosestMarker(ptrPlayer, "templemarker");
+
+    ptrPlayer.getClass().getCreatureStats(ptrPlayer).resurrect();
+
+    // The player could have died from a hand-to-hand attack, so reset their fatigue
+    // as well
+    if (creatureStats.mDynamic[2].mMod < 1)
+        creatureStats.mDynamic[2].mMod = 1;
+
+    creatureStats.mDynamic[2].mCurrent = creatureStats.mDynamic[2].mMod;
+    MWMechanics::DynamicStat<float> fatigue;
+    fatigue.readState(creatureStats.mDynamic[2]);
+    ptrPlayer.getClass().getCreatureStats(ptrPlayer).setFatigue(fatigue);
+
+    // If this player had a weapon or spell readied when dying, they will still have it
+    // readied but be unable to use it unless we clear it here
+    ptrPlayer.getClass().getNpcStats(ptrPlayer).setDrawState(MWMechanics::DrawState_Nothing);
+
+    // Record that the player has died since the last attempt was made to arrest them,
+    // used to make guards lenient enough to attempt an arrest again
+    diedSinceArrestAttempt = true;
+
+    LOG_APPEND(Log::LOG_INFO, "- diedSinceArrestAttempt is now true");
+
+    Main::get().getNetworking()->getPlayerPacket(ID_PLAYER_RESURRECT)->setPlayer(this);
+    Main::get().getNetworking()->getPlayerPacket(ID_PLAYER_RESURRECT)->Send();
+
+    updateStatsDynamic(true);
+}
+
 void LocalPlayer::closeInventoryWindows()
 {
     if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Container) ||

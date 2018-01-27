@@ -47,6 +47,8 @@ namespace mwmp
         void removeItems();
         void removeSpells();
 
+        void resurrect();
+
         void closeInventoryWindows();
 
         void setDynamicStats();
