@@ -908,23 +908,8 @@ namespace MWGui
                     window->onFrame(frameDuration);
         }
 
-        /*
-            Start of tes3mp change (major)
-
-            Custom GUI elements added by TES3MP often cause a crash here when their
-            mMainWidget becomes null, so a temporary fix has been added until a
-            more appropriate solution is researched
-        */
         if (!mCurrentModals.empty())
-        {
-            if (mCurrentModals.back()->mMainWidget != 0)
-                mCurrentModals.back()->onFrame(frameDuration);
-            else
-                mCurrentModals.pop_back();
-        }
-        /*
-            End of tes3mp change (major)
-        */
+            mCurrentModals.back()->onFrame(frameDuration);
 
         mKeyboardNavigation->onFrame();
 
