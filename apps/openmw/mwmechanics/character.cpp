@@ -2531,7 +2531,7 @@ float CharacterController::getAttackStrength() const
     return mAttackStrength;
 }
 
-void CharacterController::setActive(bool active)
+void CharacterController::setActive(int active)
 {
     mAnimation->setActive(active);
 }
