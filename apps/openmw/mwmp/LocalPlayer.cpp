@@ -856,7 +856,7 @@ void LocalPlayer::setAttributes()
             // fortify the attribute
             if (ptrCreatureStats->getAttribute(attributeIndex).getModifier() > 0)
             {
-                MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::MagicEffect::FortifyAttribute, attributeIndex, -1);
+                MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::FortifyAttribute, attributeIndex, -1);
                 mwmp::Main::get().getGUIController()->refreshGuiMode(MWGui::GM_Inventory);
             }
         }
@@ -887,7 +887,7 @@ void LocalPlayer::setSkills()
             // fortify the skill
             if (ptrNpcStats->getSkill(skillIndex).getModifier() > 0)
             {
-                MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::MagicEffect::FortifySkill, -1, skillIndex);
+                MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::FortifySkill, -1, skillIndex);
                 mwmp::Main::get().getGUIController()->refreshGuiMode(MWGui::GM_Inventory);
             }
         }

@@ -233,7 +233,7 @@ bool MechanicsHelper::doesEffectListContainEffect(const ESM::EffectList& effectL
     return false;
 }
 
-void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short effectId, short attributeId, short skillId)
+void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short enchantmentType, short effectId, short attributeId, short skillId)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
     MWWorld::InventoryStore &ptrInventory = ptr.getClass().getInventoryStore(ptr);
@@ -249,7 +249,7 @@ void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short effect
             {
                 const ESM::Enchantment* enchantment = world->getStore().get<ESM::Enchantment>().find(enchantmentName);
 
-                if (doesEffectListContainEffect(enchantment->mEffects, effectId, attributeId, skillId))
+                if (enchantment->mData.mType == enchantmentType && doesEffectListContainEffect(enchantment->mEffects, effectId, attributeId, skillId))
                     ptrInventory.unequipSlot(slot, ptr);
             }
         }
