@@ -803,6 +803,14 @@ void LocalPlayer::resurrect()
 
     LOG_APPEND(Log::LOG_INFO, "- diedSinceArrestAttempt is now true");
 
+    // Ensure we unequip any items with constant effects that can put us into an infinite
+    // death loop
+    MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::DrainHealth);
+    MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::FireDamage);
+    MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::FrostDamage);
+    MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::ShockDamage);
+    MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::SunDamage);
+
     Main::get().getNetworking()->getPlayerPacket(ID_PLAYER_RESURRECT)->setPlayer(this);
     Main::get().getNetworking()->getPlayerPacket(ID_PLAYER_RESURRECT)->Send();
 
