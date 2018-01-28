@@ -74,7 +74,7 @@ namespace MWGui
             */
             mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
             worldEvent->reset();
-            worldEvent->addObjectPlace(dropped);
+            worldEvent->addObjectPlace(dropped, true);
             worldEvent->sendObjectPlace();
             /*
                 End of tes3mp addition

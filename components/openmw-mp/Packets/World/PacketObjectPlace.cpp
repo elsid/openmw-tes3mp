@@ -17,4 +17,5 @@ void PacketObjectPlace::Object(WorldObject &worldObject, bool send)
     RW(worldObject.enchantmentCharge, send);
     RW(worldObject.goldValue, send);
     RW(worldObject.position, send);
+    RW(worldObject.droppedByPlayer, send);
 }

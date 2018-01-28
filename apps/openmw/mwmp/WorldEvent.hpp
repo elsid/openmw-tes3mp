@@ -41,7 +41,7 @@ namespace mwmp
         void playMusic();
         void playVideo();
 
-        void addObjectPlace(const MWWorld::Ptr& ptr);
+        void addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer = false);
         void addObjectSpawn(const MWWorld::Ptr& ptr);
         void addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master);
         void addObjectDelete(const MWWorld::Ptr& ptr);

@@ -136,11 +136,21 @@ namespace MWWorld
 
             MWWorld::Ptr getFacedObject(float maxDistance, bool ignorePlayer=true);
 
+            /*
+                Start of tes3mp change (major)
+
+                This has been turned into a public method so it can be used in
+                multiplayer's different approach to placing items
+            */
+            void PCDropped(const Ptr& item);
+            /*
+                End of tes3mp change (major)
+            */
+
     public: // FIXME
             void removeContainerScripts(const Ptr& reference) override;
     private:
             void addContainerScripts(const Ptr& reference, CellStore* cell);
-            void PCDropped (const Ptr& item);
 
             void processDoors(float duration);
             ///< Run physics simulation and modify \a world accordingly.

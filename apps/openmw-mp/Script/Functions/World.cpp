@@ -289,6 +289,7 @@ void WorldFunctions::SetContainerItemEnchantmentCharge(double enchantmentCharge)
 
 void WorldFunctions::AddWorldObject() noexcept
 {
+    tempWorldObject.droppedByPlayer = false;
     writeEvent.worldObjects.push_back(tempWorldObject);
 
     tempWorldObject = emptyWorldObject;

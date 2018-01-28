@@ -249,6 +249,17 @@ namespace MWBase
             virtual MWWorld::Ptr  getFacedObject() = 0;
             ///< Return pointer to the object the player is looking at, if it is within activation range
 
+            /*
+                Start of tes3mp addition
+
+                This has been declared here so it can be accessed from places
+                other than MWWorld::World 
+            */
+            virtual void PCDropped(const MWWorld::Ptr& item) = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual float getDistanceToFacedObject() = 0;
 
             virtual float getMaxActivationDistance() = 0;

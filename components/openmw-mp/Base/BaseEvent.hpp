@@ -51,6 +51,7 @@ namespace mwmp
         std::string varName;
 
         bool isDisarmed;
+        bool droppedByPlayer;
 
         Target master;
         bool hasMaster;

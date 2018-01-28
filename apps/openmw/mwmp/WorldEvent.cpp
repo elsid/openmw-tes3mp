@@ -158,6 +158,8 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
 
 void WorldEvent::placeObjects(MWWorld::CellStore* cellStore)
 {
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
     for (const auto &worldObject : worldObjects)
     {
         LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s, %i, %i, count: %i, charge: %i, enchantmentCharge: %i", worldObject.refId.c_str(),
@@ -172,7 +174,7 @@ void WorldEvent::placeObjects(MWWorld::CellStore* cellStore)
         // Only create this object if it doesn't already exist
         if (!ptrFound)
         {
-            MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), worldObject.refId, 1);
+            MWWorld::ManualRef ref(world->getStore(), worldObject.refId, 1);
             MWWorld::Ptr newPtr = ref.getPtr();
 
             if (worldObject.count > 1)
@@ -185,10 +187,13 @@ void WorldEvent::placeObjects(MWWorld::CellStore* cellStore)
                 newPtr.getCellRef().setEnchantmentCharge(worldObject.enchantmentCharge);
 
             newPtr.getCellRef().setGoldValue(worldObject.goldValue);
-            newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, worldObject.position);
+            newPtr = world->placeObject(newPtr, cellStore, worldObject.position);
 
             // Because gold automatically gets replaced with a new object, make sure we set the mpNum at the end
             newPtr.getCellRef().setMpNum(worldObject.mpNum);
+
+            if (guid == Main::get().getLocalPlayer()->guid && worldObject.droppedByPlayer)
+                world->PCDropped(newPtr);
         }
         else
             LOG_APPEND(Log::LOG_VERBOSE, "-- Object already existed!");
@@ -608,7 +613,7 @@ void WorldEvent::playVideo()
     }
 }
 
-void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr)
+void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
 {
     if (ptr.getCellRef().getRefId().find("$dynamic") != string::npos)
     {
@@ -624,6 +629,7 @@ void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr)
     worldObject.mpNum = 0;
     worldObject.charge = ptr.getCellRef().getCharge();
     worldObject.enchantmentCharge = ptr.getCellRef().getEnchantmentCharge();
+    worldObject.droppedByPlayer = droppedByPlayer;
 
     // Make sure we send the RefData position instead of the CellRef one, because that's what
     // we actually see on this client
