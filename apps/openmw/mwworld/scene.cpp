@@ -243,6 +243,17 @@ namespace MWWorld
         std::cout << "Unloading cell\n";
         ListAndResetObjectsVisitor visitor;
 
+        /*
+            Start of tes3mp addition
+
+            Set a const pointer to the iterator's ESM::Cell here, because
+            (*iter)->getCell() can become invalid later down
+        */
+        const ESM::Cell* cell = (*iter)->getCell();
+        /*
+            End of tes3mp addition
+        */
+
         (*iter)->forEach<ListAndResetObjectsVisitor>(visitor);
         for (std::vector<MWWorld::Ptr>::const_iterator iter2 (visitor.mObjects.begin());
             iter2!=visitor.mObjects.end(); ++iter2)
@@ -276,7 +287,7 @@ namespace MWWorld
 
             Store a cell unload for the LocalPlayer
         */
-        mwmp::Main::get().getLocalPlayer()->storeCellState(*(*iter)->getCell(), mwmp::CellState::UNLOAD);
+        mwmp::Main::get().getLocalPlayer()->storeCellState(*cell, mwmp::CellState::UNLOAD);
         /*
             End of tes3mp addition
         */
