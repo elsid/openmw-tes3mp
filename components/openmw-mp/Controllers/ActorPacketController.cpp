@@ -8,6 +8,7 @@
 #include "../Packets/Actor/PacketActorCellChange.hpp"
 #include "../Packets/Actor/PacketActorDeath.hpp"
 #include "../Packets/Actor/PacketActorEquipment.hpp"
+#include "../Packets/Actor/PacketActorInteraction.hpp"
 #include "../Packets/Actor/PacketActorPosition.hpp"
 #include "../Packets/Actor/PacketActorStatsDynamic.hpp"
 #include "../Packets/Actor/PacketActorSpeech.hpp"
@@ -35,6 +36,7 @@ mwmp::ActorPacketController::ActorPacketController(RakNet::RakPeerInterface *pee
     AddPacket<PacketActorCellChange>(&packets, peer);
     AddPacket<PacketActorDeath>(&packets, peer);
     AddPacket<PacketActorEquipment>(&packets, peer);
+    AddPacket<PacketActorInteraction>(&packets, peer);
     AddPacket<PacketActorPosition>(&packets, peer);
     AddPacket<PacketActorSpeech>(&packets, peer);
     AddPacket<PacketActorStatsDynamic>(&packets, peer);

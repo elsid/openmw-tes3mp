@@ -1,19 +1,9 @@
-//
-// Created by koncord on 16.04.17.
-//
-
 #ifndef OPENMW_PROCESSORPLAYERATTACK_HPP
 #define OPENMW_PROCESSORPLAYERATTACK_HPP
 
 #include "apps/openmw/mwmp/Main.hpp"
 #include "../PlayerProcessor.hpp"
 #include "apps/openmw/mwmp/MechanicsHelper.hpp"
-#include "apps/openmw/mwbase/world.hpp"
-#include "apps/openmw/mwworld/containerstore.hpp"
-#include "apps/openmw/mwworld/inventorystore.hpp"
-#include "apps/openmw/mwmechanics/combat.hpp"
-
-#include "apps/openmw/mwbase/environment.hpp"
 
 namespace mwmp
 {

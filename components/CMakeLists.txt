@@ -176,28 +176,32 @@ add_component_dir (openmw-mp/Packets
 add_component_dir (openmw-mp/Packets/Actor
         ActorPacket
         PacketActorList PacketActorAuthority PacketActorTest PacketActorAI PacketActorAnimFlags PacketActorAnimPlay
-        PacketActorAttack PacketActorCellChange PacketActorDeath PacketActorEquipment PacketActorPosition PacketActorSpeech
-        PacketActorStatsDynamic
+        PacketActorAttack PacketActorCellChange PacketActorDeath PacketActorEquipment PacketActorInteraction PacketActorPosition
+        PacketActorSpeech PacketActorStatsDynamic
         )
 
 add_component_dir (openmw-mp/Packets/Player
         PlayerPacket
         PacketHandshake PacketChatMessage PacketGUIBoxes PacketGameSettings PacketGameTime PacketGameWeather
+
+        PacketCellCreate PacketRecordDynamic
+
         PacketPlayerBaseInfo PacketPlayerCharGen PacketPlayerActiveSkills PacketPlayerAnimFlags PacketPlayerAnimPlay
-        PacketPlayerAttack PacketPlayerAttribute PacketPlayerBook PacketPlayerBounty PacketPlayerCellChange
+        PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty PacketPlayerCellChange
         PacketPlayerCellState PacketPlayerClass PacketPlayerDeath PacketPlayerEquipment PacketPlayerFaction
-        PacketPlayerInventory PacketPlayerJail PacketPlayerJournal PacketPlayerKillCount PacketPlayerLevel
-        PacketPlayerMap PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerRegionAuthority PacketPlayerRest
-        PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook
-        PacketPlayerStatsDynamic PacketPlayerTopic
+        PacketPlayerInteraction PacketPlayerInventory PacketPlayerJail PacketPlayerJournal PacketPlayerKillCount PacketPlayerLevel
+        PacketPlayerMap PacketPlayerMiscellaneous PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerRegionAuthority
+        PacketPlayerReputation PacketPlayerRest PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech
+        PacketPlayerSpellbook PacketPlayerStatsDynamic PacketPlayerTopic
         )
 
 add_component_dir (openmw-mp/Packets/World
         WorldPacket
-        PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectDelete PacketDoorState PacketObjectLock
-        PacketObjectMove PacketObjectPlace PacketObjectRotate PacketObjectScale PacketObjectSpawn PacketObjectState
-        PacketObjectTrap PacketMusicPlay PacketVideoPlay PacketScriptLocalShort PacketScriptLocalFloat
-        PacketScriptMemberShort PacketScriptGlobalShort
+        PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectDelete PacketDoorDestination
+        PacketDoorState PacketObjectLock PacketObjectMove PacketObjectPlace PacketObjectReset PacketObjectRotate
+        PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap PacketMusicPlay PacketVideoPlay
+        PacketScriptLocalShort PacketScriptLocalFloat PacketScriptMemberShort PacketScriptMemberFloat PacketScriptGlobalShort
+        PacketScriptGlobalFloat
         )
 
 add_component_dir (fallback
