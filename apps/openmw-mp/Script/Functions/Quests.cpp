@@ -79,6 +79,14 @@ void QuestFunctions::AddKill(unsigned short pid, const char* refId, int number) 
     player->killChanges.kills.push_back(kill);
 }
 
+void QuestFunctions::SetReputation(unsigned short pid, int value) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->npcStats.mReputation = value;
+}
+
 const char *QuestFunctions::GetJournalItemQuest(unsigned short pid, unsigned int i) noexcept
 {
     Player *player;
@@ -133,6 +141,14 @@ int QuestFunctions::GetKillNumber(unsigned short pid, unsigned int i) noexcept
     return player->killChanges.kills.at(i).number;
 }
 
+int QuestFunctions::GetReputation(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->npcStats.mReputation;
+}
+
 void QuestFunctions::SendJournalChanges(unsigned short pid, bool toOthers) noexcept
 {
     Player *player;
@@ -149,4 +165,13 @@ void QuestFunctions::SendKillChanges(unsigned short pid, bool toOthers) noexcept
 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT)->Send(toOthers);
+}
+
+void QuestFunctions::SendReputation(unsigned short pid, bool toOthers) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_REPUTATION)->setPlayer(player);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_REPUTATION)->Send(toOthers);
 }

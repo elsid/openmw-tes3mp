@@ -12,5 +12,5 @@ void PacketPlayerReputation::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    // Placeholder
+    RW(player->npcStats.mReputation, send);
 }

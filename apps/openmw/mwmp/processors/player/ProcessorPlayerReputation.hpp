@@ -16,19 +16,13 @@ namespace mwmp
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
         {
-            if (isLocal())
+            if (isRequest())
             {
-                //if (isRequest())
-                //    static_cast<LocalPlayer *>(player)->updateReputation(true);
-                //else
-                //    static_cast<LocalPlayer *>(player)->setReputation();
+                static_cast<LocalPlayer *>(player)->updateReputation(true);
             }
             else if (player != 0)
             {
-                MWWorld::Ptr ptrPlayer =  static_cast<DedicatedPlayer *>(player)->getPtr();
-                MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
-
-                ptrNpcStats->setReputation(player->npcStats.mReputation);
+                static_cast<LocalPlayer *>(player)->setReputation();
             }
         }
     };

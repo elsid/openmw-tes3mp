@@ -12,6 +12,8 @@
     {"AddJournalIndex",           QuestFunctions::AddJournalIndex},\
     {"AddKill",                   QuestFunctions::AddKill},\
     \
+    {"SetReputation",             QuestFunctions::SetReputation},\
+    \
     {"GetJournalItemQuest",       QuestFunctions::GetJournalItemQuest},\
     {"GetJournalItemIndex",       QuestFunctions::GetJournalItemIndex},\
     {"GetJournalItemType",        QuestFunctions::GetJournalItemType},\
@@ -19,8 +21,11 @@
     {"GetKillRefId",              QuestFunctions::GetKillRefId},\
     {"GetKillNumber",             QuestFunctions::GetKillNumber},\
     \
+    {"GetReputation",             QuestFunctions::GetReputation},\
+    \
     {"SendJournalChanges",        QuestFunctions::SendJournalChanges},\
-    {"SendKillChanges",           QuestFunctions::SendKillChanges}
+    {"SendKillChanges",           QuestFunctions::SendKillChanges},\
+    {"SendReputation",            QuestFunctions::SendReputation}
 
 class QuestFunctions
 {
@@ -94,6 +99,15 @@ public:
     static void AddKill(unsigned short pid, const char* refId, int number) noexcept;
 
     /**
+    * \brief Set the reputation of a certain player.
+    *
+    * \param pid The player ID.
+    * \param value The reputation.
+    * \return void
+    */
+    static void SetReputation(unsigned short pid, int value) noexcept;
+
+    /**
     * \brief Get the quest at a certain index in a player's latest journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
@@ -150,6 +164,14 @@ public:
     static int GetKillNumber(unsigned short pid, unsigned int i) noexcept;
 
     /**
+    * \brief Get the a certain player's reputation.
+    *
+    * \param pid The player ID.
+    * \return The reputation.
+    */
+    static int GetReputation(unsigned short pid) noexcept;
+
+    /**
     * \brief Send a PlayerJournal packet with a player's recorded journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
@@ -168,6 +190,16 @@ public:
     * \return void
     */
     static void SendKillChanges(unsigned short pid, bool toOthers = false) noexcept;
+
+    /**
+    * \brief Send a PlayerReputation packet with a player's recorded reputation.
+    *
+    * \param pid The player ID whose reputation should be used.
+    * \param toOthers Whether this packet should be sent only to other players or
+    *                 only to the player it is about.
+    * \return void
+    */
+    static void SendReputation(unsigned short pid, bool toOthers) noexcept;
 
 private:
 

@@ -105,6 +105,7 @@ void LocalPlayer::update()
         updateSkills();
         updateLevel();
         updateBounty();
+        updateReputation();
     }
 }
 
@@ -325,6 +326,19 @@ void LocalPlayer::updateBounty(bool forceUpdate)
         npcStats.mBounty = ptrNpcStats.getBounty();
         getNetworking()->getPlayerPacket(ID_PLAYER_BOUNTY)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_BOUNTY)->Send();
+    }
+}
+
+void LocalPlayer::updateReputation(bool forceUpdate)
+{
+    MWWorld::Ptr ptrPlayer = getPlayerPtr();
+    const MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
+
+    if (ptrNpcStats.getReputation() != npcStats.mReputation || forceUpdate)
+    {
+        npcStats.mReputation = ptrNpcStats.getReputation();
+        getNetworking()->getPlayerPacket(ID_PLAYER_REPUTATION)->setPlayer(this);
+        getNetworking()->getPlayerPacket(ID_PLAYER_REPUTATION)->Send();
     }
 }
 
@@ -926,6 +940,15 @@ void LocalPlayer::setBounty()
 
     MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
     ptrNpcStats->setBounty(npcStats.mBounty);
+}
+
+void LocalPlayer::setReputation()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+    MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
+
+    MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
+    ptrNpcStats->setReputation(npcStats.mReputation);
 }
 
 void LocalPlayer::setPosition()
