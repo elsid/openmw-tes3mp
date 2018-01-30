@@ -39,6 +39,7 @@
 #include "player/ProcessorPlayerLevel.hpp"
 #include "player/ProcessorPlayerMap.hpp"
 #include "player/ProcessorPlayerMiscellaneous.hpp"
+#include "player/ProcessorPlayerMomentum.hpp"
 #include "player/ProcessorPlayerPosition.hpp"
 #include "player/ProcessorPlayerQuickKeys.hpp"
 #include "player/ProcessorPlayerRegionAuthority.hpp"
@@ -59,6 +60,8 @@
 #include "world/ProcessorDoorState.hpp"
 #include "world/ProcessorMusicPlay.hpp"
 #include "world/ProcessorObjectAnimPlay.hpp"
+#include "world/ProcessorObjectAttach.hpp"
+#include "world/ProcessorObjectCollision.hpp"
 #include "world/ProcessorObjectDelete.hpp"
 #include "world/ProcessorObjectLock.hpp"
 #include "world/ProcessorObjectMove.hpp"
@@ -129,6 +132,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerLevel());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMap());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMiscellaneous());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerMomentum());
     PlayerProcessor::AddProcessor(new ProcessorPlayerPosition());
     PlayerProcessor::AddProcessor(new ProcessorPlayerQuickKeys());
     PlayerProcessor::AddProcessor(new ProcessorPlayerRegionAuthority());
@@ -148,6 +152,8 @@ void ProcessorInitializer()
     WorldProcessor::AddProcessor(new ProcessorDoorState());
     WorldProcessor::AddProcessor(new ProcessorMusicPlay());
     WorldProcessor::AddProcessor(new ProcessorObjectAnimPlay());
+    WorldProcessor::AddProcessor(new ProcessorObjectAttach());
+    WorldProcessor::AddProcessor(new ProcessorObjectCollision());
     WorldProcessor::AddProcessor(new ProcessorObjectDelete());
     WorldProcessor::AddProcessor(new ProcessorObjectLock());
     WorldProcessor::AddProcessor(new ProcessorObjectMove());

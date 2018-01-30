@@ -187,21 +187,21 @@ add_component_dir (openmw-mp/Packets/Player
         PacketCellCreate PacketRecordDynamic
 
         PacketPlayerBaseInfo PacketPlayerCharGen PacketPlayerActiveSkills PacketPlayerAnimFlags PacketPlayerAnimPlay
-        PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty PacketPlayerCellChange
-        PacketPlayerCellState PacketPlayerClass PacketPlayerDeath PacketPlayerEquipment PacketPlayerFaction
-        PacketPlayerInteraction PacketPlayerInventory PacketPlayerJail PacketPlayerJournal PacketPlayerKillCount PacketPlayerLevel
-        PacketPlayerMap PacketPlayerMiscellaneous PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerRegionAuthority
-        PacketPlayerReputation PacketPlayerRest PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech
-        PacketPlayerSpellbook PacketPlayerStatsDynamic PacketPlayerTopic
+        PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty
+        PacketPlayerCellChange PacketPlayerCellState PacketPlayerClass PacketPlayerDeath PacketPlayerEquipment
+        PacketPlayerFaction PacketPlayerInteraction PacketPlayerInventory PacketPlayerJail PacketPlayerJournal
+        PacketPlayerKillCount PacketPlayerLevel PacketPlayerMap PacketPlayerMiscellaneous PacketPlayerMomentum
+        PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerRegionAuthority PacketPlayerReputation PacketPlayerRest
+        PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook PacketPlayerStatsDynamic PacketPlayerTopic
         )
 
 add_component_dir (openmw-mp/Packets/World
         WorldPacket
-        PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectDelete PacketDoorDestination
-        PacketDoorState PacketObjectLock PacketObjectMove PacketObjectPlace PacketObjectReset PacketObjectRotate
-        PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap PacketMusicPlay PacketVideoPlay
-        PacketScriptLocalShort PacketScriptLocalFloat PacketScriptMemberShort PacketScriptMemberFloat PacketScriptGlobalShort
-        PacketScriptGlobalFloat
+        PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectAttach PacketObjectCollision
+        PacketObjectDelete PacketDoorDestination PacketDoorState PacketObjectLock PacketObjectMove PacketObjectPlace
+        PacketObjectReset PacketObjectRotate PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap
+        PacketMusicPlay PacketVideoPlay PacketScriptLocalShort PacketScriptLocalFloat PacketScriptMemberShort
+        PacketScriptMemberFloat PacketScriptGlobalShort PacketScriptGlobalFloat
         )
 
 add_component_dir (fallback

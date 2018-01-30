@@ -1,4 +1,6 @@
 #include "../Packets/World/PacketObjectAnimPlay.hpp"
+#include "../Packets/World/PacketObjectAttach.hpp"
+#include "../Packets/World/PacketObjectCollision.hpp"
 #include "../Packets/World/PacketObjectDelete.hpp"
 #include "../Packets/World/PacketObjectLock.hpp"
 #include "../Packets/World/PacketObjectMove.hpp"
@@ -37,6 +39,8 @@ inline void AddPacket(mwmp::WorldPacketController::packets_t *packets, RakNet::R
 mwmp::WorldPacketController::WorldPacketController(RakNet::RakPeerInterface *peer)
 {
     AddPacket<PacketObjectAnimPlay>(&packets, peer);
+    AddPacket<PacketObjectAttach>(&packets, peer);
+    AddPacket<PacketObjectCollision>(&packets, peer);
     AddPacket<PacketObjectDelete>(&packets, peer);
     AddPacket<PacketObjectLock>(&packets, peer);
     AddPacket<PacketObjectMove>(&packets, peer);
