@@ -1,14 +1,14 @@
-#ifndef OPENMW_PROCESSORPLAYERRECORDDYNAMIC_HPP
-#define OPENMW_PROCESSORPLAYERRECORDDYNAMIC_HPP
+#ifndef OPENMW_PROCESSORRECORDDYNAMIC_HPP
+#define OPENMW_PROCESSORRECORDDYNAMIC_HPP
 
 #include "../PlayerProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorPlayerRecordDynamic : public PlayerProcessor
+    class ProcessorRecordDynamic : public PlayerProcessor
     {
     public:
-        ProcessorPlayerRecordDynamic()
+        ProcessorRecordDynamic()
         {
             BPP_INIT(ID_RECORD_DYNAMIC)
         }
@@ -22,4 +22,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_PROCESSORPLAYERRECORDDYNAMIC_HPP
+#endif //OPENMW_PROCESSORRECORDDYNAMIC_HPP

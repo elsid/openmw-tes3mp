@@ -163,6 +163,7 @@ public:
             {"OnPlayerMap",              Function<void, unsigned short>()},
             {"OnPlayerInteraction",      Function<void, unsigned short>()},
             {"OnPlayerRest",             Function<void, unsigned short>()},
+            {"OnRecordDynamic",          Function<void, unsigned short>()},
             {"OnCellLoad",               Function<void, unsigned short, const char*>()},
             {"OnCellUnload",             Function<void, unsigned short, const char*>()},
             {"OnCellDeletion",           Function<void, const char*>()},

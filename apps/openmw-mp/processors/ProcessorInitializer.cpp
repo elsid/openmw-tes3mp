@@ -11,6 +11,7 @@
 #include "player/ProcessorChatMsg.hpp"
 #include "player/ProcessorGUIMessageBox.hpp"
 #include "player/ProcessorGameWeather.hpp"
+#include "player/ProcessorRecordDynamic.hpp"
 #include "player/ProcessorPlayerCharGen.hpp"
 #include "player/ProcessorPlayerAnimFlags.hpp"
 #include "player/ProcessorPlayerAnimPlay.hpp"
@@ -28,10 +29,13 @@
 #include "player/ProcessorPlayerInventory.hpp"
 #include "player/ProcessorPlayerJournal.hpp"
 #include "player/ProcessorPlayerKillCount.hpp"
+#include "player/ProcessorPlayerInteraction.hpp"
 #include "player/ProcessorPlayerLevel.hpp"
 #include "player/ProcessorPlayerMap.hpp"
+#include "player/ProcessorPlayerMiscellaneous.hpp"
 #include "player/ProcessorPlayerPosition.hpp"
 #include "player/ProcessorPlayerQuickKeys.hpp"
+#include "player/ProcessorPlayerReputation.hpp"
 #include "player/ProcessorPlayerRest.hpp"
 #include "player/ProcessorPlayerResurrect.hpp"
 #include "player/ProcessorPlayerShapeshift.hpp"
@@ -50,6 +54,7 @@
 #include "actor/ProcessorActorCellChange.hpp"
 #include "actor/ProcessorActorDeath.hpp"
 #include "actor/ProcessorActorEquipment.hpp"
+#include "actor/ProcessorActorInteraction.hpp"
 #include "actor/ProcessorActorStatsDynamic.hpp"
 #include "actor/ProcessorActorPosition.hpp"
 #include "actor/ProcessorActorSpeech.hpp"
@@ -70,7 +75,9 @@
 #include "world/ProcessorScriptLocalShort.hpp"
 #include "world/ProcessorScriptLocalFloat.hpp"
 #include "world/ProcessorScriptMemberShort.hpp"
+#include "world/ProcessorScriptMemberFloat.hpp"
 #include "world/ProcessorScriptGlobalShort.hpp"
+#include "world/ProcessorScriptGlobalFloat.hpp"
 #include "world/ProcessorVideoPlay.hpp"
 
 
@@ -81,6 +88,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorChatMsg());
     PlayerProcessor::AddProcessor(new ProcessorGUIMessageBox());
     PlayerProcessor::AddProcessor(new ProcessorGameWeather());
+    PlayerProcessor::AddProcessor(new ProcessorRecordDynamic());
     PlayerProcessor::AddProcessor(new ProcessorPlayerCharGen());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimFlags());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimPlay());
@@ -98,10 +106,13 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerInventory());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJournal());
     PlayerProcessor::AddProcessor(new ProcessorPlayerKillCount());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerInteraction());
     PlayerProcessor::AddProcessor(new ProcessorPlayerLevel());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMap());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerMiscellaneous());
     PlayerProcessor::AddProcessor(new ProcessorPlayerPosition());
     PlayerProcessor::AddProcessor(new ProcessorPlayerQuickKeys());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerReputation());
     PlayerProcessor::AddProcessor(new ProcessorPlayerRest());
     PlayerProcessor::AddProcessor(new ProcessorPlayerResurrect());
     PlayerProcessor::AddProcessor(new ProcessorPlayerShapeshift());
@@ -119,6 +130,7 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorCellChange());
     ActorProcessor::AddProcessor(new ProcessorActorDeath());
     ActorProcessor::AddProcessor(new ProcessorActorEquipment());
+    ActorProcessor::AddProcessor(new ProcessorActorInteraction());
     ActorProcessor::AddProcessor(new ProcessorActorPosition());
     ActorProcessor::AddProcessor(new ProcessorActorSpeech());
     ActorProcessor::AddProcessor(new ProcessorActorStatsDynamic());
@@ -140,6 +152,8 @@ void ProcessorInitializer()
     WorldProcessor::AddProcessor(new ProcessorScriptLocalShort());
     WorldProcessor::AddProcessor(new ProcessorScriptLocalFloat());
     WorldProcessor::AddProcessor(new ProcessorScriptMemberShort());
+    WorldProcessor::AddProcessor(new ProcessorScriptMemberFloat());
     WorldProcessor::AddProcessor(new ProcessorScriptGlobalShort());
+    WorldProcessor::AddProcessor(new ProcessorScriptGlobalFloat());
     WorldProcessor::AddProcessor(new ProcessorVideoPlay());
 }
