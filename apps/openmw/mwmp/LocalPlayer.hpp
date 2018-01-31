@@ -70,15 +70,16 @@ namespace mwmp
         void setBooks();
         void setMapExplored();
         void setShapeshift();
+        void setMarkLocation();
 
         void sendClass();
         void sendInventory();
         void sendSpellbook();
         void sendCellStates();
         void sendSpellAddition(std::string id);
-        void sendSpellAddition(const ESM::Spell &spell);
+        void sendSpellAddition(const ESM::Spell& spell);
         void sendSpellRemoval(std::string id);
-        void sendSpellRemoval(const ESM::Spell &spell);
+        void sendSpellRemoval(const ESM::Spell& spell);
         void sendQuickKey(unsigned short slot, int type, const std::string& itemId = "");
         void sendJournalEntry(const std::string& quest, int index, const MWWorld::Ptr& actor);
         void sendJournalIndex(const std::string& quest, int index);
@@ -89,6 +90,7 @@ namespace mwmp
         void sendKill(const std::string& refId, int number);
         void sendBook(const std::string& bookId);
         void sendShapeshift(bool isWerewolf);
+        void sendMarkLocation(const ESM::Cell& newMarkCell, const ESM::Position& newMarkPosition);
 
         void clearCellStates();
         void clearCurrentContainer();

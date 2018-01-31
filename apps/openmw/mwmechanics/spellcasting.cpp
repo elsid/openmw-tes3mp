@@ -755,6 +755,17 @@ namespace MWMechanics
             {
                 MWBase::Environment::get().getWorld()->getPlayer().markPosition(
                             target.getCell(), target.getRefData().getPosition());
+
+                /*
+                    Start of tes3mp addition
+
+                    Send a PlayerMiscellaneous packet with the player's new mark location
+                */
+                mwmp::Main::get().getLocalPlayer()->sendMarkLocation(*target.getCell()->getCell(), target.getRefData().getPosition());
+                /*
+                    End of tes3mp addition
+                */
+
                 return true;
             }
             else if (effectId == ESM::MagicEffect::Recall)

@@ -184,6 +184,12 @@ namespace mwmp
         TRIBUNAL_TEMPLE
     };
 
+    enum MISCELLANEOUS_CHANGE_TYPE
+    {
+        MARK_LOCATION = 0,
+        SELECTED_SPELL
+    };
+
     class BasePlayer
     {
     public:
@@ -292,6 +298,10 @@ namespace mwmp
         std::string jailEndText;
 
         unsigned int resurrectType;
+        unsigned int miscellaneousChangeType;
+
+        ESM::Cell markCell;
+        ESM::Position markPosition;
 
         bool diedSinceArrestAttempt;
         bool isReceivingQuickKeys;

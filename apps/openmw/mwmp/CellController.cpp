@@ -364,7 +364,6 @@ void CellController::openContainer(const MWWorld::Ptr &container)
         /*if (::Misc::StringUtils::ciEqual(name, "gold_001"))
             cont.remove("gold_001", count, container);*/
     }
-
 }
 
 void CellController::closeContainer(const MWWorld::Ptr &container)

@@ -1269,6 +1269,14 @@ void LocalPlayer::setShapeshift()
     MWBase::Environment::get().getMechanicsManager()->setWerewolf(ptrPlayer, isWerewolf);
 }
 
+void LocalPlayer::setMarkLocation()
+{
+    MWWorld::CellStore *ptrCellStore = Main::get().getCellController()->getCellStore(markCell);
+
+    if (ptrCellStore)
+        MWBase::Environment::get().getWorld()->getPlayer().markPosition(ptrCellStore, markPosition);
+}
+
 void LocalPlayer::sendClass()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1553,6 +1561,16 @@ void LocalPlayer::sendShapeshift(bool werewolfState)
 
     getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->Send();
+}
+
+void LocalPlayer::sendMarkLocation(const ESM::Cell& newMarkCell, const ESM::Position& newMarkPosition)
+{
+    miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::MARK_LOCATION;
+    markCell = newMarkCell;
+    markPosition = newMarkPosition;
+
+    getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->Send();
 }
 
 void LocalPlayer::clearCellStates()
