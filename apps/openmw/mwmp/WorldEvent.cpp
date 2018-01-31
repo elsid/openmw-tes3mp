@@ -485,24 +485,20 @@ void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
 
             if (worldObject.isPlayer)
             {
-                BasePlayer *player = 0;
-                
                 if (worldObject.guid == Main::get().getLocalPlayer()->guid)
                 {
-                    player = Main::get().getLocalPlayer();
-
                     LOG_APPEND(Log::LOG_VERBOSE, "-- running on local player");
-                    windowManager->setConsolePtr(static_cast<LocalPlayer*>(player)->getPlayerPtr());
+                    windowManager->setConsolePtr(Main::get().getLocalPlayer()->getPlayerPtr());
                     windowManager->executeCommandInConsole(consoleCommand);
                 }
                 else
                 {
-                    player = PlayerList::getPlayer(worldObject.guid);
+                    DedicatedPlayer *player = PlayerList::getPlayer(worldObject.guid);
 
                     if (player != 0)
                     {
                         LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s", player->npc.mName.c_str());
-                        windowManager->setConsolePtr(static_cast<DedicatedPlayer*>(player)->getPtr());
+                        windowManager->setConsolePtr(player->getPtr());
                         windowManager->executeCommandInConsole(consoleCommand);
                     }
                 }
@@ -525,7 +521,7 @@ void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
         }
 
         windowManager->clearConsolePtr();
-    } 
+    }
 }
 
 void WorldEvent::setLocalShorts(MWWorld::CellStore* cellStore)
