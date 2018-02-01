@@ -68,6 +68,14 @@ double MechanicsFunctions::GetMarkRotZ(unsigned short pid) noexcept
     return player->markPosition.rot[2];
 }
 
+double MechanicsFunctions::GetScale(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0.0f);
+
+    return player->scale;
+}
+
 bool MechanicsFunctions::IsWerewolf(unsigned short pid) noexcept
 {
     Player *player;
@@ -103,7 +111,15 @@ void MechanicsFunctions::SetMarkRot(unsigned short pid, double x, double z) noex
     player->markPosition.rot[2] = z;
 }
 
-void MechanicsFunctions::SetWerewolfState(unsigned short pid, bool isWerewolf)
+void MechanicsFunctions::SetScale(unsigned short pid, double scale) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->scale = scale;
+}
+
+void MechanicsFunctions::SetWerewolfState(unsigned short pid, bool isWerewolf) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );

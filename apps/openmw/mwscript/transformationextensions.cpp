@@ -8,6 +8,8 @@
 #include <components/openmw-mp/Log.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/PlayerList.hpp"
 #include "../mwmp/WorldEvent.hpp"
 /*
     End of tes3mp addition
@@ -57,16 +59,26 @@ namespace MWScript
                     /*
                         Start of tes3mp addition
 
-                        Send an ID_OBJECT_SCALE every time an object's scale is changed
-                        through a script
-                    */
-                    if (ptr.isInCell() && (ptr.getCellRef().getScale() != scale))
-                    {
+                        Send an ID_PLAYER_SHAPESHIFT every time a player changes
+                        their own scale
 
-                        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                        worldEvent->reset();
-                        worldEvent->addObjectScale(ptr, scale);
-                        worldEvent->sendObjectScale();
+                        Otherwise, send an ID_OBJECT_SCALE every time an object's
+                        scale is changed through a script
+                    */
+                    if (ptr == MWMechanics::getPlayer())
+                        mwmp::Main::get().getLocalPlayer()->sendScale(scale);
+                    else if (ptr.isInCell() && (ptr.getCellRef().getScale() != scale))
+                    {
+                        // Ignore attempts to change another player's scale
+                        if (mwmp::PlayerList::isDedicatedPlayer(ptr))
+                            return;
+                        else
+                        {
+                            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
+                            worldEvent->reset();
+                            worldEvent->addObjectScale(ptr, scale);
+                            worldEvent->sendObjectScale();
+                        }
                     }
                     /*
                         End of tes3mp addition

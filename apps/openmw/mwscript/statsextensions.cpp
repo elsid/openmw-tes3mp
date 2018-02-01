@@ -1231,7 +1231,7 @@ namespace MWScript
                         When the player's werewolf state changes, send an ID_PLAYER_SHAPESHIFT packet
                     */
                     if (ptr == MWMechanics::getPlayer())
-                        mwmp::Main::get().getLocalPlayer()->sendShapeshift(set);
+                        mwmp::Main::get().getLocalPlayer()->sendWerewolfState(set);
                     /*
                         End of tes3mp addition
                     */

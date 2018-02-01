@@ -12,5 +12,6 @@ void PacketPlayerShapeshift::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
+    RW(player->scale, send);
     RW(player->isWerewolf, send);
 }

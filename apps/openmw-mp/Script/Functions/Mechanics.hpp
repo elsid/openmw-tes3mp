@@ -13,12 +13,14 @@
     {"GetMarkRotX",                MechanicsFunctions::GetMarkRotX},\
     {"GetMarkRotZ",                MechanicsFunctions::GetMarkRotZ},\
     \
+    {"GetScale",                   MechanicsFunctions::GetScale},\
     {"IsWerewolf",                 MechanicsFunctions::IsWerewolf},\
     \
     {"SetMarkCell",                MechanicsFunctions::SetMarkCell},\
     {"SetMarkPos",                 MechanicsFunctions::SetMarkPos},\
     {"SetMarkRot",                 MechanicsFunctions::SetMarkRot},\
     \
+    {"SetScale",                   MechanicsFunctions::SetScale},\
     {"SetWerewolfState",           MechanicsFunctions::SetWerewolfState},\
     \
     {"SendMarkLocation",           MechanicsFunctions::SendMarkLocation},\
@@ -88,6 +90,14 @@ public:
     static double GetMarkRotZ(unsigned short pid) noexcept;
 
     /**
+    * \brief Get the scale of a player.
+    *
+    * \param pid The player ID.
+    * \return The scale.
+    */
+    static double GetScale(unsigned short pid) noexcept;
+
+    /**
     * \brief Check whether a player is a werewolf.
     *
     * This is based on the last PlayerShapeshift packet received or sent for that player.
@@ -140,6 +150,18 @@ public:
     static void SetMarkRot(unsigned short pid, double x, double z) noexcept;
 
     /**
+    * \brief Set the scale of a player.
+    *
+    * This changes the scale recorded for that player in the server memory, but
+    * does not by itself send a packet.
+    *
+    * \param pid The player ID.
+    * \param bool The new scale.
+    * \return void
+    */
+    static void SetScale(unsigned short pid, double scale) noexcept;
+
+    /**
     * \brief Set the werewolf state of a player.
     *
     * This changes the werewolf state recorded for that player in the server memory, but
@@ -149,7 +171,7 @@ public:
     * \param bool The new werewolf state.
     * \return void
     */
-    static void SetWerewolfState(unsigned short pid, bool isWerewolf);
+    static void SetWerewolfState(unsigned short pid, bool isWerewolf) noexcept;
 
     /**
     * \brief Send a PlayerMiscellaneous packet with a Mark location to a player.

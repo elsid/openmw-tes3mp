@@ -283,6 +283,7 @@ namespace mwmp
         std::string sound;
         Animation animation;
 
+        float scale;
         bool isWerewolf;
         std::string creatureModel;
         bool useCreatureName;

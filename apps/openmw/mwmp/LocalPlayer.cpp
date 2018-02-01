@@ -64,6 +64,7 @@ LocalPlayer::LocalPlayer()
     jailProgressText = "";
     jailEndText = "";
 
+    scale = 1;
     isWerewolf = false;
 
     diedSinceArrestAttempt = false;
@@ -1266,6 +1267,8 @@ void LocalPlayer::setMapExplored()
 void LocalPlayer::setShapeshift()
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
+
+    MWBase::Environment::get().getWorld()->scaleObject(ptrPlayer, scale);
     MWBase::Environment::get().getMechanicsManager()->setWerewolf(ptrPlayer, isWerewolf);
 }
 
@@ -1553,7 +1556,17 @@ void LocalPlayer::sendBook(const std::string& bookId)
     getNetworking()->getPlayerPacket(ID_PLAYER_BOOK)->Send();
 }
 
-void LocalPlayer::sendShapeshift(bool werewolfState)
+void LocalPlayer::sendScale(float newScale)
+{
+    scale = newScale;
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_SHAPESHIFT with scale of %f", scale);
+
+    getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->Send();
+}
+
+void LocalPlayer::sendWerewolfState(bool werewolfState)
 {
     isWerewolf = werewolfState;
 

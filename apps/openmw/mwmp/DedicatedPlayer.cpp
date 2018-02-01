@@ -243,6 +243,7 @@ void DedicatedPlayer::setCell()
 
 void DedicatedPlayer::setShapeshift()
 {
+    MWBase::Environment::get().getWorld()->scaleObject(ptr, scale);
     MWBase::Environment::get().getMechanicsManager()->setWerewolf(ptr, isWerewolf);
 }
 
