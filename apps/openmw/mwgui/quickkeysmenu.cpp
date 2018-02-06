@@ -232,7 +232,8 @@ namespace MWGui
         /*
             Start of tes3mp addition
 
-            Send a PLAYER_QUICKKEYS packet whenever a key is assigned to an item
+            Send a PlayerQuickKeys packet whenever a key is assigned to an item
+            by a player, not by a packet received from the server
         */
         if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
             mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_Item, item.getCellRef().getRefId());
@@ -407,6 +408,16 @@ namespace MWGui
             store.setSelectedEnchantItem(store.end());
             MWBase::Environment::get().getWindowManager()->setSelectedSpell(spellId, int(MWMechanics::getSpellSuccessChance(spellId, player)));
             MWBase::Environment::get().getWorld()->getPlayer().setDrawState(MWMechanics::DrawState_Spell);
+
+            /*
+                Start of tes3mp addition
+
+                Send a PlayerMiscellaneous packet with the player's new selected spell
+            */
+            mwmp::Main::get().getLocalPlayer()->sendSelectedSpell(spellId);
+            /*
+                End of tes3mp addition
+            */
         }
         else if (type == Type_Item)
         {

@@ -23,4 +23,6 @@ void PacketPlayerMiscellaneous::Packet(RakNet::BitStream *bs, bool send)
         RW(player->markPosition.rot[0], send);
         RW(player->markPosition.rot[2], send);
     }
+    else if (player->miscellaneousChangeType == mwmp::MISCELLANEOUS_CHANGE_TYPE::SELECTED_SPELL)
+        RW(player->selectedSpellId, send, 1);
 }

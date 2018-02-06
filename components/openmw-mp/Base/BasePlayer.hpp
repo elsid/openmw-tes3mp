@@ -303,10 +303,11 @@ namespace mwmp
 
         ESM::Cell markCell;
         ESM::Position markPosition;
+        std::string selectedSpellId;
 
-        bool diedSinceArrestAttempt;
         bool isReceivingQuickKeys;
         bool isPlayingAnimation;
+        bool diedSinceArrestAttempt;
     };
 }
 

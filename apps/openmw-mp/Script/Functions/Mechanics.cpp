@@ -68,6 +68,14 @@ double MechanicsFunctions::GetMarkRotZ(unsigned short pid) noexcept
     return player->markPosition.rot[2];
 }
 
+const char *MechanicsFunctions::GetSelectedSpellId(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->selectedSpellId.c_str();
+}
+
 double MechanicsFunctions::GetScale(unsigned short pid) noexcept
 {
     Player *player;
@@ -111,6 +119,14 @@ void MechanicsFunctions::SetMarkRot(unsigned short pid, double x, double z) noex
     player->markPosition.rot[2] = z;
 }
 
+void MechanicsFunctions::SetSelectedSpellId(unsigned short pid, const char *spellId) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->selectedSpellId = spellId;
+}
+
 void MechanicsFunctions::SetScale(unsigned short pid, double scale) noexcept
 {
     Player *player;
@@ -133,6 +149,17 @@ void MechanicsFunctions::SendMarkLocation(unsigned short pid)
     GET_PLAYER(pid, player, );
 
     player->miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::MARK_LOCATION;
+
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(player);
+    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->Send(false);
+}
+
+void MechanicsFunctions::SendSelectedSpell(unsigned short pid)
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::SELECTED_SPELL;
 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->Send(false);

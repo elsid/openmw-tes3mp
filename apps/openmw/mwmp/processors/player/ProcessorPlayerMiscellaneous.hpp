@@ -26,6 +26,8 @@ namespace mwmp
 
                 if (player->miscellaneousChangeType == mwmp::MISCELLANEOUS_CHANGE_TYPE::MARK_LOCATION)
                     localPlayer.setMarkLocation();
+                else if (player->miscellaneousChangeType == mwmp::MISCELLANEOUS_CHANGE_TYPE::SELECTED_SPELL)
+                    localPlayer.setSelectedSpell();
             }
         }
     };

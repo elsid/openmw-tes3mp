@@ -186,6 +186,16 @@ namespace MWGui
         MWBase::Environment::get().getWindowManager()->setSelectedSpell(spellId, int(MWMechanics::getSpellSuccessChance(spellId, player)));
 
         updateSpells();
+
+        /*
+            Start of tes3mp addition
+
+            Send a PlayerMiscellaneous packet with the player's new selected spell
+        */
+        mwmp::Main::get().getLocalPlayer()->sendSelectedSpell(spellId);
+        /*
+            End of tes3mp addition
+        */
     }
 
     void SpellWindow::onDeleteSpellAccept()

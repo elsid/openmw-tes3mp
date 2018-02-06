@@ -12,6 +12,7 @@
     {"GetMarkPosZ",                MechanicsFunctions::GetMarkPosZ},\
     {"GetMarkRotX",                MechanicsFunctions::GetMarkRotX},\
     {"GetMarkRotZ",                MechanicsFunctions::GetMarkRotZ},\
+    {"GetSelectedSpellId",         MechanicsFunctions::GetSelectedSpellId},\
     \
     {"GetScale",                   MechanicsFunctions::GetScale},\
     {"IsWerewolf",                 MechanicsFunctions::IsWerewolf},\
@@ -19,11 +20,13 @@
     {"SetMarkCell",                MechanicsFunctions::SetMarkCell},\
     {"SetMarkPos",                 MechanicsFunctions::SetMarkPos},\
     {"SetMarkRot",                 MechanicsFunctions::SetMarkRot},\
+    {"SetSelectedSpellId",         MechanicsFunctions::SetSelectedSpellId},\
     \
     {"SetScale",                   MechanicsFunctions::SetScale},\
     {"SetWerewolfState",           MechanicsFunctions::SetWerewolfState},\
     \
     {"SendMarkLocation",           MechanicsFunctions::SendMarkLocation},\
+    {"SendSelectedSpell",          MechanicsFunctions::SendSelectedSpell},\
     {"SendShapeshift",             MechanicsFunctions::SendShapeshift},\
     \
     {"Jail",                       MechanicsFunctions::Jail},\
@@ -90,6 +93,14 @@ public:
     static double GetMarkRotZ(unsigned short pid) noexcept;
 
     /**
+    * \brief Get the ID of a player's selected spell.
+    *
+    * \param pid The player ID.
+    * \return The spell ID.
+    */
+    static const char *GetSelectedSpellId(unsigned short pid) noexcept;
+
+    /**
     * \brief Get the scale of a player.
     *
     * \param pid The player ID.
@@ -150,6 +161,18 @@ public:
     static void SetMarkRot(unsigned short pid, double x, double z) noexcept;
 
     /**
+    * \brief Set the ID of a player's selected spell.
+    *
+    * This changes the spell ID recorded for that player in the server memory, but does not by itself
+    * send a packet.
+    *
+    * \param pid The player ID.
+    * \param spellId The spell ID.
+    * \return void
+    */
+    static void SetSelectedSpellId(unsigned short pid, const char *spellId) noexcept;
+
+    /**
     * \brief Set the scale of a player.
     *
     * This changes the scale recorded for that player in the server memory, but
@@ -180,6 +203,14 @@ public:
     * \return void
     */
     static void SendMarkLocation(unsigned short pid);
+
+    /**
+    * \brief Send a PlayerMiscellaneous packet with a selected spell ID to a player.
+    *
+    * \param pid The player ID.
+    * \return void
+    */
+    static void SendSelectedSpell(unsigned short pid);
 
     /**
     * \brief Send a PlayerShapeshift packet about a player.

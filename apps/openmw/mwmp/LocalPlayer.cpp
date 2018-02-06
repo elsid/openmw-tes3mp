@@ -19,6 +19,7 @@
 #include "../mwmechanics/aitravel.hpp"
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
+#include "../mwmechanics/spellcasting.hpp"
 
 #include "../mwscript/scriptmanagerimp.hpp"
 
@@ -1280,6 +1281,20 @@ void LocalPlayer::setMarkLocation()
         MWBase::Environment::get().getWorld()->getPlayer().markPosition(ptrCellStore, markPosition);
 }
 
+void LocalPlayer::setSelectedSpell()
+{
+    MWWorld::Ptr ptrPlayer = getPlayerPtr();
+
+    MWMechanics::CreatureStats& stats = ptrPlayer.getClass().getCreatureStats(ptrPlayer);
+    MWMechanics::Spells& spells = stats.getSpells();
+
+    if (!spells.hasSpell(selectedSpellId))
+        return;
+ 
+    MWBase::Environment::get().getWindowManager()->setSelectedSpell(selectedSpellId,
+        int(MWMechanics::getSpellSuccessChance(selectedSpellId, ptrPlayer)));
+}
+
 void LocalPlayer::sendClass()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1581,6 +1596,15 @@ void LocalPlayer::sendMarkLocation(const ESM::Cell& newMarkCell, const ESM::Posi
     miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::MARK_LOCATION;
     markCell = newMarkCell;
     markPosition = newMarkPosition;
+
+    getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->Send();
+}
+
+void LocalPlayer::sendSelectedSpell(const std::string& newSelectedSpellId)
+{
+    miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::SELECTED_SPELL;
+    selectedSpellId = newSelectedSpellId;
 
     getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->Send();
