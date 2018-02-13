@@ -6,6 +6,8 @@
 #include <osg/Texture2D>
 #include <osg/RenderInfo>
 
+#include <algorithm>
+
 namespace Terrain
 {
 
@@ -62,6 +64,7 @@ void CompositeMapRenderer::drawImplementation(osg::RenderInfo &renderInfo) const
             mCompileSet.erase(mCompileSet.begin());
         }
     }
+    mTimer.setStartTick();
 }
 
 void CompositeMapRenderer::compile(CompositeMap &compositeMap, osg::RenderInfo &renderInfo, double* timeLeft) const
