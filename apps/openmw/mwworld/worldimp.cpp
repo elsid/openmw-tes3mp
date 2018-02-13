@@ -328,7 +328,6 @@ namespace MWWorld
         mWorldScene->clear();
 
         mStore.clearDynamic();
-        mStore.setUp();
 
         if (mPlayer)
         {
