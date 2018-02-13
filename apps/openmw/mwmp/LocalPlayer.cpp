@@ -816,8 +816,10 @@ void LocalPlayer::resurrect()
     // Record that the player has died since the last attempt was made to arrest them,
     // used to make guards lenient enough to attempt an arrest again
     diedSinceArrestAttempt = true;
-
     LOG_APPEND(Log::LOG_INFO, "- diedSinceArrestAttempt is now true");
+
+    // Record that we are no longer a known werewolf, to avoid being attacked infinitely
+    MWBase::Environment::get().getWorld()->setGlobalInt("pcknownwerewolf", 0);
 
     // Ensure we unequip any items with constant effects that can put us into an infinite
     // death loop
