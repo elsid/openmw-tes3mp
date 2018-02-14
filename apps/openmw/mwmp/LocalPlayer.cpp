@@ -48,6 +48,7 @@ LocalPlayer::LocalPlayer()
     charGenStage.end = 1;
 
     difficulty = 0;
+    physicsFramerate = 60.0;
     consoleAllowed = false;
     bedRestAllowed = true;
     wildernessRestAllowed = true;

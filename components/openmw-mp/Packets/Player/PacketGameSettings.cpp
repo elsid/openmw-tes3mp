@@ -14,6 +14,7 @@ void PacketGameSettings::Packet(RakNet::BitStream *bs, bool send)
     PlayerPacket::Packet(bs, send);
 
     RW(player->difficulty, send);
+    RW(player->physicsFramerate, send);
     RW(player->consoleAllowed, send);
     RW(player->bedRestAllowed, send);
     RW(player->wildernessRestAllowed, send);

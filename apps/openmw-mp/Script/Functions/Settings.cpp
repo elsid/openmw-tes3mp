@@ -17,6 +17,14 @@ void SettingFunctions::SetDifficulty(unsigned short pid, int difficulty)
     player->difficulty = difficulty;
 }
 
+void SettingFunctions::SetPhysicsFramerate(unsigned short pid, double physicsFramerate)
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->physicsFramerate = physicsFramerate;
+}
+
 void SettingFunctions::SetConsoleAllowed(unsigned short pid, bool state)
 {
     Player *player;

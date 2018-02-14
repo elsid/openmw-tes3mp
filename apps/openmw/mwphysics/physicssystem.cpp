@@ -794,6 +794,28 @@ namespace MWPhysics
         return true;
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set the physics framerate from elsewhere
+    */
+    void PhysicsSystem::setPhysicsFramerate(float physFramerate)
+    {
+        if (physFramerate > 0 && physFramerate < 100)
+        {
+            mPhysicsDt = 1.f / physFramerate;
+            std::cerr << "Warning: physics framerate was overridden (a new value is " << physFramerate << ")." << std::endl;
+        }
+        else
+        {
+            std::cerr << "Warning: attempted to override physics framerate with new value of " << physFramerate <<
+                ", but it was outside accepted values." << std::endl;
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
+
     class DeepestNotMeContactTestResultCallback : public btCollisionWorld::ContactResultCallback
     {
         const btCollisionObject* mMe;

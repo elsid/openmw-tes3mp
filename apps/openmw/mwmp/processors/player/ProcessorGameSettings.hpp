@@ -2,6 +2,7 @@
 #define OPENMW_PROCESSORGAMESETTINGS_HPP
 
 #include "apps/openmw/mwbase/environment.hpp"
+#include "apps/openmw/mwworld/worldimp.hpp"
 #include "apps/openmw/mwgui/windowmanagerimp.hpp"
 
 #include "../PlayerProcessor.hpp"
@@ -28,6 +29,8 @@ namespace mwmp
                         (!player->bedRestAllowed || !player->wildernessRestAllowed || !player->waitAllowed))
                         MWBase::Environment::get().getWindowManager()->popGuiMode();
                 }
+
+                MWBase::Environment::get().getWorld()->setPhysicsFramerate(player->physicsFramerate);
             }
         }
     };

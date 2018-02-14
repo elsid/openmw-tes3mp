@@ -1522,6 +1522,19 @@ namespace MWWorld
         End of tes3mp addition
     */
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set the physics framerate from elsewhere
+    */
+    void World::setPhysicsFramerate(float physFramerate)
+    {
+        mPhysics->setPhysicsFramerate(physFramerate);
+    }
+    /*
+        End of tes3mp addition
+    */
+
     void World::doPhysics(float duration)
     {
         mPhysics->stepSimulation(duration);

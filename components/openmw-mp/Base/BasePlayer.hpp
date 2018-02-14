@@ -253,6 +253,7 @@ namespace mwmp
         CurrentContainer currentContainer;
 
         int difficulty;
+        float physicsFramerate;
         bool consoleAllowed;
         bool bedRestAllowed;
         bool wildernessRestAllowed;

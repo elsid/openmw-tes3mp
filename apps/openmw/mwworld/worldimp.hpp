@@ -417,6 +417,16 @@ namespace MWWorld
                 End of tes3mp addition
             */
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set the physics framerate from elsewhere
+            */
+            void World::setPhysicsFramerate(float physFramerate);
+            /*
+                End of tes3mp addition
+            */
+
             bool castRay (float x1, float y1, float z1, float x2, float y2, float z2) override;
             ///< cast a Ray and return true if there is an object in the ray path.
 

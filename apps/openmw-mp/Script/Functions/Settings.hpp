@@ -5,6 +5,8 @@
 
 #define SETTINGSAPI \
     {"SetDifficulty",               SettingFunctions::SetDifficulty},\
+    {"SetPhysicsFramerate",         SettingFunctions::SetPhysicsFramerate},\
+    \
     {"SetConsoleAllowed",           SettingFunctions::SetConsoleAllowed},\
     {"SetBedRestAllowed",           SettingFunctions::SetBedRestAllowed},\
     {"SetWildernessRestAllowed",    SettingFunctions::SetWildernessRestAllowed},\
@@ -27,6 +29,18 @@ public:
     * \return void
     */
     static void SetDifficulty(unsigned short pid, int difficulty);
+
+    /**
+    * \brief Set the physics framerate for a player.
+    *
+    * This changes the physics framerate for that player in the server memory, but does not by itself
+    * send a packet.
+    *
+    * \param pid The player ID.
+    * \param bool The physics framerate.
+    * \return void
+    */
+    static void SetPhysicsFramerate(unsigned short pid, double physicsFramerate);
 
     /**
     * \brief Set whether the console is allowed for a player.
