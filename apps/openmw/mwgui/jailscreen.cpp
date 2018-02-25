@@ -112,6 +112,16 @@ namespace MWGui
 
         MWWorld::Ptr player = MWMechanics::getPlayer();
 
+        /*
+            Start of tes3mp addition
+
+            Declare pointer to LocalPlayer for use in other additions
+        */
+        mwmp::LocalPlayer* localPlayer = mwmp::Main::get().getLocalPlayer();
+        /*
+            End of tes3mp addition
+        */
+
         for (int i=0; i<mDays*24; ++i)
             MWBase::Environment::get().getMechanicsManager()->rest(true);
         MWBase::Environment::get().getWorld()->advanceTime(mDays * 24);
@@ -129,7 +139,7 @@ namespace MWGui
 
                 Disable increases for Security and Sneak when using ignoreJailSkillIncreases
             */
-            if (mwmp::Main::get().getLocalPlayer()->ignoreJailSkillIncreases)
+            if (localPlayer->ignoreJailSkillIncreases)
                 value.setBase(std::max(0, value.getBase()-1));
             else if (skill == ESM::Skill::Security || skill == ESM::Skill::Sneak)
             /*
@@ -153,7 +163,7 @@ namespace MWGui
 
             If we've received a packet overriding the default jail end text, use the new text
         */
-        if (!mwmp::Main::get().getLocalPlayer()->jailEndText.empty())
+        if (!localPlayer->jailEndText.empty())
             message = mwmp::Main::get().getLocalPlayer()->jailEndText;
         /*
             End of tes3mp addition
@@ -176,7 +186,7 @@ namespace MWGui
 
                 Account for usage of ignoreJailSkillIncreases
             */
-            if (!mwmp::Main::get().getLocalPlayer()->ignoreJailSkillIncreases &&
+            if (!localPlayer->ignoreJailSkillIncreases &&
                 (*it == ESM::Skill::Sneak || *it == ESM::Skill::Security))
             /*
                 End of tes3mp change (minor)
@@ -195,10 +205,10 @@ namespace MWGui
 
             Reset all PlayerJail-related overrides
         */
-        mwmp::Main::get().getLocalPlayer()->ignoreJailTeleportation = false;
-        mwmp::Main::get().getLocalPlayer()->ignoreJailSkillIncreases = false;
-        mwmp::Main::get().getLocalPlayer()->jailProgressText = "";
-        mwmp::Main::get().getLocalPlayer()->jailEndText = "";
+        localPlayer->ignoreJailTeleportation = false;
+        localPlayer->ignoreJailSkillIncreases = false;
+        localPlayer->jailProgressText = "";
+        localPlayer->jailEndText = "";
         /*
             End of tes3mp addition
         */

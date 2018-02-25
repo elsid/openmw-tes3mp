@@ -69,9 +69,9 @@ LocalPlayer::LocalPlayer()
     scale = 1;
     isWerewolf = false;
 
-    diedSinceArrestAttempt = false;
     isReceivingQuickKeys = false;
     isPlayingAnimation = false;
+    diedSinceArrestAttempt = false;
 }
 
 LocalPlayer::~LocalPlayer()

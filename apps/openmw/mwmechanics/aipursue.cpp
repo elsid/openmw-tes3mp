@@ -64,10 +64,13 @@ bool AiPursue::execute (const MWWorld::Ptr& actor, CharacterController& characte
 
         Because multiplayer does not pause the game, prevent infinite arrest loops by ignoring
         players already engaged in dialogue
+
+        Additionally, do not arrest players who are currently jailed
     */
     if (target == MWBase::Environment::get().getWorld()->getPlayerPtr())
     {
-        if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Dialogue))
+        if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Dialogue) ||
+            MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Jail))
         {
             return true;
         }
