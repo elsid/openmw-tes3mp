@@ -8,6 +8,8 @@
 TPlayers Players::players;
 TSlots Players::slots;
 
+using namespace std;
+
 void Players::deletePlayer(RakNet::RakNetGUID guid)
 {
     LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Deleting player with guid %lu", guid.g);
@@ -69,7 +71,7 @@ unsigned short Players::getLastPlayerId()
 
 Player::Player(RakNet::RakNetGUID guid) : BasePlayer(guid)
 {
-    handshakeState = false;
+    handshakeCounter = 0;
     loadState = NOTLOADED;
 }
 
@@ -88,15 +90,21 @@ void Player::setId(unsigned short id)
     this->id = id;
 }
 
-void Player::setHandshake()
-{
-    handshakeState = true;
-}
-
 bool Player::isHandshaked()
 {
-    return handshakeState;
+    return handshakeCounter == numeric_limits<int>::max();
 }
+
+void Player::setHandshake()
+{
+    handshakeCounter = numeric_limits<int>::max();
+}
+
+int Player::handshakeAttempts()
+{
+    return handshakeCounter++;
+}
+
 
 void Player::setLoadState(int state)
 {

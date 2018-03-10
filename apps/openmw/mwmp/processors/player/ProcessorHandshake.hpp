@@ -19,7 +19,7 @@ namespace mwmp
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
         {
-            packet.setPlayer(getLocalPlayer()); // player is 0 because myGuid will be setted after ProcessUserMyID
+            packet.setPlayer(getLocalPlayer()); // player is 0 because myGuid will be set after ProcessUserMyID
             packet.Send(serverAddr);
         }
     };
