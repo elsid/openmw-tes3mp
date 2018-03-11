@@ -44,6 +44,7 @@ public:
     static void Create(int logLevel);
     static void Delete();
     static const Log &Get();
+    static int GetLevel();
     static void SetLevel(int level);
     void print(int level, bool hasPrefix, const char *file, int line, const char *message, ...) const;
 

@@ -17,6 +17,14 @@ void SettingFunctions::SetDifficulty(unsigned short pid, int difficulty)
     player->difficulty = difficulty;
 }
 
+void SettingFunctions::SetEnforcedLogLevel(unsigned short pid, int enforcedLogLevel)
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->enforcedLogLevel = enforcedLogLevel;
+}
+
 void SettingFunctions::SetPhysicsFramerate(unsigned short pid, double physicsFramerate)
 {
     Player *player;

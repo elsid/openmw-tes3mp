@@ -41,6 +41,11 @@ const Log &Log::Get()
     return *sLog;
 }
 
+int Log::GetLevel()
+{
+    return sLog->logLevel;
+}
+
 void Log::SetLevel(int level)
 {
     sLog->logLevel = level;

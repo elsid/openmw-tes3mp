@@ -19,8 +19,12 @@ namespace mwmp
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
         {
+            static const int initialLogLevel = Log::GetLevel();
+
             if (isLocal())
             {
+                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_GAME_SETTINGS");
+
                 if (MWBase::Environment::get().getWindowManager()->isGuiMode())
                 {
                     if (MWBase::Environment::get().getWindowManager()->getMode() == MWGui::GM_Console && !player->consoleAllowed)
@@ -28,6 +32,17 @@ namespace mwmp
                     else if (MWBase::Environment::get().getWindowManager()->getMode() == MWGui::GM_Rest &&
                         (!player->bedRestAllowed || !player->wildernessRestAllowed || !player->waitAllowed))
                         MWBase::Environment::get().getWindowManager()->popGuiMode();
+                }
+
+                if (player->enforcedLogLevel > -1)
+                {
+                    LOG_APPEND(Log::LOG_INFO, "- server is enforcing log level %i", player->enforcedLogLevel);
+                    Log::SetLevel(player->enforcedLogLevel);
+                }
+                else if (initialLogLevel != Log::GetLevel())
+                {
+                    LOG_APPEND(Log::LOG_INFO, "- log level has been reset to initial value %i", initialLogLevel);
+                    Log::SetLevel(initialLogLevel);
                 }
 
                 MWBase::Environment::get().getWorld()->setPhysicsFramerate(player->physicsFramerate);
