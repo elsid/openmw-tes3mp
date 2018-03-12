@@ -193,8 +193,8 @@ void LocalActor::updateEquipment(bool forceUpdate)
     MWWorld::InventoryStore &invStore = ptr.getClass().getInventoryStore(ptr);
     for (int slot = 0; slot < MWWorld::InventoryStore::Slots; slot++)
     {
-        MWWorld::ContainerStoreIterator it = invStore.getSlot(slot);
         auto &item = equipedItems[slot];
+        MWWorld::ContainerStoreIterator it = invStore.getSlot(slot);
 
         if (it != invStore.end())
         {
@@ -205,16 +205,8 @@ void LocalActor::updateEquipment(bool forceUpdate)
 
                 item.refId = cellRef.getRefId();
                 item.charge = cellRef.getCharge();
-                if (slot == MWWorld::InventoryStore::Slot_CarriedRight)
-                {
-                    MWMechanics::WeaponType weaptype;
-                    auto &_class = ptr.getClass();
-                    MWMechanics::getActiveWeapon(_class.getCreatureStats(ptr), _class.getInventoryStore(ptr), &weaptype);
-                    if (weaptype != MWMechanics::WeapType_Thrown)
-                        item.count = 1;
-                }
-                else
-                    item.count = invStore.count(cellRef.getRefId());
+                item.enchantmentCharge = it->getCellRef().getEnchantmentCharge();
+                item.count = it->getRefData().getCount();
             }
         }
         else if (!item.refId.empty())
@@ -223,6 +215,7 @@ void LocalActor::updateEquipment(bool forceUpdate)
             item.refId = "";
             item.count = 0;
             item.charge = 0;
+            item.enchantmentCharge = -1;
         }
     }
 

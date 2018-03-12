@@ -471,17 +471,7 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
                 item.refId = it->getCellRef().getRefId();
                 item.charge = it->getCellRef().getCharge();
                 item.enchantmentCharge = it->getCellRef().getEnchantmentCharge();
-
-                if (slot == MWWorld::InventoryStore::Slot_CarriedRight)
-                {
-                    MWMechanics::WeaponType weaptype;
-                    MWMechanics::getActiveWeapon(ptrPlayer.getClass().getCreatureStats(ptrPlayer),
-                                                 ptrPlayer.getClass().getInventoryStore(ptrPlayer), &weaptype);
-                    if (weaptype != MWMechanics::WeapType_Thrown)
-                        item.count = 1;
-                }
-                else
-                    item.count = invStore.count(it->getCellRef().getRefId());
+                item.count = it->getRefData().getCount();
             }
         }
         else if (!item.refId.empty())
