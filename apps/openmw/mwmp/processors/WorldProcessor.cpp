@@ -15,6 +15,7 @@ bool WorldProcessor::Process(RakNet::Packet &packet, WorldEvent &event)
 {
     RakNet::BitStream bsIn(&packet.data[1], packet.length, false);
     bsIn.Read(guid);
+    event.guid = guid;
 
     WorldPacket *myPacket = Main::get().getNetworking()->getWorldPacket(packet.data[0]);
 

@@ -15,6 +15,7 @@ bool ActorProcessor::Process(RakNet::Packet &packet, ActorList &actorList)
 {
     RakNet::BitStream bsIn(&packet.data[1], packet.length, false);
     bsIn.Read(guid);
+    actorList.guid = guid;
 
     ActorPacket *myPacket = Main::get().getNetworking()->getActorPacket(packet.data[0]);
 
