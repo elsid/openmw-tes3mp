@@ -384,10 +384,19 @@ namespace MWGui
         mGuiModeStates[GM_Dialogue] = GuiModeState(mDialogueWindow);
         mTradeWindow->eventTradeDone += MyGUI::newDelegate(mDialogueWindow, &DialogueWindow::onTradeComplete);
 
-        ContainerWindow* containerWindow = new ContainerWindow(mDragAndDrop);
-        mWindows.push_back(containerWindow);
-        trackWindow(containerWindow, "container");
-        mGuiModeStates[GM_Container] = GuiModeState({containerWindow, mInventoryWindow});
+        /*
+            Start of tes3mp change (major)
+
+            Use a member variable (mContainerWIndow) instead of a local one so
+            we can access it from elsewhere
+        */
+        mContainerWindow = new ContainerWindow(mDragAndDrop);
+        mWindows.push_back(mContainerWindow);
+        trackWindow(mContainerWindow, "container");
+        mGuiModeStates[GM_Container] = GuiModeState({mContainerWindow, mInventoryWindow});
+        /*
+            End of tes3mp change (major)
+        */
 
         mHud = new HUD(mCustomMarkers, mDragAndDrop, mLocalMapRender);
         mWindows.push_back(mHud);
@@ -1398,6 +1407,17 @@ namespace MWGui
     MWGui::CountDialog* WindowManager::getCountDialog() { return mCountDialog; }
     MWGui::ConfirmationDialog* WindowManager::getConfirmationDialog() { return mConfirmationDialog; }
     MWGui::TradeWindow* WindowManager::getTradeWindow() { return mTradeWindow; }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to get the ContainerWindow from elsewhere
+        in the code
+    */
+    MWGui::ContainerWindow* WindowManager::getContainerWindow() { return mContainerWindow; }
+    /*
+        End of tes3mp addition
+    */
 
     void WindowManager::useItem(const MWWorld::Ptr &item)
     {

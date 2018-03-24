@@ -145,6 +145,17 @@ namespace MWBase
             virtual MWGui::ConfirmationDialog* getConfirmationDialog() = 0;
             virtual MWGui::TradeWindow* getTradeWindow() = 0;
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to get the ContainerWindow from elsewhere
+                in the code
+            */
+            virtual MWGui::ContainerWindow* getContainerWindow() = 0;
+            /*
+                End of tes3mp addition
+            */
+
             /// Make the player use an item, while updating GUI state accordingly
             virtual void useItem(const MWWorld::Ptr& item) = 0;
 
