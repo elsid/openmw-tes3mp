@@ -41,6 +41,29 @@ namespace MWGui
 
         virtual void resetReference();
 
+        /*
+            Start of tes3mp addition
+
+            Make it possible to check from elsewhere whether there is currently an
+            item being dragged in the container window
+        */
+        bool isOnDragAndDrop();
+        /*
+            End of tes3mp addition
+        */
+
+        /*
+            Start of tes3mp addition
+
+            Make it possible to drag a specific item Ptr instead of having to rely
+            on an index that may have changed in the meantime, for drags that
+            require approval from the server
+        */
+        bool dragItemByPtr(const MWWorld::Ptr& itemPtr, int dragCount);
+        /*
+            End of tes3mp addition
+        */
+
     private:
         DragAndDrop* mDragAndDrop;
 

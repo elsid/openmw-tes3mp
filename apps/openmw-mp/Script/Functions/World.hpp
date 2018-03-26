@@ -7,6 +7,7 @@
     \
     {"GetObjectChangesSize",                  WorldFunctions::GetObjectChangesSize},\
     {"GetEventAction",                        WorldFunctions::GetEventAction},\
+    {"GetEventContainerSubAction",            WorldFunctions::GetEventContainerSubAction},\
     \
     {"GetObjectRefId",                        WorldFunctions::GetObjectRefId},\
     {"GetObjectRefNumIndex",                  WorldFunctions::GetObjectRefNumIndex},\
@@ -58,6 +59,8 @@
     {"SetContainerItemCount",                 WorldFunctions::SetContainerItemCount},\
     {"SetContainerItemCharge",                WorldFunctions::SetContainerItemCharge},\
     {"SetContainerItemEnchantmentCharge",     WorldFunctions::SetContainerItemEnchantmentCharge},\
+    \
+    {"SetReceivedContainerItemActionCount",   WorldFunctions::SetReceivedContainerItemActionCount},\
     \
     {"AddWorldObject",                        WorldFunctions::AddWorldObject},\
     {"AddContainerItem",                      WorldFunctions::AddContainerItem},\
@@ -111,6 +114,13 @@ public:
     * \return The action type (0 for SET, 1 for ADD, 2 for REMOVE, 3 for REQUEST).
     */
     static unsigned char GetEventAction() noexcept;
+
+    /**
+    * \brief Get the container subaction type used in the read event.
+    *
+    * \return The action type (0 for NONE, 1 for DRAG, 2 for DROP, 3 for TAKE_ALL).
+    */
+    static unsigned char GetEventContainerSubAction() noexcept;
 
     /**
     * \brief Get the refId of the object at a certain index in the read event's object changes.
@@ -545,6 +555,21 @@ public:
     static void SetContainerItemEnchantmentCharge(double enchantmentCharge) noexcept;
 
     /**
+    * \brief Set the action count of the container item at a certain itemIndex in the container
+    * changes of the object at a certain objectIndex in the read event's object changes.
+    *
+    * When resending a received Container packet, this allows you to correct the amount of items
+    * removed from a container by a player when it conflicts with what other players have already
+    * taken.
+    *
+    * \param objectIndex The index of the object.
+    * \param itemIndex The index of the container item.
+    * \param actionCount The action count.
+    * \return void
+    */
+    static void SetReceivedContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept;
+
+    /**
     * \brief Add a copy of the server's temporary world object to the server's temporary event.
     *
     * In the process, the server's temporary world object will automatically be cleared so a new
@@ -653,7 +678,7 @@ public:
     *
     * \return void
     */
-    static void SendContainer(bool broadcast = false) noexcept;
+    static void SendContainer(bool broadcast = false, bool useLastReadEvent = false) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.

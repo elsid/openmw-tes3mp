@@ -28,8 +28,10 @@ namespace mwmp
                 if (serverCell != nullptr)
                     serverCell->sendToLoaded(&packet, &event);
             }
-            else
-                packet.Send(true);
+
+            // Otherwise, don't have any hardcoded sync and expect Lua scripts to forward
+            // container packets to ensure their integrity based on what exists in the
+            // server data
 
             Script::Call<Script::CallbackIdentity("OnContainer")>(player.getId(), event.cell.getDescription().c_str());
 

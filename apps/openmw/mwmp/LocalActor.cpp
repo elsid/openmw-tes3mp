@@ -214,7 +214,7 @@ void LocalActor::updateEquipment(bool forceUpdate)
             equipmentChanged = true;
             item.refId = "";
             item.count = 0;
-            item.charge = 0;
+            item.charge = -1;
             item.enchantmentCharge = -1;
         }
     }

@@ -31,7 +31,20 @@ namespace MWGui
         void drop (ItemModel* targetModel, ItemView* targetView);
         void onFrame();
 
-        void finish();
+        /*
+            Start of tes3mp change (minor)
+
+            Add a deleteDragItems argument that allows the deletion of the
+            items in the drag as oppposed to the regular behavior of returning
+            them to their source model
+
+            This is required to reduce unpredictable behavior for drags approved
+            or rejected by the server
+        */
+        void finish(bool deleteDragItems = false);
+        /*
+            End of tes3mp change (minor)
+        */
     };
 
 }

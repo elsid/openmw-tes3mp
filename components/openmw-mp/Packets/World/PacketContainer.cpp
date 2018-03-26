@@ -16,6 +16,7 @@ void PacketContainer::Packet(RakNet::BitStream *bs, bool send)
         return;
 
     RW(event->action, send);
+    RW(event->containerSubAction, send);
 
     WorldObject worldObject;
     for (unsigned int i = 0; i < event->worldObjectCount; i++)

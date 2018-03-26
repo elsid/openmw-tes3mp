@@ -115,32 +115,32 @@ namespace MWGui
         worldEvent->reset();
         worldEvent->cell = *mPtr.getCell()->getCell();
         worldEvent->action = mwmp::BaseEvent::REMOVE;
+        worldEvent->containerSubAction = mwmp::BaseEvent::DRAG;
 
-        mwmp::WorldObject worldObject;
-        worldObject.refId = mPtr.getCellRef().getRefId();
-        worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
-        worldObject.mpNum = mPtr.getCellRef().getMpNum();
-
+        mwmp::WorldObject worldObject = worldEvent->getWorldObject(mPtr);
         MWWorld::Ptr itemPtr = mModel->getItem(mSelectedItem).mBase;
-
-        mwmp::ContainerItem containerItem;
-        containerItem.refId =itemPtr.getCellRef().getRefId();
-        containerItem.count = itemPtr.getRefData().getCount();
-        containerItem.charge = itemPtr.getCellRef().getCharge();
-        containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
-        containerItem.actionCount = count;
-
-        worldObject.containerItems.push_back(containerItem);
+        worldEvent->addContainerItem(worldObject, itemPtr, count);
         worldEvent->addObject(worldObject);
 
         mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
         mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
-                           worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
-                           containerItem.refId.c_str(), containerItem.count);
+            worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
+            itemPtr.getCellRef().getRefId().c_str(), itemPtr.getRefData().getCount());
         /*
             End of tes3mp addition
+        */
+
+        /*
+            Start of tes3mp change (major)
+
+            Avoid running any of the original code for dragging items, to prevent possibilities
+            for item duping or interaction with restricted containers
+        */
+        return;
+        /*
+            End of tes3mp change (major)
         */
 
         mDragAndDrop->startDrag(mSelectedItem, mSortModel, mModel, mItemView, count);
@@ -161,17 +161,13 @@ namespace MWGui
             worldEvent->reset();
             worldEvent->cell = *mPtr.getCell()->getCell();
             worldEvent->action = mwmp::BaseEvent::ADD;
+            worldEvent->containerSubAction = mwmp::BaseEvent::DROP;
 
-            mwmp::WorldObject worldObject;
-            worldObject.refId = mPtr.getCellRef().getRefId();
-            worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
-            worldObject.mpNum = mPtr.getCellRef().getMpNum();
-
+            mwmp::WorldObject worldObject = worldEvent->getWorldObject(mPtr);
             MWWorld::Ptr itemPtr = mDragAndDrop->mItem.mBase;
-
             mwmp::ContainerItem containerItem;
             containerItem.refId = itemPtr.getCellRef().getRefId();
-            
+
             // Make sure we get the drag and drop count, not the count of the original item
             containerItem.count = mDragAndDrop->mDraggedCount;
 
@@ -184,16 +180,28 @@ namespace MWGui
             mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
             mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
 
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
-                               worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
-                               containerItem.refId.c_str(), containerItem.count);
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i, %i",
+                worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
+                containerItem.refId.c_str(), containerItem.count, containerItem.charge);
         }
         /*
             End of tes3mp addition
         */
 
-        if (success)
-            mDragAndDrop->drop(mModel, mItemView);
+        /*
+            Start of tes3mp change (major)
+
+            Avoid running any of the original code for dropping items, to prevent possibilities
+            for item duping or interaction with restricted containers
+
+            Instead, finish the drag in a way that removes the items in it
+        */
+        //if (success)
+        //    mDragAndDrop->drop(mModel, mItemView);
+        mDragAndDrop->finish(true);
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     void ContainerWindow::onBackgroundSelected()
@@ -282,6 +290,40 @@ namespace MWGui
         if(mDragAndDrop != NULL && mDragAndDrop->mIsOnDragAndDrop)
             return;
 
+        /*
+            Start of tes3mp addition
+
+            Send an ID_CONTAINER packet every time the Take All button is used on
+            a container
+        */
+        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
+        worldEvent->reset();
+        worldEvent->cell = *mPtr.getCell()->getCell();
+        worldEvent->action = mwmp::BaseEvent::REMOVE;
+        worldEvent->containerSubAction = mwmp::BaseEvent::TAKE_ALL;
+        worldEvent->addEntireContainer(mPtr);
+
+        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i-%i\n- cell: %s",
+            mPtr.getCellRef().getRefId().c_str(), mPtr.getCellRef().getRefNum().mIndex, mPtr.getCellRef().getMpNum(),
+            worldEvent->cell.getDescription().c_str());
+        /*
+            End of tes3mp addition
+        */
+
+        /*
+            Start of tes3mp change (major)
+
+            Avoid running any of the original code for taking all items, to prevent
+            possibilities for item duping or interaction with restricted containers
+        */
+        return;
+        /*
+            End of tes3mp change (major)
+        */
+
         // transfer everything into the player's inventory
         ItemModel* playerModel = MWBase::Environment::get().getWindowManager()->getInventoryWindow()->getModel();
         mModel->update();
@@ -321,32 +363,6 @@ namespace MWGui
         }
 
         MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Container);
-
-        /*
-            Start of tes3mp addition
-
-            Send an ID_CONTAINER packet every time the Take All button is used on
-            a container
-        */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->cell = *mPtr.getCell()->getCell();
-        worldEvent->action = mwmp::BaseEvent::SET;
-
-        mwmp::WorldObject worldObject;
-        worldObject.refId = mPtr.getCellRef().getRefId();
-        worldObject.refNumIndex = mPtr.getCellRef().getRefNum().mIndex;
-        worldObject.mpNum = mPtr.getCellRef().getMpNum();
-        worldEvent->addObject(worldObject);
-
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
-
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s",
-                           worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str());
-        /*
-            End of tes3mp addition
-        */
     }
 
     void ContainerWindow::onDisposeCorpseButtonClicked(MyGUI::Widget *sender)
@@ -390,4 +406,48 @@ namespace MWGui
         return mModel->onTakeItem(item.mBase, count);
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to check from elsewhere whether there is currently an
+        item being dragged in the container window
+    */
+    bool ContainerWindow::isOnDragAndDrop()
+    {
+        return mDragAndDrop->mIsOnDragAndDrop;
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to drag a specific item Ptr instead of having to rely
+        on an index that may have changed in the meantime, for drags that
+        require approval from the server
+    */
+    bool ContainerWindow::dragItemByPtr(const MWWorld::Ptr& itemPtr, int dragCount)
+    {
+        ItemModel::ModelIndex newIndex = -1;
+        for (unsigned int i = 0; i < mModel->getItemCount(); ++i)
+        {
+            if (mModel->getItem(i).mBase == itemPtr)
+            {
+                newIndex = i;
+                break;
+            }
+        }
+
+        if (newIndex != -1)
+        {
+            mDragAndDrop->startDrag(newIndex, mSortModel, mModel, mItemView, dragCount);
+            return true;
+        }
+
+        return false;
+    }
+    /*
+        End of tes3mp addition
+    */
 }

@@ -41,6 +41,10 @@ namespace mwmp
         void playMusic();
         void playVideo();
 
+        WorldObject getWorldObject(const MWWorld::Ptr& ptr);
+        void addContainerItem(mwmp::WorldObject& worldObject, const MWWorld::Ptr& itemPtr, int actionCount);
+        void addEntireContainer(const MWWorld::Ptr& ptr);
+
         void addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer = false);
         void addObjectSpawn(const MWWorld::Ptr& ptr);
         void addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master);
@@ -50,6 +54,7 @@ namespace mwmp
         void addObjectScale(const MWWorld::Ptr& ptr, float scale);
         void addObjectState(const MWWorld::Ptr& ptr, bool objectState);
         void addObjectAnimPlay(const MWWorld::Ptr& ptr, std::string group, int mode);
+
         void addDoorState(const MWWorld::Ptr& ptr, int state);
         void addMusicPlay(std::string filename);
         void addVideoPlay(std::string filename, bool allowSkipping);
@@ -74,7 +79,7 @@ namespace mwmp
         void sendScriptMemberShort();
         void sendScriptGlobalShort();
 
-        void sendContainers(MWWorld::CellStore* cellStore);
+        void sendCellContainers(MWWorld::CellStore* cellStore);
 
     private:
         Networking *getNetworking();

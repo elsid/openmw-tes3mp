@@ -44,6 +44,11 @@ unsigned char WorldFunctions::GetEventAction() noexcept
     return readEvent->action;
 }
 
+unsigned char WorldFunctions::GetEventContainerSubAction() noexcept
+{
+    return readEvent->containerSubAction;
+}
+
 const char *WorldFunctions::GetObjectRefId(unsigned int i) noexcept
 {
     return readEvent->worldObjects.at(i).refId.c_str();
@@ -287,6 +292,11 @@ void WorldFunctions::SetContainerItemEnchantmentCharge(double enchantmentCharge)
     tempContainerItem.enchantmentCharge = enchantmentCharge;
 }
 
+void WorldFunctions::SetReceivedContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept
+{
+    readEvent->worldObjects.at(objectIndex).containerItems.at(itemIndex).actionCount = actionCount;
+}
+
 void WorldFunctions::AddWorldObject() noexcept
 {
     tempWorldObject.droppedByPlayer = false;
@@ -382,10 +392,15 @@ void WorldFunctions::SendDoorState(bool broadcast) noexcept
         packet->Send(true);
 }
 
-void WorldFunctions::SendContainer(bool broadcast) noexcept
+void WorldFunctions::SendContainer(bool broadcast, bool useLastReadEvent) noexcept
 {
     mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONTAINER);
-    packet->setEvent(&writeEvent);
+    
+    if (useLastReadEvent)
+        packet->setEvent(readEvent);
+    else
+        packet->setEvent(&writeEvent);
+    
     packet->Send(false);
 
     if (broadcast)

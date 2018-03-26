@@ -15,6 +15,8 @@
 #include "../mwbase/soundmanager.hpp"
 #include "../mwbase/windowmanager.hpp"
 
+#include "../mwgui/container.hpp"
+
 #include "../mwmechanics/aifollow.hpp"
 #include "../mwmechanics/spellcasting.hpp"
 #include "../mwmechanics/summoning.hpp"
@@ -50,6 +52,9 @@ void WorldEvent::reset()
     cell.blank();
     worldObjects.clear();
     guid = mwmp::Main::get().getNetworking()->getLocalPlayer()->guid;
+
+    action = -1;
+    containerSubAction = 0;
 }
 
 void WorldEvent::addObject(WorldObject worldObject)
@@ -59,13 +64,17 @@ void WorldEvent::addObject(WorldObject worldObject)
 
 void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
 {
+    bool isLocalEvent = guid == Main::get().getLocalPlayer()->guid;
+
+    LOG_APPEND(Log::LOG_VERBOSE, "- isLocalEvent? %s", isLocalEvent ? "true" : "false");
+
     WorldObject worldObject;
 
     for (unsigned int i = 0; i < worldObjectCount; i++)
     {
         worldObject = worldObjects.at(i);
 
-        //LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s, %i, %i", worldObject.refId.c_str(), worldObject.refNumIndex, worldObject.mpNum);
+        //LOG_APPEND(Log::LOG_VERBOSE, "- container cellRef: %s %i-%i", worldObject.refId.c_str(), worldObject.refNumIndex, worldObject.mpNum);
 
         MWWorld::Ptr ptrFound = cellStore->searchExact(worldObject.refNumIndex, worldObject.mpNum);
 
@@ -74,19 +83,41 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
             //LOG_APPEND(Log::LOG_VERBOSE, "-- Found %s, %i, %i", ptrFound.getCellRef().getRefId().c_str(),
             //                   ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
 
+            bool isCurrentContainer = false;
+
+            // If we are in a container, and it happens to be this container, keep track of that
+            if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Container))
+            {
+                CurrentContainer *currentContainer = &mwmp::Main::get().getLocalPlayer()->currentContainer;
+
+                if (currentContainer->refNumIndex == ptrFound.getCellRef().getRefNum().mIndex &&
+                    currentContainer->mpNum == ptrFound.getCellRef().getMpNum())
+                {
+                    isCurrentContainer = true;
+                }
+            }
+
             MWWorld::ContainerStore& containerStore = ptrFound.getClass().getContainerStore(ptrFound);
 
             // If we are setting the entire contents, clear the current ones
             if (action == BaseEvent::SET)
                 containerStore.clear();
 
+            bool isLocalDrop = isLocalEvent && containerSubAction == BaseEvent::DROP;
+            bool isLocalDrag = isLocalEvent && containerSubAction == BaseEvent::DRAG;
+            bool isLocalTakeAll = isLocalEvent && containerSubAction == BaseEvent::TAKE_ALL;
+            std::string takeAllSound = "";
+
             MWWorld::Ptr ownerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
             for (const auto &containerItem : worldObject.containerItems)
             {
+                //LOG_APPEND(Log::LOG_VERBOSE, "-- containerItem cellRef: %s, count: %i, actionCount: %i",
+                //    containerItem.refId.c_str(), containerItem.count, containerItem.actionCount);
+
                 if (containerItem.refId.find("$dynamic") != string::npos)
                     continue;
 
-                if (action == BaseEvent::ADD || action == BaseEvent::SET)
+                if (action == BaseEvent::SET || action == BaseEvent::ADD)
                 {
                     // Create a ManualRef to be able to set item charge
                     MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), containerItem.refId, 1);
@@ -102,29 +133,55 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                         newPtr.getCellRef().setEnchantmentCharge(containerItem.enchantmentCharge);
 
                     containerStore.add(newPtr, containerItem.count, ownerPtr, true);
-                }
-                else if (action == BaseEvent::REMOVE)
+                } 
+                
+                else if (action == BaseEvent::REMOVE && containerItem.actionCount > 0)
                 {
                     // We have to find the right item ourselves because ContainerStore has no method
                     // accounting for charge
-                    for (const auto ptr : containerStore)
+                    for (const auto itemPtr : containerStore)
                     {
-                        if (Misc::StringUtils::ciEqual(ptr.getCellRef().getRefId(), containerItem.refId))
+                        if (Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), containerItem.refId))
                         {
-                            if (ptr.getRefData().getCount() == containerItem.count &&
-                                ptr.getCellRef().getCharge() == containerItem.charge &&
-                                ptr.getCellRef().getEnchantmentCharge() == containerItem.enchantmentCharge)
+                            if (itemPtr.getCellRef().getCharge() == containerItem.charge &&
+                                itemPtr.getCellRef().getEnchantmentCharge() == containerItem.enchantmentCharge)
                             {
+                                // Store the sound of the first item in a TAKE_ALL
+                                if (isLocalTakeAll && takeAllSound.empty())
+                                    takeAllSound = itemPtr.getClass().getUpSoundId(itemPtr);
+
                                 // Is this an actor's container? If so, unequip this item if it was equipped
                                 if (ptrFound.getClass().isActor())
                                 {
                                     MWWorld::InventoryStore& invStore = ptrFound.getClass().getInventoryStore(ptrFound);
 
-                                    if (invStore.isEquipped(ptr))
-                                        invStore.unequipItemQuantity(ptr, ptrFound, containerItem.count);
+                                    if (invStore.isEquipped(itemPtr))
+                                        invStore.unequipItemQuantity(itemPtr, ptrFound, containerItem.count);
                                 }
 
-                                containerStore.remove(ptr, containerItem.actionCount, ownerPtr);
+                                bool isResolved = false;
+
+                                if (isLocalDrag && isCurrentContainer)
+                                {
+                                    MWGui::ContainerWindow* containerWindow = MWBase::Environment::get().getWindowManager()->getContainerWindow();
+
+                                    if (!containerWindow->isOnDragAndDrop())
+                                    {
+                                        isResolved = containerWindow->dragItemByPtr(itemPtr, containerItem.actionCount);
+                                    }
+                                }
+                                
+                                if (!isResolved)
+                                {
+                                    containerStore.remove(itemPtr, containerItem.actionCount, ownerPtr);
+
+                                    if (isLocalDrag || isLocalTakeAll)
+                                    {
+                                        MWWorld::Ptr ptrPlayer = MWBase::Environment::get().getWorld()->getPlayerPtr();
+                                        MWWorld::ContainerStore &playerStore = ptrPlayer.getClass().getContainerStore(ptrPlayer);
+                                        *playerStore.add(containerItem.refId, containerItem.actionCount, ptrPlayer);
+                                    }
+                                }
                             }
                         }
                     }
@@ -140,16 +197,18 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                 invStore.autoEquip(ptrFound);
             }
 
-            // If we are in a container, and it happens to be this container, update its view
-            if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Container))
+            // If this container was open for us, update its view
+            if (isCurrentContainer)
             {
-                CurrentContainer *currentContainer = &mwmp::Main::get().getLocalPlayer()->currentContainer;
-
-                if (currentContainer->refNumIndex == ptrFound.getCellRef().getRefNum().mIndex &&
-                    currentContainer->mpNum == ptrFound.getCellRef().getMpNum())
+                if (isLocalTakeAll)
                 {
                     MWBase::Environment::get().getWindowManager()->removeGuiMode(MWGui::GM_Container);
-                    MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_Container, ptrFound);
+                    MWBase::Environment::get().getWindowManager()->playSound(takeAllSound);
+                }
+                else
+                {
+                    MWGui::ContainerWindow* containerWindow = MWBase::Environment::get().getWindowManager()->getContainerWindow();
+                    containerWindow->setPtr(ptrFound);
                 }
             }
         }
@@ -618,6 +677,41 @@ void WorldEvent::playVideo()
     }
 }
 
+WorldObject WorldEvent::getWorldObject(const MWWorld::Ptr& ptr)
+{
+    mwmp::WorldObject worldObject;
+    worldObject.refId = ptr.getCellRef().getRefId();
+    worldObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+    worldObject.mpNum = ptr.getCellRef().getMpNum();
+    return worldObject;
+}
+
+void WorldEvent::addContainerItem(mwmp::WorldObject& worldObject, const MWWorld::Ptr& itemPtr, int actionCount)
+{
+    mwmp::ContainerItem containerItem;
+    containerItem.refId = itemPtr.getCellRef().getRefId();
+    containerItem.count = itemPtr.getRefData().getCount();
+    containerItem.charge = itemPtr.getCellRef().getCharge();
+    containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+    containerItem.actionCount = actionCount;
+
+    worldObject.containerItems.push_back(containerItem);
+}
+
+void WorldEvent::addEntireContainer(const MWWorld::Ptr& ptr)
+{
+    MWWorld::ContainerStore& containerStore = ptr.getClass().getContainerStore(ptr);
+
+    mwmp::WorldObject worldObject = getWorldObject(ptr);
+
+    for (const auto itemPtr : containerStore)
+    {
+        addContainerItem(worldObject, itemPtr, itemPtr.getRefData().getCount());
+    }
+
+    addObject(worldObject);
+}
+
 void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
 {
     if (ptr.getCellRef().getRefId().find("$dynamic") != string::npos)
@@ -988,7 +1082,7 @@ void WorldEvent::sendScriptGlobalShort()
     mwmp::Main::get().getNetworking()->getWorldPacket(ID_SCRIPT_GLOBAL_SHORT)->Send();
 }
 
-void WorldEvent::sendContainers(MWWorld::CellStore* cellStore)
+void WorldEvent::sendCellContainers(MWWorld::CellStore* cellStore)
 {
     reset();
     cell = *cellStore->getCell();
@@ -1007,13 +1101,7 @@ void WorldEvent::sendContainers(MWWorld::CellStore* cellStore)
 
         for (const auto itemPtr : containerStore)
         {
-            mwmp::ContainerItem containerItem;
-            containerItem.refId = itemPtr.getCellRef().getRefId();
-            containerItem.count = itemPtr.getRefData().getCount();
-            containerItem.charge = itemPtr.getCellRef().getCharge();
-            containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
-
-            worldObject.containerItems.push_back(containerItem);
+            addContainerItem(worldObject, itemPtr, 0);
         }
 
         addObject(worldObject);
