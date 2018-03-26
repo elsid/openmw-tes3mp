@@ -694,6 +694,8 @@ void LocalPlayer::addItems()
             LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid inventory item %s", item.refId.c_str());
         }
     }
+
+    MWBase::Environment::get().getWindowManager()->getInventoryWindow()->updateItemView();
 }
 
 void LocalPlayer::addSpells()
@@ -1079,6 +1081,8 @@ void LocalPlayer::setEquipment()
         else
             ptrInventory.unequipSlot(slot, ptrPlayer);
     }
+
+    MWBase::Environment::get().getWindowManager()->getInventoryWindow()->updatePlayer();
 }
 
 void LocalPlayer::setInventory()
