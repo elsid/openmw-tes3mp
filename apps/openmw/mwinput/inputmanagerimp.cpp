@@ -1068,6 +1068,17 @@ namespace MWInput
 
         /*
             Start of tes3mp addition
+            
+            Ignore attempts to rest if the player has not finished character generation yet
+        */
+        if (!mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen())
+            return;
+        /*
+            End of tes3mp addition
+        */
+
+        /*
+            Start of tes3mp addition
 
             Prevent resting and waiting if they have been disabled by the server for the local player
         */
