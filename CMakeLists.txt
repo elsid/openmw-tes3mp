@@ -141,6 +141,8 @@ find_package(RakNet REQUIRED)
 include_directories(${RakNet_INCLUDES})
 
 # Dependencies
+find_package(OpenGL REQUIRED)
+
 if (USE_QT)
     message(STATUS "Using Qt${DESIRED_QT_VERSION}")
 
@@ -189,12 +191,6 @@ if (NOT WIN32 AND BUILD_WIZARD) # windows users can just run the morrowind insta
     find_package(LIBUNSHIELD REQUIRED) # required only for non win32 when building openmw-wizard
     set(OPENMW_USE_UNSHIELD TRUE)
 endif()
-
-option(OPENGL_ES "enable opengl es support" FALSE )
-
-if (OPENGL_ES)
-    add_definitions(-DOPENGL_ES)
-endif(OPENGL_ES)
 
 # Fix for not visible pthreads functions for linker with glibc 2.15
 if (UNIX AND NOT APPLE)
