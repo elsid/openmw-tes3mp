@@ -71,6 +71,16 @@ namespace MWClass
 
             virtual bool hasInventoryStore(const MWWorld::Ptr &ptr) const { return true; }
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to check whether a class has a container store
+            */
+            virtual bool hasContainerStore(const MWWorld::Ptr &ptr) const { return true; }
+            /*
+                End of tes3mp addition
+            */
+
             virtual void hit(const MWWorld::Ptr& ptr, float attackStrength, int type) const;
 
             virtual void onHit(const MWWorld::Ptr &ptr, float damage, bool ishealth, const MWWorld::Ptr &object, const MWWorld::Ptr &attacker, const osg::Vec3f &hitPosition, bool successful) const;

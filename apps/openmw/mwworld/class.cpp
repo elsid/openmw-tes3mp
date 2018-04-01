@@ -128,6 +128,19 @@ namespace MWWorld
         throw std::runtime_error ("class does not have an inventory store");
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to check whether a class has a container store
+    */
+    bool Class::hasContainerStore(const Ptr &ptr) const
+    {
+        return false;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     bool Class::hasInventoryStore(const Ptr &ptr) const
     {
         return false;

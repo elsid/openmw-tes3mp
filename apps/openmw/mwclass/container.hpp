@@ -36,6 +36,16 @@ namespace MWClass
             virtual MWWorld::ContainerStore& getContainerStore (const MWWorld::Ptr& ptr) const;
             ///< Return container store
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to check whether a class has a container store
+            */
+            virtual bool hasContainerStore(const MWWorld::Ptr &ptr) const { return true; }
+            /*
+                End of tes3mp addition
+            */
+
             virtual std::string getScript (const MWWorld::ConstPtr& ptr) const;
             ///< Return name of the script attached to ptr
 
