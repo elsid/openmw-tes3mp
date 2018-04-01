@@ -11,6 +11,7 @@
 #include <components/openmw-mp/Log.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
+#include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/WorldEvent.hpp"
 #include "../mwmp/CellController.hpp"
 /*
@@ -217,7 +218,7 @@ namespace MWGui
 
             Mark this container as open for multiplayer logic purposes
         */
-        mwmp::Main::get().getCellController()->openContainer(container);
+        mwmp::Main::get().getLocalPlayer()->storeCurrentContainer(container);
         /*
             End of tes3mp addition
         */
@@ -269,7 +270,8 @@ namespace MWGui
 
             Mark this container as closed for multiplayer logic purposes
         */
-        mwmp::Main::get().getCellController()->closeContainer(mPtr);
+        mwmp::Main::get().getLocalPlayer()->clearCurrentContainer();
+        mwmp::Main::get().getLocalPlayer()->updateInventory();
         /*
             End of tes3mp addition
         */

@@ -345,48 +345,6 @@ bool CellController::isSameCell(const ESM::Cell& cell, const ESM::Cell& otherCel
     return false;
 }
 
-void CellController::openContainer(const MWWorld::Ptr &container)
-{
-    // Record this as the player's current open container
-    Main::get().getLocalPlayer()->storeCurrentContainer(container);
-
-    const auto &cellRef = container.getCellRef();
-    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Container \"%s\" (%d) is opened",
-                       cellRef.getRefId().c_str(), cellRef.getRefNum().mIndex);
-
-    for (const auto &ptr : container.getClass().getContainerStore(container))
-    {
-        int count = ptr.getRefData().getCount();
-        const std::string &name = ptr.getCellRef().getRefId();
-
-        LOG_APPEND(Log::LOG_VERBOSE, " - Item. Refid: \"%s\" Count: %d", name.c_str(), count);
-
-        /*if (::Misc::StringUtils::ciEqual(name, "gold_001"))
-            cont.remove("gold_001", count, container);*/
-    }
-}
-
-void CellController::closeContainer(const MWWorld::Ptr &container)
-{
-    Main::get().getLocalPlayer()->clearCurrentContainer();
-
-    // If the player died while in a container, the container's Ptr could be invalid now
-    if (!container.isEmpty())
-    {
-        LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Container \"%s\" (%d) is closed.", container.getCellRef().getRefId().c_str(),
-                           container.getCellRef().getRefNum().mIndex);
-
-        MWWorld::ContainerStore &cont = container.getClass().getContainerStore(container);
-        for (const auto &ptr : cont)
-        {
-            LOG_APPEND(Log::LOG_VERBOSE, " - Item. Refid: \"%s\" Count: %d", ptr.getCellRef().getRefId().c_str(),
-                       ptr.getRefData().getCount());
-        }
-    }
-
-    Main::get().getLocalPlayer()->updateInventory();
-}
-
 int CellController::getCellSize() const
 {
     return 8192;
