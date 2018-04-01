@@ -717,23 +717,22 @@ void WorldEvent::playVideo()
 
 void WorldEvent::addAllContainers(MWWorld::CellStore* cellStore)
 {
-    MWWorld::CellRefList<ESM::Container> *containerList = cellStore->getContainers();
-
-    for (auto &container : containerList->mList)
+    for (auto &ref : cellStore->getContainers()->mList)
     {
-        mwmp::WorldObject worldObject;
-        worldObject.refId = container.mRef.getRefId();
-        worldObject.refNumIndex = container.mRef.getRefNum().mIndex;
-        worldObject.mpNum = container.mRef.getMpNum();
+        MWWorld::Ptr ptr(&ref, 0);
+        addEntireContainer(ptr);
+    }
 
-        MWWorld::ContainerStore& containerStore = container.mClass->getContainerStore(MWWorld::Ptr(&container, 0));
+    for (auto &ref : cellStore->getNpcs()->mList)
+    {
+        MWWorld::Ptr ptr(&ref, 0);
+        addEntireContainer(ptr);
+    }
 
-        for (const auto itemPtr : containerStore)
-        {
-            addContainerItem(worldObject, itemPtr, 0);
-        }
-
-        addObject(worldObject);
+    for (auto &ref : cellStore->getCreatures()->mList)
+    {
+        MWWorld::Ptr ptr(&ref, 0);
+        addEntireContainer(ptr);
     }
 }
 
