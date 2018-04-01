@@ -84,6 +84,7 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
             //                   ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
 
             bool isCurrentContainer = false;
+            bool hasActorEquipment = ptrFound.getClass().isActor() && ptrFound.getClass().hasInventoryStore(ptrFound);
 
             // If we are in a container, and it happens to be this container, keep track of that
             if (MWBase::Environment::get().getWindowManager()->containsMode(MWGui::GM_Container))
@@ -133,8 +134,8 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                         newPtr.getCellRef().setEnchantmentCharge(containerItem.enchantmentCharge);
 
                     containerStore.add(newPtr, containerItem.count, ownerPtr, true);
-                } 
-                
+                }
+
                 else if (action == BaseEvent::REMOVE && containerItem.actionCount > 0)
                 {
                     // We have to find the right item ourselves because ContainerStore has no method
@@ -151,7 +152,7 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                                     takeAllSound = itemPtr.getClass().getUpSoundId(itemPtr);
 
                                 // Is this an actor's container? If so, unequip this item if it was equipped
-                                if (ptrFound.getClass().isActor() && ptrFound.getClass().hasInventoryStore(ptrFound))
+                                if (hasActorEquipment)
                                 {
                                     MWWorld::InventoryStore& invStore = ptrFound.getClass().getInventoryStore(ptrFound);
 
@@ -170,7 +171,7 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                                         isResolved = containerWindow->dragItemByPtr(itemPtr, containerItem.actionCount);
                                     }
                                 }
-                                
+
                                 if (!isResolved)
                                 {
                                     containerStore.remove(itemPtr, containerItem.actionCount, ownerPtr);
@@ -190,7 +191,7 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
 
             // Was this a SET or ADD action on an actor's container, and are we the authority
             // over the actor? If so, autoequip the actor
-            if ((action == BaseEvent::ADD || action == BaseEvent::SET) && ptrFound.getClass().isActor() &&
+            if ((action == BaseEvent::ADD || action == BaseEvent::SET) && hasActorEquipment &&
                 mwmp::Main::get().getCellController()->isLocalActor(ptrFound))
             {
                 MWWorld::InventoryStore& invStore = ptrFound.getClass().getInventoryStore(ptrFound);
