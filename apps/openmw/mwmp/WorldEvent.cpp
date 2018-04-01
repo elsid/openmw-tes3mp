@@ -62,6 +62,43 @@ void WorldEvent::addObject(WorldObject worldObject)
     worldObjects.push_back(worldObject);
 }
 
+WorldObject WorldEvent::getWorldObject(const MWWorld::Ptr& ptr)
+{
+    mwmp::WorldObject worldObject;
+    worldObject.refId = ptr.getCellRef().getRefId();
+    worldObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+    worldObject.mpNum = ptr.getCellRef().getMpNum();
+    return worldObject;
+}
+
+void WorldEvent::addContainerItem(mwmp::WorldObject& worldObject, const MWWorld::Ptr& itemPtr, int actionCount)
+{
+    mwmp::ContainerItem containerItem;
+    containerItem.refId = itemPtr.getCellRef().getRefId();
+    containerItem.count = itemPtr.getRefData().getCount();
+    containerItem.charge = itemPtr.getCellRef().getCharge();
+    containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+    containerItem.actionCount = actionCount;
+
+    LOG_APPEND(Log::LOG_INFO, "- Adding container item %s", containerItem.refId.c_str());
+
+    worldObject.containerItems.push_back(containerItem);
+}
+
+void WorldEvent::addEntireContainer(const MWWorld::Ptr& ptr)
+{
+    MWWorld::ContainerStore& containerStore = ptr.getClass().getContainerStore(ptr);
+
+    mwmp::WorldObject worldObject = getWorldObject(ptr);
+
+    for (const auto itemPtr : containerStore)
+    {
+        addContainerItem(worldObject, itemPtr, itemPtr.getRefData().getCount());
+    }
+
+    addObject(worldObject);
+}
+
 void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
 {
     bool isLocalEvent = guid == Main::get().getLocalPlayer()->guid;
@@ -678,39 +715,45 @@ void WorldEvent::playVideo()
     }
 }
 
-WorldObject WorldEvent::getWorldObject(const MWWorld::Ptr& ptr)
+void WorldEvent::addAllContainers(MWWorld::CellStore* cellStore)
 {
-    mwmp::WorldObject worldObject;
-    worldObject.refId = ptr.getCellRef().getRefId();
-    worldObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
-    worldObject.mpNum = ptr.getCellRef().getMpNum();
-    return worldObject;
-}
+    MWWorld::CellRefList<ESM::Container> *containerList = cellStore->getContainers();
 
-void WorldEvent::addContainerItem(mwmp::WorldObject& worldObject, const MWWorld::Ptr& itemPtr, int actionCount)
-{
-    mwmp::ContainerItem containerItem;
-    containerItem.refId = itemPtr.getCellRef().getRefId();
-    containerItem.count = itemPtr.getRefData().getCount();
-    containerItem.charge = itemPtr.getCellRef().getCharge();
-    containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
-    containerItem.actionCount = actionCount;
-
-    worldObject.containerItems.push_back(containerItem);
-}
-
-void WorldEvent::addEntireContainer(const MWWorld::Ptr& ptr)
-{
-    MWWorld::ContainerStore& containerStore = ptr.getClass().getContainerStore(ptr);
-
-    mwmp::WorldObject worldObject = getWorldObject(ptr);
-
-    for (const auto itemPtr : containerStore)
+    for (auto &container : containerList->mList)
     {
-        addContainerItem(worldObject, itemPtr, itemPtr.getRefData().getCount());
-    }
+        mwmp::WorldObject worldObject;
+        worldObject.refId = container.mRef.getRefId();
+        worldObject.refNumIndex = container.mRef.getRefNum().mIndex;
+        worldObject.mpNum = container.mRef.getMpNum();
 
-    addObject(worldObject);
+        MWWorld::ContainerStore& containerStore = container.mClass->getContainerStore(MWWorld::Ptr(&container, 0));
+
+        for (const auto itemPtr : containerStore)
+        {
+            addContainerItem(worldObject, itemPtr, 0);
+        }
+
+        addObject(worldObject);
+    }
+}
+
+void WorldEvent::addRequestedContainers(MWWorld::CellStore* cellStore, const std::vector<WorldObject>& requestObjects)
+{
+    for (const auto &worldObject : requestObjects)
+    {
+        LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s, %i, %i", worldObject.refId.c_str(),
+            worldObject.refNumIndex, worldObject.mpNum);
+
+        MWWorld::Ptr ptrFound = cellStore->searchExact(worldObject.refNumIndex, worldObject.mpNum);
+
+        if (ptrFound)
+        {
+            if (ptrFound.getClass().hasContainerStore(ptrFound))
+                addEntireContainer(ptrFound);
+            else
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Object lacks container store", ptrFound.getCellRef().getRefId().c_str());
+        }
+    }
 }
 
 void WorldEvent::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
@@ -1083,30 +1126,9 @@ void WorldEvent::sendScriptGlobalShort()
     mwmp::Main::get().getNetworking()->getWorldPacket(ID_SCRIPT_GLOBAL_SHORT)->Send();
 }
 
-void WorldEvent::sendCellContainers(MWWorld::CellStore* cellStore)
+void WorldEvent::sendContainer()
 {
-    reset();
-    cell = *cellStore->getCell();
-    action = BaseEvent::SET;
-
-    MWWorld::CellRefList<ESM::Container> *containerList = cellStore->getContainers();
-
-    for (auto &container : containerList->mList)
-    {
-        mwmp::WorldObject worldObject;
-        worldObject.refId = container.mRef.getRefId();
-        worldObject.refNumIndex = container.mRef.getRefNum().mIndex;
-        worldObject.mpNum = container.mRef.getMpNum();
-
-        MWWorld::ContainerStore& containerStore = container.mClass->getContainerStore(MWWorld::Ptr(&container, 0));
-
-        for (const auto itemPtr : containerStore)
-        {
-            addContainerItem(worldObject, itemPtr, 0);
-        }
-
-        addObject(worldObject);
-    }
+    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Sending ID_CONTAINER");
 
     mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(this);
     mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();

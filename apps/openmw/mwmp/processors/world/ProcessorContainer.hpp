@@ -21,10 +21,36 @@ namespace mwmp
 
             // If we've received a request for information, comply with it
             if (event.action == mwmp::BaseEvent::REQUEST)
-                event.sendCellContainers(ptrCellStore);
+            {
+                if (event.worldObjectCount == 0)
+                {
+                    LOG_APPEND(Log::LOG_VERBOSE, "- Request had no objects attached, so we are sending all containers in the cell %s",
+                        event.cell.getDescription().c_str());
+                    event.reset();
+                    event.cell = *ptrCellStore->getCell();
+                    event.action = event.action == mwmp::BaseEvent::SET;
+                    event.addAllContainers(ptrCellStore);
+                    event.sendContainer();
+                }
+                else
+                {
+                    LOG_APPEND(Log::LOG_VERBOSE, "- Request was for %i %s", event.worldObjectCount, event.worldObjectCount == 1 ? "object" : "objects");
+                    std::vector<WorldObject> requestObjects = event.worldObjects;
+                    event.reset();
+                    event.cell = *ptrCellStore->getCell();
+                    event.action = event.action == mwmp::BaseEvent::SET;
+                    event.addRequestedContainers(ptrCellStore, requestObjects);
+
+                    if (event.worldObjects.size() > 0)
+                        event.sendContainer();
+                }
+            }
                 // Otherwise, edit containers based on the information received
             else
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "- Editing container contents to match those of packet", event.worldObjectCount);
                 event.editContainers(ptrCellStore);
+            }
         }
 
     };

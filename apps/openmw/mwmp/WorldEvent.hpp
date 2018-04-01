@@ -16,7 +16,11 @@ namespace mwmp
         virtual ~WorldEvent();
 
         void reset();
+
         void addObject(WorldObject worldObject);
+        WorldObject getWorldObject(const MWWorld::Ptr& ptr);
+        void addContainerItem(mwmp::WorldObject& worldObject, const MWWorld::Ptr& itemPtr, int actionCount);
+        void addEntireContainer(const MWWorld::Ptr& ptr);
 
         void editContainers(MWWorld::CellStore* cellStore);
 
@@ -41,9 +45,8 @@ namespace mwmp
         void playMusic();
         void playVideo();
 
-        WorldObject getWorldObject(const MWWorld::Ptr& ptr);
-        void addContainerItem(mwmp::WorldObject& worldObject, const MWWorld::Ptr& itemPtr, int actionCount);
-        void addEntireContainer(const MWWorld::Ptr& ptr);
+        void addAllContainers(MWWorld::CellStore* cellStore);
+        void addRequestedContainers(MWWorld::CellStore* cellStore, const std::vector<WorldObject>& requestObjects);
 
         void addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer = false);
         void addObjectSpawn(const MWWorld::Ptr& ptr);
@@ -78,8 +81,7 @@ namespace mwmp
         void sendScriptLocalFloat();
         void sendScriptMemberShort();
         void sendScriptGlobalShort();
-
-        void sendCellContainers(MWWorld::CellStore* cellStore);
+        void sendContainer();
 
     private:
         Networking *getNetworking();
