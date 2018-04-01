@@ -151,7 +151,7 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                                     takeAllSound = itemPtr.getClass().getUpSoundId(itemPtr);
 
                                 // Is this an actor's container? If so, unequip this item if it was equipped
-                                if (ptrFound.getClass().isActor())
+                                if (ptrFound.getClass().isActor() && ptrFound.getClass().hasInventoryStore(ptrFound))
                                 {
                                     MWWorld::InventoryStore& invStore = ptrFound.getClass().getInventoryStore(ptrFound);
 
