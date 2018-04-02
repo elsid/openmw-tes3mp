@@ -18,18 +18,7 @@ namespace mwmp
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s from %s", strPacketID.c_str(), player.npc.mName.c_str());
             LOG_APPEND(Log::LOG_INFO, "- action: %i", event.action);
 
-            // Until we have a timestamp-based system, send packets pertaining to more
-            // than one container (i.e. replies to server requests for container contents)
-            // only to players who have the container's cell loaded
-            if (event.action == BaseEvent::SET && event.worldObjectCount > 1)
-            {
-                Cell *serverCell = CellController::get()->getCell(&event.cell);
-
-                if (serverCell != nullptr)
-                    serverCell->sendToLoaded(&packet, &event);
-            }
-
-            // Otherwise, don't have any hardcoded sync and expect Lua scripts to forward
+            // Don't have any hardcoded sync, and instead expect Lua scripts to forward
             // container packets to ensure their integrity based on what exists in the
             // server data
 
