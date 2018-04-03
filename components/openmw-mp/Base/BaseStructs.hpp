@@ -53,6 +53,7 @@ namespace mwmp
         bool pressed;
         bool instant;
         bool knockdown;
+        bool usesStrikeEnchantment;
 
         bool shouldSend;
     };

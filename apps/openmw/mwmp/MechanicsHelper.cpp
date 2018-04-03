@@ -195,7 +195,16 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
                 }
             }
             else
+            {
                 MWMechanics::blockMeleeAttack(attacker, victim, weapon, attack.damage, 1);
+
+                if (attack.usesStrikeEnchantment)
+                {
+                    MWMechanics::CastSpell cast(attacker, victim, false);
+                    cast.mHitPosition = osg::Vec3f();
+                    cast.cast(weapon, false);
+                }
+            }
 
             victim.getClass().onHit(victim, attack.damage, healthdmg, weapon, attacker, osg::Vec3f(),
                 attack.success);
