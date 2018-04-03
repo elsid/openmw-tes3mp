@@ -124,6 +124,8 @@ void MechanicsHelper::resetAttack(Attack* attack)
     attack->success = false;
     attack->knockdown = false;
     attack->block = false;
+    attack->applyWeaponEnchantment = false;
+    attack->applyProjectileEnchantment = false;
     attack->target.guid = RakNet::RakNetGUID();
     attack->target.refId.clear();
 }
@@ -170,14 +172,20 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
     if (attack.type == attack.MELEE)
     {
         MWWorld::Ptr weapon;
+        MWWorld::Ptr projectile;
 
         if (attacker.getClass().hasInventoryStore(attacker))
         {
-            MWWorld::InventoryStore &inv = attacker.getClass().getInventoryStore(attacker);
-            MWWorld::ContainerStoreIterator weaponslot = inv.getSlot(
+            MWWorld::InventoryStore &inventoryStore = attacker.getClass().getInventoryStore(attacker);
+            MWWorld::ContainerStoreIterator weaponSlot = inventoryStore.getSlot(
                 MWWorld::InventoryStore::Slot_CarriedRight);
+            MWWorld::ContainerStoreIterator projectileSlot = inventoryStore.getSlot(
+                MWWorld::InventoryStore::Slot_Ammunition);
 
-            weapon = ((weaponslot != inv.end()) ? *weaponslot : MWWorld::Ptr());
+            // TODO: Fix for when arrows, bolts and throwing weapons have just run out
+            weapon = weaponSlot != inventoryStore.end() ? *weaponSlot : MWWorld::Ptr();
+            projectile = projectileSlot != inventoryStore.end() ? *projectileSlot : MWWorld::Ptr();
+
             if (!weapon.isEmpty() && weapon.getTypeName() != typeid(ESM::Weapon).name())
                 weapon = MWWorld::Ptr();
         }
@@ -196,13 +204,22 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             }
             else
             {
+                LOG_APPEND(Log::LOG_VERBOSE, "- weapon: %s", weapon.getCellRef().getRefId().c_str());
+
                 MWMechanics::blockMeleeAttack(attacker, victim, weapon, attack.damage, 1);
 
-                if (attack.usesStrikeEnchantment)
+                if (attack.applyWeaponEnchantment)
                 {
                     MWMechanics::CastSpell cast(attacker, victim, false);
                     cast.mHitPosition = osg::Vec3f();
                     cast.cast(weapon, false);
+                }
+
+                if (attack.applyProjectileEnchantment)
+                {
+                    MWMechanics::CastSpell cast(attacker, victim, false);
+                    cast.mHitPosition = osg::Vec3f();
+                    cast.cast(projectile, false);
                 }
             }
 

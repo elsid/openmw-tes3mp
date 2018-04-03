@@ -290,9 +290,28 @@ namespace MWMechanics
         reduceWeaponCondition(damage, validVictim, weapon, attacker);
 
         // Apply "On hit" effect of the weapon & projectile
+
+        /*
+            Start of tes3mp change (minor)
+
+            Track whether the strike enchantment is successful for attacks by the
+            LocalPlayer or LocalActors for both their weapon and projectile
+        */
+        mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
+
         bool appliedEnchantment = applyOnStrikeEnchantment(attacker, victim, weapon, hitPosition, true);
+
+        if (localAttack)
+            localAttack->applyWeaponEnchantment = appliedEnchantment;
+
         if (weapon != projectile)
             appliedEnchantment = applyOnStrikeEnchantment(attacker, victim, projectile, hitPosition, true);
+
+        if (localAttack)
+            localAttack->applyProjectileEnchantment = appliedEnchantment;
+        /*
+            End of tes3mp change (minor)
+        */
 
         if (validVictim)
         {

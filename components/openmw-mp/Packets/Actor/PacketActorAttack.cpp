@@ -25,5 +25,6 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
     RW(actor.attack.block, send);
 
     RW(actor.attack.instant, send);
-    RW(actor.attack.usesStrikeEnchantment, send);
+    RW(actor.attack.applyWeaponEnchantment, send);
+    RW(actor.attack.applyProjectileEnchantment, send);
 }

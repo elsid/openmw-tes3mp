@@ -634,7 +634,6 @@ namespace MWClass
         if (localAttack)
         {
             localAttack->success = true;
-            localAttack->usesStrikeEnchantment = false;
             MechanicsHelper::assignAttackTarget(localAttack, victim);
         }
         /*
@@ -717,7 +716,7 @@ namespace MWClass
         bool appliedEnchantment = MWMechanics::applyOnStrikeEnchantment(ptr, victim, weapon, hitPosition);
 
         if (localAttack)
-            localAttack->usesStrikeEnchantment = appliedEnchantment;
+            localAttack->applyWeaponEnchantment = appliedEnchantment;
         /*
             End of tes3mp change (minor)
         */

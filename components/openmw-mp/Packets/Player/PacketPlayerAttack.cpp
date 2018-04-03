@@ -30,5 +30,6 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
     RW(player->attack.knockdown, send);
     RW(player->attack.block, send);
 
-    RW(player->attack.usesStrikeEnchantment, send);
+    RW(player->attack.applyWeaponEnchantment, send);
+    RW(player->attack.applyProjectileEnchantment, send);
 }
