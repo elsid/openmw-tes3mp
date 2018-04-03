@@ -80,7 +80,7 @@ void WorldEvent::addContainerItem(mwmp::WorldObject& worldObject, const MWWorld:
     containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
     containerItem.actionCount = actionCount;
 
-    LOG_APPEND(Log::LOG_INFO, "- Adding container item %s", containerItem.refId.c_str());
+    LOG_APPEND(Log::LOG_INFO, "-- Adding container item %s", containerItem.refId.c_str());
 
     worldObject.containerItems.push_back(containerItem);
 }
@@ -232,7 +232,12 @@ void WorldEvent::editContainers(MWWorld::CellStore* cellStore)
                 mwmp::Main::get().getCellController()->isLocalActor(ptrFound))
             {
                 MWWorld::InventoryStore& invStore = ptrFound.getClass().getInventoryStore(ptrFound);
-                invStore.autoEquip(ptrFound);
+
+                if (ptrFound.getTypeName() == typeid(ESM::NPC).name())
+                    invStore.autoEquip(ptrFound);
+                // autoEquip only works on NPCs, so use the closest alternative for creatures
+                else
+                    invStore.autoEquipShield(ptrFound);
             }
 
             // If this container was open for us, update its view
