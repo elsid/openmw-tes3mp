@@ -92,6 +92,22 @@ bool MechanicsFunctions::IsWerewolf(unsigned short pid) noexcept
     return player->isWerewolf;
 }
 
+const char *MechanicsFunctions::GetCreatureRefId(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->creatureRefId.c_str();
+}
+
+bool MechanicsFunctions::DisplaysCreatureName(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->displayCreatureName;
+}
+
 void MechanicsFunctions::SetMarkCell(unsigned short pid, const char *cellDescription) noexcept
 {
     Player *player;
@@ -141,6 +157,15 @@ void MechanicsFunctions::SetWerewolfState(unsigned short pid, bool isWerewolf) n
     GET_PLAYER(pid, player, );
 
     player->isWerewolf = isWerewolf;
+}
+
+void MechanicsFunctions::SetCreatureRefId(unsigned short pid, const char *refId, bool displayCreatureName) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->creatureRefId = refId;
+    player->displayCreatureName = displayCreatureName;
 }
 
 void MechanicsFunctions::SendMarkLocation(unsigned short pid)

@@ -44,21 +44,21 @@ void PlayerList::createPlayer(RakNet::RakNetGUID guid)
 
     ESM::Creature creature;
     ESM::NPC npc;
-    if (!dedicPlayer->creatureModel.empty())
+    if (!dedicPlayer->creatureRefId.empty())
     {
-        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(dedicPlayer->creatureModel);
+        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(dedicPlayer->creatureRefId);
         if (tmpCreature == 0)
         {
-            dedicPlayer->creatureModel = "";
+            dedicPlayer->creatureRefId = "";
             createPlayer(guid);
             return;
         }
         creature = *tmpCreature;
         creature.mScript = "";
-        if (!dedicPlayer->useCreatureName)
+        if (!dedicPlayer->displayCreatureName)
             creature.mName = dedicPlayer->npc.mName;
         LOG_APPEND(Log::LOG_INFO, "Player %s looks like %s", dedicPlayer->npc.mName.c_str(),
-                   dedicPlayer->creatureModel.c_str());
+                   dedicPlayer->creatureRefId.c_str());
     }
     else
     {
@@ -82,8 +82,8 @@ void PlayerList::createPlayer(RakNet::RakNetGUID guid)
     if (dedicPlayer->reference)
     {
         bool isNPC = dedicPlayer->reference->getPtr().getTypeName() == typeid(ESM::NPC).name();
-        if ((!dedicPlayer->creatureModel.empty() && isNPC) ||
-            (dedicPlayer->creatureModel.empty() && !isNPC))
+        if ((!dedicPlayer->creatureRefId.empty() && isNPC) ||
+            (dedicPlayer->creatureRefId.empty() && !isNPC))
         {
             if (dedicPlayer->reference)
             {
@@ -106,7 +106,7 @@ void PlayerList::createPlayer(RakNet::RakNetGUID guid)
     if (dedicPlayer->state == 0)
     {
         string recid;
-        if (dedicPlayer->creatureModel.empty())
+        if (dedicPlayer->creatureRefId.empty())
         {
             LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
             npc.mId = "Dedicated Player";
@@ -158,7 +158,7 @@ void PlayerList::createPlayer(RakNet::RakNetGUID guid)
         MWWorld::Store<ESM::Creature> *creature_store = const_cast<MWWorld::Store<ESM::Creature> *> (&store->get<ESM::Creature>());
         MWWorld::Store<ESM::NPC> *npc_store = const_cast<MWWorld::Store<ESM::NPC> *> (&store->get<ESM::NPC>());
 
-        if (!dedicPlayer->creatureModel.empty())
+        if (!dedicPlayer->creatureRefId.empty())
         {
             if (!npc.mId.empty() || npc.mId != "Dedicated Player")
             {

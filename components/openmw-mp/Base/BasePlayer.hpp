@@ -224,7 +224,7 @@ namespace mwmp
             inventoryChanges.count = 0;
             spellbookChanges.action = 0;
             spellbookChanges.count = 0;
-            useCreatureName = false;
+            displayCreatureName = false;
         }
 
         BasePlayer()
@@ -287,8 +287,9 @@ namespace mwmp
 
         float scale;
         bool isWerewolf;
-        std::string creatureModel;
-        bool useCreatureName;
+
+        bool displayCreatureName;
+        std::string creatureRefId;
 
         bool isChangingRegion;
 

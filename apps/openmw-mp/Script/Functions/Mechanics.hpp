@@ -16,6 +16,8 @@
     \
     {"GetScale",                   MechanicsFunctions::GetScale},\
     {"IsWerewolf",                 MechanicsFunctions::IsWerewolf},\
+    {"GetCreatureRefId",           MechanicsFunctions::GetCreatureRefId},\
+    {"DisplaysCreatureName",       MechanicsFunctions::DisplaysCreatureName},\
     \
     {"SetMarkCell",                MechanicsFunctions::SetMarkCell},\
     {"SetMarkPos",                 MechanicsFunctions::SetMarkPos},\
@@ -24,6 +26,7 @@
     \
     {"SetScale",                   MechanicsFunctions::SetScale},\
     {"SetWerewolfState",           MechanicsFunctions::SetWerewolfState},\
+    {"SetCreatureRefId",           MechanicsFunctions::SetCreatureRefId},\
     \
     {"SendMarkLocation",           MechanicsFunctions::SendMarkLocation},\
     {"SendSelectedSpell",          MechanicsFunctions::SendSelectedSpell},\
@@ -119,6 +122,25 @@ public:
     static bool IsWerewolf(unsigned short pid) noexcept;
 
     /**
+    * \brief Get the refId of the creature the player is disguised as.
+    *
+    * \param pid The player ID.
+    * \return The creature refId.
+    */
+    static const char *GetCreatureRefId(unsigned short pid) noexcept;
+
+    /**
+    * \brief Check whether a player's name is replaced by that of the creature they are
+    *        disguised as when other players hover over them.
+    *
+    * This is based on the last PlayerShapeshift packet received or sent for that player.
+    *
+    * \param pid The player ID.
+    * \return The creature name display state.
+    */
+    static bool DisplaysCreatureName(unsigned short pid) noexcept;
+
+    /**
     * \brief Set the Mark cell of a player.
     *
     * This changes the Mark cell recorded for that player in the server memory, but does not by itself
@@ -195,6 +217,20 @@ public:
     * \return void
     */
     static void SetWerewolfState(unsigned short pid, bool isWerewolf) noexcept;
+
+    /**
+    * \brief Set the refId of the creature a player is disguised as.
+    *
+    * This changes the creature refId recorded for that player in the server memory, but
+    * does not by itself send a packet.
+    *
+    * \param pid The player ID.
+    * \param refId The creature refId.
+    * \param displaysCreatureName Whether the player's name appears as that of the creature
+    *                             when hovered over by others.
+    * \return void
+    */
+    static void SetCreatureRefId(unsigned short pid, const char *refId, bool displayCreatureName) noexcept;
 
     /**
     * \brief Send a PlayerMiscellaneous packet with a Mark location to a player.
