@@ -338,7 +338,7 @@ void WorldEvent::spawnObjects(MWWorld::CellStore* cellStore)
             {
                 MWWorld::Ptr masterPtr;
 
-                if (worldObject.master.refId.empty())
+                if (worldObject.master.isPlayer)
                     masterPtr = MechanicsHelper::getPlayerPtr(worldObject.master);
                 else
                     masterPtr = cellStore->searchExact(worldObject.master.refNumIndex, worldObject.master.mpNum);
@@ -828,18 +828,19 @@ void WorldEvent::addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& mas
 
     if (master == MWBase::Environment::get().getWorld()->getPlayerPtr())
     {
+        worldObject.master.isPlayer = true;
         worldObject.master.guid = mwmp::Main::get().getLocalPlayer()->guid;
-        worldObject.master.refId.clear();
     }
     else if (mwmp::PlayerList::isDedicatedPlayer(master))
     {
+        worldObject.master.isPlayer = true;
         worldObject.master.guid = mwmp::PlayerList::getPlayer(master)->guid;
-        worldObject.master.refId.clear();
     }
     else
     {
         MWWorld::CellRef *masterRef = &master.getCellRef();
 
+        worldObject.master.isPlayer = false;
         worldObject.master.refId = masterRef->getRefId();
         worldObject.master.refNumIndex = masterRef->getRefNum().mIndex;
         worldObject.master.mpNum = masterRef->getMpNum();

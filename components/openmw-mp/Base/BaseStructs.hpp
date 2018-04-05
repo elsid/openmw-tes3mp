@@ -22,6 +22,8 @@ namespace mwmp
     
     struct Target
     {
+        bool isPlayer;
+
         std::string refId;
         int refNumIndex;
         int mpNum;

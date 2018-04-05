@@ -86,13 +86,10 @@ Attack *MechanicsHelper::getDedicatedAttack(const MWWorld::Ptr& ptr)
 
 MWWorld::Ptr MechanicsHelper::getPlayerPtr(const Target& target)
 {
-    if (target.refId.empty())
-    {
-        if (target.guid == mwmp::Main::get().getLocalPlayer()->guid)
-            return MWBase::Environment::get().getWorld()->getPlayerPtr();
-        else if (PlayerList::getPlayer(target.guid) != nullptr)
-            return PlayerList::getPlayer(target.guid)->getPtr();
-    }
+    if (target.guid == mwmp::Main::get().getLocalPlayer()->guid)
+        return MWBase::Environment::get().getWorld()->getPlayerPtr();
+    else if (PlayerList::getPlayer(target.guid) != nullptr)
+        return PlayerList::getPlayer(target.guid)->getPtr();
 
     return nullptr;
 }
@@ -101,18 +98,19 @@ void MechanicsHelper::assignAttackTarget(Attack* attack, const MWWorld::Ptr& tar
 {
     if (target == MWBase::Environment::get().getWorld()->getPlayerPtr())
     {
+        attack->target.isPlayer = true;
         attack->target.guid = mwmp::Main::get().getLocalPlayer()->guid;
-        attack->target.refId.clear();
     }
     else if (mwmp::PlayerList::isDedicatedPlayer(target))
     {
+        attack->target.isPlayer = true;
         attack->target.guid = mwmp::PlayerList::getPlayer(target)->guid;
-        attack->target.refId.clear();
     }
     else
     {
         MWWorld::CellRef *targetRef = &target.getCellRef();
 
+        attack->target.isPlayer = false;
         attack->target.refId = targetRef->getRefId();
         attack->target.refNumIndex = targetRef->getRefNum().mIndex;
         attack->target.mpNum = targetRef->getMpNum();
@@ -128,6 +126,8 @@ void MechanicsHelper::resetAttack(Attack* attack)
     attack->applyProjectileEnchantment = false;
     attack->target.guid = RakNet::RakNetGUID();
     attack->target.refId.clear();
+    attack->target.refNumIndex = 0;
+    attack->target.mpNum = 0;
 }
 
 bool MechanicsHelper::getSpellSuccess(std::string spellId, const MWWorld::Ptr& caster)
@@ -152,7 +152,7 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
 
     MWWorld::Ptr victim;
 
-    if (attack.target.refId.empty())
+    if (attack.target.isPlayer)
     {
         if (attack.target.guid == mwmp::Main::get().getLocalPlayer()->guid)
             victim = MWBase::Environment::get().getWorld()->getPlayerPtr();

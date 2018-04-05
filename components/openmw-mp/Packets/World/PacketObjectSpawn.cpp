@@ -18,8 +18,17 @@ void PacketObjectSpawn::Object(WorldObject &worldObject, bool send)
 
     if (worldObject.hasMaster)
     {
-        RW(worldObject.master.refNumIndex, send);
-        RW(worldObject.master.mpNum, send);
-        RW(worldObject.master.guid, send);
+        RW(worldObject.master.isPlayer, send);
+
+        if (worldObject.master.isPlayer)
+        {
+            RW(worldObject.master.guid, send);
+        }
+        else
+        {
+            RW(worldObject.master.refId, send, 1);
+            RW(worldObject.master.refNumIndex, send);
+            RW(worldObject.master.mpNum, send);
+        }
     }
 }
