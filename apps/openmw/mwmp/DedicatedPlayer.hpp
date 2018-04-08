@@ -6,8 +6,11 @@
 #define OPENMW_DEDICATEDPLAYER_HPP
 
 #include <components/esm/custommarkerstate.hpp>
+#include <components/esm/loadcrea.hpp>
 #include <components/esm/loadnpc.hpp>
 #include <components/openmw-mp/Base/BasePlayer.hpp>
+
+#include "../mwclass/npc.hpp"
 
 #include "../mwmechanics/aisequence.hpp"
 
@@ -34,6 +37,7 @@ namespace mwmp
         void update(float dt);
 
         void move(float dt);
+        void setBaseInfo();
         void setAnimFlags();
         void setEquipment();
         void setCell();
@@ -46,8 +50,14 @@ namespace mwmp
         void playAnimation();
         void playSpeech();
 
+        ESM::NPC getNpcRecord();
+        ESM::Creature getCreatureRecord();
+
+        void createReference(ESM::NPC& npc, ESM::Creature& creature, bool reset);
+        void updateReference(ESM::NPC& npc, ESM::Creature& creature);
+        void deleteReference();
+
         MWWorld::Ptr getPtr();
-        MWWorld::Ptr getLiveCellPtr();
         MWWorld::ManualRef* getRef();
 
         void setPtr(const MWWorld::Ptr& newPtr);

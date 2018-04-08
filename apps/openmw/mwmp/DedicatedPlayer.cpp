@@ -1,7 +1,3 @@
-//
-// Created by koncord on 02.01.16.
-//
-
 #include <boost/algorithm/clamp.hpp>
 #include <components/openmw-mp/Log.hpp>
 #include <apps/openmw/mwmechanics/steering.hpp>
@@ -128,6 +124,56 @@ void DedicatedPlayer::move(float dt)
     move->mPosition[1] = direction.pos[1];
 
     MWMechanics::zTurn(ptr, position.rot[2], osg::DegreesToRadians(1.0));
+}
+
+void DedicatedPlayer::setBaseInfo()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    ESM::Creature tempCreature;
+    ESM::NPC tempNpc;
+
+    if (!creatureRefId.empty())
+    {
+        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
+        if (tmpCreature == 0)
+        {
+            creatureRefId = "";
+        }
+        else
+        {
+            tempCreature = getCreatureRecord();
+        }
+    }
+
+    if (creatureRefId.empty())
+    {
+        tempNpc = getNpcRecord();
+    }
+
+    bool reset = false;
+    if (reference)
+    {
+        deleteReference();
+        reset = true;
+    }
+
+    if (state == 0)
+    {
+        createReference(tempNpc, tempCreature, reset);
+    }
+    else
+    {
+        updateReference(tempNpc, tempCreature);
+    }
+
+    state = 2;
+
+    // Give this new character a fatigue of at least 1 so it doesn't spawn
+    // on the ground
+    creatureStats.mDynamic[2].mBase = 1;
+
+    world->enable(ptr);
 }
 
 void DedicatedPlayer::setAnimFlags()
@@ -302,14 +348,167 @@ void DedicatedPlayer::playSpeech()
         winMgr->messageBox(MWBase::Environment::get().getDialogueManager()->getVoiceCaption(sound), MWGui::ShowInDialogueMode_Never);
 }
 
+
+ESM::Creature DedicatedPlayer::getCreatureRecord()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    ESM::Creature creature;
+
+    const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
+
+    creature = *tmpCreature;
+    creature.mScript = "";
+    if (!displayCreatureName)
+        creature.mName = npc.mName;
+    LOG_APPEND(Log::LOG_INFO, "Player %s looks like %s", npc.mName.c_str(), creatureRefId.c_str());
+
+    return creature;
+}
+
+ESM::NPC DedicatedPlayer::getNpcRecord()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    MWWorld::Ptr player = world->getPlayerPtr();
+
+    ESM::NPC newNpc = *player.get<ESM::NPC>()->mBase;
+
+    // To avoid freezes caused by invalid races, only set race if we find it
+    // on our client
+    if (world->getStore().get<ESM::Race>().search(npc.mRace) != 0)
+        newNpc.mRace = npc.mRace;
+
+    newNpc.mHead = npc.mHead;
+    newNpc.mHair = npc.mHair;
+    newNpc.mClass = npc.mClass;
+    newNpc.mName = npc.mName;
+    newNpc.mFlags = npc.mFlags;
+
+    return newNpc;
+}
+
+void DedicatedPlayer::createReference(ESM::NPC& npc, ESM::Creature& creature, bool reset)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    // Temporarily spawn or move player to the center of exterior 0, 0
+    ESM::Position spawnPos;
+    spawnPos.pos[0] = spawnPos.pos[1] = Main::get().getCellController()->getCellSize() / 2;
+    spawnPos.pos[2] = 0;
+    MWWorld::CellStore *cellStore = world->getExterior(0, 0);
+
+    string recid;
+    if (creatureRefId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
+        npc.mId = "Dedicated Player";
+        recid = world->createRecord(npc)->mId;
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "- Creating new Creature record");
+        creature.mId = "Dedicated Player";
+        recid = world->createRecord(creature)->mId;
+    }
+
+    reference = new MWWorld::ManualRef(world->getStore(), recid, 1);
+
+    LOG_APPEND(Log::LOG_INFO, "- Creating new reference pointer for %s", this->npc.mName.c_str());
+
+    MWWorld::Ptr tmp;
+
+    if (reset)
+    {
+        if (cell.isExterior())
+            cellStore = world->getExterior(cell.mData.mX, cell.mData.mY);
+        else
+            cellStore = world->getInterior(cell.mName);
+
+        spawnPos = position;
+    }
+
+    tmp = world->placeObject(reference->getPtr(), cellStore, spawnPos);
+
+    ptr.mCell = tmp.mCell;
+    ptr.mRef = tmp.mRef;
+
+    if (!reset)
+    {
+        cell = *ptr.getCell()->getCell();
+        position = ptr.getRefData().getPosition();
+    }
+
+    ESM::CustomMarker mEditingMarker = Main::get().getGUIController()->createMarker(guid);
+    marker = mEditingMarker;
+    setMarkerState(true);
+}
+
+void DedicatedPlayer::updateReference(ESM::NPC& npc, ESM::Creature& creature)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    // Temporarily spawn or move player to the center of exterior 0, 0
+    ESM::Position spawnPos;
+    spawnPos.pos[0] = spawnPos.pos[1] = Main::get().getCellController()->getCellSize() / 2;
+    spawnPos.pos[2] = 0;
+    MWWorld::CellStore *cellStore = world->getExterior(0, 0);
+
+    LOG_APPEND(Log::LOG_INFO, "- Updating reference pointer for %s", npc.mName.c_str());
+
+    MWWorld::ESMStore *store = const_cast<MWWorld::ESMStore *>(&world->getStore());
+    MWWorld::Store<ESM::Creature> *creature_store = const_cast<MWWorld::Store<ESM::Creature> *> (&store->get<ESM::Creature>());
+    MWWorld::Store<ESM::NPC> *npc_store = const_cast<MWWorld::Store<ESM::NPC> *> (&store->get<ESM::NPC>());
+
+    if (!creatureRefId.empty())
+    {
+        if (!npc.mId.empty() || npc.mId != "Dedicated Player")
+        {
+            LOG_APPEND(Log::LOG_INFO, "- Deleting NPC record");
+            npc_store->erase(npc.mId);
+            npc.mId.clear();
+        }
+        creature.mId = ptr.get<ESM::Creature>()->mBase->mId;
+        creature_store->insert(creature);
+    }
+    else
+    {
+        if (!creature.mId.empty() || creature.mId != "Dedicated Player")
+        {
+            LOG_APPEND(Log::LOG_INFO, "- Deleting Creature record");
+            creature_store->erase(creature.mId);
+            creature.mId.clear();
+        }
+        npc.mId = ptr.get<ESM::NPC>()->mBase->mId;
+        npc_store->insert(npc);
+    }
+
+    // Disable Ptr to avoid graphical glitches caused by race changes
+    world->disable(ptr);
+
+    setPtr(world->moveObject(ptr, cellStore, spawnPos.pos[0], spawnPos.pos[1], spawnPos.pos[2]));
+    setCell();
+}
+
+void DedicatedPlayer::deleteReference()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    bool isNPC = reference->getPtr().getTypeName() == typeid(ESM::NPC).name();
+    if ((!creatureRefId.empty() && isNPC) ||
+        (creatureRefId.empty() && !isNPC))
+    {
+        LOG_APPEND(Log::LOG_INFO, "- Deleting old reference");
+        state = 0;
+        world->deleteObject(ptr);
+        delete reference;
+        reference = nullptr;
+    }
+}
+
 MWWorld::Ptr DedicatedPlayer::getPtr()
 {
     return ptr;
-}
-
-MWWorld::Ptr DedicatedPlayer::getLiveCellPtr()
-{
-    return reference->getPtr();
 }
 
 MWWorld::ManualRef *DedicatedPlayer::getRef()

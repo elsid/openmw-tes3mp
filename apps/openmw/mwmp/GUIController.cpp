@@ -285,7 +285,7 @@ ESM::CustomMarker mwmp::GUIController::createMarker(const RakNet::RakNetGUID &gu
     ESM::CustomMarker mEditingMarker;
     if (!player)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Unknown player guid: %lu", guid.g);
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Unknown player guid: %s", guid.ToString());
         return mEditingMarker;
     }
 

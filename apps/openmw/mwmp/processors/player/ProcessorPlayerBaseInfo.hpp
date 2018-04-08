@@ -49,7 +49,7 @@ namespace mwmp
                     packet.Read();
                 }
 
-                PlayerList::createPlayer(guid);
+                static_cast<DedicatedPlayer*>(player)->setBaseInfo();
             }
         }
     };
