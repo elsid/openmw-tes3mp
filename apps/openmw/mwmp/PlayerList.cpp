@@ -39,30 +39,19 @@ DedicatedPlayer *PlayerList::newPlayer(RakNet::RakNetGUID guid)
     LOG_APPEND(Log::LOG_INFO, "- Creating new DedicatedPlayer with guid %s", guid.ToString());
 
     players[guid] = new DedicatedPlayer(guid);
-    players[guid]->state = 0;
+
+    LOG_APPEND(Log::LOG_INFO, "- There are now %i DedicatedPlayers", players.size());
+
     return players[guid];
 }
 
-void PlayerList::disconnectPlayer(RakNet::RakNetGUID guid)
+void PlayerList::deletePlayer(RakNet::RakNetGUID guid)
 {
-    if (players[guid]->state > 1)
-    {
-        players[guid]->state = 1;
+    if (players[guid]->reference)
+        players[guid]->deleteReference();
 
-        // Remove player's marker
-        players[guid]->setMarkerState(false);
-
-        MWBase::World *world = MWBase::Environment::get().getWorld();
-        world->disable(players[guid]->getPtr());
-
-        // Move player to exterior 0,0
-        ESM::Position newPos;
-        newPos.pos[0] = newPos.pos[1] = Main::get().getCellController()->getCellSize() / 2;
-        newPos.pos[2] = 0;
-        MWWorld::CellStore *cellStore = world->getExterior(0, 0);
-
-        world->moveObject(players[guid]->getPtr(), cellStore, newPos.pos[0], newPos.pos[1], newPos.pos[2]);
-    }
+    delete players[guid];
+    players.erase(guid);
 }
 
 void PlayerList::cleanUp()

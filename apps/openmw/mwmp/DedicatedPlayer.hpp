@@ -38,10 +38,10 @@ namespace mwmp
 
         void move(float dt);
         void setBaseInfo();
+        void setShapeshift();
         void setAnimFlags();
         void setEquipment();
         void setCell();
-        void setShapeshift();
 
         void updateMarker();
         void removeMarker();
@@ -53,8 +53,7 @@ namespace mwmp
         ESM::NPC getNpcRecord();
         ESM::Creature getCreatureRecord();
 
-        void createReference(ESM::NPC& npc, ESM::Creature& creature, bool reset);
-        void updateReference(ESM::NPC& npc, ESM::Creature& creature);
+        void createReference(ESM::NPC& npc, ESM::Creature& creature);
         void deleteReference();
 
         MWWorld::Ptr getPtr();
@@ -67,7 +66,6 @@ namespace mwmp
         DedicatedPlayer(RakNet::RakNetGUID guid);
         virtual ~DedicatedPlayer();
 
-        int state;
         MWWorld::ManualRef* reference;
 
         MWWorld::Ptr ptr;

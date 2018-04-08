@@ -29,7 +29,7 @@ namespace mwmp
 
         static DedicatedPlayer *newPlayer(RakNet::RakNetGUID guid);
 
-        static void disconnectPlayer(RakNet::RakNetGUID guid);
+        static void deletePlayer(RakNet::RakNetGUID guid);
         static void cleanUp();
 
         static DedicatedPlayer *getPlayer(RakNet::RakNetGUID guid);

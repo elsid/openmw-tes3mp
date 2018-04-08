@@ -26,7 +26,7 @@ namespace mwmp
             if (isLocal())
                 MWBase::Environment::get().getStateManager()->requestQuit();
             else if (player != 0)
-                PlayerList::disconnectPlayer(guid);
+                PlayerList::deletePlayer(guid);
         }
     };
 }
