@@ -26,7 +26,7 @@ public:
     * send a packet.
     *
     * \param pid The player ID.
-    * \param bool The difficulty.
+    * \param difficulty The difficulty.
     * \return void
     */
     static void SetDifficulty(unsigned short pid, int difficulty);
@@ -44,7 +44,7 @@ public:
     * If you do not wish to enforce a log level, simply set enforcedLogLevel to -1
     *
     * \param pid The player ID.
-    * \param bool The enforced log level.
+    * \param enforcedLogLevel The enforced log level.
     * \return void
     */
     static void SetEnforcedLogLevel(unsigned short pid, int enforcedLogLevel);
@@ -56,7 +56,7 @@ public:
     * send a packet.
     *
     * \param pid The player ID.
-    * \param bool The physics framerate.
+    * \param physicsFramerate The physics framerate.
     * \return void
     */
     static void SetPhysicsFramerate(unsigned short pid, double physicsFramerate);
@@ -68,7 +68,7 @@ public:
     * by itself send a packet.
     *
     * \param pid The player ID.
-    * \param bool The console permission state.
+    * \param state The console permission state.
     * \return void
     */
     static void SetConsoleAllowed(unsigned short pid, bool state);
@@ -80,7 +80,7 @@ public:
     * by itself send a packet.
     *
     * \param pid The player ID.
-    * \param bool The resting permission state.
+    * \param state The resting permission state.
     * \return void
     */
     static void SetBedRestAllowed(unsigned short pid, bool state);
@@ -92,7 +92,7 @@ public:
     * by itself send a packet.
     *
     * \param pid The player ID.
-    * \param bool The resting permission state.
+    * \param state The resting permission state.
     * \return void
     */
     static void SetWildernessRestAllowed(unsigned short pid, bool state);
@@ -104,7 +104,7 @@ public:
     * by itself send a packet.
     *
     * \param pid The player ID.
-    * \param bool The waiting permission state.
+    * \param state The waiting permission state.
     * \return void
     */
     static void SetWaitAllowed(unsigned short pid, bool state);

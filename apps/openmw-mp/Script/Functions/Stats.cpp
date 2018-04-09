@@ -330,6 +330,14 @@ void StatsFunctions::SetBirthsign(unsigned short pid, const char *sign) noexcept
     player->birthsign = sign;
 }
 
+void StatsFunctions::SetResetStats(unsigned short pid, bool resetStats) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->resetStats = resetStats;
+}
+
 void StatsFunctions::SetLevel(unsigned short pid, int value) noexcept
 {
     Player *player;

@@ -49,6 +49,7 @@
     {"SetHair",                 StatsFunctions::SetHairstyle},\
     {"SetIsMale",               StatsFunctions::SetIsMale},\
     {"SetBirthsign",            StatsFunctions::SetBirthsign},\
+    {"SetResetStats",           StatsFunctions::SetResetStats},\
     \
     {"SetLevel",                StatsFunctions::SetLevel},\
     {"SetLevelProgress",        StatsFunctions::SetLevelProgress},\
@@ -123,6 +124,19 @@ public:
     static void SetHairstyle(unsigned short pid, const char *style) noexcept;
     static void SetIsMale(unsigned short pid, int male) noexcept;
     static void SetBirthsign(unsigned short pid, const char *name) noexcept;
+
+    /**
+    * \brief Set whether the player's stats should be reset based on their
+    *        current race as the result of a PlayerBaseInfo packet.
+    *
+    * This changes the resetState for that player in the server memory, but does not by itself
+    * send a packet.
+    *
+    * \param pid The player ID.
+    * \param resetStats The stat reset state.
+    * \return void
+    */
+    static void SetResetStats(unsigned short pid, bool resetStats) noexcept;
     
     static void SetLevel(unsigned short pid, int value) noexcept;
     static void SetLevelProgress(unsigned short pid, int value) noexcept;

@@ -201,7 +201,7 @@ public:
     * does not by itself send a packet.
     *
     * \param pid The player ID.
-    * \param bool The new scale.
+    * \param scale The new scale.
     * \return void
     */
     static void SetScale(unsigned short pid, double scale) noexcept;
@@ -213,7 +213,7 @@ public:
     * does not by itself send a packet.
     *
     * \param pid The player ID.
-    * \param bool The new werewolf state.
+    * \param isWerewolf The new werewolf state.
     * \return void
     */
     static void SetWerewolfState(unsigned short pid, bool isWerewolf) noexcept;
