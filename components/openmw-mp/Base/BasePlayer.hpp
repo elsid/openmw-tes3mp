@@ -225,6 +225,7 @@ namespace mwmp
             spellbookChanges.action = 0;
             spellbookChanges.count = 0;
             displayCreatureName = false;
+            resetStats = false;
         }
 
         BasePlayer()
@@ -285,6 +286,7 @@ namespace mwmp
         std::string sound;
         Animation animation;
 
+        bool resetStats;
         float scale;
         bool isWerewolf;
 

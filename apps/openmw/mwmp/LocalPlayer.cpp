@@ -440,13 +440,6 @@ void LocalPlayer::updateCell(bool forceUpdate)
     }
 }
 
-void LocalPlayer::updateChar()
-{
-    MWBase::Environment::get().getMechanicsManager()->setPlayerRace(npc.mRace, npc.isMale(), npc.mHead, npc.mHair);
-    MWBase::Environment::get().getMechanicsManager()->setPlayerBirthsign(birthsign);
-    MWBase::Environment::get().getWindowManager()->getInventoryWindow()->rebuildAvatar();
-}
-
 void LocalPlayer::updateEquipment(bool forceUpdate)
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
@@ -836,6 +829,40 @@ void LocalPlayer::closeInventoryWindows()
         MWBase::Environment::get().getWindowManager()->popGuiMode();
 
     MWBase::Environment::get().getWindowManager()->finishDragDrop();
+}
+
+void LocalPlayer::setCharacter()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    // Ignore invalid races
+    if (world->getStore().get<ESM::Race>().search(npc.mRace) != 0)
+    {
+        MWBase::Environment::get().getWorld()->getPlayer().setBirthSign(birthsign);
+
+        if (resetStats)
+            MWBase::Environment::get().getMechanicsManager()->setPlayerRace(npc.mRace, npc.isMale(), npc.mHead, npc.mHair);
+        else
+        {
+            ESM::NPC player = *world->getPlayerPtr().get<ESM::NPC>()->mBase;
+
+            player.mRace = npc.mRace;
+            player.mHead = npc.mHead;
+            player.mHair = npc.mHair;
+            player.setIsMale(npc.isMale());
+            world->createRecord(player);
+
+            MWBase::Environment::get().getMechanicsManager()->playerLoaded();
+        }
+
+        setEquipment();
+
+        MWBase::Environment::get().getWindowManager()->getInventoryWindow()->rebuildAvatar();
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "- Character update was ignored due to invalid race %s", npc.mRace.c_str());
+    }
 }
 
 void LocalPlayer::setDynamicStats()

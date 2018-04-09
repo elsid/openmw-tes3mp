@@ -32,8 +32,8 @@ namespace mwmp
                 }
                 else
                 {
-                    LOG_APPEND(Log::LOG_INFO, "- Updating LocalPlayer");
-                    static_cast<LocalPlayer*>(player)->updateChar();
+                    LOG_APPEND(Log::LOG_INFO, "- Setting character for LocalPlayer");
+                    static_cast<LocalPlayer*>(player)->setCharacter();
                 }
             }
             else
