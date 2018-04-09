@@ -134,45 +134,55 @@ void DedicatedPlayer::setBaseInfo()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
-    ESM::Creature tempCreature;
-    ESM::NPC tempNpc;
-
-    if (!creatureRefId.empty())
+    if (reference)
     {
-        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
-        if (tmpCreature == 0)
-        {
-            creatureRefId = "";
-        }
-        else
-        {
-            tempCreature = getCreatureRecord();
-        }
+        deleteReference();
     }
 
-    if (creatureRefId.empty())
-    {
-        tempNpc = getNpcRecord();
-    }
+    std::string recId = getNpcRecordId();
+    createReference(recId);
+
+    // Give this new character a temporary high fatigue of at least 1 so it doesn't
+    // spawn on the ground
+    creatureStats.mDynamic[2].mBase = 1000;
+}
+
+void DedicatedPlayer::setShapeshift()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (reference)
     {
         deleteReference();
     }
 
-    createReference(tempNpc, tempCreature);
+    std::string recId;
 
-    // Give this new character a temporary high fatigue of at least 1 so it doesn't
-    // spawn on the ground
-    creatureStats.mDynamic[2].mBase = 1000;
+    if (!creatureRefId.empty())
+    {
+        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
+        if (tmpCreature != 0)
+        {
+            recId = getCreatureRecordId();
+        }
+    }
 
-    world->enable(ptr);
-}
+    if (recId.empty())
+    {
+        recId = getNpcRecordId();
+    }
 
-void DedicatedPlayer::setShapeshift()
-{
+    createReference(recId);
+
+    if (ptr.getTypeName() == typeid(ESM::NPC).name())
+    {
+        MWBase::Environment::get().getMechanicsManager()->setWerewolf(ptr, isWerewolf);
+
+        if (!isWerewolf)
+            setEquipment();
+    }
+    
     MWBase::Environment::get().getWorld()->scaleObject(ptr, scale);
-    MWBase::Environment::get().getMechanicsManager()->setWerewolf(ptr, isWerewolf);
 }
 
 void DedicatedPlayer::setAnimFlags()
@@ -340,25 +350,7 @@ void DedicatedPlayer::playSpeech()
         winMgr->messageBox(MWBase::Environment::get().getDialogueManager()->getVoiceCaption(sound), MWGui::ShowInDialogueMode_Never);
 }
 
-
-ESM::Creature DedicatedPlayer::getCreatureRecord()
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    ESM::Creature creature;
-
-    const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
-
-    creature = *tmpCreature;
-    creature.mScript = "";
-    if (!displayCreatureName)
-        creature.mName = npc.mName;
-    LOG_APPEND(Log::LOG_INFO, "Player %s looks like %s", npc.mName.c_str(), creatureRefId.c_str());
-
-    return creature;
-}
-
-ESM::NPC DedicatedPlayer::getNpcRecord()
+std::string DedicatedPlayer::getNpcRecordId()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
@@ -377,30 +369,42 @@ ESM::NPC DedicatedPlayer::getNpcRecord()
     newNpc.mName = npc.mName;
     newNpc.mFlags = npc.mFlags;
 
-    return newNpc;
+    LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
+    newNpc.mId = "Dedicated Player";
+    std::string recId = world->createRecord(newNpc)->mId;
+
+    return recId;
 }
 
-void DedicatedPlayer::createReference(ESM::NPC& npc, ESM::Creature& creature)
+std::string DedicatedPlayer::getCreatureRecordId()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
-    string recId;
-    if (creatureRefId.empty())
-    {
-        LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
-        npc.mId = "Dedicated Player";
-        recId = world->createRecord(npc)->mId;
-    }
-    else
-    {
-        LOG_APPEND(Log::LOG_INFO, "- Creating new Creature record");
-        creature.mId = "Dedicated Player";
-        recId = world->createRecord(creature)->mId;
-    }
+    ESM::Creature creature;
+
+    const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
+
+    creature = *tmpCreature;
+    creature.mScript = "";
+    if (!displayCreatureName)
+        creature.mName = npc.mName;
+    LOG_APPEND(Log::LOG_INFO, "Player %s looks like %s", npc.mName.c_str(), creatureRefId.c_str());
+
+    LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
+    creature.mId = "Dedicated Player";
+
+    std::string recId = world->createRecord(creature)->mId;
+
+    return recId;
+}
+
+void DedicatedPlayer::createReference(const std::string& recId)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
 
     reference = new MWWorld::ManualRef(world->getStore(), recId, 1);
 
-    LOG_APPEND(Log::LOG_INFO, "- Creating new reference pointer for %s", this->npc.mName.c_str());
+    LOG_APPEND(Log::LOG_INFO, "- Creating new reference pointer for %s", npc.mName.c_str());
 
     ptr = world->placeObject(reference->getPtr(), Main::get().getCellController()->getCellStore(cell), position);
 

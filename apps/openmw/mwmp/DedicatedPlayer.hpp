@@ -50,10 +50,10 @@ namespace mwmp
         void playAnimation();
         void playSpeech();
 
-        ESM::NPC getNpcRecord();
-        ESM::Creature getCreatureRecord();
+        std::string getNpcRecordId();
+        std::string getCreatureRecordId();
 
-        void createReference(ESM::NPC& npc, ESM::Creature& creature);
+        void createReference(const std::string& recId);
         void deleteReference();
 
         MWWorld::Ptr getPtr();
