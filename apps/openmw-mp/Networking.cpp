@@ -116,8 +116,12 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
 
     if (!player->isHandshaked())
     {
+        player->incrementHandshakeAttempts();
         LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Have not completed handshake with player %d", player->getId());
-        if (player->handshakeAttempts() > 5)
+
+        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Attempts so far: %i", player->getHandshakeAttempts());
+
+        if (player->getHandshakeAttempts() > 5)
             kickPlayer(player->guid);
         return;
     }

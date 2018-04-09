@@ -58,7 +58,8 @@ public:
     void setId(unsigned short id);
 
     bool isHandshaked();
-    int handshakeAttempts();
+    int getHandshakeAttempts();
+    void incrementHandshakeAttempts();
     void setHandshake();
 
     void setLoadState(int state);
@@ -73,8 +74,8 @@ public:
 
 private:
     CellController::TContainer cells;
-    int handshakeCounter;
     int loadState;
+    int handshakeCounter;
 
 };
 

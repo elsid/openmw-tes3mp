@@ -100,9 +100,14 @@ void Player::setHandshake()
     handshakeCounter = numeric_limits<int>::max();
 }
 
-int Player::handshakeAttempts()
+void Player::incrementHandshakeAttempts()
 {
-    return handshakeCounter++;
+    handshakeCounter++;
+}
+
+int Player::getHandshakeAttempts()
+{
+    return handshakeCounter;
 }
 
 
