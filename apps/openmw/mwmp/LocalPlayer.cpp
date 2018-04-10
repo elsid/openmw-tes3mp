@@ -841,7 +841,10 @@ void LocalPlayer::setCharacter()
         MWBase::Environment::get().getWorld()->getPlayer().setBirthSign(birthsign);
 
         if (resetStats)
+        {
             MWBase::Environment::get().getMechanicsManager()->setPlayerRace(npc.mRace, npc.isMale(), npc.mHead, npc.mHair);
+            setEquipment();
+        }
         else
         {
             ESM::NPC player = *world->getPlayerPtr().get<ESM::NPC>()->mBase;
@@ -854,8 +857,6 @@ void LocalPlayer::setCharacter()
 
             MWBase::Environment::get().getMechanicsManager()->playerLoaded();
         }
-
-        setEquipment();
 
         MWBase::Environment::get().getWindowManager()->getInventoryWindow()->rebuildAvatar();
     }
@@ -1103,7 +1104,11 @@ void LocalPlayer::setEquipment()
                 }
             }
             else
-                ptrInventory.equip(slot, it, ptrPlayer);
+            {
+                // Don't try to equip an item that is already equipped
+                if (!ptrInventory.getSlot(slot).isEqual(it))
+                    ptrInventory.equip(slot, it, ptrPlayer);
+            }
         }
         else
             ptrInventory.unequipSlot(slot, ptrPlayer);
