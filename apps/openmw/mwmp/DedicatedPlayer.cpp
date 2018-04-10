@@ -43,7 +43,12 @@ DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
 {
     reference = 0;
     attack.pressed = 0;
+
     creatureStats.mDead = false;
+    // Give this new character a temporary high fatigue so it doesn't spawn on
+    // the ground
+    creatureStats.mDynamic[2].mBase = 1000;
+
     movementFlags = 0;
     attack.instant = false;
 
@@ -142,9 +147,7 @@ void DedicatedPlayer::setBaseInfo()
     std::string recId = getNpcRecordId();
     createReference(recId);
 
-    // Give this new character a temporary high fatigue of at least 1 so it doesn't
-    // spawn on the ground
-    creatureStats.mDynamic[2].mBase = 1000;
+    setEquipment();
 }
 
 void DedicatedPlayer::setShapeshift()
