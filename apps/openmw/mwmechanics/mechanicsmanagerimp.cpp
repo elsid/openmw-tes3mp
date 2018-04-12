@@ -870,7 +870,16 @@ namespace MWMechanics
         mUpdatePlayer = true;
         mClassSelected = true;
         mRaceSelected = true;
-        mAI = true;
+
+        /*
+            Start of tes3mp change (major)
+
+            Avoid enabling AI in multiplayer
+        */
+        mAI = false;
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     bool MechanicsManager::isBoundItem(const MWWorld::Ptr& item)
