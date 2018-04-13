@@ -60,6 +60,7 @@ DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
     MWBase::World *world = MWBase::Environment::get().getWorld();
     npc = *world->getPlayerPtr().get<ESM::NPC>()->mBase;
     npc.mId = "Dedicated Player";
+    previousRace = npc.mRace;
 }
 DedicatedPlayer::~DedicatedPlayer()
 {
@@ -142,8 +143,6 @@ void DedicatedPlayer::move(float dt)
 
 void DedicatedPlayer::setBaseInfo()
 {
-    static std::string previousRace;
-
     // Use the previous race if the new one doesn't exist
     if (!RecordHelper::doesRaceExist(npc.mRace))
         npc.mRace = previousRace;
@@ -175,56 +174,61 @@ void DedicatedPlayer::setShapeshift()
     if (reference)
         isNpc = ptr.getTypeName() == typeid(ESM::NPC).name();
 
-    if (!creatureRefId.empty() && RecordHelper::doesCreatureExist(creatureRefId))
+    if (creatureRefId != previousCreatureRefId)
     {
-        if (isNpc)
+        if (!creatureRefId.empty() && RecordHelper::doesCreatureExist(creatureRefId))
         {
-            deleteReference();
-        }
+            if (isNpc)
+            {
+                deleteReference();
+            }
 
-        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
-        creature = *tmpCreature;
-        creature.mScript = "";
-        if (!displayCreatureName)
-            creature.mName = npc.mName;
-        LOG_APPEND(Log::LOG_INFO, "- %s is disguised as %s", npc.mName.c_str(), creatureRefId.c_str());
+            const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
+            creature = *tmpCreature;
+            creature.mScript = "";
+            if (!displayCreatureName)
+                creature.mName = npc.mName;
+            LOG_APPEND(Log::LOG_INFO, "- %s is disguised as %s", npc.mName.c_str(), creatureRefId.c_str());
 
-        // Is this our first time creating a creature record id for this player? If so, keep it around
-        // and reuse it
-        if (creatureRecordId.empty())
-        {
-            creature.mId = "Dedicated Player";
-            creature.mId =  creatureRecordId = RecordHelper::createCreatureRecord(creature);
-            LOG_APPEND(Log::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
-        }
-        else
-        {
-            creature.mId = creatureRecordId;
-            RecordHelper::updateCreatureRecord(creature);
-        }
+            // Is this our first time creating a creature record id for this player? If so, keep it around
+            // and reuse it
+            if (creatureRecordId.empty())
+            {
+                creature.mId = "Dedicated Player";
+                creature.mId = creatureRecordId = RecordHelper::createCreatureRecord(creature);
+                LOG_APPEND(Log::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
+            }
+            else
+            {
+                creature.mId = creatureRecordId;
+                RecordHelper::updateCreatureRecord(creature);
+            }
 
-        if (!reference)
-        {
-            LOG_APPEND(Log::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
-            createReference(creature.mId);
+            if (!reference)
+            {
+                LOG_APPEND(Log::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
+                createReference(creature.mId);
+            }
+            else
+            {
+                reloadPtr();
+            }
         }
-        else
+        // This player was already a creature, but the new creature refId was empty or
+        // invalid, so we'll turn this player into their NPC self again as a result
+        else if (!isNpc)
         {
+            if (reference)
+            {
+                deleteReference();
+            }
+
+            RecordHelper::updateNpcRecord(npc);
+            createReference(npc.mId);
             reloadPtr();
         }
-    }
-    // This player was already a creature, but the new creature refId was empty or
-    // invalid, so we'll turn this player into their NPC self again as a result
-    else if (!isNpc)
-    {
-        if (reference)
-        {
-            deleteReference();
-        }
 
-        RecordHelper::updateNpcRecord(npc);
-        createReference(npc.mId);
-        reloadPtr();
+        previousCreatureRefId = creatureRefId;
     }
 
     if (ptr.getTypeName() == typeid(ESM::NPC).name())

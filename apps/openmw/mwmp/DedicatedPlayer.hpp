@@ -71,7 +71,9 @@ namespace mwmp
         ESM::CustomMarker marker;
         bool markerEnabled;
 
-        std::string npcRecordId;
+        std::string previousRace;
+        std::string previousCreatureRefId;
+
         std::string creatureRecordId;
     };
 }
