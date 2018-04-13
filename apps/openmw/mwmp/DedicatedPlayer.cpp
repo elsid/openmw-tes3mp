@@ -276,6 +276,9 @@ void DedicatedPlayer::setAnimFlags()
 
 void DedicatedPlayer::setEquipment()
 {
+    // Go no further if the player is disguised as a creature
+    if (!ptr.getClass().hasInventoryStore(ptr)) return;
+
     MWWorld::InventoryStore& invStore = ptr.getClass().getInventoryStore(ptr);
     for (int slot = 0; slot < MWWorld::InventoryStore::Slots; ++slot)
     {
