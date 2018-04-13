@@ -6,34 +6,34 @@
 #define MECHANICSAPI \
     {"GetMiscellaneousChangeType", MechanicsFunctions::GetMiscellaneousChangeType},\
     \
-    {"GetMarkCell",                MechanicsFunctions::GetMarkCell},\
-    {"GetMarkPosX",                MechanicsFunctions::GetMarkPosX},\
-    {"GetMarkPosY",                MechanicsFunctions::GetMarkPosY},\
-    {"GetMarkPosZ",                MechanicsFunctions::GetMarkPosZ},\
-    {"GetMarkRotX",                MechanicsFunctions::GetMarkRotX},\
-    {"GetMarkRotZ",                MechanicsFunctions::GetMarkRotZ},\
-    {"GetSelectedSpellId",         MechanicsFunctions::GetSelectedSpellId},\
+    {"GetMarkCell",                 MechanicsFunctions::GetMarkCell},\
+    {"GetMarkPosX",                 MechanicsFunctions::GetMarkPosX},\
+    {"GetMarkPosY",                 MechanicsFunctions::GetMarkPosY},\
+    {"GetMarkPosZ",                 MechanicsFunctions::GetMarkPosZ},\
+    {"GetMarkRotX",                 MechanicsFunctions::GetMarkRotX},\
+    {"GetMarkRotZ",                 MechanicsFunctions::GetMarkRotZ},\
+    {"GetSelectedSpellId",          MechanicsFunctions::GetSelectedSpellId},\
     \
-    {"GetScale",                   MechanicsFunctions::GetScale},\
-    {"IsWerewolf",                 MechanicsFunctions::IsWerewolf},\
-    {"GetCreatureRefId",           MechanicsFunctions::GetCreatureRefId},\
-    {"DisplaysCreatureName",       MechanicsFunctions::DisplaysCreatureName},\
+    {"GetScale",                    MechanicsFunctions::GetScale},\
+    {"IsWerewolf",                  MechanicsFunctions::IsWerewolf},\
+    {"GetCreatureRefId",            MechanicsFunctions::GetCreatureRefId},\
+    {"GetCreatureNameDisplayState", MechanicsFunctions::GetCreatureNameDisplayState},\
     \
-    {"SetMarkCell",                MechanicsFunctions::SetMarkCell},\
-    {"SetMarkPos",                 MechanicsFunctions::SetMarkPos},\
-    {"SetMarkRot",                 MechanicsFunctions::SetMarkRot},\
-    {"SetSelectedSpellId",         MechanicsFunctions::SetSelectedSpellId},\
+    {"SetMarkCell",                 MechanicsFunctions::SetMarkCell},\
+    {"SetMarkPos",                  MechanicsFunctions::SetMarkPos},\
+    {"SetMarkRot",                  MechanicsFunctions::SetMarkRot},\
+    {"SetSelectedSpellId",          MechanicsFunctions::SetSelectedSpellId},\
     \
-    {"SetScale",                   MechanicsFunctions::SetScale},\
-    {"SetWerewolfState",           MechanicsFunctions::SetWerewolfState},\
-    {"SetCreatureRefId",           MechanicsFunctions::SetCreatureRefId},\
+    {"SetScale",                    MechanicsFunctions::SetScale},\
+    {"SetWerewolfState",            MechanicsFunctions::SetWerewolfState},\
+    {"SetCreatureRefId",            MechanicsFunctions::SetCreatureRefId},\
     \
-    {"SendMarkLocation",           MechanicsFunctions::SendMarkLocation},\
-    {"SendSelectedSpell",          MechanicsFunctions::SendSelectedSpell},\
-    {"SendShapeshift",             MechanicsFunctions::SendShapeshift},\
+    {"SendMarkLocation",            MechanicsFunctions::SendMarkLocation},\
+    {"SendSelectedSpell",           MechanicsFunctions::SendSelectedSpell},\
+    {"SendShapeshift",              MechanicsFunctions::SendShapeshift},\
     \
-    {"Jail",                       MechanicsFunctions::Jail},\
-    {"Resurrect",                  MechanicsFunctions::Resurrect}
+    {"Jail",                        MechanicsFunctions::Jail},\
+    {"Resurrect",                   MechanicsFunctions::Resurrect}
 
 class MechanicsFunctions
 {
@@ -138,7 +138,7 @@ public:
     * \param pid The player ID.
     * \return The creature name display state.
     */
-    static bool DisplaysCreatureName(unsigned short pid) noexcept;
+    static bool GetCreatureNameDisplayState(unsigned short pid) noexcept;
 
     /**
     * \brief Set the Mark cell of a player.

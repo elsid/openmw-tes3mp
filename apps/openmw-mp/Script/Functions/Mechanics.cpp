@@ -100,7 +100,7 @@ const char *MechanicsFunctions::GetCreatureRefId(unsigned short pid) noexcept
     return player->creatureRefId.c_str();
 }
 
-bool MechanicsFunctions::DisplaysCreatureName(unsigned short pid) noexcept
+bool MechanicsFunctions::GetCreatureNameDisplayState(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
