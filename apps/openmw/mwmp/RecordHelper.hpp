@@ -7,6 +7,7 @@
 namespace RecordHelper
 {
     bool doesCreatureExist(const std::string& refId);
+    bool doesRaceExist(const std::string& raceId);
 
     std::string createCreatureRecord(const ESM::Creature& creature);
     std::string createNpcRecord(const ESM::NPC& npc);

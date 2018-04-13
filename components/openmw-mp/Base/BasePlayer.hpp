@@ -6,6 +6,7 @@
 #define OPENMW_BASEPLAYER_HPP
 
 #include <components/esm/loadcell.hpp>
+#include <components/esm/loadcrea.hpp>
 #include <components/esm/loadnpc.hpp>
 #include <components/esm/npcstats.hpp>
 #include <components/esm/creaturestats.hpp>
@@ -274,6 +275,7 @@ namespace mwmp
         ESM::Cell cell;
         ESM::NPC npc;
         ESM::NpcStats npcStats;
+        ESM::Creature creature;
         ESM::CreatureStats creatureStats;
         ESM::Class charClass;
         Item equipedItems[19];

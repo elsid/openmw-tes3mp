@@ -50,9 +50,6 @@ namespace mwmp
         void playAnimation();
         void playSpeech();
 
-        std::string getNpcRecordId();
-        std::string getCreatureRecordId();
-
         void createReference(const std::string& recId);
         void deleteReference();
 
@@ -60,6 +57,7 @@ namespace mwmp
         MWWorld::ManualRef* getRef();
 
         void setPtr(const MWWorld::Ptr& newPtr);
+        void reloadPtr();
 
     private:
 
@@ -72,6 +70,9 @@ namespace mwmp
 
         ESM::CustomMarker marker;
         bool markerEnabled;
+
+        std::string npcRecordId;
+        std::string creatureRecordId;
     };
 }
 #endif //OPENMW_DEDICATEDPLAYER_HPP

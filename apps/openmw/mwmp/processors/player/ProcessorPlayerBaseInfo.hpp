@@ -23,7 +23,7 @@ namespace mwmp
 
             if (isLocal())
             {
-                LOG_APPEND(Log::LOG_INFO, "- Packet was about my id");
+                LOG_APPEND(Log::LOG_INFO, "- Packet was about LocalPlayer");
 
                 if (isRequest())
                 {

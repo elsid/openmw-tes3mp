@@ -13,6 +13,13 @@ bool RecordHelper::doesCreatureExist(const std::string& refId)
     return world->getStore().get<ESM::Creature>().search(refId);
 }
 
+bool RecordHelper::doesRaceExist(const std::string& raceId)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Race>().search(raceId);
+}
+
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& creature)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();

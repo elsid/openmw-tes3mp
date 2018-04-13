@@ -34,6 +34,7 @@
 #include "GUIController.hpp"
 #include "CellController.hpp"
 #include "MechanicsHelper.hpp"
+#include "RecordHelper.hpp"
 
 
 using namespace mwmp;
@@ -55,6 +56,10 @@ DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
     cell.blank();
     position.pos[0] = position.pos[1] = Main::get().getCellController()->getCellSize() / 2;
     position.pos[2] = 0;
+
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+    npc = *world->getPlayerPtr().get<ESM::NPC>()->mBase;
+    npc.mId = "Dedicated Player";
 }
 DedicatedPlayer::~DedicatedPlayer()
 {
@@ -137,45 +142,85 @@ void DedicatedPlayer::move(float dt)
 
 void DedicatedPlayer::setBaseInfo()
 {
-    MWBase::World *world = MWBase::Environment::get().getWorld();
+    static std::string previousRace;
 
-    if (reference)
+    // Use the previous race if the new one doesn't exist
+    if (!RecordHelper::doesRaceExist(npc.mRace))
+        npc.mRace = previousRace;
+
+    if (!reference)
     {
-        deleteReference();
+        npc.mId = RecordHelper::createNpcRecord(npc);
+        createReference(npc.mId);
+    }
+    else
+    {
+        RecordHelper::updateNpcRecord(npc);
+        reloadPtr();
     }
 
-    std::string recId = getNpcRecordId();
-    createReference(recId);
-
     setEquipment();
+
+    previousRace = npc.mRace;
 }
 
 void DedicatedPlayer::setShapeshift()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
+    bool isNpc = false;
+
     if (reference)
-    {
-        deleteReference();
-    }
+        isNpc = ptr.getTypeName() == typeid(ESM::NPC).name();
 
-    std::string recId;
-
-    if (!creatureRefId.empty())
+    if (!creatureRefId.empty() && RecordHelper::doesCreatureExist(creatureRefId))
     {
-        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
-        if (tmpCreature != 0)
+        if (isNpc)
         {
-            recId = getCreatureRecordId();
+            deleteReference();
+        }
+
+        const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
+        creature = *tmpCreature;
+        creature.mScript = "";
+        if (!displayCreatureName)
+            creature.mName = npc.mName;
+        LOG_APPEND(Log::LOG_INFO, "- %s is disguised as %s", npc.mName.c_str(), creatureRefId.c_str());
+
+        // Is this our first time creating a creature record id for this player? If so, keep it around
+        // and reuse it
+        if (creatureRecordId.empty())
+        {
+            creature.mId = "Dedicated Player";
+            creatureRecordId = RecordHelper::createCreatureRecord(creature);
+            LOG_APPEND(Log::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
+        }
+
+        creature.mId = creatureRecordId;
+
+        if (!reference)
+        {
+            createReference(creature.mId);
+        }
+        else
+        {
+            RecordHelper::updateCreatureRecord(creature);
+            reloadPtr();
         }
     }
-
-    if (recId.empty())
+    // This player was already a creature, but the new creature refId was empty or
+    // invalid, so we'll turn this player into their NPC self again as a result
+    else if (!isNpc)
     {
-        recId = getNpcRecordId();
-    }
+        if (reference)
+        {
+            deleteReference();
+        }
 
-    createReference(recId);
+        RecordHelper::updateNpcRecord(npc);
+        createReference(npc.mId);
+        reloadPtr();
+    }
 
     if (ptr.getTypeName() == typeid(ESM::NPC).name())
     {
@@ -353,54 +398,6 @@ void DedicatedPlayer::playSpeech()
         winMgr->messageBox(MWBase::Environment::get().getDialogueManager()->getVoiceCaption(sound), MWGui::ShowInDialogueMode_Never);
 }
 
-std::string DedicatedPlayer::getNpcRecordId()
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    MWWorld::Ptr player = world->getPlayerPtr();
-
-    ESM::NPC newNpc = *player.get<ESM::NPC>()->mBase;
-
-    // To avoid freezes caused by invalid races, only set race if we find it
-    // on our client
-    if (world->getStore().get<ESM::Race>().search(npc.mRace) != 0)
-        newNpc.mRace = npc.mRace;
-
-    newNpc.mHead = npc.mHead;
-    newNpc.mHair = npc.mHair;
-    newNpc.mClass = npc.mClass;
-    newNpc.mName = npc.mName;
-    newNpc.mFlags = npc.mFlags;
-
-    LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
-    newNpc.mId = "Dedicated Player";
-    std::string recId = world->createRecord(newNpc)->mId;
-
-    return recId;
-}
-
-std::string DedicatedPlayer::getCreatureRecordId()
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    ESM::Creature creature;
-
-    const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
-
-    creature = *tmpCreature;
-    creature.mScript = "";
-    if (!displayCreatureName)
-        creature.mName = npc.mName;
-    LOG_APPEND(Log::LOG_INFO, "Player %s looks like %s", npc.mName.c_str(), creatureRefId.c_str());
-
-    LOG_APPEND(Log::LOG_INFO, "- Creating new NPC record");
-    creature.mId = "Dedicated Player";
-
-    std::string recId = world->createRecord(creature)->mId;
-
-    return recId;
-}
-
 void DedicatedPlayer::createReference(const std::string& recId)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -439,4 +436,11 @@ MWWorld::ManualRef *DedicatedPlayer::getRef()
 void DedicatedPlayer::setPtr(const MWWorld::Ptr& newPtr)
 {
     ptr = newPtr;
+}
+
+void DedicatedPlayer::reloadPtr()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+    world->disable(ptr);
+    world->enable(ptr);
 }
