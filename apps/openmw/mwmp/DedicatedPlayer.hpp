@@ -40,6 +40,8 @@ namespace mwmp
         void setBaseInfo();
         void setShapeshift();
         void setAnimFlags();
+        void setAttributes();
+        void setSkills();
         void setEquipment();
         void setCell();
 

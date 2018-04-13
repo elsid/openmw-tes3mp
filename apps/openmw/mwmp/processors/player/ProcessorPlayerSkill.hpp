@@ -29,19 +29,7 @@ namespace mwmp
             }
             else if (player != 0)
             {
-                MWWorld::Ptr ptrPlayer = static_cast<DedicatedPlayer *>(player)->getPtr();
-
-                // Go no further if the player is disguised as a creature
-                if (ptrPlayer.getTypeName() != typeid(ESM::NPC).name()) return;
-
-                MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
-                MWMechanics::SkillValue skillValue;
-
-                for (int i = 0; i < 27; ++i)
-                {
-                    skillValue.readState(player->npcStats.mSkills[i]);
-                    ptrNpcStats->setSkill(i, skillValue);
-                }
+                static_cast<DedicatedPlayer *>(player)->setSkills();
             }
         }
     };

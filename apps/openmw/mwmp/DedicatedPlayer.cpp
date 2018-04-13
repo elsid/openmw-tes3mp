@@ -274,6 +274,33 @@ void DedicatedPlayer::setAnimFlags()
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_ForceMoveJump, (movementFlags & CreatureStats::Flag_ForceMoveJump) != 0);
 }
 
+void DedicatedPlayer::setAttributes()
+{
+    MWMechanics::CreatureStats *ptrCreatureStats = &ptr.getClass().getCreatureStats(ptr);
+    MWMechanics::AttributeValue attributeValue;
+
+    for (int i = 0; i < 8; ++i)
+    {
+        attributeValue.readState(creatureStats.mAttributes[i]);
+        ptrCreatureStats->setAttribute(i, attributeValue);
+    }
+}
+
+void DedicatedPlayer::setSkills()
+{
+    // Go no further if the player is disguised as a creature
+    if (ptr.getTypeName() != typeid(ESM::NPC).name()) return;
+
+    MWMechanics::NpcStats *ptrNpcStats = &ptr.getClass().getNpcStats(ptr);
+    MWMechanics::SkillValue skillValue;
+
+    for (int i = 0; i < 27; ++i)
+    {
+        skillValue.readState(npcStats.mSkills[i]);
+        ptrNpcStats->setSkill(i, skillValue);
+    }
+}
+
 void DedicatedPlayer::setEquipment()
 {
     // Go no further if the player is disguised as a creature
