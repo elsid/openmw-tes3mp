@@ -159,7 +159,9 @@ void DedicatedPlayer::setBaseInfo()
         reloadPtr();
     }
 
-    setEquipment();
+    // Only set equipment if the player isn't disguised as a creature
+    if (ptr.getTypeName() == typeid(ESM::NPC).name())
+        setEquipment();
 
     previousRace = npc.mRace;
 }
@@ -192,19 +194,22 @@ void DedicatedPlayer::setShapeshift()
         if (creatureRecordId.empty())
         {
             creature.mId = "Dedicated Player";
-            creatureRecordId = RecordHelper::createCreatureRecord(creature);
+            creature.mId =  creatureRecordId = RecordHelper::createCreatureRecord(creature);
             LOG_APPEND(Log::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
         }
-
-        creature.mId = creatureRecordId;
+        else
+        {
+            creature.mId = creatureRecordId;
+            RecordHelper::updateCreatureRecord(creature);
+        }
 
         if (!reference)
         {
+            LOG_APPEND(Log::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
             createReference(creature.mId);
         }
         else
         {
-            RecordHelper::updateCreatureRecord(creature);
             reloadPtr();
         }
     }
