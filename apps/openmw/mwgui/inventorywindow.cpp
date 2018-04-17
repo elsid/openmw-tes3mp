@@ -143,6 +143,12 @@ namespace MWGui
 
         mItemView->setModel(mSortModel);
 
+        mFilterAll->setStateSelected(true);
+        mFilterWeapon->setStateSelected(false);
+        mFilterApparel->setStateSelected(false);
+        mFilterMagic->setStateSelected(false);
+        mFilterMisc->setStateSelected(false);
+
         mPreview->updatePtr(mPtr);
         mPreview->rebuild();
         mPreview->update();
