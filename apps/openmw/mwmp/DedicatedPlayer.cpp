@@ -174,7 +174,7 @@ void DedicatedPlayer::setShapeshift()
     if (reference)
         isNpc = ptr.getTypeName() == typeid(ESM::NPC).name();
 
-    if (creatureRefId != previousCreatureRefId)
+    if (creatureRefId != previousCreatureRefId || displayCreatureName != previousDisplayCreatureName)
     {
         if (!creatureRefId.empty() && RecordHelper::doesCreatureExist(creatureRefId))
         {
@@ -229,6 +229,7 @@ void DedicatedPlayer::setShapeshift()
         }
 
         previousCreatureRefId = creatureRefId;
+        previousDisplayCreatureName = displayCreatureName;
     }
 
     if (ptr.getTypeName() == typeid(ESM::NPC).name())
