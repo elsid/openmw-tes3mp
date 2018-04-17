@@ -27,6 +27,7 @@
     {"SetScale",                    MechanicsFunctions::SetScale},\
     {"SetWerewolfState",            MechanicsFunctions::SetWerewolfState},\
     {"SetCreatureRefId",            MechanicsFunctions::SetCreatureRefId},\
+    {"SetCreatureNameDisplayState", MechanicsFunctions::SetCreatureNameDisplayState},\
     \
     {"SendMarkLocation",            MechanicsFunctions::SendMarkLocation},\
     {"SendSelectedSpell",           MechanicsFunctions::SendSelectedSpell},\
@@ -230,7 +231,17 @@ public:
     *                             when hovered over by others.
     * \return void
     */
-    static void SetCreatureRefId(unsigned short pid, const char *refId, bool displayCreatureName) noexcept;
+    static void SetCreatureRefId(unsigned short pid, const char *refId) noexcept;
+
+    /**
+    * \brief Set whether a player's name is replaced by that of the creature they are
+    *        disguised as when other players hover over them.
+    *
+    * \param pid The player ID.
+    * \param displayState The creature name display state.
+    * \return void
+    */
+    static void SetCreatureNameDisplayState(unsigned short pid, bool displayState) noexcept;
 
     /**
     * \brief Send a PlayerMiscellaneous packet with a Mark location to a player.

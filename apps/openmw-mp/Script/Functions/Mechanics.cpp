@@ -159,13 +159,20 @@ void MechanicsFunctions::SetWerewolfState(unsigned short pid, bool isWerewolf) n
     player->isWerewolf = isWerewolf;
 }
 
-void MechanicsFunctions::SetCreatureRefId(unsigned short pid, const char *refId, bool displayCreatureName) noexcept
+void MechanicsFunctions::SetCreatureRefId(unsigned short pid, const char *refId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
     player->creatureRefId = refId;
-    player->displayCreatureName = displayCreatureName;
+}
+
+void MechanicsFunctions::SetCreatureNameDisplayState(unsigned short pid, bool displayState) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->displayCreatureName = displayState;
 }
 
 void MechanicsFunctions::SendMarkLocation(unsigned short pid)
