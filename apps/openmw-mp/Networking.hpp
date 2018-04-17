@@ -22,7 +22,7 @@ namespace  mwmp
 
         void newPlayer(RakNet::RakNetGUID guid);
         void disconnectPlayer(RakNet::RakNetGUID guid);
-        void kickPlayer(RakNet::RakNetGUID guid);
+        void kickPlayer(RakNet::RakNetGUID guid, bool sendNotification = true);
         
         void banAddress(const char *ipAddress);
         void unbanAddress(const char *ipAddress);

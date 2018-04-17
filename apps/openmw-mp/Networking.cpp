@@ -121,8 +121,11 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
 
         LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Attempts so far: %i", player->getHandshakeAttempts());
 
-        if (player->getHandshakeAttempts() > 5)
-            kickPlayer(player->guid);
+        if (player->getHandshakeAttempts() > 20)
+            kickPlayer(player->guid, false);
+        else if (player->getHandshakeAttempts() > 5)
+            kickPlayer(player->guid, true);
+
         return;
     }
 
@@ -499,9 +502,9 @@ int Networking::mainLoop()
     return exitCode;
 }
 
-void Networking::kickPlayer(RakNet::RakNetGUID guid)
+void Networking::kickPlayer(RakNet::RakNetGUID guid, bool sendNotification)
 {
-    peer->CloseConnection(guid, true);
+    peer->CloseConnection(guid, sendNotification);
 }
 
 void Networking::banAddress(const char *ipAddress)
