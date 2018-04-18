@@ -89,7 +89,7 @@ public:
     * \param pid The player ID for whom the listbox should appear.
     * \param id The numerical ID of the listbox.
     * \param label The text at the top of the listbox.
-    * \parm buttons The items in the listbox, separated by newlines (e.g. "Item 1\nItem 2").
+    * \parm items The items in the listbox, separated by newlines (e.g. "Item 1\nItem 2").
     * \return void
     */
     static void ListBox(unsigned short pid, int id, const char *label, const char *items);

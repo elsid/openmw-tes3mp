@@ -72,7 +72,7 @@ public:
     * \param pid The player ID.
     * \return void
     */
-    static void CleanChatByPid(unsigned short pid);
+    static void CleanChatForPid(unsigned short pid);
 
     /**
     * \brief Remove all messages from chat for everyone on the server.
@@ -207,7 +207,7 @@ public:
     * \param name The new game mode.
     * \return void
     */
-    static void SetModname(const char* name) noexcept;
+    static void SetGameMode(const char* gameMode) noexcept;
 
     /**
     * \brief Set the name of the server, as displayed in the server browser.
@@ -266,12 +266,12 @@ public:
             {"GetServerVersion",    ScriptFunctions::GetServerVersion},
             {"GetProtocolVersion",  ScriptFunctions::GetProtocolVersion},
             {"GetAvgPing",          ScriptFunctions::GetAvgPing},
-            {"SetModname",          ScriptFunctions::SetModname},
+            {"SetGameMode",         ScriptFunctions::SetGameMode},
             {"SetHostname",         ScriptFunctions::SetHostname},
             {"SetServerPassword",   ScriptFunctions::SetServerPassword},
             {"SetRuleString",       ScriptFunctions::SetRuleString},
             {"SetRuleValue",        ScriptFunctions::SetRuleValue},
-            {"CleanChatByPid",      ScriptFunctions::CleanChatByPid},
+            {"CleanChatForPid",     ScriptFunctions::CleanChatForPid},
             {"CleanChat",           ScriptFunctions::CleanChat},
             {"GetIP",               ScriptFunctions::GetIP},
 

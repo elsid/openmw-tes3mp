@@ -23,7 +23,7 @@ void ScriptFunctions::SendMessage(unsigned short pid, const char *message, bool 
         mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_CHAT_MESSAGE)->Send(true);
 }
 
-void ScriptFunctions::CleanChatByPid(unsigned short pid)
+void ScriptFunctions::CleanChatForPid(unsigned short pid)
 {
     Player *player;
     GET_PLAYER(pid, player,);

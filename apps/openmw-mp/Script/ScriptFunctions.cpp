@@ -144,9 +144,9 @@ const char *ScriptFunctions::GetIP(unsigned short pid) noexcept
     return addr.ToString(false);
 }
 
-void ScriptFunctions::SetModname(const char *name) noexcept
+void ScriptFunctions::SetGameMode(const char *gameMode) noexcept
 {
-    mwmp::Networking::getPtr()->getMasterClient()->SetModname(name);
+    mwmp::Networking::getPtr()->getMasterClient()->SetModname(gameMode);
 }
 
 void ScriptFunctions::SetHostname(const char *name) noexcept
