@@ -533,8 +533,7 @@ void CharacterController::refreshMovementAnims(const WeaponInfo* weap, Character
 
 void CharacterController::refreshIdleAnims(const WeaponInfo* weap, CharacterState idle, bool force)
 {
-    if(force || idle != mIdleState ||
-        ((idle == mIdleState) && !mAnimation->isPlaying(mCurrentIdle) && mAnimQueue.empty()))
+    if(force || idle != mIdleState || (!mAnimation->isPlaying(mCurrentIdle) && mAnimQueue.empty()))
     {
         mIdleState = idle;
         size_t numLoops = ~0ul;
@@ -1249,7 +1248,7 @@ bool CharacterController::updateWeaponState()
         std::string weapgroup;
         if(weaptype == WeapType_None)
         {
-            if ((!isWerewolf || mWeaponType != WeapType_Spell))
+            if (!isWerewolf || mWeaponType != WeapType_Spell)
             {
                 getWeaponGroup(mWeaponType, weapgroup);
                 mAnimation->play(weapgroup, priorityWeapon,
@@ -2291,7 +2290,7 @@ bool CharacterController::playGroup(const std::string &groupname, int mode, int 
             End of tes3mp addition
         */
     }
-    else if(mode == 0)
+    else
     {
         mAnimQueue.resize(1);
         mAnimQueue.push_back(entry);

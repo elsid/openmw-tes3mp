@@ -588,11 +588,6 @@ ENDIF(BUILD_OPENMW OR BUILD_OPENCS)
 # Components
 add_subdirectory (components)
 
-# Plugins
-#if (BUILD_MYGUI_PLUGIN)
-#    add_subdirectory(plugins/mygui_resource_plugin)
-#endif()
-
 # Apps and tools
 if (BUILD_OPENMW_MP)
     add_subdirectory( apps/openmw-mp )
