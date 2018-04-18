@@ -227,6 +227,7 @@ void Main::updateWorld(float dt) const
         mNetworking->getPlayerPacket(ID_PLAYER_BASEINFO)->Send();
         mNetworking->getPlayerPacket(ID_LOADED)->Send();
         mLocalPlayer->updateStatsDynamic(true);
+        mLocalPlayer->sendCellStates();
         get().getGUIController()->setChatVisible(true);
     }
     else

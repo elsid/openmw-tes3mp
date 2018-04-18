@@ -184,8 +184,6 @@ bool LocalPlayer::charGenThread()
             getNetworking()->getPlayerPacket(ID_PLAYER_CHARGEN)->Send();
         }
 
-        sendCellStates();
-
         // Set the last stage variable to 0 to indicate that CharGen is finished
         charGenStage.end = 0;
     }
