@@ -154,9 +154,9 @@ void ScriptFunctions::SetHostname(const char *name) noexcept
     mwmp::Networking::getPtr()->getMasterClient()->SetHostname(name);
 }
 
-void ScriptFunctions::SetServerPassword(const char *passw) noexcept
+void ScriptFunctions::SetServerPassword(const char *password) noexcept
 {
-    mwmp::Networking::getPtr()->setServerPassword(passw);
+    mwmp::Networking::getPtr()->setServerPassword(password);
 }
 
 void ScriptFunctions::SetRuleString(const char *key, const char *value) noexcept

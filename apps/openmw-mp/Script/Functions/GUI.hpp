@@ -30,13 +30,68 @@
 class GUIFunctions
 {
 public:
-    /* Do not rename into MessageBox to not conflict with WINAPI's MessageBox */
+
+    /**
+    * \brief Display a simple messagebox at the bottom of the screen that vanishes
+    *        after a few seconds.
+    *
+    * Note for C++ programmers: do not rename into MessageBox so as to not conflict
+    * with WINAPI's MessageBox.
+    *
+    * \param pid The player ID for whom the messagebox should appear.
+    * \param id The numerical ID of the messagebox.
+    * \param label The text in the messagebox.
+    * \return void
+    */
     static void _MessageBox(unsigned short pid, int id, const char *label) noexcept;
 
+    /**
+    * \brief Display an interactive messagebox at the center of the screen that
+    *        vanishes only when one of its buttons is clicked.
+    *
+    * \param pid The player ID for whom the messagebox should appear.
+    * \param id The numerical ID of the messagebox.
+    * \param label The text in the messagebox.
+    * \parm buttons The captions of the buttons, separated by semicolons (e.g. "Yes;No;Maybe").
+    * \return void
+    */
     static void CustomMessageBox(unsigned short pid, int id, const char *label, const char *buttons) noexcept;
+
+    /**
+    * \brief Display an input dialog at the center of the screen.
+    *
+    * \param pid The player ID for whom the input dialog should appear.
+    * \param id The numerical ID of the input dialog.
+    * \param label The text at the top of the input dialog.
+    * \return void
+    */
     static void InputDialog(unsigned short pid, int id, const char *label) noexcept;
+
+    /**
+    * \brief Display a password dialog at the center of the screen.
+    *
+    * Although similar to an input dialog, the password dialog replaces all
+    * input characters with asterisks.
+    *
+    * \param pid The player ID for whom the password dialog should appear.
+    * \param id The numerical ID of the password dialog.
+    * \param label The text at the top of the password dialog.
+    * \parm note The text at the bottom of the password dialog.
+    * \return void
+    */
     static void PasswordDialog(unsigned short pid, int id, const char *label, const char *note) noexcept;
 
+    /**
+    * \brief Display a listbox at the center of the screen where each item takes up
+    *        a row and is selectable, with the listbox only vanishing once the Ok button
+    *        is pressed.
+    *
+    * \param pid The player ID for whom the listbox should appear.
+    * \param id The numerical ID of the listbox.
+    * \param label The text at the top of the listbox.
+    * \parm buttons The items in the listbox, separated by newlines (e.g. "Item 1\nItem 2").
+    * \return void
+    */
     static void ListBox(unsigned short pid, int id, const char *label, const char *items);
 
     /**
@@ -104,8 +159,29 @@ public:
     static void SendQuickKeyChanges(unsigned short pid) noexcept;
 
     //state 0 - disallow, 1 - allow
-    static void SetMapVisibility(unsigned short targetPID, unsigned short affectedPID, unsigned short state) noexcept;
-    static void SetMapVisibilityAll(unsigned short targetPID, unsigned short state) noexcept;
+
+    /**
+    * \brief Determine whether a player can see the map marker of another player.
+    *
+    * Note: This currently has no effect, and is just an unimplemented stub.
+    *
+    * \param targetPid The player ID whose map marker should be hidden or revealed.
+    * \param affectedPid The player ID for whom the map marker will be hidden or revealed.
+    * \param state The state of the map marker (false to hide, true to reveal).
+    * \return void
+    */
+    static void SetMapVisibility(unsigned short targetPid, unsigned short affectedPid, unsigned short state) noexcept;
+
+    /**
+    * \brief Determine whether a player's map marker can be seen by all other players.
+    *
+    * Note: This currently has no effect, and is just an unimplemented stub.
+    *
+    * \param targetPid The player ID whose map marker should be hidden or revealed.
+    * \param state The state of the map marker (false to hide, true to reveal).
+    * \return void
+    */
+    static void SetMapVisibilityAll(unsigned short targetPid, unsigned short state) noexcept;
 };
 
 #endif //OPENMW_GUIAPI_HPP

@@ -148,12 +148,12 @@ void GUIFunctions::SendQuickKeyChanges(unsigned short pid) noexcept
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_QUICKKEYS)->Send(false);
 }
 
-void GUIFunctions::SetMapVisibility(unsigned short targetPID, unsigned short affectedPID, unsigned short state) noexcept
+void GUIFunctions::SetMapVisibility(unsigned short targetPid, unsigned short affectedPid, unsigned short state) noexcept
 {
     LOG_MESSAGE(Log::LOG_WARN, "stub");
 }
 
-void GUIFunctions::SetMapVisibilityAll(unsigned short targetPID, unsigned short state) noexcept
+void GUIFunctions::SetMapVisibilityAll(unsigned short targetPid, unsigned short state) noexcept
 {
     LOG_MESSAGE(Log::LOG_WARN, "stub");
 }

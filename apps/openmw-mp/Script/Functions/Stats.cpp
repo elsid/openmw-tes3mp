@@ -53,20 +53,20 @@ int StatsFunctions::GetSkillId(const char *name) noexcept
     return -1;
 }
 
-const char *StatsFunctions::GetAttributeName(unsigned short attribute) noexcept
+const char *StatsFunctions::GetAttributeName(unsigned short attributeId) noexcept
 {
-    if (attribute >= Attribute::Length)
+    if (attributeId >= Attribute::Length)
         return "invalid";
 
-    return Attribute::sAttributeNames[attribute].c_str();
+    return Attribute::sAttributeNames[attributeId].c_str();
 }
 
-const char *StatsFunctions::GetSkillName(unsigned short skill) noexcept
+const char *StatsFunctions::GetSkillName(unsigned short skillId) noexcept
 {
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return "invalid";
 
-    return Skill::sSkillNames[skill].c_str();
+    return Skill::sSkillNames[skillId].c_str();
 }
 
 const char *StatsFunctions::GetName(unsigned short pid) noexcept
@@ -116,14 +116,6 @@ const char *StatsFunctions::GetBirthsign(unsigned short pid) noexcept
     GET_PLAYER(pid, player, 0);
 
     return player->birthsign.c_str();
-}
-
-const char *StatsFunctions::GetDeathReason(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, 0);
-
-    return player->deathReason.c_str();
 }
 
 int StatsFunctions::GetLevel(unsigned short pid) noexcept
@@ -190,70 +182,70 @@ double StatsFunctions::GetFatigueCurrent(unsigned short pid) noexcept
     return player->creatureStats.mDynamic[2].mCurrent;
 }
 
-int StatsFunctions::GetAttributeBase(unsigned short pid, unsigned short attribute) noexcept
+int StatsFunctions::GetAttributeBase(unsigned short pid, unsigned short attributeId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (attribute >= Attribute::Length)
+    if (attributeId >= Attribute::Length)
         return 0;
 
-    return player->creatureStats.mAttributes[attribute].mBase;
+    return player->creatureStats.mAttributes[attributeId].mBase;
 }
 
-int StatsFunctions::GetAttributeModifier(unsigned short pid, unsigned short attribute) noexcept
+int StatsFunctions::GetAttributeModifier(unsigned short pid, unsigned short attributeId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (attribute >= Attribute::Length)
+    if (attributeId >= Attribute::Length)
         return 0;
 
-    return player->creatureStats.mAttributes[attribute].mMod;
+    return player->creatureStats.mAttributes[attributeId].mMod;
 }
 
-int StatsFunctions::GetSkillBase(unsigned short pid, unsigned short skill) noexcept
+int StatsFunctions::GetSkillBase(unsigned short pid, unsigned short skillId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return 0;
 
-    return player->npcStats.mSkills[skill].mBase;
+    return player->npcStats.mSkills[skillId].mBase;
 }
 
-int StatsFunctions::GetSkillModifier(unsigned short pid, unsigned short skill) noexcept
+int StatsFunctions::GetSkillModifier(unsigned short pid, unsigned short skillId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return 0;
 
-    return player->npcStats.mSkills[skill].mMod;
+    return player->npcStats.mSkills[skillId].mMod;
 }
 
-double StatsFunctions::GetSkillProgress(unsigned short pid, unsigned short skill) noexcept
+double StatsFunctions::GetSkillProgress(unsigned short pid, unsigned short skillId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0.0f);
 
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return 0;
 
-    return player->npcStats.mSkills[skill].mProgress;
+    return player->npcStats.mSkills[skillId].mProgress;
 }
 
-int StatsFunctions::GetSkillIncrease(unsigned short pid, unsigned int attribute) noexcept
+int StatsFunctions::GetSkillIncrease(unsigned short pid, unsigned int attributeId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (attribute > Attribute::Length)
+    if (attributeId > Attribute::Length)
         return 0;
 
-    return player->npcStats.mSkillIncrease[attribute];
+    return player->npcStats.mSkillIncrease[attributeId];
 }
 
 int StatsFunctions::GetBounty(unsigned short pid) noexcept
@@ -262,6 +254,14 @@ int StatsFunctions::GetBounty(unsigned short pid) noexcept
     GET_PLAYER(pid, player, 0);
 
     return player->npcStats.mBounty;
+}
+
+const char *StatsFunctions::GetDeathReason(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->deathReason.c_str();
 }
 
 void StatsFunctions::SetName(unsigned short pid, const char *name) noexcept
@@ -300,23 +300,23 @@ void StatsFunctions::SetHead(unsigned short pid, const char *head) noexcept
     player->npc.mHead = head;
 }
 
-void StatsFunctions::SetHairstyle(unsigned short pid, const char *style) noexcept
+void StatsFunctions::SetHairstyle(unsigned short pid, const char *hairstyle) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    if (player->npc.mHair == style)
+    if (player->npc.mHair == hairstyle)
         return;
 
-    player->npc.mHair = style;
+    player->npc.mHair = hairstyle;
 }
 
-void StatsFunctions::SetIsMale(unsigned short pid, int value) noexcept
+void StatsFunctions::SetIsMale(unsigned short pid, int state) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    player->npc.setIsMale(value == true);
+    player->npc.setIsMale(state == true);
 }
 
 void StatsFunctions::SetBirthsign(unsigned short pid, const char *sign) noexcept
@@ -402,70 +402,70 @@ void StatsFunctions::SetFatigueCurrent(unsigned short pid, double value) noexcep
     player->creatureStats.mDynamic[2].mCurrent = value;
 }
 
-void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attribute, int value) noexcept
+void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attributeId, int value) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    if (attribute >= Attribute::Length)
+    if (attributeId >= Attribute::Length)
         return;
 
-    player->creatureStats.mAttributes[attribute].mBase = value;
+    player->creatureStats.mAttributes[attributeId].mBase = value;
 }
 
-void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short attribute) noexcept
+void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short attributeId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    if (attribute >= Attribute::Length)
+    if (attributeId >= Attribute::Length)
         return;
 
-    player->creatureStats.mAttributes[attribute].mMod = 0;
+    player->creatureStats.mAttributes[attributeId].mMod = 0;
 }
 
-void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skill, int value) noexcept
+void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skillId, int value) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return;
 
-    player->npcStats.mSkills[skill].mBase = value;
+    player->npcStats.mSkills[skillId].mBase = value;
 }
 
-void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skill) noexcept
+void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skillId) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return;
 
-    player->npcStats.mSkills[skill].mMod = 0;
+    player->npcStats.mSkills[skillId].mMod = 0;
 }
 
-void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skill, double value) noexcept
+void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId, double value) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    if (skill >= Skill::Length)
+    if (skillId >= Skill::Length)
         return;
 
-    player->npcStats.mSkills[skill].mProgress = value;
+    player->npcStats.mSkills[skillId].mProgress = value;
 }
 
-void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attribute, int value) noexcept
+void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attributeId, int value) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    if (attribute > Attribute::Length)
+    if (attributeId > Attribute::Length)
         return;
 
-    player->npcStats.mSkillIncrease[attribute] = value;
+    player->npcStats.mSkillIncrease[attributeId] = value;
 }
 
 void StatsFunctions::SetBounty(unsigned short pid, int value) noexcept
@@ -476,12 +476,12 @@ void StatsFunctions::SetBounty(unsigned short pid, int value) noexcept
     player->npcStats.mBounty = value;
 }
 
-void StatsFunctions::SetCharGenStage(unsigned short pid, int start, int end) noexcept
+void StatsFunctions::SetCharGenStage(unsigned short pid, int current, int end) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    player->charGenStage.current = start;
+    player->charGenStage.current = current;
     player->charGenStage.end = end;
 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_CHARGEN)->setPlayer(player);
