@@ -88,7 +88,8 @@ set(SERVER
     Script/Functions/Chat.cpp Script/Functions/Dialogue.cpp Script/Functions/Factions.cpp
     Script/Functions/GUI.cpp Script/Functions/Items.cpp Script/Functions/Mechanics.cpp
     Script/Functions/Positions.cpp Script/Functions/Quests.cpp Script/Functions/Settings.cpp
-    Script/Functions/Spells.cpp Script/Functions/Stats.cpp Script/Functions/Timer.cpp
+    Script/Functions/Shapeshift.cpp Script/Functions/Spells.cpp Script/Functions/Stats.cpp
+    Script/Functions/Timer.cpp
 
     Script/API/TimerAPI.cpp Script/API/PublicFnAPI.cpp
         ${PawnScript_Sources}

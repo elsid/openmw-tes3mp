@@ -76,38 +76,6 @@ const char *MechanicsFunctions::GetSelectedSpellId(unsigned short pid) noexcept
     return player->selectedSpellId.c_str();
 }
 
-double MechanicsFunctions::GetScale(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, 0.0f);
-
-    return player->scale;
-}
-
-bool MechanicsFunctions::IsWerewolf(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, 0);
-
-    return player->isWerewolf;
-}
-
-const char *MechanicsFunctions::GetCreatureRefId(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, 0);
-
-    return player->creatureRefId.c_str();
-}
-
-bool MechanicsFunctions::GetCreatureNameDisplayState(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, 0);
-
-    return player->displayCreatureName;
-}
-
 void MechanicsFunctions::SetMarkCell(unsigned short pid, const char *cellDescription) noexcept
 {
     Player *player;
@@ -143,38 +111,6 @@ void MechanicsFunctions::SetSelectedSpellId(unsigned short pid, const char *spel
     player->selectedSpellId = spellId;
 }
 
-void MechanicsFunctions::SetScale(unsigned short pid, double scale) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    player->scale = scale;
-}
-
-void MechanicsFunctions::SetWerewolfState(unsigned short pid, bool isWerewolf) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    player->isWerewolf = isWerewolf;
-}
-
-void MechanicsFunctions::SetCreatureRefId(unsigned short pid, const char *refId) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    player->creatureRefId = refId;
-}
-
-void MechanicsFunctions::SetCreatureNameDisplayState(unsigned short pid, bool displayState) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    player->displayCreatureName = displayState;
-}
-
 void MechanicsFunctions::SendMarkLocation(unsigned short pid)
 {
     Player *player;
@@ -195,16 +131,6 @@ void MechanicsFunctions::SendSelectedSpell(unsigned short pid)
 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->Send(false);
-}
-
-void MechanicsFunctions::SendShapeshift(unsigned short pid)
-{
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT)->Send(false);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT)->Send(true);
 }
 
 void MechanicsFunctions::Jail(unsigned short pid, int jailDays, bool ignoreJailTeleportation, bool ignoreJailSkillIncreases,
