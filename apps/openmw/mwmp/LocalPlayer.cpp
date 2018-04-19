@@ -427,9 +427,6 @@ void LocalPlayer::updateCell(bool forceUpdate)
 
         isChangingRegion = false;
 
-        // Also force an update to skills (to send all progress to skill increases)
-        updateSkills(true);
-
         // Also check if the inventory needs to be updated
         updateInventory();
     }
