@@ -49,7 +49,6 @@ LocalPlayer::LocalPlayer()
     charGenState.isFinished = false;
 
     difficulty = 0;
-    enforcedLogLevel = -1;
     physicsFramerate = 60.0;
     consoleAllowed = false;
     bedRestAllowed = true;

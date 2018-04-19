@@ -242,8 +242,10 @@ namespace mwmp
             inventoryChanges.count = 0;
             spellbookChanges.action = 0;
             spellbookChanges.count = 0;
+
             displayCreatureName = false;
             resetStats = false;
+            enforcedLogLevel = -1;
         }
 
         BasePlayer()
