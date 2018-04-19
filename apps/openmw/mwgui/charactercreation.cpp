@@ -705,10 +705,22 @@ namespace MWGui
         {
             MWBase::Environment::get().getWindowManager()->pushGuiMode(GM_Review);
         }
+        /*
+            Start of tes3mp change (major)
+
+            Servers have control over character generation in multiplayer, which is why
+            the automatic transition to the next character generation menu has been
+            commented out here
+        */
+        /*
         else if (mCreationStage >= currentStage)
         {
             MWBase::Environment::get().getWindowManager()->pushGuiMode((GuiMode)nextMode);
         }
+        */
+        /*
+            End of tes3mp change (major)
+        */
         else
         {
             mCreationStage = currentStage;
