@@ -1,8 +1,5 @@
-//
-// Created by koncord on 08.03.16.
-//
-
 #include "PacketPlayerAttribute.hpp"
+
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 using namespace mwmp;
@@ -16,7 +13,23 @@ void PacketPlayerAttribute::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    RW(player->creatureStats.mAttributes, send);
+    if (send)
+        player->attributeChanges.count = (unsigned int)(player->attributeChanges.attributeIndexes.size());
+    else
+        player->attributeChanges.attributeIndexes.clear();
 
-    RW(player->npcStats.mSkillIncrease, send);
+    RW(player->attributeChanges.count, send);
+
+    for (unsigned int i = 0; i < player->attributeChanges.count; i++)
+    {
+        int attributeId;
+
+        if (send)
+            attributeId = player->attributeChanges.attributeIndexes.at(i);
+
+        RW(attributeId, send);
+
+        RW(player->creatureStats.mAttributes[attributeId], send);
+        RW(player->npcStats.mSkillIncrease[attributeId], send);
+    }
 }

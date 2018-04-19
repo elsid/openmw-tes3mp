@@ -95,6 +95,14 @@ namespace mwmp
         int type; // 0 - Cell load, 1 - Cell unload
     };
 
+    // Track only the indexes of the attributes that have been changed,
+    // with the attribute values themselves being stored in creatureStats.mAttributes
+    struct AttributeChanges
+    {
+        std::vector<int> attributeIndexes;
+        unsigned int count;
+    };
+
     // Track only the indexes of the skills that have been changed,
     // with the skill values themselves being stored in npcStats.mSkills
     struct SkillChanges
@@ -249,6 +257,7 @@ namespace mwmp
         int day;
         double hour;
 
+        AttributeChanges attributeChanges;
         SkillChanges skillChanges;
 
         InventoryChanges inventoryChanges;

@@ -237,28 +237,25 @@ void LocalPlayer::updateAttributes(bool forceUpdate)
 
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     const MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
-    bool attributesChanged = false;
 
     for (int i = 0; i < 8; ++i)
     {
         if (ptrNpcStats.getAttribute(i).getBase() != creatureStats.mAttributes[i].mBase ||
-            ptrNpcStats.getAttribute(i).getModifier() != creatureStats.mAttributes[i].mMod)
+            ptrNpcStats.getAttribute(i).getModifier() != creatureStats.mAttributes[i].mMod ||
+            ptrNpcStats.getSkillIncrease(i) != npcStats.mSkillIncrease[i] ||
+            forceUpdate)
         {
             ptrNpcStats.getAttribute(i).writeState(creatureStats.mAttributes[i]);
-            attributesChanged = true;
-        }
-
-        if (ptrNpcStats.getSkillIncrease(i) != npcStats.mSkillIncrease[i])
-        {
             npcStats.mSkillIncrease[i] = ptrNpcStats.getSkillIncrease(i);
-            attributesChanged = true;
+            attributeChanges.attributeIndexes.push_back(i);
         }
     }
 
-    if (attributesChanged || forceUpdate)
+    if (attributeChanges.attributeIndexes.size() > 0)
     {
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTRIBUTE)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTRIBUTE)->Send();
+        attributeChanges.attributeIndexes.clear();
     }
 }
 
