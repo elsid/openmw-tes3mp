@@ -213,7 +213,7 @@ void Main::frame(float dt)
 void Main::updateWorld(float dt) const
 {
 
-    if (!mLocalPlayer->charGenThread())
+    if (!mLocalPlayer->processCharGen())
         return;
 
     static bool init = true;

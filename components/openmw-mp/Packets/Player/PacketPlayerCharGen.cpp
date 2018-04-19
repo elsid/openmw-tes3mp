@@ -14,6 +14,6 @@ void mwmp::PacketPlayerCharGen::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    RW(player->charGenStage, send);
+    RW(player->charGenState, send);
 
 }

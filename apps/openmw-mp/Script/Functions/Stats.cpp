@@ -476,13 +476,14 @@ void StatsFunctions::SetBounty(unsigned short pid, int value) noexcept
     player->npcStats.mBounty = value;
 }
 
-void StatsFunctions::SetCharGenStage(unsigned short pid, int current, int end) noexcept
+void StatsFunctions::SetCharGenStage(unsigned short pid, int currentStage, int endStage) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
 
-    player->charGenStage.current = current;
-    player->charGenStage.end = end;
+    player->charGenState.currentStage = currentStage;
+    player->charGenState.endStage = endStage;
+    player->charGenState.isFinished = false;
 
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_CHARGEN)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_CHARGEN)->Send(false);

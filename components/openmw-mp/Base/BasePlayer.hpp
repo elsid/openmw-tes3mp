@@ -195,9 +195,10 @@ namespace mwmp
     {
     public:
 
-        struct CGStage
+        struct CharGenState
         {
-            int current, end;
+            int currentStage, endStage;
+            bool isFinished;
         };
 
         struct GUIMessageBox
@@ -282,7 +283,7 @@ namespace mwmp
         Attack attack;
         std::string birthsign;
         std::string chatMessage;
-        CGStage charGenStage;
+        CharGenState charGenState;
         std::string passw;
 
         std::string sound;

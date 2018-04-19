@@ -1,7 +1,3 @@
-//
-// Created by koncord on 14.01.16.
-//
-
 #ifndef OPENMW_LOCALPLAYER_HPP
 #define OPENMW_LOCALPLAYER_HPP
 
@@ -21,8 +17,7 @@ namespace mwmp
 
         void update();
 
-        void charGen(int stageFirst, int stageEnd);
-        bool charGenThread(); // return true if CGStage::current == CGStage::end
+        bool processCharGen();
         bool hasFinishedCharGen();
 
         void updateStatsDynamic(bool forceUpdate = false);

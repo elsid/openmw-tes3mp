@@ -44,8 +44,9 @@ using namespace std;
 
 LocalPlayer::LocalPlayer()
 {
-    charGenStage.current = 0;
-    charGenStage.end = 1;
+    charGenState.currentStage = 0;
+    charGenState.endStage = 1;
+    charGenState.isFinished = false;
 
     difficulty = 0;
     enforcedLogLevel = -1;
@@ -113,26 +114,22 @@ void LocalPlayer::update()
     }
 }
 
-void LocalPlayer::charGen(int stageFirst, int stageEnd)
-{
-    charGenStage.current = stageFirst;
-    charGenStage.end = stageEnd;
-}
-
-bool LocalPlayer::charGenThread()
+bool LocalPlayer::processCharGen()
 {
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
 
     // If we haven't finished CharGen and we're in a menu, it must be
     // one of the CharGen menus, so go no further until it's closed
-    if (windowManager->isGuiMode() && charGenStage.end != 0)
+    if (windowManager->isGuiMode() && !charGenState.isFinished)
+    {
         return false;
+    }
 
     // If the current stage of CharGen is not the last one,
     // move to the next one
-    else if (charGenStage.current < charGenStage.end)
+    else if (charGenState.currentStage < charGenState.endStage)
     {
-        switch (charGenStage.current)
+        switch (charGenState.currentStage)
         {
         case 0:
             windowManager->pushGuiMode(MWGui::GM_Name);
@@ -152,14 +149,14 @@ bool LocalPlayer::charGenThread()
         }
         getNetworking()->getPlayerPacket(ID_PLAYER_CHARGEN)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_CHARGEN)->Send();
-        charGenStage.current++;
+        charGenState.currentStage++;
 
         return false;
     }
 
     // If we've reached the last stage of CharGen, send the
     // corresponding packets and mark CharGen as finished
-    else if (charGenStage.end != 0)
+    else if (!charGenState.isFinished)
     {
         MWBase::World *world = MWBase::Environment::get().getWorld();
         MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
@@ -172,7 +169,7 @@ bool LocalPlayer::charGenThread()
 
         // Send stats packets if this is the 2nd round of CharGen that
         // only happens for new characters
-        if (charGenStage.end != 1)
+        if (charGenState.endStage != 1)
         {
             updateStatsDynamic(true);
             updateAttributes(true);
@@ -184,8 +181,8 @@ bool LocalPlayer::charGenThread()
             getNetworking()->getPlayerPacket(ID_PLAYER_CHARGEN)->Send();
         }
 
-        // Set the last stage variable to 0 to indicate that CharGen is finished
-        charGenStage.end = 0;
+        // Mark character generation as finished until overridden by a new ID_PLAYER_CHARGEN packet
+        charGenState.isFinished = true;
     }
 
     return true;
@@ -193,7 +190,7 @@ bool LocalPlayer::charGenThread()
 
 bool LocalPlayer::hasFinishedCharGen()
 {
-    return charGenStage.end == 0;
+    return charGenState.isFinished;
 }
 
 void LocalPlayer::updateStatsDynamic(bool forceUpdate)

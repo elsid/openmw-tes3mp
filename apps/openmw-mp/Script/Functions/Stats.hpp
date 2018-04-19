@@ -555,11 +555,11 @@ public:
     * This is used to repeat part of character generation or to only go through part of it.
     *
     * \param pid The player ID.
-    * \param current The current stage.
-    * \param end The ending stage.
+    * \param currentStage The new current stage.
+    * \param endStage The new ending stage.
     * \return void
     */
-    static void SetCharGenStage(unsigned short pid, int current, int end) noexcept;
+    static void SetCharGenStage(unsigned short pid, int currentStage, int endStage) noexcept;
 
     /**
     * \brief Send a PlayerBaseInfo packet with a player's name, race, head mesh,
