@@ -14,22 +14,22 @@ void PacketPlayerSkill::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
+    uint32_t count;
+
     if (send)
-        player->skillChanges.count = (unsigned int)(player->skillChanges.skillIndexes.size());
-    else
-        player->skillChanges.skillIndexes.clear();
+        count = static_cast<uint32_t>(player->skillIndexChanges.size());
 
-    RW(player->skillChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->skillChanges.count; i++)
+    if (!send)
     {
-        int skillId;
+        player->skillIndexChanges.clear();
+        player->skillIndexChanges.resize(count);
+    }
 
-        if (send)
-            skillId = player->skillChanges.skillIndexes.at(i);
-
+    for (auto &&skillId : player->skillIndexChanges)
+    {
         RW(skillId, send);
-
         RW(player->npcStats.mSkills[skillId], send);
     }
 }

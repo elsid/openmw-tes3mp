@@ -246,15 +246,15 @@ void LocalPlayer::updateAttributes(bool forceUpdate)
         {
             ptrNpcStats.getAttribute(i).writeState(creatureStats.mAttributes[i]);
             npcStats.mSkillIncrease[i] = ptrNpcStats.getSkillIncrease(i);
-            attributeChanges.attributeIndexes.push_back(i);
+            attributeIndexChanges.push_back(i);
         }
     }
 
-    if (attributeChanges.attributeIndexes.size() > 0)
+    if (attributeIndexChanges.size() > 0)
     {
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTRIBUTE)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTRIBUTE)->Send();
-        attributeChanges.attributeIndexes.clear();
+        attributeIndexChanges.clear();
     }
 }
 
@@ -275,15 +275,15 @@ void LocalPlayer::updateSkills(bool forceUpdate)
             forceUpdate)
         {
             ptrNpcStats.getSkill(i).writeState(npcStats.mSkills[i]);
-            skillChanges.skillIndexes.push_back(i);
+            skillIndexChanges.push_back(i);
         }
     }
 
-    if (skillChanges.skillIndexes.size() > 0)
+    if (skillIndexChanges.size() > 0)
     {
         getNetworking()->getPlayerPacket(ID_PLAYER_SKILL)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_SKILL)->Send();
-        skillChanges.skillIndexes.clear();
+        skillIndexChanges.clear();
     }
 }
 

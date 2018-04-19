@@ -409,8 +409,8 @@ void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attribu
 
     player->creatureStats.mAttributes[attributeId].mBase = value;
 
-    if (!Utils::vectorContains(&player->attributeChanges.attributeIndexes, attributeId))
-        player->attributeChanges.attributeIndexes.push_back(attributeId);
+    if (!Utils::vectorContains(&player->attributeIndexChanges, attributeId))
+        player->attributeIndexChanges.push_back(attributeId);
 }
 
 void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short attributeId) noexcept
@@ -423,8 +423,8 @@ void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short a
 
     player->creatureStats.mAttributes[attributeId].mMod = 0;
 
-    if (!Utils::vectorContains(&player->attributeChanges.attributeIndexes, attributeId))
-        player->attributeChanges.attributeIndexes.push_back(attributeId);
+    if (!Utils::vectorContains(&player->attributeIndexChanges, attributeId))
+        player->attributeIndexChanges.push_back(attributeId);
 }
 
 void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skillId, int value) noexcept
@@ -437,8 +437,8 @@ void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skillId, in
 
     player->npcStats.mSkills[skillId].mBase = value;
 
-    if (!Utils::vectorContains(&player->skillChanges.skillIndexes, skillId))
-        player->skillChanges.skillIndexes.push_back(skillId);
+    if (!Utils::vectorContains(&player->skillIndexChanges, skillId))
+        player->skillIndexChanges.push_back(skillId);
 }
 
 void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skillId) noexcept
@@ -451,8 +451,8 @@ void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skill
 
     player->npcStats.mSkills[skillId].mMod = 0;
 
-    if (!Utils::vectorContains(&player->skillChanges.skillIndexes, skillId))
-        player->skillChanges.skillIndexes.push_back(skillId);
+    if (!Utils::vectorContains(&player->skillIndexChanges, skillId))
+        player->skillIndexChanges.push_back(skillId);
 }
 
 void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId, double value) noexcept
@@ -465,8 +465,8 @@ void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId
 
     player->npcStats.mSkills[skillId].mProgress = value;
 
-    if (!Utils::vectorContains(&player->skillChanges.skillIndexes, skillId))
-        player->skillChanges.skillIndexes.push_back(skillId);
+    if (!Utils::vectorContains(&player->skillIndexChanges, skillId))
+        player->skillIndexChanges.push_back(skillId);
 }
 
 void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attributeId, int value) noexcept
@@ -479,8 +479,8 @@ void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attribute
 
     player->npcStats.mSkillIncrease[attributeId] = value;
 
-    if (!Utils::vectorContains(&player->attributeChanges.attributeIndexes, attributeId))
-        player->attributeChanges.attributeIndexes.push_back(attributeId);
+    if (!Utils::vectorContains(&player->attributeIndexChanges, attributeId))
+        player->attributeIndexChanges.push_back(attributeId);
 }
 
 void StatsFunctions::SetBounty(unsigned short pid, int value) noexcept
@@ -533,7 +533,7 @@ void StatsFunctions::SendAttributes(unsigned short pid) noexcept
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ATTRIBUTE)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ATTRIBUTE)->Send(true);
 
-    player->attributeChanges.attributeIndexes.clear();
+    player->attributeIndexChanges.clear();
 }
 
 void StatsFunctions::SendSkills(unsigned short pid) noexcept
@@ -545,7 +545,7 @@ void StatsFunctions::SendSkills(unsigned short pid) noexcept
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SKILL)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SKILL)->Send(true);
 
-    player->skillChanges.skillIndexes.clear();
+    player->skillIndexChanges.clear();
 }
 
 void StatsFunctions::SendLevel(unsigned short pid) noexcept

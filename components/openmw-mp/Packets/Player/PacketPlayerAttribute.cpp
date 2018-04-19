@@ -13,23 +13,23 @@ void PacketPlayerAttribute::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
+    uint32_t count;
     if (send)
-        player->attributeChanges.count = (unsigned int)(player->attributeChanges.attributeIndexes.size());
-    else
-        player->attributeChanges.attributeIndexes.clear();
+        count = static_cast<uint32_t>(player->attributeIndexChanges.size());
 
-    RW(player->attributeChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->attributeChanges.count; i++)
+    if (!send)
     {
-        int attributeId;
+        player->attributeIndexChanges.clear();
+        player->attributeIndexChanges.resize(count);
+    }
 
-        if (send)
-            attributeId = player->attributeChanges.attributeIndexes.at(i);
+    for (auto &&attributeIndex : player->attributeIndexChanges)
+    {
+        RW(attributeIndex, send);
 
-        RW(attributeId, send);
-
-        RW(player->creatureStats.mAttributes[attributeId], send);
-        RW(player->npcStats.mSkillIncrease[attributeId], send);
+        RW(player->creatureStats.mAttributes[attributeIndex], send);
+        RW(player->npcStats.mSkillIncrease[attributeIndex], send);
     }
 }
