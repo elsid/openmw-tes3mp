@@ -247,6 +247,12 @@ void LocalPlayer::updateAttributes(bool forceUpdate)
             ptrNpcStats.getAttribute(i).writeState(creatureStats.mAttributes[i]);
             attributesChanged = true;
         }
+
+        if (ptrNpcStats.getSkillIncrease(i) != npcStats.mSkillIncrease[i])
+        {
+            npcStats.mSkillIncrease[i] = ptrNpcStats.getSkillIncrease(i);
+            attributesChanged = true;
+        }
     }
 
     if (attributesChanged || forceUpdate)
@@ -265,53 +271,39 @@ void LocalPlayer::updateSkills(bool forceUpdate)
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     const MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
 
-    // Track whether skills have changed their values, but not whether
-    // progress towards skill increases has changed (to not spam server
-    // with packets every time tiny progress is made)
-    bool skillsChanged = false;
-
     for (int i = 0; i < 27; ++i)
     {
+        // Update a skill if its base value has changed at all or its progress has changed enough
         if (ptrNpcStats.getSkill(i).getBase() != npcStats.mSkills[i].mBase ||
-            ptrNpcStats.getSkill(i).getModifier() != npcStats.mSkills[i].mMod)
+            ptrNpcStats.getSkill(i).getProgress() != npcStats.mSkills[i].mProgress ||
+            forceUpdate)
         {
             ptrNpcStats.getSkill(i).writeState(npcStats.mSkills[i]);
-            skillsChanged = true;
+            skillChanges.skillIndexes.push_back(i);
         }
-        // If we only have skill progress, remember it for future packets,
-        // but don't send a packet just because of this
-        else if (ptrNpcStats.getSkill(i).getProgress() != npcStats.mSkills[i].mProgress)
-            ptrNpcStats.getSkill(i).writeState(npcStats.mSkills[i]);
     }
 
-    for (int i = 0; i < 8; i++)
+    if (skillChanges.skillIndexes.size() > 0)
     {
-        if (ptrNpcStats.getSkillIncrease(i) != npcStats.mSkillIncrease[i])
-            npcStats.mSkillIncrease[i] = ptrNpcStats.getSkillIncrease(i);
-    }
-
-    if (skillsChanged || forceUpdate)
-    {
-        npcStats.mLevelProgress = ptrNpcStats.getLevelProgress();
         getNetworking()->getPlayerPacket(ID_PLAYER_SKILL)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_SKILL)->Send();
+        skillChanges.skillIndexes.clear();
     }
 }
 
 void LocalPlayer::updateLevel(bool forceUpdate)
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
-    const MWMechanics::CreatureStats &ptrCreatureStats = ptrPlayer.getClass().getCreatureStats(ptrPlayer);
+    const MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
 
-    if (ptrCreatureStats.getLevel() != creatureStats.mLevel || forceUpdate)
+    if (ptrNpcStats.getLevel() != creatureStats.mLevel ||
+        ptrNpcStats.getLevelProgress() != npcStats.mLevelProgress ||
+        forceUpdate)
     {
-        creatureStats.mLevel = ptrCreatureStats.getLevel();
+        creatureStats.mLevel = ptrNpcStats.getLevel();
+        npcStats.mLevelProgress = ptrNpcStats.getLevelProgress();
         getNetworking()->getPlayerPacket(ID_PLAYER_LEVEL)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_LEVEL)->Send();
-
-        // Also update skills to refresh level progress and attribute bonuses
-        // for next level up
-        updateSkills(true);
     }
 }
 

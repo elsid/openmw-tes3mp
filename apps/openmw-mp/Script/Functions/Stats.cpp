@@ -1,6 +1,3 @@
-//
-// Created by koncord on 29.02.16.
-//
 #include "Stats.hpp"
 
 #include <iostream>
@@ -433,6 +430,8 @@ void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skillId, in
         return;
 
     player->npcStats.mSkills[skillId].mBase = value;
+
+    player->skillChanges.skillIndexes.push_back(skillId);
 }
 
 void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skillId) noexcept
@@ -444,6 +443,8 @@ void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skill
         return;
 
     player->npcStats.mSkills[skillId].mMod = 0;
+
+    player->skillChanges.skillIndexes.push_back(skillId);
 }
 
 void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId, double value) noexcept
@@ -455,6 +456,8 @@ void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId
         return;
 
     player->npcStats.mSkills[skillId].mProgress = value;
+
+    player->skillChanges.skillIndexes.push_back(skillId);
 }
 
 void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attributeId, int value) noexcept
@@ -527,6 +530,8 @@ void StatsFunctions::SendSkills(unsigned short pid) noexcept
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SKILL)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SKILL)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SKILL)->Send(true);
+
+    player->skillChanges.skillIndexes.clear();
 }
 
 void StatsFunctions::SendLevel(unsigned short pid) noexcept

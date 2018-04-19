@@ -1,7 +1,3 @@
-//
-// Created by koncord on 30.08.16.
-//
-
 #ifndef OPENMW_STATAPI_HPP
 #define OPENMW_STATAPI_HPP
 
@@ -584,7 +580,9 @@ public:
     static void SendStatsDynamic(unsigned short pid) noexcept;
 
     /**
-    * \brief Send a PlayerAttribute packet with a player's attributes.
+    * \brief Send a PlayerAttribute packet with a player's attributes and bonuses
+    *        to those attributes at the next level up (the latter being called
+    *        "skill increases" as in OpenMW).
     *
     * It is always sent to all players.
     *
@@ -594,8 +592,7 @@ public:
     static void SendAttributes(unsigned short pid) noexcept;
 
     /**
-    * \brief Send a PlayerSkill packet with a player's skills, skill increases, and
-    *        progress towards the next level up.
+    * \brief Send a PlayerSkill packet with a player's skills.
     *
     * It is always sent to all players.
     *
@@ -605,7 +602,8 @@ public:
     static void SendSkills(unsigned short pid) noexcept;
 
     /**
-    * \brief Send a PlayerLevel packet with a player's character level.
+    * \brief Send a PlayerLevel packet with a player's character level and
+    *        progress towards the next level up
     *
     * It is always sent to all players.
     *

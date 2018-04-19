@@ -13,4 +13,6 @@ void PacketPlayerLevel::Packet(RakNet::BitStream *bs, bool send)
     PlayerPacket::Packet(bs, send);
 
     RW(player->creatureStats.mLevel, send);
+
+    RW(player->npcStats.mLevelProgress, send);
 }

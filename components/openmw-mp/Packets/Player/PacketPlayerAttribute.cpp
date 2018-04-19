@@ -17,4 +17,6 @@ void PacketPlayerAttribute::Packet(RakNet::BitStream *bs, bool send)
     PlayerPacket::Packet(bs, send);
 
     RW(player->creatureStats.mAttributes, send);
+
+    RW(player->npcStats.mSkillIncrease, send);
 }

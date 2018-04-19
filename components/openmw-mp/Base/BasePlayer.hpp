@@ -95,6 +95,14 @@ namespace mwmp
         int type; // 0 - Cell load, 1 - Cell unload
     };
 
+    // Track only the indexes of the skills that have been changed,
+    // with the skill values themselves being stored in npcStats.mSkills
+    struct SkillChanges
+    {
+        std::vector<int> skillIndexes;
+        unsigned int count;
+    };
+
     struct JournalChanges
     {
         std::vector<JournalItem> journalItems;
@@ -240,6 +248,8 @@ namespace mwmp
         int month;
         int day;
         double hour;
+
+        SkillChanges skillChanges;
 
         InventoryChanges inventoryChanges;
         SpellbookChanges spellbookChanges;
