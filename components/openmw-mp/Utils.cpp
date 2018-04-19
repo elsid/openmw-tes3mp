@@ -85,6 +85,11 @@ bool Utils::compareDoubles(double a, double b, double epsilon)
     return fabs(a - b) < epsilon;
 }
 
+bool Utils::vectorContains(std::vector<int>* vectorChecked, int value)
+{
+    return std::find(vectorChecked->begin(), vectorChecked->end(), value) != vectorChecked->end();
+}
+
 std::string Utils::toString(int num)
 {
     std::ostringstream stream;

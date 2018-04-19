@@ -409,8 +409,7 @@ void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attribu
 
     player->creatureStats.mAttributes[attributeId].mBase = value;
 
-    if (std::find(player->attributeChanges.attributeIndexes.begin(), player->attributeChanges.attributeIndexes.end(), attributeId) == 
-        player->attributeChanges.attributeIndexes.end())
+    if (!Utils::vectorContains(&player->attributeChanges.attributeIndexes, attributeId))
         player->attributeChanges.attributeIndexes.push_back(attributeId);
 }
 
@@ -424,8 +423,7 @@ void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short a
 
     player->creatureStats.mAttributes[attributeId].mMod = 0;
 
-    if (std::find(player->attributeChanges.attributeIndexes.begin(), player->attributeChanges.attributeIndexes.end(), attributeId) ==
-        player->attributeChanges.attributeIndexes.end())
+    if (!Utils::vectorContains(&player->attributeChanges.attributeIndexes, attributeId))
         player->attributeChanges.attributeIndexes.push_back(attributeId);
 }
 
@@ -439,7 +437,8 @@ void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skillId, in
 
     player->npcStats.mSkills[skillId].mBase = value;
 
-    player->skillChanges.skillIndexes.push_back(skillId);
+    if (!Utils::vectorContains(&player->skillChanges.skillIndexes, skillId))
+        player->skillChanges.skillIndexes.push_back(skillId);
 }
 
 void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skillId) noexcept
@@ -452,7 +451,8 @@ void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skill
 
     player->npcStats.mSkills[skillId].mMod = 0;
 
-    player->skillChanges.skillIndexes.push_back(skillId);
+    if (!Utils::vectorContains(&player->skillChanges.skillIndexes, skillId))
+        player->skillChanges.skillIndexes.push_back(skillId);
 }
 
 void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId, double value) noexcept
@@ -465,7 +465,8 @@ void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId
 
     player->npcStats.mSkills[skillId].mProgress = value;
 
-    player->skillChanges.skillIndexes.push_back(skillId);
+    if (!Utils::vectorContains(&player->skillChanges.skillIndexes, skillId))
+        player->skillChanges.skillIndexes.push_back(skillId);
 }
 
 void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attributeId, int value) noexcept
@@ -478,8 +479,7 @@ void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attribute
 
     player->npcStats.mSkillIncrease[attributeId] = value;
 
-    if (std::find(player->attributeChanges.attributeIndexes.begin(), player->attributeChanges.attributeIndexes.end(), attributeId) ==
-        player->attributeChanges.attributeIndexes.end())
+    if (!Utils::vectorContains(&player->attributeChanges.attributeIndexes, attributeId))
         player->attributeChanges.attributeIndexes.push_back(attributeId);
 }
 

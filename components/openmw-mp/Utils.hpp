@@ -7,6 +7,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 #if (defined __WIN32__ || defined _WIN32 || defined WIN32)
 #define __WINDOWS
@@ -25,6 +26,8 @@ namespace Utils
     int progressFunc(double TotalToDownload, double NowDownloaded);
 
     bool compareDoubles(double a, double b, double epsilon);
+
+    bool vectorContains(std::vector<int>* vectorChecked, int value);
 
     std::string replaceString(const std::string &source, const char *find, const char *replace);
 
