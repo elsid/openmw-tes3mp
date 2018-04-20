@@ -357,6 +357,9 @@ void StatsFunctions::SetHealthBase(unsigned short pid, double value) noexcept
     GET_PLAYER(pid, player,);
 
     player->creatureStats.mDynamic[0].mBase = value;
+
+    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 0))
+        player->skillIndexChanges.push_back(0);
 }
 
 void StatsFunctions::SetHealthCurrent(unsigned short pid, double value) noexcept
@@ -365,6 +368,9 @@ void StatsFunctions::SetHealthCurrent(unsigned short pid, double value) noexcept
     GET_PLAYER(pid, player,);
 
     player->creatureStats.mDynamic[0].mCurrent = value;
+
+    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 0))
+        player->skillIndexChanges.push_back(0);
 }
 
 void StatsFunctions::SetMagickaBase(unsigned short pid, double value) noexcept
@@ -373,6 +379,9 @@ void StatsFunctions::SetMagickaBase(unsigned short pid, double value) noexcept
     GET_PLAYER(pid, player,);
 
     player->creatureStats.mDynamic[1].mBase = value;
+
+    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 1))
+        player->skillIndexChanges.push_back(1);
 }
 
 void StatsFunctions::SetMagickaCurrent(unsigned short pid, double value) noexcept
@@ -381,6 +390,9 @@ void StatsFunctions::SetMagickaCurrent(unsigned short pid, double value) noexcep
     GET_PLAYER(pid, player,);
 
     player->creatureStats.mDynamic[1].mCurrent = value;
+
+    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 1))
+        player->skillIndexChanges.push_back(1);
 }
 
 void StatsFunctions::SetFatigueBase(unsigned short pid, double value) noexcept
@@ -389,6 +401,9 @@ void StatsFunctions::SetFatigueBase(unsigned short pid, double value) noexcept
     GET_PLAYER(pid, player,);
 
     player->creatureStats.mDynamic[2].mBase = value;
+
+    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 2))
+        player->skillIndexChanges.push_back(2);
 }
 
 void StatsFunctions::SetFatigueCurrent(unsigned short pid, double value) noexcept
@@ -397,6 +412,9 @@ void StatsFunctions::SetFatigueCurrent(unsigned short pid, double value) noexcep
     GET_PLAYER(pid, player,);
 
     player->creatureStats.mDynamic[2].mCurrent = value;
+
+    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 2))
+        player->skillIndexChanges.push_back(2);
 }
 
 void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attributeId, int value) noexcept
@@ -522,6 +540,8 @@ void StatsFunctions::SendStatsDynamic(unsigned short pid) noexcept
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_STATS_DYNAMIC)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_STATS_DYNAMIC)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_STATS_DYNAMIC)->Send(true);
+
+    player->statsDynamicIndexChanges.clear();
 }
 
 void StatsFunctions::SendAttributes(unsigned short pid) noexcept

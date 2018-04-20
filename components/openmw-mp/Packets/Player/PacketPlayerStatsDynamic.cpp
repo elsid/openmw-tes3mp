@@ -1,7 +1,3 @@
-//
-// Created by koncord on 13.01.16.
-//
-
 #include "PacketPlayerStatsDynamic.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 
@@ -15,5 +11,23 @@ PacketPlayerStatsDynamic::PacketPlayerStatsDynamic(RakNet::RakPeerInterface *pee
 void PacketPlayerStatsDynamic::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
-    RW(player->creatureStats.mDynamic, send);
+
+    uint32_t count;
+    if (send)
+        count = static_cast<uint32_t>(player->statsDynamicIndexChanges.size());
+
+    RW(count, send);
+
+    if (!send)
+    {
+        player->statsDynamicIndexChanges.clear();
+        player->statsDynamicIndexChanges.resize(count);
+    }
+
+    for (auto &&statsDynamicIndex : player->statsDynamicIndexChanges)
+    {
+        RW(statsDynamicIndex, send);
+
+        RW(player->creatureStats.mDynamic[statsDynamicIndex], send);
+    }
 }

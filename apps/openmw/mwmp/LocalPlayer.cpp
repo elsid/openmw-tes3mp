@@ -212,8 +212,16 @@ void LocalPlayer::updateStatsDynamic(bool forceUpdate)
                                     || abs(oldVal.getCurrent() - newVal.getCurrent()) >= limit);
     };
 
-    if (forceUpdate || needUpdate(oldHealth, health, 3) || needUpdate(oldMagicka, magicka, 7) ||
-        needUpdate(oldFatigue, fatigue, 7))
+    if (needUpdate(oldHealth, health, 2))
+        statsDynamicIndexChanges.push_back(0);
+
+    if (needUpdate(oldMagicka, magicka, 4))
+        statsDynamicIndexChanges.push_back(1);
+
+    if (needUpdate(oldFatigue, fatigue, 4))
+        statsDynamicIndexChanges.push_back(2);
+
+    if (statsDynamicIndexChanges.size() > 0 || forceUpdate)
     {
         oldHealth = health;
         oldMagicka = magicka;
@@ -225,6 +233,7 @@ void LocalPlayer::updateStatsDynamic(bool forceUpdate)
 
         getNetworking()->getPlayerPacket(ID_PLAYER_STATS_DYNAMIC)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_STATS_DYNAMIC)->Send();
+        statsDynamicIndexChanges.clear();
     }
 }
 
