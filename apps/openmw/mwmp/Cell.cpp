@@ -223,7 +223,7 @@ void Cell::readEquipment(ActorList& actorList)
             DedicatedActor *actor = dedicatedActors[mapIndex];
 
             for (int slot = 0; slot < 19; ++slot)
-                actor->equipedItems[slot] = baseActor.equipedItems[slot];
+                actor->equipmentItems[slot] = baseActor.equipmentItems[slot];
 
             actor->setEquipment();
         }

@@ -150,22 +150,22 @@ double ActorFunctions::GetActorFatigueModified(unsigned int i) noexcept
 
 const char *ActorFunctions::GetActorEquipmentItemRefId(unsigned int i, unsigned short slot) noexcept
 {
-    return readActorList->baseActors.at(i).equipedItems[slot].refId.c_str();
+    return readActorList->baseActors.at(i).equipmentItems[slot].refId.c_str();
 }
 
 int ActorFunctions::GetActorEquipmentItemCount(unsigned int i, unsigned short slot) noexcept
 {
-    return readActorList->baseActors.at(i).equipedItems[slot].count;
+    return readActorList->baseActors.at(i).equipmentItems[slot].count;
 }
 
 int ActorFunctions::GetActorEquipmentItemCharge(unsigned int i, unsigned short slot) noexcept
 {
-    return readActorList->baseActors.at(i).equipedItems[slot].charge;
+    return readActorList->baseActors.at(i).equipmentItems[slot].charge;
 }
 
 double ActorFunctions::GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept
 {
-    return readActorList->baseActors.at(i).equipedItems[slot].enchantmentCharge;
+    return readActorList->baseActors.at(i).equipmentItems[slot].enchantmentCharge;
 }
 
 bool ActorFunctions::DoesActorHavePosition(unsigned int i) noexcept
@@ -269,10 +269,10 @@ void ActorFunctions::SetActorFatigueModified(double value) noexcept
 
 void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, double enchantmentCharge) noexcept
 {
-    tempActor.equipedItems[slot].refId = refId;
-    tempActor.equipedItems[slot].count = count;
-    tempActor.equipedItems[slot].charge = charge;
-    tempActor.equipedItems[slot].enchantmentCharge = enchantmentCharge;
+    tempActor.equipmentItems[slot].refId = refId;
+    tempActor.equipmentItems[slot].count = count;
+    tempActor.equipmentItems[slot].charge = charge;
+    tempActor.equipmentItems[slot].enchantmentCharge = enchantmentCharge;
 }
 
 void ActorFunctions::UnequipActorItem(unsigned short slot) noexcept

@@ -40,10 +40,13 @@ void ItemFunctions::EquipItem(unsigned short pid, unsigned short slot, const cha
     Player *player;
     GET_PLAYER(pid, player,);
 
-    player->equipedItems[slot].refId = refId;
-    player->equipedItems[slot].count = count;
-    player->equipedItems[slot].charge = charge;
-    player->equipedItems[slot].enchantmentCharge = enchantmentCharge;
+    player->equipmentItems[slot].refId = refId;
+    player->equipmentItems[slot].count = count;
+    player->equipmentItems[slot].charge = charge;
+    player->equipmentItems[slot].enchantmentCharge = enchantmentCharge;
+
+    if (!Utils::vectorContains(&player->equipmentIndexChanges, slot))
+        player->equipmentIndexChanges.push_back(slot);
 }
 
 void ItemFunctions::UnequipItem(unsigned short pid, unsigned short slot) noexcept
@@ -88,7 +91,7 @@ bool ItemFunctions::HasItemEquipped(unsigned short pid, const char* refId)
     GET_PLAYER(pid, player, false);
 
     for (int slot = 0; slot < MWWorld::InventoryStore::Slots; slot++)
-        if (Misc::StringUtils::ciEqual(player->equipedItems[slot].refId, refId))
+        if (Misc::StringUtils::ciEqual(player->equipmentItems[slot].refId, refId))
             return true;
     return false;
 }
@@ -98,7 +101,7 @@ const char *ItemFunctions::GetEquipmentItemRefId(unsigned short pid, unsigned sh
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->equipedItems[slot].refId.c_str();
+    return player->equipmentItems[slot].refId.c_str();
 }
 
 int ItemFunctions::GetEquipmentItemCount(unsigned short pid, unsigned short slot) noexcept
@@ -106,7 +109,7 @@ int ItemFunctions::GetEquipmentItemCount(unsigned short pid, unsigned short slot
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->equipedItems[slot].count;
+    return player->equipmentItems[slot].count;
 }
 
 int ItemFunctions::GetEquipmentItemCharge(unsigned short pid, unsigned short slot) noexcept
@@ -114,7 +117,7 @@ int ItemFunctions::GetEquipmentItemCharge(unsigned short pid, unsigned short slo
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->equipedItems[slot].charge;
+    return player->equipmentItems[slot].charge;
 }
 
 double ItemFunctions::GetEquipmentItemEnchantmentCharge(unsigned short pid, unsigned short slot) noexcept
@@ -122,7 +125,7 @@ double ItemFunctions::GetEquipmentItemEnchantmentCharge(unsigned short pid, unsi
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->equipedItems[slot].enchantmentCharge;
+    return player->equipmentItems[slot].enchantmentCharge;
 }
 
 const char *ItemFunctions::GetInventoryItemRefId(unsigned short pid, unsigned int i) noexcept
@@ -168,6 +171,8 @@ void ItemFunctions::SendEquipment(unsigned short pid) noexcept
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT)->Send(true);
+
+    player->equipmentIndexChanges.clear();
 }
 
 void ItemFunctions::SendInventoryChanges(unsigned short pid, bool toOthers) noexcept

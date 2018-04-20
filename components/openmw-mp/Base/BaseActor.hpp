@@ -42,7 +42,7 @@ namespace mwmp
         bool hasPositionData;
         bool hasStatsDynamicData;
 
-        Item equipedItems[19];
+        Item equipmentItems[19];
     };
 
     class BaseActorList

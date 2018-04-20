@@ -312,7 +312,7 @@ void DedicatedPlayer::setEquipment()
     {
         MWWorld::ContainerStoreIterator it = invStore.getSlot(slot);
 
-        const string &dedicItem = equipedItems[slot].refId;
+        const string &dedicItem = equipmentItems[slot].refId;
         std::string item = "";
         bool equal = false;
         if (it != invStore.end())
@@ -330,7 +330,7 @@ void DedicatedPlayer::setEquipment()
         if (dedicItem.empty() || equal)
             continue;
 
-        const int count = equipedItems[slot].count;
+        const int count = equipmentItems[slot].count;
         ptr.getClass().getContainerStore(ptr).add(dedicItem, count, ptr);
 
         for (const auto &ptr : invStore)

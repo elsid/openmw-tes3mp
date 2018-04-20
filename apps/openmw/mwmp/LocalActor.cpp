@@ -193,7 +193,7 @@ void LocalActor::updateEquipment(bool forceUpdate)
     MWWorld::InventoryStore &invStore = ptr.getClass().getInventoryStore(ptr);
     for (int slot = 0; slot < MWWorld::InventoryStore::Slots; slot++)
     {
-        auto &item = equipedItems[slot];
+        auto &item = equipmentItems[slot];
         MWWorld::ContainerStoreIterator it = invStore.getSlot(slot);
 
         if (it != invStore.end())
