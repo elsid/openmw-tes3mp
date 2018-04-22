@@ -280,6 +280,7 @@ void LocalPlayer::updateSkills(bool forceUpdate)
     {
         // Update a skill if its base value has changed at all or its progress has changed enough
         if (ptrNpcStats.getSkill(i).getBase() != npcStats.mSkills[i].mBase ||
+            ptrNpcStats.getSkill(i).getModifier() != npcStats.mSkills[i].mMod ||
             ptrNpcStats.getSkill(i).getProgress() != npcStats.mSkills[i].mProgress ||
             forceUpdate)
         {
