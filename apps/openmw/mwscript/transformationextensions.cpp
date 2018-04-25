@@ -574,6 +574,7 @@ namespace MWScript
                         MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), itemID, 1);
 
                         MWWorld::Ptr ptr = MWBase::Environment::get().getWorld()->safePlaceObject(ref.getPtr(), actor, actor.getCell(), direction, distance);
+                        MWBase::Environment::get().getWorld()->scaleObject(ptr, actor.getCellRef().getScale());
 
                         /*
                             Start of tes3mp addition
