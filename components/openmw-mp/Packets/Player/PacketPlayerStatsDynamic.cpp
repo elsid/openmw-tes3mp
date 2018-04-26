@@ -1,4 +1,5 @@
 #include "PacketPlayerStatsDynamic.hpp"
+
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 using namespace mwmp;
@@ -12,22 +13,32 @@ void PacketPlayerStatsDynamic::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    uint32_t count;
-    if (send)
-        count = static_cast<uint32_t>(player->statsDynamicIndexChanges.size());
+    RW(player->exchangeFullInfo, send);
 
-    RW(count, send);
-
-    if (!send)
+    if (player->exchangeFullInfo)
     {
-        player->statsDynamicIndexChanges.clear();
-        player->statsDynamicIndexChanges.resize(count);
+        RW(player->creatureStats.mDynamic, send);
     }
-
-    for (auto &&statsDynamicIndex : player->statsDynamicIndexChanges)
+    else
     {
-        RW(statsDynamicIndex, send);
+        uint32_t count;
 
-        RW(player->creatureStats.mDynamic[statsDynamicIndex], send);
+        if (send)
+            count = static_cast<uint32_t>(player->statsDynamicIndexChanges.size());
+
+        RW(count, send);
+
+        if (!send)
+        {
+            player->statsDynamicIndexChanges.clear();
+            player->statsDynamicIndexChanges.resize(count);
+        }
+
+        for (auto &&statsDynamicIndex : player->statsDynamicIndexChanges)
+        {
+            RW(statsDynamicIndex, send);
+
+            RW(player->creatureStats.mDynamic[statsDynamicIndex], send);
+        }
     }
 }

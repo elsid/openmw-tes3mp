@@ -227,6 +227,7 @@ namespace mwmp
             spellbookChanges.action = 0;
             spellbookChanges.count = 0;
 
+            exchangeFullInfo = false;
             displayCreatureName = false;
             resetStats = false;
             enforcedLogLevel = -1;
@@ -258,6 +259,8 @@ namespace mwmp
         // Track only the indexes of the equipment items that have been changed,
         // with the items themselves being stored in equipmentItems
         std::vector<int> equipmentIndexChanges;
+
+        bool exchangeFullInfo;
 
         InventoryChanges inventoryChanges;
         SpellbookChanges spellbookChanges;

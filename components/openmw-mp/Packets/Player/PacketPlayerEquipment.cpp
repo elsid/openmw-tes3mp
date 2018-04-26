@@ -1,4 +1,5 @@
 #include "PacketPlayerEquipment.hpp"
+
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 using namespace mwmp;
@@ -12,25 +13,42 @@ void PacketPlayerEquipment::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    uint32_t count;
-    if (send)
-        count = static_cast<uint32_t>(player->equipmentIndexChanges.size());
+    RW(player->exchangeFullInfo, send);
 
-    RW(count, send);
-
-    if (!send)
+    if (player->exchangeFullInfo)
     {
-        player->equipmentIndexChanges.clear();
-        player->equipmentIndexChanges.resize(count);
+        for (auto &&equipmentItem : player->equipmentItems)
+        {
+            ExchangeItemInformation(equipmentItem, send);
+        }
     }
-
-    for (auto &&equipmentIndex : player->equipmentIndexChanges)
+    else
     {
-        RW(equipmentIndex, send);
+        uint32_t count;
+        if (send)
+            count = static_cast<uint32_t>(player->equipmentIndexChanges.size());
 
-        RW(player->equipmentItems[equipmentIndex].refId, send);
-        RW(player->equipmentItems[equipmentIndex].count, send);
-        RW(player->equipmentItems[equipmentIndex].charge, send);
-        RW(player->equipmentItems[equipmentIndex].enchantmentCharge, send);
+        RW(count, send);
+
+        if (!send)
+        {
+            player->equipmentIndexChanges.clear();
+            player->equipmentIndexChanges.resize(count);
+        }
+
+        for (auto &&equipmentIndex : player->equipmentIndexChanges)
+        {
+            RW(equipmentIndex, send);
+            ExchangeItemInformation(player->equipmentItems[equipmentIndex], send);
+        }
     }
 }
+
+void PacketPlayerEquipment::ExchangeItemInformation(Item &item, bool send)
+{
+    RW(item.refId, send);
+    RW(item.count, send);
+    RW(item.charge, send);
+    RW(item.enchantmentCharge, send);
+}
+

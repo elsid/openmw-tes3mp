@@ -15,6 +15,7 @@ namespace mwmp
         PacketPlayerEquipment(RakNet::RakPeerInterface *peer);
 
         virtual void Packet(RakNet::BitStream *bs, bool send);
+        void ExchangeItemInformation(Item &item, bool send);
     };
 }
 

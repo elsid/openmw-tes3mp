@@ -30,9 +30,13 @@ namespace mwmp
             {
                 LOG_APPEND(Log::LOG_INFO, "- Moved to %s", player.cell.getDescription().c_str());
 
+                player.exchangeFullInfo = true;
+
                 player.forEachLoaded([this](Player *pl, Player *other) {
 
                     LOG_APPEND(Log::LOG_INFO, "- Started information exchange with %s", other->npc.mName.c_str());
+
+                    other->exchangeFullInfo = true;
 
                     playerController->GetPacket(ID_PLAYER_STATS_DYNAMIC)->setPlayer(other);
                     playerController->GetPacket(ID_PLAYER_ATTRIBUTE)->setPlayer(other);
@@ -64,6 +68,8 @@ namespace mwmp
                     playerController->GetPacket(ID_PLAYER_ANIM_FLAGS)->Send(other->guid);
                     playerController->GetPacket(ID_PLAYER_SHAPESHIFT)->Send(other->guid);
 
+                    other->exchangeFullInfo = false;
+
                     LOG_APPEND(Log::LOG_INFO, "- Finished information exchange with %s", other->npc.mName.c_str());
                 });
 
@@ -75,6 +81,8 @@ namespace mwmp
                 Script::Call<Script::CallbackIdentity("OnPlayerCellChange")>(player.getId());
 
                 LOG_APPEND(Log::LOG_INFO, "- Finished processing ID_PLAYER_CELL_CHANGE", player.cell.getDescription().c_str());
+
+                player.exchangeFullInfo = false;
             }
             else
                 LOG_APPEND(Log::LOG_INFO, "- Ignored because %s is dead", player.npc.mName.c_str());
