@@ -194,6 +194,9 @@ bool LocalPlayer::hasFinishedCharGen()
 
 void LocalPlayer::updateStatsDynamic(bool forceUpdate)
 {
+    if (statsDynamicIndexChanges.size() > 0)
+        statsDynamicIndexChanges.clear();
+
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
 
     MWMechanics::CreatureStats *ptrCreatureStats = &ptrPlayer.getClass().getCreatureStats(ptrPlayer);
@@ -231,9 +234,9 @@ void LocalPlayer::updateStatsDynamic(bool forceUpdate)
         magicka.writeState(creatureStats.mDynamic[1]);
         fatigue.writeState(creatureStats.mDynamic[2]);
 
+        exchangeFullInfo = false;
         getNetworking()->getPlayerPacket(ID_PLAYER_STATS_DYNAMIC)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_STATS_DYNAMIC)->Send();
-        statsDynamicIndexChanges.clear();
     }
 }
 
@@ -242,6 +245,9 @@ void LocalPlayer::updateAttributes(bool forceUpdate)
     // Only send attributes if we are not a werewolf, or they will be
     // overwritten by the werewolf ones
     if (isWerewolf) return;
+
+    if (attributeIndexChanges.size() > 0)
+        attributeIndexChanges.clear();
 
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     const MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
@@ -261,9 +267,9 @@ void LocalPlayer::updateAttributes(bool forceUpdate)
 
     if (attributeIndexChanges.size() > 0)
     {
+        exchangeFullInfo = false;
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTRIBUTE)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTRIBUTE)->Send();
-        attributeIndexChanges.clear();
     }
 }
 
@@ -272,6 +278,9 @@ void LocalPlayer::updateSkills(bool forceUpdate)
     // Only send skills if we are not a werewolf, or they will be
     // overwritten by the werewolf ones
     if (isWerewolf) return;
+
+    if (skillIndexChanges.size() > 0)
+        skillIndexChanges.clear();
 
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     const MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
@@ -291,9 +300,9 @@ void LocalPlayer::updateSkills(bool forceUpdate)
 
     if (skillIndexChanges.size() > 0)
     {
+        exchangeFullInfo = false;
         getNetworking()->getPlayerPacket(ID_PLAYER_SKILL)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_SKILL)->Send();
-        skillIndexChanges.clear();
     }
 }
 
@@ -432,6 +441,9 @@ void LocalPlayer::updateCell(bool forceUpdate)
 
 void LocalPlayer::updateEquipment(bool forceUpdate)
 {
+    if (equipmentIndexChanges.size() > 0)
+        equipmentIndexChanges.clear();
+
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
 
     MWWorld::InventoryStore &invStore = ptrPlayer.getClass().getInventoryStore(ptrPlayer);
@@ -464,9 +476,9 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
 
     if (equipmentIndexChanges.size() > 0)
     {
+        exchangeFullInfo = false;
         getNetworking()->getPlayerPacket(ID_PLAYER_EQUIPMENT)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_EQUIPMENT)->Send();
-        equipmentIndexChanges.clear();
     }
 }
 
