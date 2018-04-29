@@ -35,6 +35,7 @@ namespace mwmp
         void rotateObjects(MWWorld::CellStore* cellStore);
         void animateObjects(MWWorld::CellStore* cellStore);
         void activateDoors(MWWorld::CellStore* cellStore);
+        void setDoorDestinations(MWWorld::CellStore* cellStore);
         void runConsoleCommands(MWWorld::CellStore* cellStore);
 
         void setLocalShorts(MWWorld::CellStore* cellStore);

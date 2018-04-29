@@ -58,11 +58,41 @@ namespace MWWorld
         // if it should open through animation.
         bool getTeleport() const;
 
+        /*
+            Start of tes3mp addition
+
+            Make it possible to change the teleport state from elsewhere
+        */
+        void setTeleport(bool teleportState);
+        /*
+            End of tes3mp addition
+        */
+
         // Teleport location for the door, if this is a teleporting door.
         ESM::Position getDoorDest() const;
 
+        /*
+            Start of tes3mp addition
+
+            Make it possible to change the destination position from elsewhere
+        */
+        void setDoorDest(const ESM::Position& position);
+        /*
+            End of tes3mp addition
+        */
+
         // Destination cell for doors (optional)
         std::string getDestCell() const;
+
+        /*
+            Start of tes3mp addition
+
+            Make it possible to change the destination cell from elsewhere
+        */
+        void setDestCell(const std::string& cellDescription);
+        /*
+            End of tes3mp addition
+        */
 
         // Scale applied to mesh
         float getScale() const;

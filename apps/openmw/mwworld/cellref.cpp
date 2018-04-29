@@ -56,15 +56,54 @@ namespace MWWorld
         return mCellRef.mTeleport;
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to change the teleport state from elsewhere
+    */
+    void CellRef::setTeleport(bool teleportState)
+    {
+        mCellRef.mTeleport = teleportState;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     ESM::Position CellRef::getDoorDest() const
     {
         return mCellRef.mDoorDest;
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to change the destination position from elsewhere
+    */
+    void CellRef::setDoorDest(const ESM::Position& position)
+    {
+        mCellRef.mDoorDest = position;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     std::string CellRef::getDestCell() const
     {
         return mCellRef.mDestCell;
     }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to change the destination cell from elsewhere
+    */
+    void CellRef::setDestCell(const std::string& cellDescription)
+    {
+        mCellRef.mDestCell = cellDescription;
+    }
+    /*
+        End of tes3mp addition
+    */
 
     float CellRef::getScale() const
     {

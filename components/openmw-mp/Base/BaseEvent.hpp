@@ -35,9 +35,13 @@ namespace mwmp
         ESM::Position position;
 
         bool objectState;
-        int doorState;
         int lockLevel;
         float scale;
+
+        int doorState;
+        bool teleportState;
+        ESM::Cell destinationCell;
+        ESM::Position destinationPosition;
 
         std::string filename;
         bool allowSkipping;

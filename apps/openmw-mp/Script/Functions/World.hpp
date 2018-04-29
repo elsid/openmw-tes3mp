@@ -47,12 +47,18 @@
     {"SetObjectGoldValue",                    WorldFunctions::SetObjectGoldValue},\
     {"SetObjectScale",                        WorldFunctions::SetObjectScale},\
     {"SetObjectState",                        WorldFunctions::SetObjectState},\
-    {"SetObjectDoorState",                    WorldFunctions::SetObjectDoorState},\
     {"SetObjectLockLevel",                    WorldFunctions::SetObjectLockLevel},\
     {"SetObjectDisarmState",                  WorldFunctions::SetObjectDisarmState},\
     {"SetObjectMasterState",                  WorldFunctions::SetObjectMasterState},\
     {"SetObjectPosition",                     WorldFunctions::SetObjectPosition},\
     {"SetObjectRotation",                     WorldFunctions::SetObjectRotation},\
+    \
+    {"SetObjectDoorState",                    WorldFunctions::SetObjectDoorState},\
+    {"SetObjectDoorTeleportState",            WorldFunctions::SetObjectDoorTeleportState},\
+    {"SetObjectDoorDestinationCell",          WorldFunctions::SetObjectDoorDestinationCell},\
+    {"SetObjectDoorDestinationPosition",      WorldFunctions::SetObjectDoorDestinationPosition},\
+    {"SetObjectDoorDestinationRotation",      WorldFunctions::SetObjectDoorDestinationRotation},\
+    \
     {"SetPlayerAsObject",                     WorldFunctions::SetPlayerAsObject},\
     \
     {"SetContainerItemRefId",                 WorldFunctions::SetContainerItemRefId},\
@@ -73,6 +79,7 @@
     {"SendObjectScale",                       WorldFunctions::SendObjectScale},\
     {"SendObjectState",                       WorldFunctions::SendObjectState},\
     {"SendDoorState",                         WorldFunctions::SendDoorState},\
+    {"SendDoorDestination",                   WorldFunctions::SendDoorDestination},\
     {"SendContainer",                         WorldFunctions::SendContainer},\
     {"SendConsoleCommand",                    WorldFunctions::SendConsoleCommand},\
     \
@@ -80,7 +87,7 @@
     {"SetMonth",                              WorldFunctions::SetMonth},\
     {"SetDay",                                WorldFunctions::SetDay}
 
-class           WorldFunctions
+class WorldFunctions
 {
 public:
 
@@ -457,16 +464,6 @@ public:
     static void SetObjectState(bool objectState) noexcept;
 
     /**
-    * \brief Set the door state of the temporary world object stored on the server.
-    *
-    * Doors are open or closed based on their door state.
-    *
-    * \param doorState The door state.
-    * \return void
-    */
-    static void SetObjectDoorState(int doorState) noexcept;
-
-    /**
     * \brief Set the lock level of the temporary world object stored on the server.
     *
     * \param lockLevel The lock level.
@@ -512,6 +509,60 @@ public:
     * \return void
     */
     static void SetObjectRotation(double x, double y, double z) noexcept;
+
+    /**
+    * \brief Set the door state of the temporary world object stored on the server.
+    *
+    * Doors are open or closed based on their door state.
+    *
+    * \param doorState The door state.
+    * \return void
+    */
+    static void SetObjectDoorState(int doorState) noexcept;
+
+    /**
+    * \brief Set the teleport state of the temporary world object stored on the server.
+    *
+    * If a door's teleport state is true, interacting with the door teleports a player to its
+    * destination. If it's false, it opens and closes like a regular door.
+    *
+    * \param teleportState The teleport state.
+    * \return void
+    */
+    static void SetObjectDoorTeleportState(bool teleportState) noexcept;
+
+    /**
+    * \brief Set the door destination cell of the temporary world object stored on the server.
+    *
+    * The cell is determined to be an exterior cell if it fits the pattern of a number followed
+    * by a comma followed by another number.
+    *
+    * \param cellDescription The description of the cell.
+    * \return void
+    */
+    static void SetObjectDoorDestinationCell(const char* cellDescription) noexcept;
+
+    /**
+    * \brief Set the door destination position of the temporary world object stored on the server.
+    *
+    * \param x The X position.
+    * \param y The Y position.
+    * \param z The Z position.
+    * \return void
+    */
+    static void SetObjectDoorDestinationPosition(double x, double y, double z) noexcept;
+
+    /**
+    * \brief Set the door destination rotation of the temporary world object stored on the server.
+    *
+    * Note: Because this sets the rotation a player will have upon using the door, and rotation
+    *       on the Y axis has no effect on players, the Y value has been omitted as an argument.
+    *
+    * \param x The X rotation.
+    * \param z The Z rotation.
+    * \return void
+    */
+    static void SetObjectDoorDestinationRotation(double x, double z) noexcept;
 
     /**
     * \brief Set a player as the object in the temporary world object stored on the server.
@@ -669,6 +720,16 @@ public:
     * \return void
     */
     static void SendDoorState(bool broadcast = false) noexcept;
+
+    /**
+    * \brief Send a DoorDestination packet.
+    *
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  event was initialized or to everyone on the server.
+    *
+    * \return void
+    */
+    static void SendDoorDestination(bool broadcast = false) noexcept;
 
     /**
     * \brief Send a Container packet.

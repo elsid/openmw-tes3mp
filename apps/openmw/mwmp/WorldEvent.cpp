@@ -566,6 +566,34 @@ void WorldEvent::activateDoors(MWWorld::CellStore* cellStore)
     }
 }
 
+void WorldEvent::setDoorDestinations(MWWorld::CellStore* cellStore)
+{
+    for (const auto &worldObject : worldObjects)
+    {
+        LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s, %i, %i", worldObject.refId.c_str(), worldObject.refNumIndex, worldObject.mpNum);
+
+        MWWorld::Ptr ptrFound = cellStore->searchExact(worldObject.refNumIndex, worldObject.mpNum);
+
+        if (ptrFound)
+        {
+            LOG_APPEND(Log::LOG_VERBOSE, "-- Found %s, %i, %i", ptrFound.getCellRef().getRefId().c_str(),
+                ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
+
+            ptrFound.getCellRef().setTeleport(worldObject.teleportState);
+
+            if (worldObject.teleportState)
+            {
+                ptrFound.getCellRef().setDoorDest(worldObject.destinationPosition);
+
+                if (worldObject.destinationCell.isExterior())
+                    ptrFound.getCellRef().setDestCell("");
+                else
+                    ptrFound.getCellRef().setDestCell(worldObject.destinationCell.getDescription());
+            }
+        }
+    }
+}
+
 void WorldEvent::runConsoleCommands(MWWorld::CellStore* cellStore)
 {
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();

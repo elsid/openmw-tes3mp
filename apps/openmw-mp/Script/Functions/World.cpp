@@ -229,11 +229,6 @@ void WorldFunctions::SetObjectState(bool objectState) noexcept
     tempWorldObject.objectState = objectState;
 }
 
-void WorldFunctions::SetObjectDoorState(int doorState) noexcept
-{
-    tempWorldObject.doorState = doorState;
-}
-
 void WorldFunctions::SetObjectLockLevel(int lockLevel) noexcept
 {
     tempWorldObject.lockLevel = lockLevel;
@@ -261,6 +256,34 @@ void WorldFunctions::SetObjectRotation(double x, double y, double z) noexcept
     tempWorldObject.position.rot[0] = x;
     tempWorldObject.position.rot[1] = y;
     tempWorldObject.position.rot[2] = z;
+}
+
+void WorldFunctions::SetObjectDoorState(int doorState) noexcept
+{
+    tempWorldObject.doorState = doorState;
+}
+
+void WorldFunctions::SetObjectDoorTeleportState(bool teleportState) noexcept
+{
+    tempWorldObject.teleportState = teleportState;
+}
+
+void WorldFunctions::SetObjectDoorDestinationCell(const char* cellDescription) noexcept
+{
+    tempWorldObject.destinationCell = Utils::getCellFromDescription(cellDescription);
+}
+
+void WorldFunctions::SetObjectDoorDestinationPosition(double x, double y, double z) noexcept
+{
+    tempWorldObject.destinationPosition.pos[0] = x;
+    tempWorldObject.destinationPosition.pos[1] = y;
+    tempWorldObject.destinationPosition.pos[2] = z;
+}
+
+void WorldFunctions::SetObjectDoorDestinationRotation(double x, double z) noexcept
+{
+    tempWorldObject.destinationPosition.rot[0] = x;
+    tempWorldObject.destinationPosition.rot[2] = z;
 }
 
 void WorldFunctions::SetPlayerAsObject(unsigned short pid) noexcept
@@ -385,6 +408,16 @@ void WorldFunctions::SendObjectState(bool broadcast) noexcept
 void WorldFunctions::SendDoorState(bool broadcast) noexcept
 {
     mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_DOOR_STATE);
+    packet->setEvent(&writeEvent);
+    packet->Send(false);
+
+    if (broadcast)
+        packet->Send(true);
+}
+
+void WorldFunctions::SendDoorDestination(bool broadcast) noexcept
+{
+    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_DOOR_DESTINATION);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
