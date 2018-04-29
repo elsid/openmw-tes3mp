@@ -19,8 +19,10 @@
     \
     {"SetPos",              PositionFunctions::SetPos},\
     {"SetRot",              PositionFunctions::SetRot},\
+    {"SetMomentum",         PositionFunctions::SetMomentum},\
     \
-    {"SendPos",             PositionFunctions::SendPos}
+    {"SendPos",             PositionFunctions::SendPos},\
+    {"SendMomentum",        PositionFunctions::SendMomentum}
 
 
 class PositionFunctions
@@ -145,6 +147,20 @@ public:
     static void SetRot(unsigned short pid, double x, double z) noexcept;
 
     /**
+    * \brief Set the momentum of a player.
+    *
+    * This changes the coordinates recorded for that player's momentum in the server memory, but
+    * does not by itself send a packet.
+    *
+    * \param pid The player ID.
+    * \param x The X momentum.
+    * \param y The Y momentum.
+    * \param z The Z momentum.
+    * \return void
+    */
+    static void SetMomentum(unsigned short pid, double x, double y, double z) noexcept;
+
+    /**
     * \brief Send a PlayerPosition packet about a player.
     *
     * It is only sent to the affected player.
@@ -153,6 +169,16 @@ public:
     * \return void
     */
     static void SendPos(unsigned short pid) noexcept;
+
+    /**
+    * \brief Send a PlayerMomentum packet about a player.
+    *
+    * It is only sent to the affected player.
+    *
+    * \param pid The player ID.
+    * \return void
+    */
+    static void SendMomentum(unsigned short pid) noexcept;
 };
 
 #endif //OPENMW_POSITIONAPI_HPP

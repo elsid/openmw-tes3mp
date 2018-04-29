@@ -23,7 +23,7 @@ namespace mwmp
             if (!isRequest())
             {
                 LocalPlayer &localPlayer = static_cast<LocalPlayer&>(*player);
-                //localPlayer.setMomentum();
+                localPlayer.setMomentum();
             }
         }
     };

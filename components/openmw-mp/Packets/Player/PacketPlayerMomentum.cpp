@@ -12,5 +12,6 @@ PacketPlayerMomentum::PacketPlayerMomentum(RakNet::RakPeerInterface *peer) : Pla
 void PacketPlayerMomentum::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
-    // Placeholder
+    
+    RW(player->momentum.pos, send, 1);
 }

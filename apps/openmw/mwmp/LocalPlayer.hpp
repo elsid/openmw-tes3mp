@@ -54,6 +54,7 @@ namespace mwmp
         void setBounty();
         void setReputation();
         void setPosition();
+        void setMomentum();
         void setCell();
         void setClass();
         void setEquipment();

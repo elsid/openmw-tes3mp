@@ -1002,6 +1002,13 @@ void LocalPlayer::setPosition()
     updateAnimFlags(true);
 }
 
+void LocalPlayer::setMomentum()
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+    MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
+    world->setInertialForce(ptrPlayer, momentum.asVec3());
+}
+
 void LocalPlayer::setCell()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
