@@ -146,12 +146,14 @@ const char *ScriptFunctions::GetIP(unsigned short pid) noexcept
 
 void ScriptFunctions::SetGameMode(const char *gameMode) noexcept
 {
-    mwmp::Networking::getPtr()->getMasterClient()->SetModname(gameMode);
+    if (mwmp::Networking::getPtr()->getMasterClient())
+        mwmp::Networking::getPtr()->getMasterClient()->SetModname(gameMode);
 }
 
 void ScriptFunctions::SetHostname(const char *name) noexcept
 {
-    mwmp::Networking::getPtr()->getMasterClient()->SetHostname(name);
+    if (mwmp::Networking::getPtr()->getMasterClient())
+        mwmp::Networking::getPtr()->getMasterClient()->SetHostname(name);
 }
 
 void ScriptFunctions::SetServerPassword(const char *password) noexcept
