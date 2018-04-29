@@ -454,7 +454,11 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
 
         if (it != invStore.end())
         {
-            if (!::Misc::StringUtils::ciEqual(it->getCellRef().getRefId(), equipmentItems[slot].refId) || forceUpdate)
+            if (!::Misc::StringUtils::ciEqual(it->getCellRef().getRefId(), equipmentItems[slot].refId) ||
+                it->getCellRef().getCharge() != item.charge ||
+                it->getCellRef().getEnchantmentCharge() != item.enchantmentCharge ||
+                it->getRefData().getCount() != item.count ||
+                forceUpdate)
             {
                 equipmentIndexChanges.push_back(slot);
 
