@@ -91,9 +91,6 @@ public:
             if (!callback)
                 continue;
 
-
-            LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Called function \"%s\"", data.name);
-
             if (script->script_type == SCRIPT_CPP)
                 result = reinterpret_cast<FunctionEllipsis<CallBackReturn<I>>>(callback)(std::forward<Args>(args)...);
 #if defined (ENABLE_PAWN)
@@ -133,8 +130,6 @@ public:
 
             if (!callback)
                 continue;
-
-            LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Called function \"%s\"", data.name);
 
             if (script->script_type == SCRIPT_CPP)
                 reinterpret_cast<FunctionEllipsis<CallBackReturn<I>>>(callback)(std::forward<Args>(args)...);
