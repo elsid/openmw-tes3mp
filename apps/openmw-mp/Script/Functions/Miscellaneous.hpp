@@ -4,6 +4,7 @@
 #include "../Types.hpp"
 
 #define MISCELLANEOUSAPI \
+    {"DoesFileExist",               MiscellaneousFunctions::DoesFileExist},\
     {"GetCaseInsensitiveFilename",  MiscellaneousFunctions::GetCaseInsensitiveFilename},\
     \
     {"GetLastPlayerId",             MiscellaneousFunctions::GetLastPlayerId},\
@@ -20,6 +21,17 @@
 class MiscellaneousFunctions
 {
 public:
+
+    /**
+    * \brief Check whether a certain file exists.
+    *
+    * This will be a case sensitive check on case sensitive filesystems.
+    *
+    * Whenever you want to enforce case insensitivity, use GetCaseInsensitiveFilename() instead.
+    *
+    * \return Whether the file exists or not.
+    */
+    static bool DoesFileExist(const char *filePath) noexcept;
 
     /**
     * \brief Get the first filename in a folder that has a case insensitive match with the filename

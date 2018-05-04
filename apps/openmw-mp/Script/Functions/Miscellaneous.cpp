@@ -11,6 +11,11 @@ using namespace std;
 
 static std::string tempFilename;
 
+bool MiscellaneousFunctions::DoesFileExist(const char *filePath) noexcept
+{
+    return boost::filesystem::exists(filePath);
+}
+
 const char *MiscellaneousFunctions::GetCaseInsensitiveFilename(const char *folderPath, const char *filename) noexcept
 {
     if (!boost::filesystem::exists(folderPath)) return "invalid";
