@@ -60,6 +60,17 @@ namespace MWRender
 
         void removeCamera(osg::Camera* cam);
 
+        /*
+            Start of tes3mp addition
+
+            Allow the setting of the image data for a global map tile from elsewhere
+            in the code
+        */
+        void setImage(int cellX, int cellY, const std::vector<char>& imageData);
+        /*
+            End of tes3mp addition
+        */
+
         /**
          * Mark a camera for cleanup in the next update. For internal use only.
          */

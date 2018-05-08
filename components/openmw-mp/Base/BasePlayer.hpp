@@ -95,6 +95,13 @@ namespace mwmp
         int type; // 0 - Cell load, 1 - Cell unload
     };
 
+    struct MapTile
+    {
+        int x;
+        int y;
+        std::vector<char> imageData;
+    };
+
     struct JournalChanges
     {
         std::vector<JournalItem> journalItems;
@@ -136,8 +143,7 @@ namespace mwmp
 
     struct MapChanges
     {
-        std::vector<ESM::Cell> cellsExplored;
-        unsigned int count;
+        std::vector<MapTile> mapTiles;
     };
 
     struct InventoryChanges

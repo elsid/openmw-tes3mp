@@ -1005,11 +1005,12 @@ namespace MWGui
     /*
         Start of tes3mp addition
 
-        Allow setting a cell as explored from elsewhere in the code
+        Allow the setting of the image data for a global map tile from elsewhere
+        in the code
     */
-    void WindowManager::setCellExplored(const MWWorld::CellStore* cell)
+    void WindowManager::setGlobalMapImage(int cellX, int cellY, const std::vector<char>& imageData)
     {
-        mMap->cellExplored(cell->getCell()->getGridX(), cell->getCell()->getGridY());
+        mMap->setGlobalMapImage(cellX, cellY, imageData);
     }
     /*
         End of tes3mp addition

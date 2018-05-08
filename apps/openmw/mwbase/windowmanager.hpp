@@ -213,9 +213,10 @@ namespace MWBase
             /*
                 Start of tes3mp addition
 
-                Allow setting a cell as explored from elsewhere in the code
+                Allow the setting of the image data for a global map tile from elsewhere
+                in the code
             */
-            virtual void setCellExplored(const MWWorld::CellStore* cell) = 0;
+            virtual void setGlobalMapImage(int cellX, int cellY, const std::vector<char>& imageData) = 0;
             /*
                 End of tes3mp addition
             */

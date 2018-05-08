@@ -19,6 +19,18 @@
 
 #include <components/esm/globalmap.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include <components/openmw-mp/Log.hpp>
+#include "../mwmp/Main.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
 
@@ -96,6 +108,17 @@ namespace
 
 namespace MWRender
 {
+    /*
+        Start of tes3mp addition
+
+        Use maps to track which global map coordinates belong to which cell coordinates
+        without having to significantly change other methods
+    */
+    std::map<int, int> originToCellX;
+    std::map<int, int> originToCellY;
+    /*
+        End of tes3mp addition
+    */
 
     class CreateMapWorkItem : public SceneUtil::WorkItem
     {
@@ -382,6 +405,17 @@ namespace MWRender
         if (cellX > mMaxX || cellX < mMinX || cellY > mMaxY || cellY < mMinY)
             return;
 
+        /*
+            Start of tes3mp addition
+
+            Track the cell coordinates corresponding to these map image coordinates
+        */
+        originToCellX[originX] = cellX;
+        originToCellY[originY - mCellSize] = cellY;
+        /*
+            End of tes3mp addition
+        */
+
         requestOverlayTextureUpdate(originX, mHeight - originY, mCellSize, mCellSize, localMapTexture, false, true);
     }
 
@@ -598,6 +632,40 @@ namespace MWRender
             ensureLoaded();
             mOverlayImage->copySubImage(imageDest.mX, imageDest.mY, 0, imageDest.mImage);
 
+            /*
+                Start of tes3mp addition
+
+                Send an ID_PLAYER_MAP packet with this map tile to the server
+            */
+            if (originToCellX.count(imageDest.mX) > 0 && originToCellY.count(imageDest.mY) > 0)
+            {
+                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "New global map tile corresponds to cell %i, %i", originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY));
+
+                osgDB::ReaderWriter* readerwriter = osgDB::Registry::instance()->getReaderWriterForExtension("png");
+                if (!readerwriter)
+                {
+                    std::cerr << "Error: Can't write temporary map image, no '" << "png" << "' readerwriter found" << std::endl;
+                    return;
+                }
+
+                std::ostringstream ostream;
+
+                osgDB::ReaderWriter::WriteResult result = readerwriter->writeImage(*imageDest.mImage, ostream);
+                
+                if (!result.success())
+                {
+                    std::cerr << "Error: Can't write temporary map image: " << result.message() << " code " << result.status() << std::endl;
+                }
+
+                std::string stringData = ostream.str();
+                std::vector<char> vectorData = std::vector<char>(stringData.begin(), stringData.end());
+
+                mwmp::Main::get().getLocalPlayer()->sendMapExplored(originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY), vectorData);
+            }
+            /*
+                End of tes3mp addition
+            */
+
             it = mPendingImageDest.erase(it);
         }
     }
@@ -607,4 +675,50 @@ namespace MWRender
         cam->removeChildren(0, cam->getNumChildren());
         mRoot->removeChild(cam);
     }
+
+    /*
+        Start of tes3mp addition
+
+        Allow the setting of the image data for a global map tile from elsewhere
+        in the code
+    */
+    void GlobalMap::setImage(int cellX, int cellY, const std::vector<char>& imageData)
+    {
+        Files::IMemStream istream(&imageData[0], imageData.size());
+
+        osgDB::ReaderWriter* reader = osgDB::Registry::instance()->getReaderWriterForExtension("png");
+        if (!reader)
+        {
+            std::cerr << "Error: Failed to read map tile image data, no png readerwriter found" << std::endl;
+            return;
+        }
+        osgDB::ReaderWriter::ReadResult result = reader->readImage(istream);
+
+        if (!result.success())
+        {
+            std::cerr << "Error: Can't read map tile image: " << result.message() << " code " << result.status() << std::endl;
+            return;
+        }
+        
+        osg::ref_ptr<osg::Image> image = result.getImage();
+
+        int posX = (cellX - mMinX) * mCellSize;
+        int posY = (cellY - mMinY + 1) * mCellSize;
+
+        if (cellX > mMaxX || cellX < mMinX || cellY > mMaxY || cellY < mMinY)
+            return;
+        
+        osg::ref_ptr<osg::Texture2D> texture(new osg::Texture2D);
+        texture->setImage(image);
+        texture->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
+        texture->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
+        texture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR);
+        texture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);
+        texture->setResizeNonPowerOfTwoHint(false);
+
+        requestOverlayTextureUpdate(posX, mHeight - posY, mCellSize, mCellSize, texture, true, false);
+    }
+    /*
+        End of tes3mp addition
+    */
 }

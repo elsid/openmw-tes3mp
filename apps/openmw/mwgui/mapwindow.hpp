@@ -266,6 +266,17 @@ namespace MWGui
         void setGlobalMapPlayerPosition (float worldX, float worldY);
         void setGlobalMapPlayerDir(const float x, const float y);
 
+        /*
+            Start of tes3mp addition
+
+            Allow the setting of the image data for a global map tile from elsewhere
+            in the code
+        */
+        void setGlobalMapImage(int cellX, int cellY, const std::vector<char>& imageData);
+        /*
+            End of tes3mp addition
+        */
+
         void ensureGlobalMapLoaded();
 
         virtual void onOpen();

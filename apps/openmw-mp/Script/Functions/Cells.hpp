@@ -7,6 +7,7 @@
     {"InitializeMapChanges",    CellFunctions::InitializeMapChanges},\
     \
     {"GetCellStateChangesSize", CellFunctions::GetCellStateChangesSize},\
+    {"GetMapChangesSize",       CellFunctions::GetMapChangesSize},\
     \
     {"GetCellStateType",        CellFunctions::GetCellStateType},\
     {"GetCellStateDescription", CellFunctions::GetCellStateDescription},\
@@ -19,10 +20,14 @@
     {"GetRegion",               CellFunctions::GetRegion},\
     {"IsChangingRegion",        CellFunctions::IsChangingRegion},\
     \
+    {"GetMapTileCellX",         CellFunctions::GetMapTileCellX},\
+    {"GetMapTileCellY",         CellFunctions::GetMapTileCellY},\
+    {"SaveMapTileImageFile",    CellFunctions::SaveMapTileImageFile},\
+    \
     {"SetCell",                 CellFunctions::SetCell},\
     {"SetExteriorCell",         CellFunctions::SetExteriorCell},\
     \
-    {"AddCellExplored",         CellFunctions::AddCellExplored},\
+    {"LoadMapTileImageFile",    CellFunctions::LoadMapTileImageFile},\
     \
     {"SendCell",                CellFunctions::SendCell},\
     {"SendMapChanges",          CellFunctions::SendMapChanges}
@@ -49,6 +54,14 @@ public:
     * \return The number of indexes.
     */
     static unsigned int GetCellStateChangesSize(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the number of indexes in a player's latest map changes.
+    *
+    * \param pid The player ID whose map changes should be used.
+    * \return The number of indexes.
+    */
+    static unsigned int GetMapChangesSize(unsigned short pid) noexcept;
 
     /**
     * \brief Get the cell state type at a certain index in a player's latest cell state changes.
@@ -119,6 +132,37 @@ public:
     static bool IsChangingRegion(unsigned short pid) noexcept;
 
     /**
+    * \brief Get the X coordinate of the cell corresponding to the map tile at a certain index in a
+    *        player's latest map changes.
+    *
+    * \param pid The player ID whose map changes should be used.
+    * \param i The index of the map tile.
+    * \return The X coordinate of the cell.
+    */
+    static int GetMapTileCellX(unsigned short pid, unsigned int i) noexcept;
+
+    /**
+    * \brief Get the Y coordinate of the cell corresponding to the map tile at a certain index in a
+    *        player's latest map changes.
+    *
+    * \param pid The player ID whose map changes should be used.
+    * \param i The index of the map tile.
+    * \return The Y coordinate of the cell.
+    */
+    static int GetMapTileCellY(unsigned short pid, unsigned int i) noexcept;
+
+    /**
+    * \brief Save the .png image data of the map tile at a certain index in a player's latest map changes
+    *        to a file.
+    *
+    * \param pid The player ID whose map changes should be used.
+    * \param i The index of the map tile.
+    * \param filePath The file path of the resulting file.
+    * \return void
+    */
+    static void SaveMapTileImageFile(unsigned short pid, unsigned int i, const char *filePath) noexcept;
+
+    /**
     * \brief Set the cell of a player.
     *
     * This changes the cell recorded for that player in the server memory, but does not by itself
@@ -147,13 +191,16 @@ public:
     static void SetExteriorCell(unsigned short pid, int x, int y) noexcept;
 
     /**
-    * \brief Add a new explored cell to the map changes for a player.
+    * \brief Load a .png file as the image data for a map tile and add it to the map changes for
+    *        a player.
     *
     * \param pid The player ID whose map changes should be used.
-    * \param cellDescription The cell description of the explored cell.
+    * \param cellX The X coordinate of the cell corresponding to the map tile.
+    * \param cellY The Y coordinate of the cell corresponding to the map tile.
+    * \param filePath The file path of the loaded file.
     * \return void
     */
-    static void AddCellExplored(unsigned short pid, const char* cellDescription) noexcept;
+    static void LoadMapTileImageFile(unsigned short pid, int cellX, int cellY, const char* filePath) noexcept;
 
     /**
     * \brief Send a PlayerCellChange packet about a player.
