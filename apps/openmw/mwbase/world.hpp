@@ -323,7 +323,7 @@ namespace MWBase
 
                 Make it possible to set the physics framerate from elsewhere
             */
-            virtual void World::setPhysicsFramerate(float physFramerate) = 0;
+            virtual void setPhysicsFramerate(float physFramerate) = 0;
             /*
                 End of tes3mp addition
             */

@@ -1114,7 +1114,7 @@ void LocalPlayer::setEquipment()
             else
             {
                 // Don't try to equip an item that is already equipped
-                if (!ptrInventory.getSlot(slot).isEqual(it))
+                if (ptrInventory.getSlot(slot) != it)
                     ptrInventory.equip(slot, it, ptrPlayer);
             }
         }
