@@ -36,9 +36,16 @@ Art
     Texafornian - TES3MP logo
 
 
+Super special thanks
+--------------------
+
+    Mitch (Zaberius)
+
+
 Special thanks (in alphabetical order)
 --------------------------------------
 
+    Aesylwinn
     Camul
     David Wery
     DestinedToDie
