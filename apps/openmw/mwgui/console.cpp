@@ -426,7 +426,18 @@ namespace MWGui
             }
             else
             {
-                setTitle("#{sConsoleTitle} (" + object.getCellRef().getRefId() + ")");
+                /*
+                    Start of tes3mp change (major)
+
+                    Display the selected object's refNumIndex and mpNum alongside its refId in the
+                    title of the console window, for easier debugging of almost everything
+                */
+                setTitle("#{sConsoleTitle} (" + object.getCellRef().getRefId() + ", " +
+                    std::to_string(object.getCellRef().getRefNum().mIndex) + ", " +
+                    std::to_string(object.getCellRef().getMpNum()) + ")");
+                /*
+                    End of tes3mp change (major)
+                */
                 mPtr = object;
             }
             // User clicked on an object. Restore focus to the console command line.
