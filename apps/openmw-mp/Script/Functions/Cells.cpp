@@ -113,9 +113,9 @@ void CellFunctions::SaveMapTileImageFile(unsigned short pid, unsigned int i, con
 
     const std::vector<char>& imageData = player->mapChanges.mapTiles.at(i).imageData;
 
-    std::ofstream output_file(filePath, std::ios::binary);
-    std::ostream_iterator<char> output_iterator(output_file);
-    std::copy(imageData.begin(), imageData.end(), output_iterator);
+    std::ofstream outputFile(filePath, std::ios::binary);
+    std::ostream_iterator<char> outputIterator(outputFile);
+    std::copy(imageData.begin(), imageData.end(), outputIterator);
 }
 
 int CellFunctions::GetMapTileCellX(unsigned short pid, unsigned int i) noexcept
@@ -169,8 +169,8 @@ void CellFunctions::LoadMapTileImageFile(unsigned short pid, int cellX, int cell
     mapTile.x = cellX;
     mapTile.y = cellY;
     
-    std::ifstream fin(filePath, std::ios::binary);
-    mapTile.imageData = std::vector<char>(std::istreambuf_iterator<char>(fin), std::istreambuf_iterator<char>());
+    std::ifstream inputFile(filePath, std::ios::binary);
+    mapTile.imageData = std::vector<char>(std::istreambuf_iterator<char>(inputFile), std::istreambuf_iterator<char>());
 
     player->mapChanges.mapTiles.push_back(mapTile);
 }
