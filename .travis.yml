@@ -61,6 +61,8 @@ matrix:
         - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
   allow_failures:
     - env:
+        - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
+    - env:
         - ANALYZE="scan-build-3.8 --use-cc clang-3.8 --use-c++ clang++-3.8 "
         - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
 
