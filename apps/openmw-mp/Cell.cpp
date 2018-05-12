@@ -211,7 +211,7 @@ void Cell::sendToLoaded(mwmp::ActorPacket *actorPacket, mwmp::BaseActorList *bas
     }
 }
 
-void Cell::sendToLoaded(mwmp::WorldPacket *worldPacket, mwmp::BaseEvent *baseEvent) const
+void Cell::sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseEvent *baseEvent) const
 {
     if (players.empty())
         return;
@@ -231,10 +231,10 @@ void Cell::sendToLoaded(mwmp::WorldPacket *worldPacket, mwmp::BaseEvent *baseEve
     {
         if (pl->guid == baseEvent->guid) continue;
 
-        worldPacket->setEvent(baseEvent);
+        objectPacket->setEvent(baseEvent);
 
         // Send the packet to this eligible guid
-        worldPacket->Send(pl->guid);
+        objectPacket->Send(pl->guid);
     }
 }
 

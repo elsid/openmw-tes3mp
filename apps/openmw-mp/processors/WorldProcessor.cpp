@@ -10,7 +10,7 @@ using namespace mwmp;
 template<class T>
 typename BasePacketProcessor<T>::processors_t BasePacketProcessor<T>::processors;
 
-void WorldProcessor::Do(WorldPacket &packet, Player &player, BaseEvent &event)
+void WorldProcessor::Do(ObjectPacket &packet, Player &player, BaseEvent &event)
 {
     packet.Send(true);
 }
@@ -27,7 +27,7 @@ bool WorldProcessor::Process(RakNet::Packet &packet, BaseEvent &event) noexcept
         if (processor.first == packet.data[0])
         {
             Player *player = Players::getPlayer(packet.guid);
-            WorldPacket *myPacket = Networking::get().getWorldPacketController()->GetPacket(packet.data[0]);
+            ObjectPacket *myPacket = Networking::get().getObjectPacketController()->GetPacket(packet.data[0]);
 
             myPacket->setEvent(&event);
             event.isValid = true;

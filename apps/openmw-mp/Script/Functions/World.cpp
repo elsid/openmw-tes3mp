@@ -337,7 +337,7 @@ void WorldFunctions::AddContainerItem() noexcept
 
 void WorldFunctions::SendObjectPlace(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_PLACE);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_PLACE);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -347,7 +347,7 @@ void WorldFunctions::SendObjectPlace(bool broadcast) noexcept
 
 void WorldFunctions::SendObjectSpawn(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_SPAWN);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_SPAWN);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -357,7 +357,7 @@ void WorldFunctions::SendObjectSpawn(bool broadcast) noexcept
 
 void WorldFunctions::SendObjectDelete(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_DELETE);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_DELETE);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -367,7 +367,7 @@ void WorldFunctions::SendObjectDelete(bool broadcast) noexcept
 
 void WorldFunctions::SendObjectLock(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_LOCK);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_LOCK);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -377,7 +377,7 @@ void WorldFunctions::SendObjectLock(bool broadcast) noexcept
 
 void WorldFunctions::SendObjectTrap(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_TRAP);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_TRAP);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -387,7 +387,7 @@ void WorldFunctions::SendObjectTrap(bool broadcast) noexcept
 
 void WorldFunctions::SendObjectScale(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_SCALE);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_SCALE);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -397,7 +397,7 @@ void WorldFunctions::SendObjectScale(bool broadcast) noexcept
 
 void WorldFunctions::SendObjectState(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_OBJECT_STATE);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_STATE);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -407,7 +407,7 @@ void WorldFunctions::SendObjectState(bool broadcast) noexcept
 
 void WorldFunctions::SendDoorState(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_DOOR_STATE);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_DOOR_STATE);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -417,7 +417,7 @@ void WorldFunctions::SendDoorState(bool broadcast) noexcept
 
 void WorldFunctions::SendDoorDestination(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_DOOR_DESTINATION);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_DOOR_DESTINATION);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 
@@ -427,7 +427,7 @@ void WorldFunctions::SendDoorDestination(bool broadcast) noexcept
 
 void WorldFunctions::SendContainer(bool broadcast, bool useLastReadEvent) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONTAINER);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONTAINER);
     
     if (useLastReadEvent)
         packet->setEvent(readEvent);
@@ -442,7 +442,7 @@ void WorldFunctions::SendContainer(bool broadcast, bool useLastReadEvent) noexce
 
 void WorldFunctions::SendConsoleCommand(bool broadcast) noexcept
 {
-    mwmp::WorldPacket *packet = mwmp::Networking::get().getWorldPacketController()->GetPacket(ID_CONSOLE_COMMAND);
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONSOLE_COMMAND);
     packet->setEvent(&writeEvent);
     packet->Send(false);
 

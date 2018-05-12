@@ -45,12 +45,12 @@ Networking::Networking(RakNet::RakPeerInterface *peer) : mclient(nullptr)
 
     playerPacketController = new PlayerPacketController(peer);
     actorPacketController = new ActorPacketController(peer);
-    worldPacketController = new WorldPacketController(peer);
+    objectPacketController = new ObjectPacketController(peer);
 
     // Set send stream
     playerPacketController->SetStream(0, &bsOut);
     actorPacketController->SetStream(0, &bsOut);
-    worldPacketController->SetStream(0, &bsOut);
+    objectPacketController->SetStream(0, &bsOut);
 
     running = true;
     exitCode = 0;
@@ -71,7 +71,7 @@ Networking::~Networking()
     sThis = 0;
     delete playerPacketController;
     delete actorPacketController;
-    delete worldPacketController;
+    delete objectPacketController;
 }
 
 void Networking::setServerPassword(std::string passw) noexcept
@@ -181,7 +181,7 @@ void Networking::processActorPacket(RakNet::Packet *packet)
 
 }
 
-void Networking::processWorldPacket(RakNet::Packet *packet)
+void Networking::processObjectPacket(RakNet::Packet *packet)
 {
     Player *player = Players::getPlayer(packet->guid);
 
@@ -189,7 +189,7 @@ void Networking::processWorldPacket(RakNet::Packet *packet)
         return;
 
     if (!WorldProcessor::Process(*packet, baseEvent))
-        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled WorldPacket with identifier %i has arrived", packet->data[0]);
+        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled ObjectPacket with identifier %i has arrived", packet->data[0]);
 
 }
 
@@ -275,10 +275,10 @@ void Networking::update(RakNet::Packet *packet)
         actorPacketController->SetStream(&bsIn, 0);
         processActorPacket(packet);
     }
-    else if (worldPacketController->ContainsPacket(packet->data[0]))
+    else if (objectPacketController->ContainsPacket(packet->data[0]))
     {
-        worldPacketController->SetStream(&bsIn, 0);
-        processWorldPacket(packet);
+        objectPacketController->SetStream(&bsIn, 0);
+        processObjectPacket(packet);
     }
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled RakNet packet with identifier %i has arrived", packet->data[0]);
@@ -352,9 +352,9 @@ ActorPacketController *Networking::getActorPacketController() const
     return actorPacketController;
 }
 
-WorldPacketController *Networking::getWorldPacketController() const
+ObjectPacketController *Networking::getObjectPacketController() const
 {
-    return worldPacketController;
+    return objectPacketController;
 }
 
 BaseActorList *Networking::getLastActorList()

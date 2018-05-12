@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_SCRIPT_LOCAL_FLOAT)
         }
 
-        virtual void Do(WorldPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, WorldEvent &event)
         {
             BaseObjectProcessor::Do(packet, event);
 

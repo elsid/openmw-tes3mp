@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_DOOR_STATE)
         }
 
-        void Do(WorldPacket &packet, Player &player, BaseEvent &event) override
+        void Do(ObjectPacket &packet, Player &player, BaseEvent &event) override
         {
             packet.Send(true);
 

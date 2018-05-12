@@ -123,8 +123,8 @@ namespace MWGui
         worldEvent->addContainerItem(worldObject, itemPtr, count);
         worldEvent->addObject(worldObject);
 
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
             worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
@@ -178,8 +178,8 @@ namespace MWGui
             worldObject.containerItems.push_back(containerItem);
             worldEvent->addObject(worldObject);
 
-            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-            mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+            mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setEvent(worldEvent);
+            mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i, %i",
                 worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
@@ -305,8 +305,8 @@ namespace MWGui
         worldEvent->containerSubAction = mwmp::BaseEvent::TAKE_ALL;
         worldEvent->addEntireContainer(mPtr);
 
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->setEvent(worldEvent);
-        mwmp::Main::get().getNetworking()->getWorldPacket(ID_CONTAINER)->Send();
+        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i-%i\n- cell: %s",
             mPtr.getCellRef().getRefId().c_str(), mPtr.getCellRef().getRefNum().mIndex, mPtr.getCellRef().getMpNum(),

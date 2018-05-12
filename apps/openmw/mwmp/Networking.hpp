@@ -15,7 +15,7 @@
 
 #include <components/openmw-mp/Controllers/PlayerPacketController.hpp>
 #include <components/openmw-mp/Controllers/ActorPacketController.hpp>
-#include <components/openmw-mp/Controllers/WorldPacketController.hpp>
+#include <components/openmw-mp/Controllers/ObjectPacketController.hpp>
 
 #include <components/files/collections.hpp>
 
@@ -33,7 +33,7 @@ namespace mwmp
 
         PlayerPacket *getPlayerPacket(RakNet::MessageID id);
         ActorPacket *getActorPacket(RakNet::MessageID id);
-        WorldPacket *getWorldPacket(RakNet::MessageID id);
+        ObjectPacket *getObjectPacket(RakNet::MessageID id);
 
         RakNet::SystemAddress serverAddress()
         {
@@ -54,7 +54,7 @@ namespace mwmp
 
         PlayerPacketController playerPacketController;
         ActorPacketController actorPacketController;
-        WorldPacketController worldPacketController;
+        ObjectPacketController objectPacketController;
 
         ActorList actorList;
         WorldEvent worldEvent;

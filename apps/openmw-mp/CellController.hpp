@@ -6,7 +6,7 @@
 #include <components/esm/records.hpp>
 #include <components/openmw-mp/Base/BaseEvent.hpp>
 #include <components/openmw-mp/Packets/Actor/ActorPacket.hpp>
-#include <components/openmw-mp/Packets/World/WorldPacket.hpp>
+#include <components/openmw-mp/Packets/Object/ObjectPacket.hpp>
 
 class Player;
 class Cell;

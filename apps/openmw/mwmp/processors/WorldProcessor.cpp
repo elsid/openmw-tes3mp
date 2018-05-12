@@ -17,7 +17,7 @@ bool WorldProcessor::Process(RakNet::Packet &packet, WorldEvent &event)
     bsIn.Read(guid);
     event.guid = guid;
 
-    WorldPacket *myPacket = Main::get().getNetworking()->getWorldPacket(packet.data[0]);
+    ObjectPacket *myPacket = Main::get().getNetworking()->getObjectPacket(packet.data[0]);
 
     myPacket->setEvent(&event);
     myPacket->SetReadStream(&bsIn);

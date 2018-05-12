@@ -11,7 +11,7 @@
 #include <components/openmw-mp/Base/BaseActor.hpp>
 #include <components/openmw-mp/Base/BaseEvent.hpp>
 #include <components/openmw-mp/Packets/Actor/ActorPacket.hpp>
-#include <components/openmw-mp/Packets/World/WorldPacket.hpp>
+#include <components/openmw-mp/Packets/Object/ObjectPacket.hpp>
 
 class Player;
 class Cell;
@@ -41,7 +41,7 @@ public:
 
     TPlayers getPlayers() const;
     void sendToLoaded(mwmp::ActorPacket *actorPacket, mwmp::BaseActorList *baseActorList) const;
-    void sendToLoaded(mwmp::WorldPacket *worldPacket, mwmp::BaseEvent *baseEvent) const;
+    void sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseEvent *baseEvent) const;
 
     std::string getDescription() const;
 

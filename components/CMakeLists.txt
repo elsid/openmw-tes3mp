@@ -154,7 +154,7 @@ add_component_dir (openmw-mp/Base
         )
 
 add_component_dir (openmw-mp/Controllers
-        PlayerPacketController ActorPacketController WorldPacketController
+        PlayerPacketController ActorPacketController ObjectPacketController
         )
 
 add_component_dir(openmw-mp/Master
@@ -187,8 +187,8 @@ add_component_dir (openmw-mp/Packets/Player
         PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook PacketPlayerStatsDynamic PacketPlayerTopic
         )
 
-add_component_dir (openmw-mp/Packets/World
-        WorldPacket
+add_component_dir (openmw-mp/Packets/Object
+        ObjectPacket
         PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectAttach PacketObjectCollision
         PacketObjectDelete PacketDoorDestination PacketDoorState PacketObjectLock PacketObjectMove PacketObjectPlace
         PacketObjectReset PacketObjectRotate PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap

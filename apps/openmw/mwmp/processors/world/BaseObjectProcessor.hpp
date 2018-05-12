@@ -15,7 +15,7 @@ namespace mwmp
     class BaseObjectProcessor : public WorldProcessor
     {
     public:
-        virtual void Do(WorldPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, WorldEvent &event)
         {
             ptrCellStore = Main::get().getCellController()->getCellStore(event.cell);
 

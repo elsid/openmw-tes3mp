@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_CONTAINER)
         }
 
-        void Do(WorldPacket &packet, Player &player, BaseEvent &event) override
+        void Do(ObjectPacket &packet, Player &player, BaseEvent &event) override
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s from %s", strPacketID.c_str(), player.npc.mName.c_str());
             LOG_APPEND(Log::LOG_INFO, "- action: %i", event.action);

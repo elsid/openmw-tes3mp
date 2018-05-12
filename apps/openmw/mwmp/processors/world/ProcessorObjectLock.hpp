@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_OBJECT_LOCK)
         }
 
-        virtual void Do(WorldPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, WorldEvent &event)
         {
             BaseObjectProcessor::Do(packet, event);
 

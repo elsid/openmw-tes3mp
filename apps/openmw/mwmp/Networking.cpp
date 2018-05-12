@@ -197,7 +197,7 @@ string listComparison(PacketPreInit::PluginContainer checksums, PacketPreInit::P
 }
 
 Networking::Networking(): peer(RakNet::RakPeerInterface::GetInstance()), playerPacketController(peer),
-    actorPacketController(peer), worldPacketController(peer)
+    actorPacketController(peer), objectPacketController(peer)
 {
 
     RakNet::SocketDescriptor sd;
@@ -207,7 +207,7 @@ Networking::Networking(): peer(RakNet::RakPeerInterface::GetInstance()), playerP
 
     playerPacketController.SetStream(0, &bsOut);
     actorPacketController.SetStream(0, &bsOut);
-    worldPacketController.SetStream(0, &bsOut);
+    objectPacketController.SetStream(0, &bsOut);
 
     connected = 0;
     ProcessorInitializer();
@@ -428,10 +428,10 @@ void Networking::receiveMessage(RakNet::Packet *packet)
         if (!ActorProcessor::Process(*packet, actorList))
             LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled ActorPacket with identifier %i has arrived", packet->data[0]);
     }
-    else if (worldPacketController.ContainsPacket(packet->data[0]))
+    else if (objectPacketController.ContainsPacket(packet->data[0]))
     {
         if (!WorldProcessor::Process(*packet, worldEvent))
-            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled WorldPacket with identifier %i has arrived", packet->data[0]);
+            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled ObjectPacket with identifier %i has arrived", packet->data[0]);
     }
 }
 
@@ -445,9 +445,9 @@ ActorPacket *Networking::getActorPacket(RakNet::MessageID id)
     return actorPacketController.GetPacket(id);
 }
 
-WorldPacket *Networking::getWorldPacket(RakNet::MessageID id)
+ObjectPacket *Networking::getObjectPacket(RakNet::MessageID id)
 {
-    return worldPacketController.GetPacket(id);
+    return objectPacketController.GetPacket(id);
 }
 
 LocalPlayer *Networking::getLocalPlayer()
