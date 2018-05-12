@@ -19,7 +19,7 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -211,10 +211,10 @@ namespace MWScript
         */
         if (sendPackets)
         {
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addScriptLocalShort(mReference, index, value);
-            worldEvent->sendScriptLocalShort();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addScriptLocalShort(mReference, index, value);
+            objectList->sendScriptLocalShort();
         }
         /*
             End of tes3mp addition
@@ -245,10 +245,10 @@ namespace MWScript
         */
         if (sendPackets && value == (int) value)
         {
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addScriptLocalFloat(mReference, index, value);
-            worldEvent->sendScriptLocalFloat();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addScriptLocalFloat(mReference, index, value);
+            objectList->sendScriptLocalFloat();
         }
         /*
             End of tes3mp addition
@@ -304,10 +304,10 @@ namespace MWScript
         */
         if (sendPackets)
         {
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addScriptGlobalShort(name, value);
-            worldEvent->sendScriptGlobalShort();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addScriptGlobalShort(name, value);
+            objectList->sendScriptGlobalShort();
         }
         /*
             End of tes3mp addition
@@ -594,10 +594,10 @@ namespace MWScript
         {
             if (ref.isInCell() && !ref.getRefData().isEnabled())
             {
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addObjectState(ref, true);
-                worldEvent->sendObjectState();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addObjectState(ref, true);
+                objectList->sendObjectState();
             }
         }
         /*
@@ -622,10 +622,10 @@ namespace MWScript
         {
             if (ref.isInCell() && ref.getRefData().isEnabled())
             {
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addObjectState(ref, false);
-                worldEvent->sendObjectState();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addObjectState(ref, false);
+                objectList->sendObjectState();
             }
         }
         /*
@@ -685,10 +685,10 @@ namespace MWScript
         */
         if (sendPackets && !global)
         {
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addScriptMemberShort(id, index, value);
-            worldEvent->sendScriptMemberShort();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addScriptMemberShort(id, index, value);
+            objectList->sendScriptMemberShort();
         }
         /*
             End of tes3mp addition

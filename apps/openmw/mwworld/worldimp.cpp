@@ -17,7 +17,7 @@
 #include "../mwmp/DedicatedPlayer.hpp"
 #include "../mwmp/LocalActor.hpp"
 #include "../mwmp/DedicatedActor.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 #include "../mwmp/CellController.hpp"
 /*
     End of tes3mp addition
@@ -2421,10 +2421,10 @@ namespace MWWorld
 
             Send an ID_DOOR_STATE packet every time a door is activated
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->addDoorState(door, state);
-        worldEvent->sendDoorState();
+        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+        objectList->reset();
+        objectList->addDoorState(door, state);
+        objectList->sendDoorState();
         /*
             End of tes3mp addition
         */
@@ -2440,10 +2440,10 @@ namespace MWWorld
 
             Send an ID_DOOR_STATE packet every time a door is activated
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->addDoorState(door, state);
-        worldEvent->sendDoorState();
+        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+        objectList->reset();
+        objectList->addDoorState(door, state);
+        objectList->sendDoorState();
         /*
             End of tes3mp addition
         */
@@ -3484,10 +3484,10 @@ namespace MWWorld
             */
             MWWorld::Ptr ptr = safePlaceObject(ref.getPtr(), getPlayerPtr(), getPlayerPtr().getCell(), 0, 220.f);
 
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addObjectSpawn(ptr);
-            worldEvent->sendObjectSpawn();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addObjectSpawn(ptr);
+            objectList->sendObjectSpawn();
 
             deleteObject(ptr);
             /*

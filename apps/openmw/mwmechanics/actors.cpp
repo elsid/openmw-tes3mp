@@ -23,7 +23,7 @@
 #include "../mwmp/PlayerList.hpp"
 #include "../mwmp/CellController.hpp"
 #include "../mwmp/MechanicsHelper.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -1726,10 +1726,10 @@ namespace MWMechanics
 
                 Send an ID_OBJECT_DELETE packet every time a summoned creature despawns
             */
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addObjectDelete(ptr);
-            worldEvent->sendObjectDelete();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addObjectDelete(ptr);
+            objectList->sendObjectDelete();
             /*
                 End of tes3mp addition
             */

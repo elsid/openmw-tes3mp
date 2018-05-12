@@ -9,9 +9,9 @@ PacketScriptLocalShort::PacketScriptLocalShort(RakNet::RakPeerInterface *peer) :
     hasCellData = true;
 }
 
-void PacketScriptLocalShort::Object(WorldObject &worldObject, bool send)
+void PacketScriptLocalShort::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.index, send);
-    RW(worldObject.shortVal, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.index, send);
+    RW(baseObject.shortVal, send);
 }

@@ -13,11 +13,11 @@ namespace mwmp
             BPP_INIT(ID_OBJECT_SPAWN)
         }
 
-        virtual void Do(ObjectPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList)
         {
-            BaseObjectProcessor::Do(packet, event);
+            BaseObjectProcessor::Do(packet, objectList);
 
-            event.spawnObjects(ptrCellStore);
+            objectList.spawnObjects(ptrCellStore);
         }
     };
 }

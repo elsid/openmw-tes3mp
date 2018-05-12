@@ -8,7 +8,7 @@ PacketMusicPlay::PacketMusicPlay(RakNet::RakPeerInterface *peer) : ObjectPacket(
     packetID = ID_MUSIC_PLAY;
 }
 
-void PacketMusicPlay::Object(WorldObject &worldObject, bool send)
+void PacketMusicPlay::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.filename, send);
+    RW(baseObject.filename, send);
 }

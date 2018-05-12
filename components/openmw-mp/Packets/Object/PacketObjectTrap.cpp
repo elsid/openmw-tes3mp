@@ -9,11 +9,11 @@ PacketObjectTrap::PacketObjectTrap(RakNet::RakPeerInterface *peer) : ObjectPacke
     hasCellData = true;
 }
 
-void PacketObjectTrap::Object(WorldObject &worldObject, bool send)
+void PacketObjectTrap::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.isDisarmed, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.isDisarmed, send);
 
-    if (!worldObject.isDisarmed)
-        RW(worldObject.position, send);
+    if (!baseObject.isDisarmed)
+        RW(baseObject.position, send);
 }

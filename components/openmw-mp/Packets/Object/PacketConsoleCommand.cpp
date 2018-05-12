@@ -13,22 +13,22 @@ void PacketConsoleCommand::Packet(RakNet::BitStream *bs, bool send)
     if (!PacketHeader(bs, send))
         return;
 
-    RW(event->consoleCommand, send);
+    RW(objectList->consoleCommand, send);
 
-    WorldObject worldObject;
-    for (unsigned int i = 0; i < event->worldObjectCount; i++)
+    BaseObject baseObject;
+    for (unsigned int i = 0; i < objectList->baseObjectCount; i++)
     {
         if (send)
-            worldObject = event->worldObjects.at(i);
+            baseObject = objectList->baseObjects.at(i);
 
-        RW(worldObject.isPlayer, send);
+        RW(baseObject.isPlayer, send);
 
-        if (worldObject.isPlayer)
-            RW(worldObject.guid, send);
+        if (baseObject.isPlayer)
+            RW(baseObject.guid, send);
         else
-            Object(worldObject, send);
+            Object(baseObject, send);
 
         if (!send)
-            event->worldObjects.push_back(worldObject);
+            objectList->baseObjects.push_back(baseObject);
     }
 }

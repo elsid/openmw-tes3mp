@@ -8,7 +8,7 @@
 #include <components/openmw-mp/Log.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <components/openmw-mp/Packets/Object/ObjectPacket.hpp>
-#include "../WorldEvent.hpp"
+#include "../ObjectList.hpp"
 #include "../LocalPlayer.hpp"
 #include "../DedicatedPlayer.hpp"
 #include "BaseClientPacketProcessor.hpp"
@@ -18,9 +18,9 @@ namespace mwmp
     class WorldProcessor : public BasePacketProcessor<WorldProcessor>, public BaseClientPacketProcessor
     {
     public:
-        virtual void Do(ObjectPacket &packet, WorldEvent &event) = 0;
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList) = 0;
 
-        static bool Process(RakNet::Packet &packet, WorldEvent &event);
+        static bool Process(RakNet::Packet &packet, ObjectList &objectList);
     };
 }
 

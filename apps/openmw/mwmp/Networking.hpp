@@ -10,7 +10,7 @@
 #include <string>
 
 #include "ActorList.hpp"
-#include "WorldEvent.hpp"
+#include "ObjectList.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 #include <components/openmw-mp/Controllers/PlayerPacketController.hpp>
@@ -44,7 +44,7 @@ namespace mwmp
 
         LocalPlayer *getLocalPlayer();
         ActorList *getActorList();
-        WorldEvent *getWorldEvent();
+        ObjectList *getObjectList();
 
     private:
         bool connected;
@@ -57,7 +57,7 @@ namespace mwmp
         ObjectPacketController objectPacketController;
 
         ActorList actorList;
-        WorldEvent worldEvent;
+        ObjectList objectList;
 
         void receiveMessage(RakNet::Packet *packet);
 

@@ -9,8 +9,8 @@ PacketDoorState::PacketDoorState(RakNet::RakPeerInterface *peer) : ObjectPacket(
     hasCellData = true;
 }
 
-void PacketDoorState::Object(WorldObject &worldObject, bool send)
+void PacketDoorState::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.doorState, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.doorState, send);
 }

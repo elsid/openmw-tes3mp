@@ -19,7 +19,7 @@
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/PlayerList.hpp"
 #include "../mwmp/LocalPlayer.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 #include "../mwmp/MechanicsHelper.hpp"
 /*
     End of tes3mp addition
@@ -680,10 +680,10 @@ namespace MWMechanics
 
                         Send an ID_OBJECT_LOCK packet every time an object is locked here
                     */
-                    mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                    worldEvent->reset();
-                    worldEvent->addObjectLock(target, static_cast<int>(magnitude));
-                    worldEvent->sendObjectLock();
+                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                    objectList->reset();
+                    objectList->addObjectLock(target, static_cast<int>(magnitude));
+                    objectList->sendObjectLock();
                     /*
                         End of tes3mp addition
                     */
@@ -714,10 +714,10 @@ namespace MWMechanics
 
                         Send an ID_OBJECT_LOCK packet every time an object is unlocked here
                     */
-                    mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                    worldEvent->reset();
-                    worldEvent->addObjectLock(target, 0);
-                    worldEvent->sendObjectLock();
+                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                    objectList->reset();
+                    objectList->addObjectLock(target, 0);
+                    objectList->sendObjectLock();
                     /*
                         End of tes3mp addition
                     */

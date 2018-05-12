@@ -9,8 +9,8 @@ PacketObjectCollision::PacketObjectCollision(RakNet::RakPeerInterface *peer) : O
     hasCellData = true;
 }
 
-void PacketObjectCollision::Object(WorldObject &worldObject, bool send)
+void PacketObjectCollision::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
+    ObjectPacket::Object(baseObject, send);
     // Placeholder
 }

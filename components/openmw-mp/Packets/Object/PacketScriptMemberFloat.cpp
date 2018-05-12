@@ -8,9 +8,9 @@ PacketScriptMemberFloat::PacketScriptMemberFloat(RakNet::RakPeerInterface *peer)
     packetID = ID_SCRIPT_MEMBER_FLOAT;
 }
 
-void PacketScriptMemberFloat::Object(WorldObject &worldObject, bool send)
+void PacketScriptMemberFloat::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.refId, send);
-    RW(worldObject.index, send);
-    RW(worldObject.floatVal, send);
+    RW(baseObject.refId, send);
+    RW(baseObject.index, send);
+    RW(baseObject.floatVal, send);
 }

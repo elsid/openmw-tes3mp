@@ -13,11 +13,11 @@ namespace mwmp
             BPP_INIT(ID_SCRIPT_LOCAL_FLOAT)
         }
 
-        virtual void Do(ObjectPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList)
         {
-            BaseObjectProcessor::Do(packet, event);
+            BaseObjectProcessor::Do(packet, objectList);
 
-            event.setLocalFloats(ptrCellStore);
+            objectList.setLocalFloats(ptrCellStore);
         }
     };
 }

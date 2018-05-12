@@ -2,12 +2,12 @@
 #define OPENMW_WORLDAPI_HPP
 
 #define WORLDAPI \
-    {"ReadLastEvent",                         WorldFunctions::ReadLastEvent},\
-    {"InitializeEvent",                       WorldFunctions::InitializeEvent},\
+    {"ReadLastObjectList",                    WorldFunctions::ReadLastObjectList},\
+    {"InitializeObjectList",                  WorldFunctions::InitializeObjectList},\
     \
     {"GetObjectChangesSize",                  WorldFunctions::GetObjectChangesSize},\
-    {"GetEventAction",                        WorldFunctions::GetEventAction},\
-    {"GetEventContainerSubAction",            WorldFunctions::GetEventContainerSubAction},\
+    {"GetObjectListAction",                   WorldFunctions::GetObjectListAction},\
+    {"GetObjectListContainerSubAction",       WorldFunctions::GetObjectListContainerSubAction},\
     \
     {"GetObjectRefId",                        WorldFunctions::GetObjectRefId},\
     {"GetObjectRefNumIndex",                  WorldFunctions::GetObjectRefNumIndex},\
@@ -34,9 +34,9 @@
     {"GetContainerItemEnchantmentCharge",     WorldFunctions::GetContainerItemEnchantmentCharge},\
     {"GetContainerItemActionCount",           WorldFunctions::GetContainerItemActionCount},\
     \
-    {"SetEventCell",                          WorldFunctions::SetEventCell},\
-    {"SetEventAction",                        WorldFunctions::SetEventAction},\
-    {"SetEventConsoleCommand",                WorldFunctions::SetEventConsoleCommand},\
+    {"SetObjectListCell",                     WorldFunctions::SetObjectListCell},\
+    {"SetObjectListAction",                   WorldFunctions::SetObjectListAction},\
+    {"SetObjectListConsoleCommand",           WorldFunctions::SetObjectListConsoleCommand},\
     \
     {"SetObjectRefId",                        WorldFunctions::SetObjectRefId},\
     {"SetObjectRefNumIndex",                  WorldFunctions::SetObjectRefNumIndex},\
@@ -68,7 +68,7 @@
     \
     {"SetReceivedContainerItemActionCount",   WorldFunctions::SetReceivedContainerItemActionCount},\
     \
-    {"AddWorldObject",                        WorldFunctions::AddWorldObject},\
+    {"AddObject",                             WorldFunctions::AddObject},\
     {"AddContainerItem",                      WorldFunctions::AddContainerItem},\
     \
     {"SendObjectPlace",                       WorldFunctions::SendObjectPlace},\
@@ -92,52 +92,52 @@ class WorldFunctions
 public:
 
     /**
-    * \brief Use the last event received by the server as the one being read.
+    * \brief Use the last object list received by the server as the one being read.
     *
     * \return void
     */
-    static void ReadLastEvent() noexcept;
+    static void ReadLastObjectList() noexcept;
 
     /**
-    * \brief Clear the data from the last event sent by the server.
+    * \brief Clear the data from the last object list sent by the server.
     *
     * This is used to initialize the sending of new Object packets.
     *
-    * \param pid The player ID to whom the event should be attached.
+    * \param pid The player ID to whom the object list should be attached.
     * \return void
     */
-    static void InitializeEvent(unsigned short pid) noexcept;
+    static void InitializeObjectList(unsigned short pid) noexcept;
 
     /**
-    * \brief Get the number of indexes in the read event's object changes.
+    * \brief Get the number of indexes in the read object list's object changes.
     *
     * \return The number of indexes.
     */
     static unsigned int GetObjectChangesSize() noexcept;
 
     /**
-    * \brief Get the action type used in the read event.
+    * \brief Get the action type used in the read object list.
     *
     * \return The action type (0 for SET, 1 for ADD, 2 for REMOVE, 3 for REQUEST).
     */
-    static unsigned char GetEventAction() noexcept;
+    static unsigned char GetObjectListAction() noexcept;
 
     /**
-    * \brief Get the container subaction type used in the read event.
+    * \brief Get the container subaction type used in the read object list.
     *
     * \return The action type (0 for NONE, 1 for DRAG, 2 for DROP, 3 for TAKE_ALL).
     */
-    static unsigned char GetEventContainerSubAction() noexcept;
+    static unsigned char GetObjectListContainerSubAction() noexcept;
 
     /**
-    * \brief Get the refId of the object at a certain index in the read event's object changes.
+    * \brief Get the refId of the object at a certain index in the read object list's object changes.
     *
     * \return The refId.
     */
     static const char *GetObjectRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the object at a certain index in the read event's object
+    * \brief Get the refNumIndex of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -146,7 +146,7 @@ public:
     static int GetObjectRefNumIndex(unsigned int i) noexcept;
 
     /**
-    * \brief Get the mpNum of the object at a certain index in the read event's object changes.
+    * \brief Get the mpNum of the object at a certain index in the read object list's object changes.
     *
     * \param i The index of the object.
     * \return The mpNum.
@@ -154,7 +154,7 @@ public:
     static int GetObjectMpNum(unsigned int i) noexcept;
 
     /**
-    * \brief Get the count of the object at a certain index in the read event's object changes.
+    * \brief Get the count of the object at a certain index in the read object list's object changes.
     *
     * \param i The index of the object.
     * \return The object count.
@@ -162,7 +162,7 @@ public:
     static int GetObjectCount(unsigned int i) noexcept;
 
     /**
-    * \brief Get the charge of the object at a certain index in the read event's object changes.
+    * \brief Get the charge of the object at a certain index in the read object list's object changes.
     *
     * \param i The index of the object.
     * \return The charge.
@@ -170,7 +170,7 @@ public:
     static int GetObjectCharge(unsigned int i) noexcept;
 
     /**
-    * \brief Get the enchantment charge of the object at a certain index in the read event's object changes.
+    * \brief Get the enchantment charge of the object at a certain index in the read object list's object changes.
     *
     * \param i The index of the object.
     * \return The enchantment charge.
@@ -178,7 +178,7 @@ public:
     static double GetObjectEnchantmentCharge(unsigned int i) noexcept;
 
     /**
-    * \brief Get the gold value of the object at a certain index in the read event's object
+    * \brief Get the gold value of the object at a certain index in the read object list's object
     * changes.
     *
     * This is used solely to get the gold value of gold. It is not used for other objects.
@@ -189,7 +189,7 @@ public:
     static int GetObjectGoldValue(unsigned int i) noexcept;
 
     /**
-    * \brief Get the object scale of the object at a certain index in the read event's object
+    * \brief Get the object scale of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -198,7 +198,7 @@ public:
     static double GetObjectScale(unsigned int i) noexcept;
 
     /**
-    * \brief Get the object state of the object at a certain index in the read event's object
+    * \brief Get the object state of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -207,7 +207,7 @@ public:
     static bool GetObjectState(unsigned int i) noexcept;
 
     /**
-    * \brief Get the door state of the object at a certain index in the read event's object
+    * \brief Get the door state of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -216,7 +216,7 @@ public:
     static int GetObjectDoorState(unsigned int i) noexcept;
 
     /**
-    * \brief Get the lock level of the object at a certain index in the read event's object
+    * \brief Get the lock level of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -225,7 +225,7 @@ public:
     static int GetObjectLockLevel(unsigned int i) noexcept;
 
     /**
-    * \brief Get the X position of the object at a certain index in the read event's object
+    * \brief Get the X position of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -234,7 +234,7 @@ public:
     static double GetObjectPosX(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Y position of the object at a certain index in the read event's object
+    * \brief Get the Y position of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -243,7 +243,7 @@ public:
     static double GetObjectPosY(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Z position at a certain index in the read event's object changes.
+    * \brief Get the Z position at a certain index in the read object list's object changes.
     *
     * \param i The index of the object.
     * \return The Z position.
@@ -251,7 +251,7 @@ public:
     static double GetObjectPosZ(unsigned int i) noexcept;
 
     /**
-    * \brief Get the X rotation of the object at a certain index in the read event's object
+    * \brief Get the X rotation of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -260,7 +260,7 @@ public:
     static double GetObjectRotX(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Y rotation of the object at a certain index in the read event's object
+    * \brief Get the Y rotation of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -269,7 +269,7 @@ public:
     static double GetObjectRotY(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Z rotation of the object at a certain index in the read event's object
+    * \brief Get the Z rotation of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
@@ -279,7 +279,7 @@ public:
 
     /**
     * \brief Get the number of container item indexes of the object at a certain index in the
-    * read event's object changes.
+    * read object list's object changes.
     *
     * \param i The index of the object.
     * \return The number of container item indexes.
@@ -288,7 +288,7 @@ public:
 
     /**
     * \brief Get the refId of the container item at a certain itemIndex in the container changes
-    * of the object at a certain objectIndex in the read event's object changes.
+    * of the object at a certain objectIndex in the read object list's object changes.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -298,7 +298,7 @@ public:
 
     /**
     * \brief Get the item count of the container item at a certain itemIndex in the container
-    * changes of the object at a certain objectIndex in the read event's object changes.
+    * changes of the object at a certain objectIndex in the read object list's object changes.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -308,7 +308,7 @@ public:
 
     /**
     * \brief Get the charge of the container item at a certain itemIndex in the container changes
-    * of the object at a certain objectIndex in the read event's object changes.
+    * of the object at a certain objectIndex in the read object list's object changes.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -318,7 +318,7 @@ public:
 
     /**
     * \brief Get the enchantment charge of the container item at a certain itemIndex in the container changes
-    * of the object at a certain objectIndex in the read event's object changes.
+    * of the object at a certain objectIndex in the read object list's object changes.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -328,7 +328,7 @@ public:
 
     /**
     * \brief Get the action count of the container item at a certain itemIndex in the container
-    * changes of the object at a certain objectIndex in the read event's object changes.
+    * changes of the object at a certain objectIndex in the read object list's object changes.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -337,7 +337,7 @@ public:
     static int GetContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex) noexcept;
 
     /**
-    * \brief Set the cell of the temporary event stored on the server.
+    * \brief Set the cell of the temporary object list stored on the server.
     *
     * The cell is determined to be an exterior cell if it fits the pattern of a number followed
     * by a comma followed by another number.
@@ -345,29 +345,29 @@ public:
     * \param cellDescription The description of the cell.
     * \return void
     */
-    static void SetEventCell(const char* cellDescription) noexcept;
+    static void SetObjectListCell(const char* cellDescription) noexcept;
 
     /**
-    * \brief Set the action type of the temporary event stored on the server.
+    * \brief Set the action type of the temporary object list stored on the server.
     *
     * \param action The action type (0 for SET, 1 for ADD, 2 for REMOVE, 3 for REQUEST).
     * \return void
     */
-    static void SetEventAction(unsigned char action) noexcept;
+    static void SetObjectListAction(unsigned char action) noexcept;
 
     /**
-    * \brief Set the console command of the temporary event stored on the server.
+    * \brief Set the console command of the temporary object list stored on the server.
     *
-    * When sent, the command will run once on every object added to the event. If no objects
+    * When sent, the command will run once on every object added to the object list. If no objects
     * have been added, it will run once without any object reference.
     *
     * \param consoleCommand The console command.
     * \return void
     */
-    static void SetEventConsoleCommand(const char* consoleCommand) noexcept;
+    static void SetObjectListConsoleCommand(const char* consoleCommand) noexcept;
 
     /**
-    * \brief Set the refId of the temporary world object stored on the server.
+    * \brief Set the refId of the temporary object stored on the server.
     *
     * \param refId The refId.
     * \return void
@@ -375,7 +375,7 @@ public:
     static void SetObjectRefId(const char* refId) noexcept;
 
     /**
-    * \brief Set the refNumIndex of the temporary world object stored on the server.
+    * \brief Set the refNumIndex of the temporary object stored on the server.
     *
     * Every object loaded from .ESM and .ESP data files has a unique refNumIndex which needs to be
     * retained to refer to it in packets.
@@ -389,7 +389,7 @@ public:
     static void SetObjectRefNumIndex(int refNumIndex) noexcept;
 
     /**
-    * \brief Set the mpNum of the temporary world object stored on the server.
+    * \brief Set the mpNum of the temporary object stored on the server.
     *
     * Every object placed or spawned via the server is assigned an mpNum by incrementing the last
     * mpNum stored on the server. Scripts should take care to ensure that mpNums are kept unique
@@ -404,7 +404,7 @@ public:
     static void SetObjectMpNum(int mpNum) noexcept;
 
     /**
-    * \brief Set the object count of the temporary world object stored on the server.
+    * \brief Set the object count of the temporary object stored on the server.
     *
     * This determines the quantity of an object, with the exception of gold.
     *
@@ -414,7 +414,7 @@ public:
     static void SetObjectCount(int count) noexcept;
 
     /**
-    * \brief Set the charge of the temporary world object stored on the server.
+    * \brief Set the charge of the temporary object stored on the server.
     *
     * Object durabilities are set through this value.
     *
@@ -424,7 +424,7 @@ public:
     static void SetObjectCharge(int charge) noexcept;
 
     /**
-    * \brief Set the enchantment charge of the temporary world object stored on the server.
+    * \brief Set the enchantment charge of the temporary object stored on the server.
     *
     * Object durabilities are set through this value.
     *
@@ -434,7 +434,7 @@ public:
     static void SetObjectEnchantmentCharge(double enchantmentCharge) noexcept;
 
     /**
-    * \brief Set the gold value of the temporary world object stored on the server.
+    * \brief Set the gold value of the temporary object stored on the server.
     *
     * This is used solely to set the gold value for gold. It has no effect on other objects.
     *
@@ -444,7 +444,7 @@ public:
     static void SetObjectGoldValue(int goldValue) noexcept;
 
     /**
-    * \brief Set the scale of the temporary world object stored on the server.
+    * \brief Set the scale of the temporary object stored on the server.
     *
     * Objects are smaller or larger than their default size based on their scale.
     *
@@ -454,7 +454,7 @@ public:
     static void SetObjectScale(double scale) noexcept;
 
     /**
-    * \brief Set the object state of the temporary world object stored on the server.
+    * \brief Set the object state of the temporary object stored on the server.
     *
     * Objects are enabled or disabled based on their object state.
     *
@@ -464,7 +464,7 @@ public:
     static void SetObjectState(bool objectState) noexcept;
 
     /**
-    * \brief Set the lock level of the temporary world object stored on the server.
+    * \brief Set the lock level of the temporary object stored on the server.
     *
     * \param lockLevel The lock level.
     * \return void
@@ -472,7 +472,7 @@ public:
     static void SetObjectLockLevel(int lockLevel) noexcept;
 
     /**
-    * \brief Set the disarm state of the temporary world object stored on the server.
+    * \brief Set the disarm state of the temporary object stored on the server.
     *
     * \param disarmState The disarmState.
     * \return void
@@ -480,7 +480,7 @@ public:
     static void SetObjectDisarmState(bool disarmState) noexcept;
 
     /**
-    * \brief Set the master state of the temporary world object stored on the server.
+    * \brief Set the master state of the temporary object stored on the server.
     *
     * This only affects living actors and determines whether they are followers of another
     * living actor.
@@ -491,7 +491,7 @@ public:
     static void SetObjectMasterState(bool masterState) noexcept;
 
     /**
-    * \brief Set the position of the temporary world object stored on the server.
+    * \brief Set the position of the temporary object stored on the server.
     *
     * \param x The X position.
     * \param y The Y position.
@@ -501,7 +501,7 @@ public:
     static void SetObjectPosition(double x, double y, double z) noexcept;
 
     /**
-    * \brief Set the rotation of the temporary world object stored on the server.
+    * \brief Set the rotation of the temporary object stored on the server.
     *
     * \param x The X rotation.
     * \param y The Y rotation.
@@ -511,7 +511,7 @@ public:
     static void SetObjectRotation(double x, double y, double z) noexcept;
 
     /**
-    * \brief Set the door state of the temporary world object stored on the server.
+    * \brief Set the door state of the temporary object stored on the server.
     *
     * Doors are open or closed based on their door state.
     *
@@ -521,7 +521,7 @@ public:
     static void SetObjectDoorState(int doorState) noexcept;
 
     /**
-    * \brief Set the teleport state of the temporary world object stored on the server.
+    * \brief Set the teleport state of the temporary object stored on the server.
     *
     * If a door's teleport state is true, interacting with the door teleports a player to its
     * destination. If it's false, it opens and closes like a regular door.
@@ -532,7 +532,7 @@ public:
     static void SetObjectDoorTeleportState(bool teleportState) noexcept;
 
     /**
-    * \brief Set the door destination cell of the temporary world object stored on the server.
+    * \brief Set the door destination cell of the temporary object stored on the server.
     *
     * The cell is determined to be an exterior cell if it fits the pattern of a number followed
     * by a comma followed by another number.
@@ -543,7 +543,7 @@ public:
     static void SetObjectDoorDestinationCell(const char* cellDescription) noexcept;
 
     /**
-    * \brief Set the door destination position of the temporary world object stored on the server.
+    * \brief Set the door destination position of the temporary object stored on the server.
     *
     * \param x The X position.
     * \param y The Y position.
@@ -553,7 +553,7 @@ public:
     static void SetObjectDoorDestinationPosition(double x, double y, double z) noexcept;
 
     /**
-    * \brief Set the door destination rotation of the temporary world object stored on the server.
+    * \brief Set the door destination rotation of the temporary object stored on the server.
     *
     * Note: Because this sets the rotation a player will have upon using the door, and rotation
     *       on the Y axis has no effect on players, the Y value has been omitted as an argument.
@@ -565,7 +565,7 @@ public:
     static void SetObjectDoorDestinationRotation(double x, double z) noexcept;
 
     /**
-    * \brief Set a player as the object in the temporary world object stored on the server.
+    * \brief Set a player as the object in the temporary object stored on the server.
     *        Currently only used for ConsoleCommand packets.
     *
     * \param pid The pid of the player.
@@ -607,7 +607,7 @@ public:
 
     /**
     * \brief Set the action count of the container item at a certain itemIndex in the container
-    * changes of the object at a certain objectIndex in the read event's object changes.
+    * changes of the object at a certain objectIndex in the read object list's object changes.
     *
     * When resending a received Container packet, this allows you to correct the amount of items
     * removed from a container by a player when it conflicts with what other players have already
@@ -621,18 +621,18 @@ public:
     static void SetReceivedContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept;
 
     /**
-    * \brief Add a copy of the server's temporary world object to the server's temporary event.
+    * \brief Add a copy of the server's temporary object to the server's temporary object list.
     *
-    * In the process, the server's temporary world object will automatically be cleared so a new
+    * In the process, the server's temporary object will automatically be cleared so a new
     * one can be set up.
     *
     * \return void
     */
-    static void AddWorldObject() noexcept;
+    static void AddObject() noexcept;
 
     /**
     * \brief Add a copy of the server's temporary container item to the container changes of the
-    * server's temporary world object.
+    * server's temporary object.
     *
     * In the process, the server's temporary container item will automatically be cleared so a new
     * one can be set up.
@@ -645,7 +645,7 @@ public:
     * \brief Send an ObjectPlace packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -655,7 +655,7 @@ public:
     * \brief Send an ObjectSpawn packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -665,7 +665,7 @@ public:
     * \brief Send an ObjectDelete packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -675,7 +675,7 @@ public:
     * \brief Send an ObjectLock packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -685,7 +685,7 @@ public:
     * \brief Send an ObjectTrap packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -695,7 +695,7 @@ public:
     * \brief Send an ObjectScale packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -705,7 +705,7 @@ public:
     * \brief Send an ObjectState packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -715,7 +715,7 @@ public:
     * \brief Send a DoorState packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -725,7 +725,7 @@ public:
     * \brief Send a DoorDestination packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
@@ -735,17 +735,17 @@ public:
     * \brief Send a Container packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */
-    static void SendContainer(bool broadcast = false, bool useLastReadEvent = false) noexcept;
+    static void SendContainer(bool broadcast = false, bool useLastReadObjectList = false) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.
     *
     * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  event was initialized or to everyone on the server.
+    *                  object list was initialized or to everyone on the server.
     *
     * \return void
     */

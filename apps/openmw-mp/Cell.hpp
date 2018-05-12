@@ -9,7 +9,7 @@
 #include <string>
 #include <components/esm/records.hpp>
 #include <components/openmw-mp/Base/BaseActor.hpp>
-#include <components/openmw-mp/Base/BaseEvent.hpp>
+#include <components/openmw-mp/Base/BaseObject.hpp>
 #include <components/openmw-mp/Packets/Actor/ActorPacket.hpp>
 #include <components/openmw-mp/Packets/Object/ObjectPacket.hpp>
 
@@ -41,7 +41,7 @@ public:
 
     TPlayers getPlayers() const;
     void sendToLoaded(mwmp::ActorPacket *actorPacket, mwmp::BaseActorList *baseActorList) const;
-    void sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseEvent *baseEvent) const;
+    void sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseObjectList *baseObjectList) const;
 
     std::string getDescription() const;
 

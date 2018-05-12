@@ -13,11 +13,11 @@ namespace mwmp
             BPP_INIT(ID_DOOR_STATE)
         }
 
-        void Do(ObjectPacket &packet, Player &player, BaseEvent &event) override
+        void Do(ObjectPacket &packet, Player &player, BaseObjectList &objectList) override
         {
             packet.Send(true);
 
-            Script::Call<Script::CallbackIdentity("OnDoorState")>(player.getId(), event.cell.getDescription().c_str());
+            Script::Call<Script::CallbackIdentity("OnDoorState")>(player.getId(), objectList.cell.getDescription().c_str());
         }
     };
 }

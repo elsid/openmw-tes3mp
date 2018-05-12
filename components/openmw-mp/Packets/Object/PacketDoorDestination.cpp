@@ -9,19 +9,19 @@ PacketDoorDestination::PacketDoorDestination(RakNet::RakPeerInterface *peer) : O
     hasCellData = true;
 }
 
-void PacketDoorDestination::Object(WorldObject &worldObject, bool send)
+void PacketDoorDestination::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
+    ObjectPacket::Object(baseObject, send);
 
-    RW(worldObject.teleportState, send);
+    RW(baseObject.teleportState, send);
 
-    if (worldObject.teleportState)
+    if (baseObject.teleportState)
     {
-        RW(worldObject.destinationCell.mData, send, 1);
-        RW(worldObject.destinationCell.mName, send, 1);
+        RW(baseObject.destinationCell.mData, send, 1);
+        RW(baseObject.destinationCell.mName, send, 1);
 
-        RW(worldObject.destinationPosition.pos, send, 1);
-        RW(worldObject.destinationPosition.rot[0], send, 1);
-        RW(worldObject.destinationPosition.rot[2], send, 1);
+        RW(baseObject.destinationPosition.pos, send, 1);
+        RW(baseObject.destinationPosition.rot[0], send, 1);
+        RW(baseObject.destinationPosition.rot[2], send, 1);
     }
 }

@@ -13,11 +13,11 @@ namespace mwmp
             BPP_INIT(ID_DOOR_STATE)
         }
 
-        virtual void Do(ObjectPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList)
         {
-            BaseObjectProcessor::Do(packet, event);
+            BaseObjectProcessor::Do(packet, objectList);
 
-            event.activateDoors(ptrCellStore);
+            objectList.activateDoors(ptrCellStore);
         }
     };
 }

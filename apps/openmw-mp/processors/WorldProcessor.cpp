@@ -10,17 +10,17 @@ using namespace mwmp;
 template<class T>
 typename BasePacketProcessor<T>::processors_t BasePacketProcessor<T>::processors;
 
-void WorldProcessor::Do(ObjectPacket &packet, Player &player, BaseEvent &event)
+void WorldProcessor::Do(ObjectPacket &packet, Player &player, BaseObjectList &objectList)
 {
     packet.Send(true);
 }
 
-bool WorldProcessor::Process(RakNet::Packet &packet, BaseEvent &event) noexcept
+bool WorldProcessor::Process(RakNet::Packet &packet, BaseObjectList &objectList) noexcept
 {
-    // Clear our BaseEvent before loading new data in it
-    event.cell.blank();
-    event.worldObjects.clear();
-    event.guid = packet.guid;
+    // Clear our BaseObjectList before loading new data in it
+    objectList.cell.blank();
+    objectList.baseObjects.clear();
+    objectList.guid = packet.guid;
 
     for (auto &processor : processors)
     {
@@ -29,14 +29,14 @@ bool WorldProcessor::Process(RakNet::Packet &packet, BaseEvent &event) noexcept
             Player *player = Players::getPlayer(packet.guid);
             ObjectPacket *myPacket = Networking::get().getObjectPacketController()->GetPacket(packet.data[0]);
 
-            myPacket->setEvent(&event);
-            event.isValid = true;
+            myPacket->setObjectList(&objectList);
+            objectList.isValid = true;
 
             if (!processor.second->avoidReading)
                 myPacket->Read();
 
-            if (event.isValid)
-                processor.second->Do(*myPacket, *player, event);
+            if (objectList.isValid)
+                processor.second->Do(*myPacket, *player, objectList);
             else
                 LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Received %s that failed integrity check and was ignored!", processor.second->strPacketID.c_str());
             

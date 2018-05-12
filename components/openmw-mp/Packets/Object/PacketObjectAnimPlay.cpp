@@ -9,9 +9,9 @@ PacketObjectAnimPlay::PacketObjectAnimPlay(RakNet::RakPeerInterface *peer) : Obj
     hasCellData = true;
 }
 
-void PacketObjectAnimPlay::Object(WorldObject &worldObject, bool send)
+void PacketObjectAnimPlay::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.animGroup, send);
-    RW(worldObject.animMode, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.animGroup, send);
+    RW(baseObject.animMode, send);
 }

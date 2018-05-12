@@ -9,9 +9,9 @@ PacketScriptLocalFloat::PacketScriptLocalFloat(RakNet::RakPeerInterface *peer) :
     hasCellData = true;
 }
 
-void PacketScriptLocalFloat::Object(WorldObject &worldObject, bool send)
+void PacketScriptLocalFloat::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.index, send);
-    RW(worldObject.floatVal, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.index, send);
+    RW(baseObject.floatVal, send);
 }

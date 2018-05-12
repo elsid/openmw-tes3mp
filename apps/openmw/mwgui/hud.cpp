@@ -14,7 +14,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 #include "../mwmp/LocalPlayer.hpp"
 #include "../mwworld/cellstore.hpp"
 /*
@@ -72,10 +72,10 @@ namespace MWGui
                 Send an ID_OBJECT_PLACE packet every time an object is dropped into the world from
                 the inventory screen
             */
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->addObjectPlace(dropped, true);
-            worldEvent->sendObjectPlace();
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addObjectPlace(dropped, true);
+            objectList->sendObjectPlace();
             /*
                 End of tes3mp addition
             */

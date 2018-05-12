@@ -211,7 +211,7 @@ void Cell::sendToLoaded(mwmp::ActorPacket *actorPacket, mwmp::BaseActorList *bas
     }
 }
 
-void Cell::sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseEvent *baseEvent) const
+void Cell::sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseObjectList *baseObjectList) const
 {
     if (players.empty())
         return;
@@ -229,9 +229,9 @@ void Cell::sendToLoaded(mwmp::ObjectPacket *objectPacket, mwmp::BaseEvent *baseE
 
     for (auto pl : plList)
     {
-        if (pl->guid == baseEvent->guid) continue;
+        if (pl->guid == baseObjectList->guid) continue;
 
-        objectPacket->setEvent(baseEvent);
+        objectPacket->setObjectList(baseObjectList);
 
         // Send the packet to this eligible guid
         objectPacket->Send(pl->guid);

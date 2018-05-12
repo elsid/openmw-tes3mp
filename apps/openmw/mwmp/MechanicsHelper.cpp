@@ -19,7 +19,7 @@
 #include "LocalPlayer.hpp"
 #include "DedicatedPlayer.hpp"
 #include "PlayerList.hpp"
-#include "WorldEvent.hpp"
+#include "ObjectList.hpp"
 #include "CellController.hpp"
 
 using namespace mwmp;
@@ -35,8 +35,8 @@ osg::Vec3f MechanicsHelper::getLinearInterpolation(osg::Vec3f start, osg::Vec3f 
 void MechanicsHelper::spawnLeveledCreatures(MWWorld::CellStore* cellStore)
 {
     MWWorld::CellRefList<ESM::CreatureLevList> *creatureLevList = cellStore->getCreatureLists();
-    mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-    worldEvent->reset();
+    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+    objectList->reset();
 
     int spawnCount = 0;
 
@@ -53,7 +53,7 @@ void MechanicsHelper::spawnLeveledCreatures(MWWorld::CellStore* cellStore)
             manualRef.getPtr().getCellRef().setPosition(ptr.getCellRef().getPosition());
             MWWorld::Ptr placed = MWBase::Environment::get().getWorld()->placeObject(manualRef.getPtr(), ptr.getCell(),
                                                                                      ptr.getCellRef().getPosition());
-            worldEvent->addObjectSpawn(placed);
+            objectList->addObjectSpawn(placed);
             MWBase::Environment::get().getWorld()->deleteObject(placed);
 
             spawnCount++;
@@ -61,7 +61,7 @@ void MechanicsHelper::spawnLeveledCreatures(MWWorld::CellStore* cellStore)
     }
 
     if (spawnCount > 0)
-        worldEvent->sendObjectSpawn();
+        objectList->sendObjectSpawn();
 }
 
 Attack *MechanicsHelper::getLocalAttack(const MWWorld::Ptr& ptr)

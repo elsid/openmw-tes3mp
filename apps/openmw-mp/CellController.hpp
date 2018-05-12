@@ -4,7 +4,7 @@
 #include <deque>
 #include <string>
 #include <components/esm/records.hpp>
-#include <components/openmw-mp/Base/BaseEvent.hpp>
+#include <components/openmw-mp/Base/BaseObject.hpp>
 #include <components/openmw-mp/Packets/Actor/ActorPacket.hpp>
 #include <components/openmw-mp/Packets/Object/ObjectPacket.hpp>
 

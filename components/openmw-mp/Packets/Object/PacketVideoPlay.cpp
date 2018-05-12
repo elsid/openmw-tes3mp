@@ -8,8 +8,8 @@ PacketVideoPlay::PacketVideoPlay(RakNet::RakPeerInterface *peer) : ObjectPacket(
     packetID = ID_VIDEO_PLAY;
 }
 
-void PacketVideoPlay::Object(WorldObject &worldObject, bool send)
+void PacketVideoPlay::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.filename, send);
-    RW(worldObject.allowSkipping, send);
+    RW(baseObject.filename, send);
+    RW(baseObject.allowSkipping, send);
 }

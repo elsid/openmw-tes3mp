@@ -11,7 +11,7 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/CellController.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -105,10 +105,10 @@ namespace MWMechanics
 
                         if (mwmp::Main::get().getCellController()->hasLocalAuthority(*placed.getCell()->getCell()))
                         {
-                            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                            worldEvent->reset();
-                            worldEvent->addObjectSpawn(placed, mActor);
-                            worldEvent->sendObjectSpawn();
+                            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                            objectList->reset();
+                            objectList->addObjectSpawn(placed, mActor);
+                            objectList->sendObjectSpawn();
                         }
 
                         MWBase::Environment::get().getWorld()->deleteObject(placed);
@@ -162,10 +162,10 @@ namespace MWMechanics
 
                     Send an ID_OBJECT_DELETE packet every time a summoned creature despawns
                 */
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addObjectDelete(ptr);
-                worldEvent->sendObjectDelete();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addObjectDelete(ptr);
+                objectList->sendObjectDelete();
                 /*
                     End of tes3mp addition
                 */

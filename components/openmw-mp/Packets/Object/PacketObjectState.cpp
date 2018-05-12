@@ -9,8 +9,8 @@ PacketObjectState::PacketObjectState(RakNet::RakPeerInterface *peer) : ObjectPac
     hasCellData = true;
 }
 
-void PacketObjectState::Object(WorldObject &worldObject, bool send)
+void PacketObjectState::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.objectState, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.objectState, send);
 }

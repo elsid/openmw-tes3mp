@@ -9,13 +9,13 @@ PacketObjectPlace::PacketObjectPlace(RakNet::RakPeerInterface *peer) : ObjectPac
     hasCellData = true;
 }
 
-void PacketObjectPlace::Object(WorldObject &worldObject, bool send)
+void PacketObjectPlace::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.count, send);
-    RW(worldObject.charge, send);
-    RW(worldObject.enchantmentCharge, send);
-    RW(worldObject.goldValue, send);
-    RW(worldObject.position, send);
-    RW(worldObject.droppedByPlayer, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.count, send);
+    RW(baseObject.charge, send);
+    RW(baseObject.enchantmentCharge, send);
+    RW(baseObject.goldValue, send);
+    RW(baseObject.position, send);
+    RW(baseObject.droppedByPlayer, send);
 }

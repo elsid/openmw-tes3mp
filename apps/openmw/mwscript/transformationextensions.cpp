@@ -10,7 +10,7 @@
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/PlayerList.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -74,10 +74,10 @@ namespace MWScript
                             return;
                         else
                         {
-                            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                            worldEvent->reset();
-                            worldEvent->addObjectScale(ptr, scale);
-                            worldEvent->sendObjectScale();
+                            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                            objectList->reset();
+                            objectList->addObjectScale(ptr, scale);
+                            objectList->sendObjectScale();
                         }
                     }
                     /*
@@ -582,18 +582,18 @@ namespace MWScript
                             Send an ID_OBJECT_PLACE or ID_OBJECT_SPAWN packet every time an object is placed
                             in the world through a script
                         */
-                        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                        worldEvent->reset();
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
 
                         if (ptr.getClass().isActor())
                         {
-                            worldEvent->addObjectSpawn(ptr);
-                            worldEvent->sendObjectSpawn();
+                            objectList->addObjectSpawn(ptr);
+                            objectList->sendObjectSpawn();
                         }
                         else
                         {
-                            worldEvent->addObjectPlace(ptr);
-                            worldEvent->sendObjectPlace();
+                            objectList->addObjectPlace(ptr);
+                            objectList->sendObjectPlace();
                         }
                         /*
                             End of tes3mp addition

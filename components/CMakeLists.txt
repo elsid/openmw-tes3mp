@@ -150,7 +150,7 @@ add_component_dir (openmw-mp
         )
 
 add_component_dir (openmw-mp/Base
-        BaseActor BaseEvent BasePacketProcessor BasePlayer BaseStructs
+        BaseActor BaseObjectList BasePacketProcessor BasePlayer BaseStructs
         )
 
 add_component_dir (openmw-mp/Controllers

@@ -7,7 +7,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -87,10 +87,10 @@ namespace MWScript
                         Send an ID_MUSIC_PLAY packet every time new music is streamed through
                         a script
                     */
-                    mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                    worldEvent->reset();
-                    worldEvent->addMusicPlay(sound);
-                    worldEvent->sendMusicPlay();
+                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                    objectList->reset();
+                    objectList->addMusicPlay(sound);
+                    objectList->sendMusicPlay();
                     /*
                         End of tes3mp addition
                     */

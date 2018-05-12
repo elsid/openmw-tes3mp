@@ -1,7 +1,3 @@
-//
-// Created by koncord on 16.04.17.
-//
-
 #include "WorldProcessor.hpp"
 #include "../Main.hpp"
 #include "../Networking.hpp"
@@ -11,15 +7,15 @@ using namespace mwmp;
 template<class T>
 typename BasePacketProcessor<T>::processors_t BasePacketProcessor<T>::processors;
 
-bool WorldProcessor::Process(RakNet::Packet &packet, WorldEvent &event)
+bool WorldProcessor::Process(RakNet::Packet &packet, ObjectList &objectList)
 {
     RakNet::BitStream bsIn(&packet.data[1], packet.length, false);
     bsIn.Read(guid);
-    event.guid = guid;
+    objectList.guid = guid;
 
     ObjectPacket *myPacket = Main::get().getNetworking()->getObjectPacket(packet.data[0]);
 
-    myPacket->setEvent(&event);
+    myPacket->setObjectList(&objectList);
     myPacket->SetReadStream(&bsIn);
 
     for (auto &processor: processors)
@@ -29,13 +25,13 @@ bool WorldProcessor::Process(RakNet::Packet &packet, WorldEvent &event)
             myGuid = Main::get().getLocalPlayer()->guid;
             request = packet.length == myPacket->headerSize();
 
-            event.isValid = true;
+            objectList.isValid = true;
 
             if (!request && !processor.second->avoidReading)
                 myPacket->Read();
 
-            if (event.isValid)
-                processor.second->Do(*myPacket, event);
+            if (objectList.isValid)
+                processor.second->Do(*myPacket, objectList);
             else
                 LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Received %s that failed integrity check and was ignored!", processor.second->strPacketID.c_str());
 

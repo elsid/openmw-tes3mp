@@ -10,7 +10,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -82,10 +82,10 @@ namespace MWScript
                     */
                     if (mwmp::Main::isValidPacketScript(ptr.getClass().getScript(ptr)))
                     {
-                        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                        worldEvent->reset();
-                        worldEvent->addObjectAnimPlay(ptr, group, mode);
-                        worldEvent->sendObjectAnimPlay();
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->addObjectAnimPlay(ptr, group, mode);
+                        objectList->sendObjectAnimPlay();
                     }
                     /*
                         End of tes3mp addition

@@ -9,8 +9,8 @@ PacketObjectReset::PacketObjectReset(RakNet::RakPeerInterface *peer) : ObjectPac
     hasCellData = true;
 }
 
-void PacketObjectReset::Object(WorldObject &worldObject, bool send)
+void PacketObjectReset::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
+    ObjectPacket::Object(baseObject, send);
     // Placeholder
 }

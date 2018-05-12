@@ -8,9 +8,9 @@ PacketScriptMemberShort::PacketScriptMemberShort(RakNet::RakPeerInterface *peer)
     packetID = ID_SCRIPT_MEMBER_SHORT;
 }
 
-void PacketScriptMemberShort::Object(WorldObject &worldObject, bool send)
+void PacketScriptMemberShort::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.refId, send);
-    RW(worldObject.index, send);
-    RW(worldObject.shortVal, send);
+    RW(baseObject.refId, send);
+    RW(baseObject.index, send);
+    RW(baseObject.shortVal, send);
 }

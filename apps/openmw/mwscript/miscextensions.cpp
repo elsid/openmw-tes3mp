@@ -9,7 +9,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -103,10 +103,10 @@ namespace MWScript
                     Send an ID_VIDEO_PLAY packet every time a video is played
                     through a script
                 */
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addVideoPlay(name, allowSkipping);
-                worldEvent->sendVideoPlay();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addVideoPlay(name, allowSkipping);
+                objectList->sendVideoPlay();
                 /*
                     End of tes3mp addition
                 */
@@ -213,10 +213,10 @@ namespace MWScript
                         Send an ID_OBJECT_LOCK packet every time an object is locked
                         through a script
                     */
-                    mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                    worldEvent->reset();
-                    worldEvent->addObjectLock(ptr, lockLevel);
-                    worldEvent->sendObjectLock();
+                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                    objectList->reset();
+                    objectList->addObjectLock(ptr, lockLevel);
+                    objectList->sendObjectLock();
                     /*
                         End of tes3mp addition
                     */
@@ -253,10 +253,10 @@ namespace MWScript
                         Send an ID_OBJECT_LOCK packet every time an object is unlocked
                         through a script
                     */
-                    mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                    worldEvent->reset();
-                    worldEvent->addObjectLock(ptr, 0);
-                    worldEvent->sendObjectLock();
+                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                    objectList->reset();
+                    objectList->addObjectLock(ptr, 0);
+                    objectList->sendObjectLock();
                     /*
                         End of tes3mp addition
                     */
@@ -733,10 +733,10 @@ namespace MWScript
                             Send an ID_OBJECT_DELETE packet every time an object is deleted
                             through a script
                         */
-                        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                        worldEvent->reset();
-                        worldEvent->addObjectDelete(ptr);
-                        worldEvent->sendObjectDelete();
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->addObjectDelete(ptr);
+                        objectList->sendObjectDelete();
                         /*
                             End of tes3mp addition
                         */

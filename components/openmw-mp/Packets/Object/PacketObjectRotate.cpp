@@ -9,10 +9,10 @@ PacketObjectRotate::PacketObjectRotate(RakNet::RakPeerInterface *peer) : ObjectP
     hasCellData = true;
 }
 
-void PacketObjectRotate::Object(WorldObject &worldObject, bool send)
+void PacketObjectRotate::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.position.rot[0], send);
-    RW(worldObject.position.rot[1], send);
-    RW(worldObject.position.rot[2], send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.position.rot[0], send);
+    RW(baseObject.position.rot[1], send);
+    RW(baseObject.position.rot[2], send);
 }

@@ -19,9 +19,9 @@ namespace mwmp
     {
     public:
 
-        virtual void Do(ObjectPacket &packet, Player &player, BaseEvent &event);
+        virtual void Do(ObjectPacket &packet, Player &player, BaseObjectList &objectList);
 
-        static bool Process(RakNet::Packet &packet, BaseEvent &event) noexcept;
+        static bool Process(RakNet::Packet &packet, BaseObjectList &objectList) noexcept;
     };
 }
 

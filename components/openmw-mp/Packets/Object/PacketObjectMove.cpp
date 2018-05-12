@@ -9,8 +9,8 @@ PacketObjectMove::PacketObjectMove(RakNet::RakPeerInterface *peer) : ObjectPacke
     hasCellData = true;
 }
 
-void PacketObjectMove::Object(WorldObject &worldObject, bool send)
+void PacketObjectMove::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.position.pos, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.position.pos, send);
 }

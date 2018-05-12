@@ -8,8 +8,8 @@ PacketScriptGlobalFloat::PacketScriptGlobalFloat(RakNet::RakPeerInterface *peer)
     packetID = ID_SCRIPT_GLOBAL_FLOAT;
 }
 
-void PacketScriptGlobalFloat::Object(WorldObject &worldObject, bool send)
+void PacketScriptGlobalFloat::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.varName, send);
-    RW(worldObject.floatVal, send);
+    RW(baseObject.varName, send);
+    RW(baseObject.floatVal, send);
 }

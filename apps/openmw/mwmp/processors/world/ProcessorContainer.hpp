@@ -13,43 +13,43 @@ namespace mwmp
             BPP_INIT(ID_CONTAINER)
         }
 
-        virtual void Do(ObjectPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList)
         {
-            BaseObjectProcessor::Do(packet, event);
+            BaseObjectProcessor::Do(packet, objectList);
 
-            LOG_APPEND(Log::LOG_VERBOSE, "- action: %i, containerSubAction: %i", event.action, event.containerSubAction);
+            LOG_APPEND(Log::LOG_VERBOSE, "- action: %i, containerSubAction: %i", objectList.action, objectList.containerSubAction);
 
             // If we've received a request for information, comply with it
-            if (event.action == mwmp::BaseEvent::REQUEST)
+            if (objectList.action == mwmp::BaseObjectList::REQUEST)
             {
-                if (event.worldObjectCount == 0)
+                if (objectList.baseObjectCount == 0)
                 {
                     LOG_APPEND(Log::LOG_VERBOSE, "- Request had no objects attached, so we are sending all containers in the cell %s",
-                        event.cell.getDescription().c_str());
-                    event.reset();
-                    event.cell = *ptrCellStore->getCell();
-                    event.action = mwmp::BaseEvent::SET;
-                    event.addAllContainers(ptrCellStore);
-                    event.sendContainer();
+                        objectList.cell.getDescription().c_str());
+                    objectList.reset();
+                    objectList.cell = *ptrCellStore->getCell();
+                    objectList.action = mwmp::BaseObjectList::SET;
+                    objectList.addAllContainers(ptrCellStore);
+                    objectList.sendContainer();
                 }
                 else
                 {
-                    LOG_APPEND(Log::LOG_VERBOSE, "- Request was for %i %s", event.worldObjectCount, event.worldObjectCount == 1 ? "object" : "objects");
-                    std::vector<WorldObject> requestObjects = event.worldObjects;
-                    event.reset();
-                    event.cell = *ptrCellStore->getCell();
-                    event.action = mwmp::BaseEvent::SET;
-                    event.addRequestedContainers(ptrCellStore, requestObjects);
+                    LOG_APPEND(Log::LOG_VERBOSE, "- Request was for %i %s", objectList.baseObjectCount, objectList.baseObjectCount == 1 ? "object" : "objects");
+                    std::vector<BaseObject> requestObjects = objectList.baseObjects;
+                    objectList.reset();
+                    objectList.cell = *ptrCellStore->getCell();
+                    objectList.action = mwmp::BaseObjectList::SET;
+                    objectList.addRequestedContainers(ptrCellStore, requestObjects);
 
-                    if (event.worldObjects.size() > 0)
-                        event.sendContainer();
+                    if (objectList.baseObjects.size() > 0)
+                        objectList.sendContainer();
                 }
             }
             // Otherwise, edit containers based on the information received
             else
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "- Editing container contents to match those of packet", event.worldObjectCount);
-                event.editContainers(ptrCellStore);
+                LOG_APPEND(Log::LOG_VERBOSE, "- Editing container contents to match those of packet", objectList.baseObjectCount);
+                objectList.editContainers(ptrCellStore);
             }
         }
 

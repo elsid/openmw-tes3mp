@@ -7,7 +7,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 #include "../mwmp/LocalPlayer.hpp"
 /*
     End of tes3mp addition
@@ -40,10 +40,10 @@ namespace MWWorld
             Send an ID_PLAYER_INVENTORY packet as well because of the item thus gained
             by the player
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->addObjectDelete(getTarget());
-        worldEvent->sendObjectDelete();
+        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+        objectList->reset();
+        objectList->addObjectDelete(getTarget());
+        objectList->sendObjectDelete();
         mwmp::Main::get().getLocalPlayer()->sendInventory();
         /*
             End of tes3mp addition

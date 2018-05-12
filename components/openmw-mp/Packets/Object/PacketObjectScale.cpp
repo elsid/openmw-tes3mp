@@ -9,8 +9,8 @@ PacketObjectScale::PacketObjectScale(RakNet::RakPeerInterface *peer) : ObjectPac
     hasCellData = true;
 }
 
-void PacketObjectScale::Object(WorldObject &worldObject, bool send)
+void PacketObjectScale::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.scale, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.scale, send);
 }

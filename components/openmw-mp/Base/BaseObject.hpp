@@ -22,7 +22,7 @@ namespace mwmp
         }
     };
 
-    struct WorldObject
+    struct BaseObject
     {
         std::string refId;
         int refNumIndex;
@@ -63,20 +63,20 @@ namespace mwmp
         std::vector<ContainerItem> containerItems;
         unsigned int containerItemCount;
 
-        RakNet::RakNetGUID guid; // only for events that can also affect players
+        RakNet::RakNetGUID guid; // only for object lists that can also include players
         bool isPlayer;
     };
 
-    class BaseEvent
+    class BaseObjectList
     {
     public:
 
-        BaseEvent(RakNet::RakNetGUID guid) : guid(guid)
+        BaseObjectList(RakNet::RakNetGUID guid) : guid(guid)
         {
 
         }
 
-        BaseEvent()
+        BaseObjectList()
         {
 
         }
@@ -99,8 +99,8 @@ namespace mwmp
 
         RakNet::RakNetGUID guid;
         
-        std::vector<WorldObject> worldObjects;
-        unsigned int worldObjectCount;
+        std::vector<BaseObject> baseObjects;
+        unsigned int baseObjectCount;
 
         ESM::Cell cell;
         std::string consoleCommand;

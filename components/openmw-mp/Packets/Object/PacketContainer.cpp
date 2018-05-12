@@ -15,36 +15,36 @@ void PacketContainer::Packet(RakNet::BitStream *bs, bool send)
     if (!PacketHeader(bs, send))
         return;
 
-    RW(event->action, send);
-    RW(event->containerSubAction, send);
+    RW(objectList->action, send);
+    RW(objectList->containerSubAction, send);
 
-    WorldObject worldObject;
-    for (unsigned int i = 0; i < event->worldObjectCount; i++)
+    BaseObject baseObject;
+    for (unsigned int i = 0; i < objectList->baseObjectCount; i++)
     {
         if (send)
         {
-            worldObject = event->worldObjects.at(i);
-            worldObject.containerItemCount = (unsigned int) (worldObject.containerItems.size());
+            baseObject = objectList->baseObjects.at(i);
+            baseObject.containerItemCount = (unsigned int) (baseObject.containerItems.size());
         }
         else
-            worldObject.containerItems.clear();
+            baseObject.containerItems.clear();
 
-        Object(worldObject, send);
+        Object(baseObject, send);
 
-        RW(worldObject.containerItemCount, send);
+        RW(baseObject.containerItemCount, send);
 
-        if (worldObject.containerItemCount > maxObjects || worldObject.refId.empty() || (worldObject.refNumIndex != 0 && worldObject.mpNum != 0))
+        if (baseObject.containerItemCount > maxObjects || baseObject.refId.empty() || (baseObject.refNumIndex != 0 && baseObject.mpNum != 0))
         {
-            event->isValid = false;
+            objectList->isValid = false;
             return;
         }
 
         ContainerItem containerItem;
 
-        for (unsigned int j = 0; j < worldObject.containerItemCount; j++)
+        for (unsigned int j = 0; j < baseObject.containerItemCount; j++)
         {
             if (send)
-                containerItem = worldObject.containerItems.at(j);
+                containerItem = baseObject.containerItems.at(j);
 
             RW(containerItem.refId, send);
             RW(containerItem.count, send);
@@ -53,9 +53,9 @@ void PacketContainer::Packet(RakNet::BitStream *bs, bool send)
             RW(containerItem.actionCount, send);
 
             if (!send)
-                worldObject.containerItems.push_back(containerItem);
+                baseObject.containerItems.push_back(containerItem);
         }
         if (!send)
-            event->worldObjects.push_back(worldObject);
+            objectList->baseObjects.push_back(baseObject);
     }
 }

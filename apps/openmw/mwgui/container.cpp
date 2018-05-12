@@ -12,7 +12,7 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 #include "../mwmp/CellController.hpp"
 /*
     End of tes3mp addition
@@ -112,22 +112,22 @@ namespace MWGui
             Send an ID_CONTAINER packet every time an item starts being dragged
             from a container
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->cell = *mPtr.getCell()->getCell();
-        worldEvent->action = mwmp::BaseEvent::REMOVE;
-        worldEvent->containerSubAction = mwmp::BaseEvent::DRAG;
+        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+        objectList->reset();
+        objectList->cell = *mPtr.getCell()->getCell();
+        objectList->action = mwmp::BaseObjectList::REMOVE;
+        objectList->containerSubAction = mwmp::BaseObjectList::DRAG;
 
-        mwmp::WorldObject worldObject = worldEvent->getWorldObject(mPtr);
+        mwmp::BaseObject baseObject = objectList->getBaseObject(mPtr);
         MWWorld::Ptr itemPtr = mModel->getItem(mSelectedItem).mBase;
-        worldEvent->addContainerItem(worldObject, itemPtr, count);
-        worldEvent->addObject(worldObject);
+        objectList->addContainerItem(baseObject, itemPtr, count);
+        objectList->addObject(baseObject);
 
-        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setObjectList(objectList);
         mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
-            worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
+            baseObject.refId.c_str(), baseObject.refNumIndex, objectList->cell.getDescription().c_str(),
             itemPtr.getCellRef().getRefId().c_str(), itemPtr.getRefData().getCount());
         /*
             End of tes3mp addition
@@ -158,13 +158,13 @@ namespace MWGui
         */
         if (success)
         {
-            mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-            worldEvent->reset();
-            worldEvent->cell = *mPtr.getCell()->getCell();
-            worldEvent->action = mwmp::BaseEvent::ADD;
-            worldEvent->containerSubAction = mwmp::BaseEvent::DROP;
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->cell = *mPtr.getCell()->getCell();
+            objectList->action = mwmp::BaseObjectList::ADD;
+            objectList->containerSubAction = mwmp::BaseObjectList::DROP;
 
-            mwmp::WorldObject worldObject = worldEvent->getWorldObject(mPtr);
+            mwmp::BaseObject baseObject = objectList->getBaseObject(mPtr);
             MWWorld::Ptr itemPtr = mDragAndDrop->mItem.mBase;
             mwmp::ContainerItem containerItem;
             containerItem.refId = itemPtr.getCellRef().getRefId();
@@ -175,14 +175,14 @@ namespace MWGui
             containerItem.charge = itemPtr.getCellRef().getCharge();
             containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
 
-            worldObject.containerItems.push_back(containerItem);
-            worldEvent->addObject(worldObject);
+            baseObject.containerItems.push_back(containerItem);
+            objectList->addObject(baseObject);
 
-            mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setEvent(worldEvent);
+            mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setObjectList(objectList);
             mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i, %i",
-                worldObject.refId.c_str(), worldObject.refNumIndex, worldEvent->cell.getDescription().c_str(),
+                baseObject.refId.c_str(), baseObject.refNumIndex, objectList->cell.getDescription().c_str(),
                 containerItem.refId.c_str(), containerItem.count, containerItem.charge);
         }
         /*
@@ -298,19 +298,19 @@ namespace MWGui
             Send an ID_CONTAINER packet every time the Take All button is used on
             a container
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
-        worldEvent->cell = *mPtr.getCell()->getCell();
-        worldEvent->action = mwmp::BaseEvent::REMOVE;
-        worldEvent->containerSubAction = mwmp::BaseEvent::TAKE_ALL;
-        worldEvent->addEntireContainer(mPtr);
+        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+        objectList->reset();
+        objectList->cell = *mPtr.getCell()->getCell();
+        objectList->action = mwmp::BaseObjectList::REMOVE;
+        objectList->containerSubAction = mwmp::BaseObjectList::TAKE_ALL;
+        objectList->addEntireContainer(mPtr);
 
-        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setEvent(worldEvent);
+        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setObjectList(objectList);
         mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i-%i\n- cell: %s",
             mPtr.getCellRef().getRefId().c_str(), mPtr.getCellRef().getRefNum().mIndex, mPtr.getCellRef().getMpNum(),
-            worldEvent->cell.getDescription().c_str());
+            objectList->cell.getDescription().c_str());
         /*
             End of tes3mp addition
         */
@@ -380,10 +380,10 @@ namespace MWGui
             */
             if (!mPtr.getClass().isPersistent(mPtr))
             {
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addObjectDelete(mPtr);
-                worldEvent->sendObjectDelete();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addObjectDelete(mPtr);
+                objectList->sendObjectDelete();
             }
             /*
                 End of tes3mp addition

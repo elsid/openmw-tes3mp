@@ -20,10 +20,10 @@ ObjectPacket::~ObjectPacket()
 
 }
 
-void ObjectPacket::setEvent(BaseEvent *event)
+void ObjectPacket::setObjectList(BaseObjectList *objectList)
 {
-    this->event = event;
-    guid = event->guid;
+    this->objectList = objectList;
+    guid = objectList->guid;
 }
 
 void ObjectPacket::Packet(RakNet::BitStream *bs, bool send)
@@ -31,16 +31,16 @@ void ObjectPacket::Packet(RakNet::BitStream *bs, bool send)
     if (!PacketHeader(bs, send))
         return;
 
-    WorldObject worldObject;
-    for (unsigned int i = 0; i < event->worldObjectCount; i++)
+    BaseObject baseObject;
+    for (unsigned int i = 0; i < objectList->baseObjectCount; i++)
     {
         if (send)
-            worldObject = event->worldObjects.at(i);
+            baseObject = objectList->baseObjects.at(i);
 
-        Object(worldObject, send);
+        Object(baseObject, send);
 
         if (!send)
-            event->worldObjects.push_back(worldObject);
+            objectList->baseObjects.push_back(baseObject);
     }
 }
 
@@ -49,30 +49,30 @@ bool ObjectPacket::PacketHeader(RakNet::BitStream *bs, bool send)
     BasePacket::Packet(bs, send);
 
     if (send)
-        event->worldObjectCount = (unsigned int)(event->worldObjects.size());
+        objectList->baseObjectCount = (unsigned int)(objectList->baseObjects.size());
     else
-        event->worldObjects.clear();
+        objectList->baseObjects.clear();
 
-    RW(event->worldObjectCount, send);
+    RW(objectList->baseObjectCount, send);
 
-    if (event->worldObjectCount > maxObjects)
+    if (objectList->baseObjectCount > maxObjects)
     {
-        event->isValid = false;
+        objectList->isValid = false;
         return false;
     }
 
     if (hasCellData)
     {
-        RW(event->cell.mData, send, 1);
-        RW(event->cell.mName, send, 1);
+        RW(objectList->cell.mData, send, 1);
+        RW(objectList->cell.mName, send, 1);
     }
 
     return true;
 }
 
-void ObjectPacket::Object(WorldObject &worldObject, bool send)
+void ObjectPacket::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.refId, send);
-    RW(worldObject.refNumIndex, send);
-    RW(worldObject.mpNum, send);
+    RW(baseObject.refId, send);
+    RW(baseObject.refNumIndex, send);
+    RW(baseObject.mpNum, send);
 }

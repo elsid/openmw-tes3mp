@@ -9,8 +9,8 @@ PacketObjectLock::PacketObjectLock(RakNet::RakPeerInterface *peer) : ObjectPacke
     hasCellData = true;
 }
 
-void PacketObjectLock::Object(WorldObject &worldObject, bool send)
+void PacketObjectLock::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.lockLevel, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.lockLevel, send);
 }

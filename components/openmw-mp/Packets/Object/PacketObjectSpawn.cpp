@@ -9,26 +9,26 @@ PacketObjectSpawn::PacketObjectSpawn(RakNet::RakPeerInterface *peer) : ObjectPac
     hasCellData = true;
 }
 
-void PacketObjectSpawn::Object(WorldObject &worldObject, bool send)
+void PacketObjectSpawn::Object(BaseObject &baseObject, bool send)
 {
-    ObjectPacket::Object(worldObject, send);
-    RW(worldObject.position, send);
+    ObjectPacket::Object(baseObject, send);
+    RW(baseObject.position, send);
 
-    RW(worldObject.hasMaster, send);
+    RW(baseObject.hasMaster, send);
 
-    if (worldObject.hasMaster)
+    if (baseObject.hasMaster)
     {
-        RW(worldObject.master.isPlayer, send);
+        RW(baseObject.master.isPlayer, send);
 
-        if (worldObject.master.isPlayer)
+        if (baseObject.master.isPlayer)
         {
-            RW(worldObject.master.guid, send);
+            RW(baseObject.master.guid, send);
         }
         else
         {
-            RW(worldObject.master.refId, send, 1);
-            RW(worldObject.master.refNumIndex, send);
-            RW(worldObject.master.mpNum, send);
+            RW(baseObject.master.refId, send, 1);
+            RW(baseObject.master.refNumIndex, send);
+            RW(baseObject.master.mpNum, send);
         }
     }
 }

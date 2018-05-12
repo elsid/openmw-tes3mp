@@ -1,5 +1,5 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include <components/openmw-mp/Base/BaseEvent.hpp>
+#include <components/openmw-mp/Base/BaseObject.hpp>
 
 #include <apps/openmw-mp/Networking.hpp>
 #include <apps/openmw-mp/Player.hpp>
@@ -10,280 +10,280 @@
 
 using namespace mwmp;
 
-BaseEvent *readEvent;
-BaseEvent writeEvent;
+BaseObjectList *readObjectList;
+BaseObjectList writeObjectList;
 
-WorldObject tempWorldObject;
-const WorldObject emptyWorldObject = {};
+BaseObject tempObject;
+const BaseObject emptyObject = {};
 
 ContainerItem tempContainerItem;
 const ContainerItem emptyContainerItem = {};
 
-void WorldFunctions::ReadLastEvent() noexcept
+void WorldFunctions::ReadLastObjectList() noexcept
 {
-    readEvent = mwmp::Networking::getPtr()->getLastEvent();
+    readObjectList = mwmp::Networking::getPtr()->getLastObjectList();
 }
 
-void WorldFunctions::InitializeEvent(unsigned short pid) noexcept
+void WorldFunctions::InitializeObjectList(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    writeEvent.cell.blank();
-    writeEvent.worldObjects.clear();
-    writeEvent.guid = player->guid;
+    writeObjectList.cell.blank();
+    writeObjectList.baseObjects.clear();
+    writeObjectList.guid = player->guid;
 }
 
 unsigned int WorldFunctions::GetObjectChangesSize() noexcept
 {
-    return readEvent->worldObjectCount;
+    return readObjectList->baseObjectCount;
 }
 
-unsigned char WorldFunctions::GetEventAction() noexcept
+unsigned char WorldFunctions::GetObjectListAction() noexcept
 {
-    return readEvent->action;
+    return readObjectList->action;
 }
 
-unsigned char WorldFunctions::GetEventContainerSubAction() noexcept
+unsigned char WorldFunctions::GetObjectListContainerSubAction() noexcept
 {
-    return readEvent->containerSubAction;
+    return readObjectList->containerSubAction;
 }
 
 const char *WorldFunctions::GetObjectRefId(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).refId.c_str();
+    return readObjectList->baseObjects.at(i).refId.c_str();
 }
 
 int WorldFunctions::GetObjectRefNumIndex(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).refNumIndex;
+    return readObjectList->baseObjects.at(i).refNumIndex;
 }
 
 int WorldFunctions::GetObjectMpNum(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).mpNum;
+    return readObjectList->baseObjects.at(i).mpNum;
 }
 
 int WorldFunctions::GetObjectCount(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).count;
+    return readObjectList->baseObjects.at(i).count;
 }
 
 int WorldFunctions::GetObjectCharge(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).charge;
+    return readObjectList->baseObjects.at(i).charge;
 }
 
 double WorldFunctions::GetObjectEnchantmentCharge(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).enchantmentCharge;
+    return readObjectList->baseObjects.at(i).enchantmentCharge;
 }
 
 int WorldFunctions::GetObjectGoldValue(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).goldValue;
+    return readObjectList->baseObjects.at(i).goldValue;
 }
 
 double WorldFunctions::GetObjectScale(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).scale;
+    return readObjectList->baseObjects.at(i).scale;
 }
 
 bool WorldFunctions::GetObjectState(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).objectState;
+    return readObjectList->baseObjects.at(i).objectState;
 }
 
 int WorldFunctions::GetObjectDoorState(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).doorState;
+    return readObjectList->baseObjects.at(i).doorState;
 }
 
 int WorldFunctions::GetObjectLockLevel(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).lockLevel;
+    return readObjectList->baseObjects.at(i).lockLevel;
 }
 
 double WorldFunctions::GetObjectPosX(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).position.pos[0];
+    return readObjectList->baseObjects.at(i).position.pos[0];
 }
 
 double WorldFunctions::GetObjectPosY(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).position.pos[1];
+    return readObjectList->baseObjects.at(i).position.pos[1];
 }
 
 double WorldFunctions::GetObjectPosZ(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).position.pos[2];
+    return readObjectList->baseObjects.at(i).position.pos[2];
 }
 
 double WorldFunctions::GetObjectRotX(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).position.rot[0];
+    return readObjectList->baseObjects.at(i).position.rot[0];
 }
 
 double WorldFunctions::GetObjectRotY(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).position.rot[1];
+    return readObjectList->baseObjects.at(i).position.rot[1];
 }
 
 double WorldFunctions::GetObjectRotZ(unsigned int i) noexcept
 {
-    return readEvent->worldObjects.at(i).position.rot[2];
+    return readObjectList->baseObjects.at(i).position.rot[2];
 }
 
 unsigned int WorldFunctions::GetContainerChangesSize(unsigned int objectIndex) noexcept
 {
-    return readEvent->worldObjects.at(objectIndex).containerItemCount;
+    return readObjectList->baseObjects.at(objectIndex).containerItemCount;
 }
 
 const char *WorldFunctions::GetContainerItemRefId(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
-    return readEvent->worldObjects.at(objectIndex)
+    return readObjectList->baseObjects.at(objectIndex)
         .containerItems.at(itemIndex).refId.c_str();
 }
 
 int WorldFunctions::GetContainerItemCount(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
-    return readEvent->worldObjects.at(objectIndex)
+    return readObjectList->baseObjects.at(objectIndex)
         .containerItems.at(itemIndex).count;
 }
 
 int WorldFunctions::GetContainerItemCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
-    return readEvent->worldObjects.at(objectIndex)
+    return readObjectList->baseObjects.at(objectIndex)
         .containerItems.at(itemIndex).charge;
 }
 
 double WorldFunctions::GetContainerItemEnchantmentCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
-    return readEvent->worldObjects.at(objectIndex)
+    return readObjectList->baseObjects.at(objectIndex)
         .containerItems.at(itemIndex).enchantmentCharge;
 }
 
 int WorldFunctions::GetContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
-    return readEvent->worldObjects.at(objectIndex)
+    return readObjectList->baseObjects.at(objectIndex)
         .containerItems.at(itemIndex).actionCount;
 }
 
-void WorldFunctions::SetEventCell(const char* cellDescription) noexcept
+void WorldFunctions::SetObjectListCell(const char* cellDescription) noexcept
 {
-    writeEvent.cell = Utils::getCellFromDescription(cellDescription);
+    writeObjectList.cell = Utils::getCellFromDescription(cellDescription);
 }
 
-void WorldFunctions::SetEventAction(unsigned char action) noexcept
+void WorldFunctions::SetObjectListAction(unsigned char action) noexcept
 {
-    writeEvent.action = action;
+    writeObjectList.action = action;
 }
 
-void WorldFunctions::SetEventConsoleCommand(const char* consoleCommand) noexcept
+void WorldFunctions::SetObjectListConsoleCommand(const char* consoleCommand) noexcept
 {
-    writeEvent.consoleCommand = consoleCommand;
+    writeObjectList.consoleCommand = consoleCommand;
 }
 
 void WorldFunctions::SetObjectRefId(const char* refId) noexcept
 {
-    tempWorldObject.refId = refId;
+    tempObject.refId = refId;
 }
 
 void WorldFunctions::SetObjectRefNumIndex(int refNumIndex) noexcept
 {
-    tempWorldObject.refNumIndex = refNumIndex;
+    tempObject.refNumIndex = refNumIndex;
 }
 
 void WorldFunctions::SetObjectMpNum(int mpNum) noexcept
 {
-    tempWorldObject.mpNum = mpNum;
+    tempObject.mpNum = mpNum;
 }
 
 void WorldFunctions::SetObjectCount(int count) noexcept
 {
-    tempWorldObject.count = count;
+    tempObject.count = count;
 }
 
 void WorldFunctions::SetObjectCharge(int charge) noexcept
 {
-    tempWorldObject.charge = charge;
+    tempObject.charge = charge;
 }
 
 void WorldFunctions::SetObjectEnchantmentCharge(double enchantmentCharge) noexcept
 {
-    tempWorldObject.enchantmentCharge = enchantmentCharge;
+    tempObject.enchantmentCharge = enchantmentCharge;
 }
 
 void WorldFunctions::SetObjectGoldValue(int goldValue) noexcept
 {
-    tempWorldObject.goldValue = goldValue;
+    tempObject.goldValue = goldValue;
 }
 
 void WorldFunctions::SetObjectScale(double scale) noexcept
 {
-    tempWorldObject.scale = scale;
+    tempObject.scale = scale;
 }
 
 void WorldFunctions::SetObjectState(bool objectState) noexcept
 {
-    tempWorldObject.objectState = objectState;
+    tempObject.objectState = objectState;
 }
 
 void WorldFunctions::SetObjectLockLevel(int lockLevel) noexcept
 {
-    tempWorldObject.lockLevel = lockLevel;
+    tempObject.lockLevel = lockLevel;
 }
 
 void WorldFunctions::SetObjectDisarmState(bool disarmState) noexcept
 {
-    tempWorldObject.isDisarmed = disarmState;
+    tempObject.isDisarmed = disarmState;
 }
 
 void WorldFunctions::SetObjectMasterState(bool masterState) noexcept
 {
-    tempWorldObject.hasMaster = masterState;
+    tempObject.hasMaster = masterState;
 }
 
 void WorldFunctions::SetObjectPosition(double x, double y, double z) noexcept
 {
-    tempWorldObject.position.pos[0] = x;
-    tempWorldObject.position.pos[1] = y;
-    tempWorldObject.position.pos[2] = z;
+    tempObject.position.pos[0] = x;
+    tempObject.position.pos[1] = y;
+    tempObject.position.pos[2] = z;
 }
 
 void WorldFunctions::SetObjectRotation(double x, double y, double z) noexcept
 {
-    tempWorldObject.position.rot[0] = x;
-    tempWorldObject.position.rot[1] = y;
-    tempWorldObject.position.rot[2] = z;
+    tempObject.position.rot[0] = x;
+    tempObject.position.rot[1] = y;
+    tempObject.position.rot[2] = z;
 }
 
 void WorldFunctions::SetObjectDoorState(int doorState) noexcept
 {
-    tempWorldObject.doorState = doorState;
+    tempObject.doorState = doorState;
 }
 
 void WorldFunctions::SetObjectDoorTeleportState(bool teleportState) noexcept
 {
-    tempWorldObject.teleportState = teleportState;
+    tempObject.teleportState = teleportState;
 }
 
 void WorldFunctions::SetObjectDoorDestinationCell(const char* cellDescription) noexcept
 {
-    tempWorldObject.destinationCell = Utils::getCellFromDescription(cellDescription);
+    tempObject.destinationCell = Utils::getCellFromDescription(cellDescription);
 }
 
 void WorldFunctions::SetObjectDoorDestinationPosition(double x, double y, double z) noexcept
 {
-    tempWorldObject.destinationPosition.pos[0] = x;
-    tempWorldObject.destinationPosition.pos[1] = y;
-    tempWorldObject.destinationPosition.pos[2] = z;
+    tempObject.destinationPosition.pos[0] = x;
+    tempObject.destinationPosition.pos[1] = y;
+    tempObject.destinationPosition.pos[2] = z;
 }
 
 void WorldFunctions::SetObjectDoorDestinationRotation(double x, double z) noexcept
 {
-    tempWorldObject.destinationPosition.rot[0] = x;
-    tempWorldObject.destinationPosition.rot[2] = z;
+    tempObject.destinationPosition.rot[0] = x;
+    tempObject.destinationPosition.rot[2] = z;
 }
 
 void WorldFunctions::SetPlayerAsObject(unsigned short pid) noexcept
@@ -291,8 +291,8 @@ void WorldFunctions::SetPlayerAsObject(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    tempWorldObject.guid = player->guid;
-    tempWorldObject.isPlayer = true;
+    tempObject.guid = player->guid;
+    tempObject.isPlayer = true;
 }
 
 void WorldFunctions::SetContainerItemRefId(const char* refId) noexcept
@@ -317,20 +317,20 @@ void WorldFunctions::SetContainerItemEnchantmentCharge(double enchantmentCharge)
 
 void WorldFunctions::SetReceivedContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept
 {
-    readEvent->worldObjects.at(objectIndex).containerItems.at(itemIndex).actionCount = actionCount;
+    readObjectList->baseObjects.at(objectIndex).containerItems.at(itemIndex).actionCount = actionCount;
 }
 
-void WorldFunctions::AddWorldObject() noexcept
+void WorldFunctions::AddObject() noexcept
 {
-    tempWorldObject.droppedByPlayer = false;
-    writeEvent.worldObjects.push_back(tempWorldObject);
+    tempObject.droppedByPlayer = false;
+    writeObjectList.baseObjects.push_back(tempObject);
 
-    tempWorldObject = emptyWorldObject;
+    tempObject = emptyObject;
 }
 
 void WorldFunctions::AddContainerItem() noexcept
 {
-    tempWorldObject.containerItems.push_back(tempContainerItem);
+    tempObject.containerItems.push_back(tempContainerItem);
 
     tempContainerItem = emptyContainerItem;
 }
@@ -338,7 +338,7 @@ void WorldFunctions::AddContainerItem() noexcept
 void WorldFunctions::SendObjectPlace(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_PLACE);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -348,7 +348,7 @@ void WorldFunctions::SendObjectPlace(bool broadcast) noexcept
 void WorldFunctions::SendObjectSpawn(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_SPAWN);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -358,7 +358,7 @@ void WorldFunctions::SendObjectSpawn(bool broadcast) noexcept
 void WorldFunctions::SendObjectDelete(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_DELETE);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -368,7 +368,7 @@ void WorldFunctions::SendObjectDelete(bool broadcast) noexcept
 void WorldFunctions::SendObjectLock(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_LOCK);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -378,7 +378,7 @@ void WorldFunctions::SendObjectLock(bool broadcast) noexcept
 void WorldFunctions::SendObjectTrap(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_TRAP);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -388,7 +388,7 @@ void WorldFunctions::SendObjectTrap(bool broadcast) noexcept
 void WorldFunctions::SendObjectScale(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_SCALE);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -398,7 +398,7 @@ void WorldFunctions::SendObjectScale(bool broadcast) noexcept
 void WorldFunctions::SendObjectState(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_STATE);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -408,7 +408,7 @@ void WorldFunctions::SendObjectState(bool broadcast) noexcept
 void WorldFunctions::SendDoorState(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_DOOR_STATE);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -418,21 +418,21 @@ void WorldFunctions::SendDoorState(bool broadcast) noexcept
 void WorldFunctions::SendDoorDestination(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_DOOR_DESTINATION);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
         packet->Send(true);
 }
 
-void WorldFunctions::SendContainer(bool broadcast, bool useLastReadEvent) noexcept
+void WorldFunctions::SendContainer(bool broadcast, bool useLastReadObjectList) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONTAINER);
     
-    if (useLastReadEvent)
-        packet->setEvent(readEvent);
+    if (useLastReadObjectList)
+        packet->setObjectList(readObjectList);
     else
-        packet->setEvent(&writeEvent);
+        packet->setObjectList(&writeObjectList);
     
     packet->Send(false);
 
@@ -443,7 +443,7 @@ void WorldFunctions::SendContainer(bool broadcast, bool useLastReadEvent) noexce
 void WorldFunctions::SendConsoleCommand(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONSOLE_COMMAND);
-    packet->setEvent(&writeEvent);
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)

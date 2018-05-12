@@ -7,7 +7,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -48,8 +48,8 @@ namespace MWWorld
 
             Send an ID_OBJECT_TRAP packet every time a trap is triggered
         */
-        mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-        worldEvent->reset();
+        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+        objectList->reset();
         
         ESM::Position pos;
 
@@ -58,8 +58,8 @@ namespace MWWorld
         else
             pos = actor.getRefData().getPosition();
 
-        worldEvent->addObjectTrap(mTrapSource, pos, false);
-        worldEvent->sendObjectTrap();
+        objectList->addObjectTrap(mTrapSource, pos, false);
+        objectList->sendObjectTrap();
         /*
             End of tes3mp addition
         */

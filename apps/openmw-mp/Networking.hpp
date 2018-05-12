@@ -46,7 +46,7 @@ namespace  mwmp
         ObjectPacketController *getObjectPacketController() const;
 
         BaseActorList *getLastActorList();
-        BaseEvent *getLastEvent();
+        BaseObjectList *getLastObjectList();
 
         int getCurrentMpNum();
         void setCurrentMpNum(int value);
@@ -75,7 +75,7 @@ namespace  mwmp
         MasterClient *mclient;
 
         BaseActorList baseActorList;
-        BaseEvent baseEvent;
+        BaseObjectList baseObjectList;
 
         PlayerPacketController *playerPacketController;
         ActorPacketController *actorPacketController;

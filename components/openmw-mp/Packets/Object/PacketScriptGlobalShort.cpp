@@ -8,8 +8,8 @@ PacketScriptGlobalShort::PacketScriptGlobalShort(RakNet::RakPeerInterface *peer)
     packetID = ID_SCRIPT_GLOBAL_SHORT;
 }
 
-void PacketScriptGlobalShort::Object(WorldObject &worldObject, bool send)
+void PacketScriptGlobalShort::Object(BaseObject &baseObject, bool send)
 {
-    RW(worldObject.varName, send);
-    RW(worldObject.shortVal, send);
+    RW(baseObject.varName, send);
+    RW(baseObject.shortVal, send);
 }

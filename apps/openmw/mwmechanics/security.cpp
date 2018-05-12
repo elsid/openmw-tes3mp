@@ -7,7 +7,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/WorldEvent.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -73,10 +73,10 @@ namespace MWMechanics
 
                     Send an ID_OBJECT_LOCK packet every time an object is unlocked here
                 */
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addObjectLock(lock, 0);
-                worldEvent->sendObjectLock();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addObjectLock(lock, 0);
+                objectList->sendObjectLock();
                 /*
                     End of tes3mp addition
                 */
@@ -132,10 +132,10 @@ namespace MWMechanics
 
                     Send an ID_OBJECT_TRAP packet every time a trap is disarmed
                 */
-                mwmp::WorldEvent *worldEvent = mwmp::Main::get().getNetworking()->getWorldEvent();
-                worldEvent->reset();
-                worldEvent->addObjectTrap(trap, trap.getRefData().getPosition(), true);
-                worldEvent->sendObjectTrap();
+                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                objectList->reset();
+                objectList->addObjectTrap(trap, trap.getRefData().getPosition(), true);
+                objectList->sendObjectTrap();
                 /*
                     End of tes3mp addition
                 */

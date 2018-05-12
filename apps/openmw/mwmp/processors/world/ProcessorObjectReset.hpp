@@ -13,11 +13,11 @@ namespace mwmp
             BPP_INIT(ID_OBJECT_RESET)
         }
 
-        virtual void Do(ObjectPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList)
         {
-            BaseObjectProcessor::Do(packet, event);
+            BaseObjectProcessor::Do(packet, objectList);
 
-            //event.resetObjects(ptrCellStore);
+            //objectList.resetObjects(ptrCellStore);
         }
 
     };

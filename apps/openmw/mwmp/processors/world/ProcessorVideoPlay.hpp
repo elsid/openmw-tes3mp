@@ -13,10 +13,10 @@ namespace mwmp
             BPP_INIT(ID_VIDEO_PLAY)
         }
 
-        virtual void Do(ObjectPacket &packet, WorldEvent &event)
+        virtual void Do(ObjectPacket &packet, ObjectList &objectList)
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Received %s", strPacketID.c_str());
-            event.playVideo();
+            objectList.playVideo();
         }
     };
 }
