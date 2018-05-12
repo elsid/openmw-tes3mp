@@ -39,6 +39,10 @@ namespace mwmp
         Animation animation;
         Attack attack;
 
+        bool hasAiTarget;
+        Target aiTarget;
+        unsigned int aiAction;
+
         bool hasPositionData;
         bool hasStatsDynamicData;
 
@@ -60,6 +64,11 @@ namespace mwmp
             ADD = 1,
             REMOVE = 2,
             REQUEST = 3
+        };
+
+        enum AI_ACTION
+        {
+            FOLLOW = 0
         };
 
         RakNet::RakNetGUID guid;

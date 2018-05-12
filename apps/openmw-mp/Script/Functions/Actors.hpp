@@ -60,6 +60,10 @@
     {"SetActorFatigueCurrent",                 ActorFunctions::SetActorFatigueCurrent},\
     {"SetActorFatigueModified",                ActorFunctions::SetActorFatigueModified},\
     \
+    {"SetActorAIAction",                       ActorFunctions::SetActorAIAction},\
+    {"SetActorAITargetToPlayer",               ActorFunctions::SetActorAITargetToPlayer},\
+    {"SetActorAITargetToActor",                ActorFunctions::SetActorAITargetToActor},\
+    \
     {"EquipActorItem",                         ActorFunctions::EquipActorItem},\
     {"UnequipActorItem",                       ActorFunctions::UnequipActorItem},\
     \
@@ -70,9 +74,10 @@
     {"SendActorPosition",                      ActorFunctions::SendActorPosition},\
     {"SendActorStatsDynamic",                  ActorFunctions::SendActorStatsDynamic},\
     {"SendActorEquipment",                     ActorFunctions::SendActorEquipment},\
+    {"SendActorAI",                            ActorFunctions::SendActorAI},\
     {"SendActorCellChange",                    ActorFunctions::SendActorCellChange}
 
-class            ActorFunctions
+class ActorFunctions
 {
 public:
 
@@ -482,6 +487,31 @@ public:
     static void SetActorFatigueModified(double value) noexcept;
 
     /**
+    * \brief Set the AI action of the temporary actor stored on the server.
+    *
+    * \param action The new action.
+    * \return void
+    */
+    static void SetActorAIAction(unsigned int action) noexcept;
+
+    /**
+    * \brief Set a player as the AI target of the temporary actor stored on the server.
+    *
+    * \param pid The player ID.
+    * \return void
+    */
+    static void SetActorAITargetToPlayer(unsigned short pid) noexcept;
+
+    /**
+    * \brief Set another actor as the AI target of the temporary actor stored on the server.
+    *
+    * \param refNumIndex The refNumIndex of the target actor.
+    * \param mpNum The mpNum of the target actor.
+    * \return void
+    */
+    static void SetActorAITargetToActor(int refNumIndex, int mpNum) noexcept;
+
+    /**
     * \brief Equip an item in a certain slot of the equipment of the temporary actor stored
     * on the server.
     *
@@ -560,6 +590,15 @@ public:
     * \return void
     */
     static void SendActorEquipment() noexcept;
+
+    /**
+    * \brief Send an ActorAI packet.
+    *
+    * It is sent only to the player for whom the current actor list was initialized.
+    *
+    * \return void
+    */
+    static void SendActorAI() noexcept;
 
     /**
     * \brief Send an ActorCellChange packet.

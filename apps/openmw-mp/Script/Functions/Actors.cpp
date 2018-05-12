@@ -267,6 +267,31 @@ void ActorFunctions::SetActorFatigueModified(double value) noexcept
     tempActor.creatureStats.mDynamic[2].mMod = value;
 }
 
+void ActorFunctions::SetActorAIAction(unsigned int action) noexcept
+{
+    tempActor.aiAction = action;
+}
+
+void ActorFunctions::SetActorAITargetToPlayer(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    tempActor.hasAiTarget = true;
+    tempActor.aiTarget.isPlayer = true;
+
+    tempActor.aiTarget.guid = player->guid;
+}
+
+void ActorFunctions::SetActorAITargetToActor(int refNumIndex, int mpNum) noexcept
+{
+    tempActor.hasAiTarget = true;
+    tempActor.aiTarget.isPlayer = false;
+
+    tempActor.aiTarget.refNumIndex = refNumIndex;
+    tempActor.aiTarget.mpNum = mpNum;
+}
+
 void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, double enchantmentCharge) noexcept
 {
     tempActor.equipmentItems[slot].refId = refId;
@@ -326,6 +351,12 @@ void ActorFunctions::SendActorEquipment() noexcept
 {
     mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT)->setActorList(&writeActorList);
     mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT)->Send(writeActorList.guid);
+}
+
+void ActorFunctions::SendActorAI() noexcept
+{
+    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI)->setActorList(&writeActorList);
+    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI)->Send(writeActorList.guid);
 }
 
 void ActorFunctions::SendActorCellChange() noexcept

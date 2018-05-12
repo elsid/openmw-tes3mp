@@ -11,5 +11,22 @@ PacketActorAI::PacketActorAI(RakNet::RakPeerInterface *peer) : ActorPacket(peer)
 
 void PacketActorAI::Actor(BaseActor &actor, bool send)
 {
-    // Placeholder to be filled in later
+    RW(actor.aiAction, send);
+    RW(actor.hasAiTarget, send);
+
+    if (actor.hasAiTarget)
+    {
+        RW(actor.aiTarget.isPlayer, send);
+
+        if (actor.aiTarget.isPlayer)
+        {
+            RW(actor.aiTarget.guid, send);
+        }
+        else
+        {
+            RW(actor.aiTarget.refId, send, 1);
+            RW(actor.aiTarget.refNumIndex, send);
+            RW(actor.aiTarget.mpNum, send);
+        }
+    }
 }

@@ -244,6 +244,24 @@ void Cell::readSpeech(ActorList& actorList)
     }
 }
 
+void Cell::readAI(ActorList& actorList)
+{
+    initializeDedicatedActors(actorList);
+
+    for (const auto &baseActor : actorList.baseActors)
+    {
+        std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);
+
+        if (dedicatedActors.count(mapIndex) > 0)
+        {
+            DedicatedActor *actor = dedicatedActors[mapIndex];
+            actor->aiAction = baseActor.aiAction;
+            actor->aiTarget = baseActor.aiTarget;
+            actor->setAI();
+        }
+    }
+}
+
 void Cell::readAttack(ActorList& actorList)
 {
     for (const auto &baseActor : actorList.baseActors)

@@ -6,6 +6,7 @@
 
 #include "../mwdialogue/dialoguemanagerimp.hpp"
 
+#include "../mwmechanics/aifollow.hpp"
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
 #include "../mwmechanics/movement.hpp"
@@ -199,6 +200,41 @@ void DedicatedActor::setEquipment()
         {
             ptr.getClass().getContainerStore(ptr).add(packetRefId, count, ptr);
             equipItem(packetRefId, packetCharge);
+        }
+    }
+}
+
+void DedicatedActor::setAI()
+{
+    if (hasAiTarget)
+    {
+        MWWorld::Ptr targetPtr;
+
+        if (aiTarget.isPlayer)
+            targetPtr = MechanicsHelper::getPlayerPtr(aiTarget);
+        else
+        {
+            if (mwmp::Main::get().getCellController()->isLocalActor(aiTarget.refNumIndex, aiTarget.mpNum))
+                targetPtr = mwmp::Main::get().getCellController()->getLocalActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
+            else if (mwmp::Main::get().getCellController()->isDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum))
+                targetPtr = mwmp::Main::get().getCellController()->getDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
+            else
+                LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has invalid target AI target %i-%i",
+                    ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
+                    aiTarget.refNumIndex, aiTarget.mpNum);
+        }
+
+        if (targetPtr)
+        {
+            LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has AI target %s %i-%i",
+                ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
+                targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNumIndex, aiTarget.mpNum);
+
+            if (aiAction == mwmp::BaseActorList::FOLLOW)
+            {
+                MWMechanics::AiFollow package(targetPtr.getCellRef().getRefId());
+                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr);
+            }
         }
     }
 }
