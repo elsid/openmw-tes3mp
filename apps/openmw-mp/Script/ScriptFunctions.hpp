@@ -21,7 +21,7 @@
 #include <Script/Functions/Settings.hpp>
 #include <Script/Functions/Spells.hpp>
 #include <Script/Functions/Stats.hpp>
-#include <Script/Functions/World.hpp>
+#include <Script/Functions/Objects.hpp>
 #include <RakNetTypes.h>
 //#include <amx/amx.h>
 #include <tuple>
@@ -291,7 +291,7 @@ public:
             SETTINGSAPI,
             SPELLAPI,
             STATAPI,
-            WORLDAPI
+            OBJECTAPI
     };
 
     static constexpr ScriptCallbackData callbacks[]{

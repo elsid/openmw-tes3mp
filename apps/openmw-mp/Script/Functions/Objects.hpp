@@ -1,93 +1,93 @@
-#ifndef OPENMW_WORLDAPI_HPP
-#define OPENMW_WORLDAPI_HPP
+#ifndef OPENMW_OBJECTAPI_HPP
+#define OPENMW_OBJECTAPI_HPP
 
-#define WORLDAPI \
-    {"ReadLastObjectList",                    WorldFunctions::ReadLastObjectList},\
-    {"InitializeObjectList",                  WorldFunctions::InitializeObjectList},\
+#define OBJECTAPI \
+    {"ReadLastObjectList",                    ObjectFunctions::ReadLastObjectList},\
+    {"InitializeObjectList",                  ObjectFunctions::InitializeObjectList},\
     \
-    {"GetObjectChangesSize",                  WorldFunctions::GetObjectChangesSize},\
-    {"GetObjectListAction",                   WorldFunctions::GetObjectListAction},\
-    {"GetObjectListContainerSubAction",       WorldFunctions::GetObjectListContainerSubAction},\
+    {"GetObjectChangesSize",                  ObjectFunctions::GetObjectChangesSize},\
+    {"GetObjectListAction",                   ObjectFunctions::GetObjectListAction},\
+    {"GetObjectListContainerSubAction",       ObjectFunctions::GetObjectListContainerSubAction},\
     \
-    {"GetObjectRefId",                        WorldFunctions::GetObjectRefId},\
-    {"GetObjectRefNumIndex",                  WorldFunctions::GetObjectRefNumIndex},\
-    {"GetObjectMpNum",                        WorldFunctions::GetObjectMpNum},\
-    {"GetObjectCount",                        WorldFunctions::GetObjectCount},\
-    {"GetObjectCharge",                       WorldFunctions::GetObjectCharge},\
-    {"GetObjectEnchantmentCharge",            WorldFunctions::GetObjectEnchantmentCharge},\
-    {"GetObjectGoldValue",                    WorldFunctions::GetObjectGoldValue},\
-    {"GetObjectScale",                        WorldFunctions::GetObjectScale},\
-    {"GetObjectState",                        WorldFunctions::GetObjectState},\
-    {"GetObjectDoorState",                    WorldFunctions::GetObjectDoorState},\
-    {"GetObjectLockLevel",                    WorldFunctions::GetObjectLockLevel},\
-    {"GetObjectPosX",                         WorldFunctions::GetObjectPosX},\
-    {"GetObjectPosY",                         WorldFunctions::GetObjectPosY},\
-    {"GetObjectPosZ",                         WorldFunctions::GetObjectPosZ},\
-    {"GetObjectRotX",                         WorldFunctions::GetObjectRotX},\
-    {"GetObjectRotY",                         WorldFunctions::GetObjectRotY},\
-    {"GetObjectRotZ",                         WorldFunctions::GetObjectRotZ},\
+    {"GetObjectRefId",                        ObjectFunctions::GetObjectRefId},\
+    {"GetObjectRefNumIndex",                  ObjectFunctions::GetObjectRefNumIndex},\
+    {"GetObjectMpNum",                        ObjectFunctions::GetObjectMpNum},\
+    {"GetObjectCount",                        ObjectFunctions::GetObjectCount},\
+    {"GetObjectCharge",                       ObjectFunctions::GetObjectCharge},\
+    {"GetObjectEnchantmentCharge",            ObjectFunctions::GetObjectEnchantmentCharge},\
+    {"GetObjectGoldValue",                    ObjectFunctions::GetObjectGoldValue},\
+    {"GetObjectScale",                        ObjectFunctions::GetObjectScale},\
+    {"GetObjectState",                        ObjectFunctions::GetObjectState},\
+    {"GetObjectDoorState",                    ObjectFunctions::GetObjectDoorState},\
+    {"GetObjectLockLevel",                    ObjectFunctions::GetObjectLockLevel},\
+    {"GetObjectPosX",                         ObjectFunctions::GetObjectPosX},\
+    {"GetObjectPosY",                         ObjectFunctions::GetObjectPosY},\
+    {"GetObjectPosZ",                         ObjectFunctions::GetObjectPosZ},\
+    {"GetObjectRotX",                         ObjectFunctions::GetObjectRotX},\
+    {"GetObjectRotY",                         ObjectFunctions::GetObjectRotY},\
+    {"GetObjectRotZ",                         ObjectFunctions::GetObjectRotZ},\
     \
-    {"GetContainerChangesSize",               WorldFunctions::GetContainerChangesSize},\
-    {"GetContainerItemRefId",                 WorldFunctions::GetContainerItemRefId},\
-    {"GetContainerItemCount",                 WorldFunctions::GetContainerItemCount},\
-    {"GetContainerItemCharge",                WorldFunctions::GetContainerItemCharge},\
-    {"GetContainerItemEnchantmentCharge",     WorldFunctions::GetContainerItemEnchantmentCharge},\
-    {"GetContainerItemActionCount",           WorldFunctions::GetContainerItemActionCount},\
+    {"GetContainerChangesSize",               ObjectFunctions::GetContainerChangesSize},\
+    {"GetContainerItemRefId",                 ObjectFunctions::GetContainerItemRefId},\
+    {"GetContainerItemCount",                 ObjectFunctions::GetContainerItemCount},\
+    {"GetContainerItemCharge",                ObjectFunctions::GetContainerItemCharge},\
+    {"GetContainerItemEnchantmentCharge",     ObjectFunctions::GetContainerItemEnchantmentCharge},\
+    {"GetContainerItemActionCount",           ObjectFunctions::GetContainerItemActionCount},\
     \
-    {"SetObjectListCell",                     WorldFunctions::SetObjectListCell},\
-    {"SetObjectListAction",                   WorldFunctions::SetObjectListAction},\
-    {"SetObjectListConsoleCommand",           WorldFunctions::SetObjectListConsoleCommand},\
+    {"SetObjectListCell",                     ObjectFunctions::SetObjectListCell},\
+    {"SetObjectListAction",                   ObjectFunctions::SetObjectListAction},\
+    {"SetObjectListConsoleCommand",           ObjectFunctions::SetObjectListConsoleCommand},\
     \
-    {"SetObjectRefId",                        WorldFunctions::SetObjectRefId},\
-    {"SetObjectRefNumIndex",                  WorldFunctions::SetObjectRefNumIndex},\
-    {"SetObjectMpNum",                        WorldFunctions::SetObjectMpNum},\
-    {"SetObjectCount",                        WorldFunctions::SetObjectCount},\
-    {"SetObjectCharge",                       WorldFunctions::SetObjectCharge},\
-    {"SetObjectEnchantmentCharge",            WorldFunctions::SetObjectEnchantmentCharge},\
-    {"SetObjectGoldValue",                    WorldFunctions::SetObjectGoldValue},\
-    {"SetObjectScale",                        WorldFunctions::SetObjectScale},\
-    {"SetObjectState",                        WorldFunctions::SetObjectState},\
-    {"SetObjectLockLevel",                    WorldFunctions::SetObjectLockLevel},\
-    {"SetObjectDisarmState",                  WorldFunctions::SetObjectDisarmState},\
-    {"SetObjectMasterState",                  WorldFunctions::SetObjectMasterState},\
-    {"SetObjectPosition",                     WorldFunctions::SetObjectPosition},\
-    {"SetObjectRotation",                     WorldFunctions::SetObjectRotation},\
+    {"SetObjectRefId",                        ObjectFunctions::SetObjectRefId},\
+    {"SetObjectRefNumIndex",                  ObjectFunctions::SetObjectRefNumIndex},\
+    {"SetObjectMpNum",                        ObjectFunctions::SetObjectMpNum},\
+    {"SetObjectCount",                        ObjectFunctions::SetObjectCount},\
+    {"SetObjectCharge",                       ObjectFunctions::SetObjectCharge},\
+    {"SetObjectEnchantmentCharge",            ObjectFunctions::SetObjectEnchantmentCharge},\
+    {"SetObjectGoldValue",                    ObjectFunctions::SetObjectGoldValue},\
+    {"SetObjectScale",                        ObjectFunctions::SetObjectScale},\
+    {"SetObjectState",                        ObjectFunctions::SetObjectState},\
+    {"SetObjectLockLevel",                    ObjectFunctions::SetObjectLockLevel},\
+    {"SetObjectDisarmState",                  ObjectFunctions::SetObjectDisarmState},\
+    {"SetObjectMasterState",                  ObjectFunctions::SetObjectMasterState},\
+    {"SetObjectPosition",                     ObjectFunctions::SetObjectPosition},\
+    {"SetObjectRotation",                     ObjectFunctions::SetObjectRotation},\
     \
-    {"SetObjectDoorState",                    WorldFunctions::SetObjectDoorState},\
-    {"SetObjectDoorTeleportState",            WorldFunctions::SetObjectDoorTeleportState},\
-    {"SetObjectDoorDestinationCell",          WorldFunctions::SetObjectDoorDestinationCell},\
-    {"SetObjectDoorDestinationPosition",      WorldFunctions::SetObjectDoorDestinationPosition},\
-    {"SetObjectDoorDestinationRotation",      WorldFunctions::SetObjectDoorDestinationRotation},\
+    {"SetObjectDoorState",                    ObjectFunctions::SetObjectDoorState},\
+    {"SetObjectDoorTeleportState",            ObjectFunctions::SetObjectDoorTeleportState},\
+    {"SetObjectDoorDestinationCell",          ObjectFunctions::SetObjectDoorDestinationCell},\
+    {"SetObjectDoorDestinationPosition",      ObjectFunctions::SetObjectDoorDestinationPosition},\
+    {"SetObjectDoorDestinationRotation",      ObjectFunctions::SetObjectDoorDestinationRotation},\
     \
-    {"SetPlayerAsObject",                     WorldFunctions::SetPlayerAsObject},\
+    {"SetPlayerAsObject",                     ObjectFunctions::SetPlayerAsObject},\
     \
-    {"SetContainerItemRefId",                 WorldFunctions::SetContainerItemRefId},\
-    {"SetContainerItemCount",                 WorldFunctions::SetContainerItemCount},\
-    {"SetContainerItemCharge",                WorldFunctions::SetContainerItemCharge},\
-    {"SetContainerItemEnchantmentCharge",     WorldFunctions::SetContainerItemEnchantmentCharge},\
+    {"SetContainerItemRefId",                 ObjectFunctions::SetContainerItemRefId},\
+    {"SetContainerItemCount",                 ObjectFunctions::SetContainerItemCount},\
+    {"SetContainerItemCharge",                ObjectFunctions::SetContainerItemCharge},\
+    {"SetContainerItemEnchantmentCharge",     ObjectFunctions::SetContainerItemEnchantmentCharge},\
     \
-    {"SetReceivedContainerItemActionCount",   WorldFunctions::SetReceivedContainerItemActionCount},\
+    {"SetReceivedContainerItemActionCount",   ObjectFunctions::SetReceivedContainerItemActionCount},\
     \
-    {"AddObject",                             WorldFunctions::AddObject},\
-    {"AddContainerItem",                      WorldFunctions::AddContainerItem},\
+    {"AddObject",                             ObjectFunctions::AddObject},\
+    {"AddContainerItem",                      ObjectFunctions::AddContainerItem},\
     \
-    {"SendObjectPlace",                       WorldFunctions::SendObjectPlace},\
-    {"SendObjectSpawn",                       WorldFunctions::SendObjectSpawn},\
-    {"SendObjectDelete",                      WorldFunctions::SendObjectDelete},\
-    {"SendObjectLock",                        WorldFunctions::SendObjectLock},\
-    {"SendObjectTrap",                        WorldFunctions::SendObjectTrap},\
-    {"SendObjectScale",                       WorldFunctions::SendObjectScale},\
-    {"SendObjectState",                       WorldFunctions::SendObjectState},\
-    {"SendDoorState",                         WorldFunctions::SendDoorState},\
-    {"SendDoorDestination",                   WorldFunctions::SendDoorDestination},\
-    {"SendContainer",                         WorldFunctions::SendContainer},\
-    {"SendConsoleCommand",                    WorldFunctions::SendConsoleCommand},\
+    {"SendObjectPlace",                       ObjectFunctions::SendObjectPlace},\
+    {"SendObjectSpawn",                       ObjectFunctions::SendObjectSpawn},\
+    {"SendObjectDelete",                      ObjectFunctions::SendObjectDelete},\
+    {"SendObjectLock",                        ObjectFunctions::SendObjectLock},\
+    {"SendObjectTrap",                        ObjectFunctions::SendObjectTrap},\
+    {"SendObjectScale",                       ObjectFunctions::SendObjectScale},\
+    {"SendObjectState",                       ObjectFunctions::SendObjectState},\
+    {"SendDoorState",                         ObjectFunctions::SendDoorState},\
+    {"SendDoorDestination",                   ObjectFunctions::SendDoorDestination},\
+    {"SendContainer",                         ObjectFunctions::SendContainer},\
+    {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
     \
-    {"SetHour",                               WorldFunctions::SetHour},\
-    {"SetMonth",                              WorldFunctions::SetMonth},\
-    {"SetDay",                                WorldFunctions::SetDay}
+    {"SetHour",                               ObjectFunctions::SetHour},\
+    {"SetMonth",                              ObjectFunctions::SetMonth},\
+    {"SetDay",                                ObjectFunctions::SetDay}
 
-class WorldFunctions
+class ObjectFunctions
 {
 public:
 
@@ -780,4 +780,4 @@ public:
 };
 
 
-#endif //OPENMW_WORLDAPI_HPP
+#endif //OPENMW_OBJECTAPI_HPP
