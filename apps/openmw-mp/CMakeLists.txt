@@ -83,6 +83,7 @@ set(SERVER
     Script/ScriptFunctions.cpp
 
     Script/Functions/Actors.cpp Script/Functions/Objects.cpp Script/Functions/Miscellaneous.cpp
+    Script/Functions/Worldstate.cpp
 
     Script/Functions/Books.cpp Script/Functions/Cells.cpp Script/Functions/CharClass.cpp
     Script/Functions/Chat.cpp Script/Functions/Dialogue.cpp Script/Functions/Factions.cpp

@@ -81,11 +81,7 @@
     {"SendDoorState",                         ObjectFunctions::SendDoorState},\
     {"SendDoorDestination",                   ObjectFunctions::SendDoorDestination},\
     {"SendContainer",                         ObjectFunctions::SendContainer},\
-    {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
-    \
-    {"SetHour",                               ObjectFunctions::SetHour},\
-    {"SetMonth",                              ObjectFunctions::SetMonth},\
-    {"SetDay",                                ObjectFunctions::SetDay}
+    {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand}
 
 class ObjectFunctions
 {
@@ -751,32 +747,6 @@ public:
     */
     static void SendConsoleCommand(bool broadcast = false) noexcept;
 
-    /**
-    * \brief Set the game hour for a player and send a GameTime packet to that player.
-    *
-    * \param pid The player ID.
-    * \param hour The hour.
-    * \return void
-    */
-    static void SetHour(unsigned short pid, double hour) noexcept;
-
-    /**
-    * \brief Set the game month for a player and send a GameTime packet to that player.
-    *
-    * \param pid The player ID.
-    * \param month The month.
-    * \return void
-    */
-    static void SetMonth(unsigned short pid, int month) noexcept;
-
-    /**
-    * \brief Set the game day for a player and send a GameTime packet to that player.
-    *
-    * \param pid The player ID.
-    * \param day The day.
-    * \return void
-    */
-    static void SetDay(unsigned short pid, int day) noexcept;
 };
 
 
