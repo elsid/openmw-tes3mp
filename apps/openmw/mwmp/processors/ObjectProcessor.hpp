@@ -15,7 +15,7 @@
 
 namespace mwmp
 {
-    class WorldProcessor : public BasePacketProcessor<WorldProcessor>, public BaseClientPacketProcessor
+    class ObjectProcessor : public BasePacketProcessor<ObjectProcessor>, public BaseClientPacketProcessor
     {
     public:
         virtual void Do(ObjectPacket &packet, ObjectList &objectList) = 0;

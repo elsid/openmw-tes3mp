@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORMUSICPLAY_HPP
 #define OPENMW_PROCESSORMUSICPLAY_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorMusicPlay : public WorldProcessor
+    class ProcessorMusicPlay : public ObjectProcessor
     {
     public:
         ProcessorMusicPlay()

@@ -1,4 +1,4 @@
-#include "WorldProcessor.hpp"
+#include "ObjectProcessor.hpp"
 #include "../Main.hpp"
 #include "../Networking.hpp"
 
@@ -7,7 +7,7 @@ using namespace mwmp;
 template<class T>
 typename BasePacketProcessor<T>::processors_t BasePacketProcessor<T>::processors;
 
-bool WorldProcessor::Process(RakNet::Packet &packet, ObjectList &objectList)
+bool ObjectProcessor::Process(RakNet::Packet &packet, ObjectList &objectList)
 {
     RakNet::BitStream bsIn(&packet.data[1], packet.length, false);
     bsIn.Read(guid);

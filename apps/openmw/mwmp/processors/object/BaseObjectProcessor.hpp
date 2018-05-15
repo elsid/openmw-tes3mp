@@ -5,14 +5,14 @@
 #ifndef OPENMW_BASEOBJECTPROCESSOR_HPP
 #define OPENMW_BASEOBJECTPROCESSOR_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 #include "apps/openmw/mwmp/Main.hpp"
 #include "apps/openmw/mwmp/CellController.hpp"
 #include "apps/openmw/mwworld/cellstore.hpp"
 
 namespace mwmp
 {
-    class BaseObjectProcessor : public WorldProcessor
+    class BaseObjectProcessor : public ObjectProcessor
     {
     public:
         virtual void Do(ObjectPacket &packet, ObjectList &objectList)

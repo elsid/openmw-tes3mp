@@ -104,7 +104,7 @@ add_openmw_dir (mwmp Main Networking LocalPlayer DedicatedPlayer PlayerList Loca
 add_openmw_dir (mwmp/GUI GUIChat GUILogin PlayerMarkerCollection GUIDialogList TextInputDialog
     )
 
-add_openmw_dir(mwmp/processors BaseClientPacketProcessor PlayerProcessor WorldProcessor ActorProcessor ProcessorInitializer
+add_openmw_dir(mwmp/processors BaseClientPacketProcessor PlayerProcessor ObjectProcessor ActorProcessor ProcessorInitializer
     )
 
 add_openmw_dir (mwmp/processors/actor ProcessorActorAI ProcessorActorAnimFlags ProcessorActorAnimPlay ProcessorActorAttack
@@ -124,7 +124,7 @@ add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageB
     ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic ProcessorPlayerTopic
     )
 
-add_openmw_dir (mwmp/processors/world BaseObjectProcessor ProcessorConsoleCommand ProcessorContainer ProcessorDoorDestination
+add_openmw_dir (mwmp/processors/object BaseObjectProcessor ProcessorConsoleCommand ProcessorContainer ProcessorDoorDestination
     ProcessorDoorState ProcessorMusicPlay ProcessorVideoPlay ProcessorObjectAnimPlay ProcessorObjectAttach 
     ProcessorObjectCollision ProcessorObjectDelete ProcessorObjectLock ProcessorObjectMove ProcessorObjectPlace 
     ProcessorObjectReset ProcessorObjectRotate ProcessorObjectScale ProcessorObjectSpawn ProcessorObjectState 
