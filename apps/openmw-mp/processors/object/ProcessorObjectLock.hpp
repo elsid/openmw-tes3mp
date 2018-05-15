@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTLOCK_HPP
 #define OPENMW_PROCESSOROBJECTLOCK_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectLock : public WorldProcessor
+    class ProcessorObjectLock : public ObjectProcessor
     {
     public:
         ProcessorObjectLock()

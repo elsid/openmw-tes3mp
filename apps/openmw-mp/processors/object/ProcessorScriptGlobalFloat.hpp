@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORSCRIPTGLOBALFLOAT_HPP
 #define OPENMW_PROCESSORSCRIPTGLOBALFLOAT_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorScriptGlobalFloat : public WorldProcessor
+    class ProcessorScriptGlobalFloat : public ObjectProcessor
     {
     public:
         ProcessorScriptGlobalFloat()

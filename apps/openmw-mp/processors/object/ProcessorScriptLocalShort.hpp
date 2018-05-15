@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORSCRIPTLOCALSHORT_HPP
 #define OPENMW_PROCESSORSCRIPTLOCALSHORT_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorScriptLocalShort : public WorldProcessor
+    class ProcessorScriptLocalShort : public ObjectProcessor
     {
     public:
         ProcessorScriptLocalShort()

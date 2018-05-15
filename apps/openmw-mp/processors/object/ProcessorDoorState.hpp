@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORDOORSTATE_HPP
 #define OPENMW_PROCESSORDOORSTATE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorDoorState : public WorldProcessor
+    class ProcessorDoorState : public ObjectProcessor
     {
     public:
         ProcessorDoorState()

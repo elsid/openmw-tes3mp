@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTDELETE_HPP
 #define OPENMW_PROCESSOROBJECTDELETE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectDelete : public WorldProcessor
+    class ProcessorObjectDelete : public ObjectProcessor
     {
     public:
         ProcessorObjectDelete()

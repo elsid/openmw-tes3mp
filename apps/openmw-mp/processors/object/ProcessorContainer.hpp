@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORCONTAINER_HPP
 #define OPENMW_PROCESSORCONTAINER_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorContainer : public WorldProcessor
+    class ProcessorContainer : public ObjectProcessor
     {
     public:
         ProcessorContainer()

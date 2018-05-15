@@ -145,16 +145,16 @@ set(PROCESSORS_PLAYER
 source_group(tes3mp-server\\processors\\player FILES ${PROCESSORS_PLAYER})
 
 set(PROCESSORS_WORLD
-        processors/world/ProcessorContainer.hpp processors/world/ProcessorDoorState.hpp
-        processors/world/ProcessorMusicPlay.hpp processors/world/ProcessorObjectAnimPlay.hpp
-        processors/world/ProcessorObjectDelete.hpp processors/world/ProcessorObjectLock.hpp
-        processors/world/ProcessorObjectMove.hpp processors/world/ProcessorObjectPlace.hpp
-        processors/world/ProcessorObjectRotate.hpp processors/world/ProcessorObjectScale.hpp
-        processors/world/ProcessorObjectSpawn.hpp processors/world/ProcessorObjectState.hpp
-        processors/world/ProcessorObjectTrap.hpp processors/world/ProcessorScriptLocalShort.hpp
-        processors/world/ProcessorScriptLocalFloat.hpp processors/world/ProcessorScriptMemberShort.hpp
-        processors/world/ProcessorScriptMemberFloat.hpp processors/world/ProcessorScriptGlobalShort.hpp
-        processors/world/ProcessorScriptGlobalFloat.hpp processors/world/ProcessorVideoPlay.hpp
+        processors/object/ProcessorContainer.hpp processors/object/ProcessorDoorState.hpp
+        processors/object/ProcessorMusicPlay.hpp processors/object/ProcessorObjectAnimPlay.hpp
+        processors/object/ProcessorObjectDelete.hpp processors/object/ProcessorObjectLock.hpp
+        processors/object/ProcessorObjectMove.hpp processors/object/ProcessorObjectPlace.hpp
+        processors/object/ProcessorObjectRotate.hpp processors/object/ProcessorObjectScale.hpp
+        processors/object/ProcessorObjectSpawn.hpp processors/object/ProcessorObjectState.hpp
+        processors/object/ProcessorObjectTrap.hpp processors/object/ProcessorScriptLocalShort.hpp
+        processors/object/ProcessorScriptLocalFloat.hpp processors/object/ProcessorScriptMemberShort.hpp
+        processors/object/ProcessorScriptMemberFloat.hpp processors/object/ProcessorScriptGlobalShort.hpp
+        processors/object/ProcessorScriptGlobalFloat.hpp processors/object/ProcessorVideoPlay.hpp
         )
 
 source_group(tes3mp-server\\processors\\world FILES ${PROCESSORS_WORLD})
@@ -163,7 +163,7 @@ set(PROCESSORS
         processors/ProcessorInitializer.cpp
         processors/PlayerProcessor.cpp
         processors/ActorProcessor.cpp
-        processors/WorldProcessor.cpp
+        processors/ObjectProcessor.cpp
         )
 
 source_group(tes3mp-server\\processors FILES ${PROCESSORS})

@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTROTATE_HPP
 #define OPENMW_PROCESSOROBJECTROTATE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectRotate : public WorldProcessor
+    class ProcessorObjectRotate : public ObjectProcessor
     {
     public:
         ProcessorObjectRotate()

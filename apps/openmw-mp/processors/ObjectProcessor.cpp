@@ -1,8 +1,4 @@
-//
-// Created by koncord on 03.04.17.
-//
-
-#include "WorldProcessor.hpp"
+#include "ObjectProcessor.hpp"
 #include "Networking.hpp"
 
 using namespace mwmp;
@@ -10,12 +6,12 @@ using namespace mwmp;
 template<class T>
 typename BasePacketProcessor<T>::processors_t BasePacketProcessor<T>::processors;
 
-void WorldProcessor::Do(ObjectPacket &packet, Player &player, BaseObjectList &objectList)
+void ObjectProcessor::Do(ObjectPacket &packet, Player &player, BaseObjectList &objectList)
 {
     packet.Send(true);
 }
 
-bool WorldProcessor::Process(RakNet::Packet &packet, BaseObjectList &objectList) noexcept
+bool ObjectProcessor::Process(RakNet::Packet &packet, BaseObjectList &objectList) noexcept
 {
     // Clear our BaseObjectList before loading new data in it
     objectList.cell.blank();

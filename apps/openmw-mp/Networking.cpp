@@ -25,7 +25,7 @@
 #include "CellController.hpp"
 #include "processors/PlayerProcessor.hpp"
 #include "processors/ActorProcessor.hpp"
-#include "processors/WorldProcessor.hpp"
+#include "processors/ObjectProcessor.hpp"
 
 using namespace mwmp;
 using namespace std;
@@ -188,7 +188,7 @@ void Networking::processObjectPacket(RakNet::Packet *packet)
     if (!player->isHandshaked() || player->getLoadState() != Player::POSTLOADED)
         return;
 
-    if (!WorldProcessor::Process(*packet, baseObjectList))
+    if (!ObjectProcessor::Process(*packet, baseObjectList))
         LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled ObjectPacket with identifier %i has arrived", packet->data[0]);
 
 }

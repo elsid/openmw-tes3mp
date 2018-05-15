@@ -1,12 +1,12 @@
 #ifndef OPENMW_PROCESSOROBJECTPLACE_HPP
 #define OPENMW_PROCESSOROBJECTPLACE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 #include <apps/openmw-mp/Networking.hpp>
 
 namespace mwmp
 {
-    class ProcessorObjectPlace : public WorldProcessor
+    class ProcessorObjectPlace : public ObjectProcessor
     {
     public:
         ProcessorObjectPlace()

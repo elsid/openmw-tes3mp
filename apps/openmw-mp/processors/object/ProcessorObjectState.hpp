@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTSTATE_HPP
 #define OPENMW_PROCESSOROBJECTSTATE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectState : public WorldProcessor
+    class ProcessorObjectState : public ObjectProcessor
     {
     public:
         ProcessorObjectState()

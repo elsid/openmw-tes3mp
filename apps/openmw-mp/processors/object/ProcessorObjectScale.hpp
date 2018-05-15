@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTSCALE_HPP
 #define OPENMW_PROCESSOROBJECTSCALE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectScale : public WorldProcessor
+    class ProcessorObjectScale : public ObjectProcessor
     {
     public:
         ProcessorObjectScale()

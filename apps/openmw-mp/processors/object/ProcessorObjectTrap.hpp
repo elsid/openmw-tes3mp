@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTTRAP_HPP
 #define OPENMW_PROCESSOROBJECTTRAP_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectTrap : public WorldProcessor
+    class ProcessorObjectTrap : public ObjectProcessor
     {
     public:
         ProcessorObjectTrap()

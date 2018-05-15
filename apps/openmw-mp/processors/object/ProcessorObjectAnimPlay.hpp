@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTANIMPLAY_HPP
 #define OPENMW_PROCESSOROBJECTANIMPLAY_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectAnimPlay : public WorldProcessor
+    class ProcessorObjectAnimPlay : public ObjectProcessor
     {
     public:
         ProcessorObjectAnimPlay()

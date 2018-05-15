@@ -58,27 +58,27 @@
 #include "actor/ProcessorActorStatsDynamic.hpp"
 #include "actor/ProcessorActorPosition.hpp"
 #include "actor/ProcessorActorSpeech.hpp"
-#include "WorldProcessor.hpp"
-#include "world/ProcessorContainer.hpp"
-#include "world/ProcessorDoorState.hpp"
-#include "world/ProcessorMusicPlay.hpp"
-#include "world/ProcessorObjectAnimPlay.hpp"
-#include "world/ProcessorObjectDelete.hpp"
-#include "world/ProcessorObjectPlace.hpp"
-#include "world/ProcessorObjectLock.hpp"
-#include "world/ProcessorObjectMove.hpp"
-#include "world/ProcessorObjectRotate.hpp"
-#include "world/ProcessorObjectScale.hpp"
-#include "world/ProcessorObjectSpawn.hpp"
-#include "world/ProcessorObjectState.hpp"
-#include "world/ProcessorObjectTrap.hpp"
-#include "world/ProcessorScriptLocalShort.hpp"
-#include "world/ProcessorScriptLocalFloat.hpp"
-#include "world/ProcessorScriptMemberShort.hpp"
-#include "world/ProcessorScriptMemberFloat.hpp"
-#include "world/ProcessorScriptGlobalShort.hpp"
-#include "world/ProcessorScriptGlobalFloat.hpp"
-#include "world/ProcessorVideoPlay.hpp"
+#include "ObjectProcessor.hpp"
+#include "object/ProcessorContainer.hpp"
+#include "object/ProcessorDoorState.hpp"
+#include "object/ProcessorMusicPlay.hpp"
+#include "object/ProcessorObjectAnimPlay.hpp"
+#include "object/ProcessorObjectDelete.hpp"
+#include "object/ProcessorObjectPlace.hpp"
+#include "object/ProcessorObjectLock.hpp"
+#include "object/ProcessorObjectMove.hpp"
+#include "object/ProcessorObjectRotate.hpp"
+#include "object/ProcessorObjectScale.hpp"
+#include "object/ProcessorObjectSpawn.hpp"
+#include "object/ProcessorObjectState.hpp"
+#include "object/ProcessorObjectTrap.hpp"
+#include "object/ProcessorScriptLocalShort.hpp"
+#include "object/ProcessorScriptLocalFloat.hpp"
+#include "object/ProcessorScriptMemberShort.hpp"
+#include "object/ProcessorScriptMemberFloat.hpp"
+#include "object/ProcessorScriptGlobalShort.hpp"
+#include "object/ProcessorScriptGlobalFloat.hpp"
+#include "object/ProcessorVideoPlay.hpp"
 
 
 using namespace mwmp;
@@ -136,24 +136,24 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorStatsDynamic());
     ActorProcessor::AddProcessor(new ProcessorActorTest());
 
-    WorldProcessor::AddProcessor(new ProcessorContainer());
-    WorldProcessor::AddProcessor(new ProcessorDoorState());
-    WorldProcessor::AddProcessor(new ProcessorMusicPlay());
-    WorldProcessor::AddProcessor(new ProcessorObjectAnimPlay());
-    WorldProcessor::AddProcessor(new ProcessorObjectDelete());
-    WorldProcessor::AddProcessor(new ProcessorObjectLock());
-    WorldProcessor::AddProcessor(new ProcessorObjectMove());
-    WorldProcessor::AddProcessor(new ProcessorObjectPlace());
-    WorldProcessor::AddProcessor(new ProcessorObjectRotate());
-    WorldProcessor::AddProcessor(new ProcessorObjectScale());
-    WorldProcessor::AddProcessor(new ProcessorObjectSpawn());
-    WorldProcessor::AddProcessor(new ProcessorObjectState());
-    WorldProcessor::AddProcessor(new ProcessorObjectTrap());
-    WorldProcessor::AddProcessor(new ProcessorScriptLocalShort());
-    WorldProcessor::AddProcessor(new ProcessorScriptLocalFloat());
-    WorldProcessor::AddProcessor(new ProcessorScriptMemberShort());
-    WorldProcessor::AddProcessor(new ProcessorScriptMemberFloat());
-    WorldProcessor::AddProcessor(new ProcessorScriptGlobalShort());
-    WorldProcessor::AddProcessor(new ProcessorScriptGlobalFloat());
-    WorldProcessor::AddProcessor(new ProcessorVideoPlay());
+    ObjectProcessor::AddProcessor(new ProcessorContainer());
+    ObjectProcessor::AddProcessor(new ProcessorDoorState());
+    ObjectProcessor::AddProcessor(new ProcessorMusicPlay());
+    ObjectProcessor::AddProcessor(new ProcessorObjectAnimPlay());
+    ObjectProcessor::AddProcessor(new ProcessorObjectDelete());
+    ObjectProcessor::AddProcessor(new ProcessorObjectLock());
+    ObjectProcessor::AddProcessor(new ProcessorObjectMove());
+    ObjectProcessor::AddProcessor(new ProcessorObjectPlace());
+    ObjectProcessor::AddProcessor(new ProcessorObjectRotate());
+    ObjectProcessor::AddProcessor(new ProcessorObjectScale());
+    ObjectProcessor::AddProcessor(new ProcessorObjectSpawn());
+    ObjectProcessor::AddProcessor(new ProcessorObjectState());
+    ObjectProcessor::AddProcessor(new ProcessorObjectTrap());
+    ObjectProcessor::AddProcessor(new ProcessorScriptLocalShort());
+    ObjectProcessor::AddProcessor(new ProcessorScriptLocalFloat());
+    ObjectProcessor::AddProcessor(new ProcessorScriptMemberShort());
+    ObjectProcessor::AddProcessor(new ProcessorScriptMemberFloat());
+    ObjectProcessor::AddProcessor(new ProcessorScriptGlobalShort());
+    ObjectProcessor::AddProcessor(new ProcessorScriptGlobalFloat());
+    ObjectProcessor::AddProcessor(new ProcessorVideoPlay());
 }

@@ -1,9 +1,5 @@
-//
-// Created by koncord on 03.04.17.
-//
-
-#ifndef OPENMW_WORLDPROCESSOR_HPP
-#define OPENMW_WORLDPROCESSOR_HPP
+#ifndef OPENMW_OBJECTPROCESSOR_HPP
+#define OPENMW_OBJECTPROCESSOR_HPP
 
 
 #include <components/openmw-mp/Base/BasePacketProcessor.hpp>
@@ -15,7 +11,7 @@
 
 namespace mwmp
 {
-    class WorldProcessor : public BasePacketProcessor<WorldProcessor>
+    class ObjectProcessor : public BasePacketProcessor<ObjectProcessor>
     {
     public:
 
@@ -25,4 +21,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_WORLDPROCESSOR_HPP
+#endif //OPENMW_OBJECTPROCESSOR_HPP

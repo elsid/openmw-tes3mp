@@ -1,12 +1,12 @@
 #ifndef OPENMW_PROCESSOROBJECTSPAWN_HPP
 #define OPENMW_PROCESSOROBJECTSPAWN_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 #include <apps/openmw-mp/Networking.hpp>
 
 namespace mwmp
 {
-    class ProcessorObjectSpawn : public WorldProcessor
+    class ProcessorObjectSpawn : public ObjectProcessor
     {
     public:
         ProcessorObjectSpawn()

@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSOROBJECTMOVE_HPP
 #define OPENMW_PROCESSOROBJECTMOVE_HPP
 
-#include "../WorldProcessor.hpp"
+#include "../ObjectProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorObjectMove : public WorldProcessor
+    class ProcessorObjectMove : public ObjectProcessor
     {
     public:
         ProcessorObjectMove()
