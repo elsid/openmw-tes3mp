@@ -81,7 +81,16 @@
     {"SendDoorState",                         ObjectFunctions::SendDoorState},\
     {"SendDoorDestination",                   ObjectFunctions::SendDoorDestination},\
     {"SendContainer",                         ObjectFunctions::SendContainer},\
-    {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand}
+    {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
+    \
+    {"ReadLastEvent",                         ObjectFunctions::ReadLastEvent},\
+    {"InitializeEvent",                       ObjectFunctions::InitializeEvent},\
+    {"GetEventAction",                        ObjectFunctions::GetEventAction},\
+    {"GetEventContainerSubAction",            ObjectFunctions::GetEventContainerSubAction},\
+    {"SetEventCell",                          ObjectFunctions::SetEventCell},\
+    {"SetEventAction",                        ObjectFunctions::SetEventAction},\
+    {"SetEventConsoleCommand",                ObjectFunctions::SetEventConsoleCommand},\
+    {"AddWorldObject",                        ObjectFunctions::AddWorldObject}
 
 class ObjectFunctions
 {
@@ -746,6 +755,18 @@ public:
     * \return void
     */
     static void SendConsoleCommand(bool broadcast = false) noexcept;
+
+
+    // All methods below are deprecated versions of methods from above
+
+    static void ReadLastEvent() noexcept;
+    static void InitializeEvent(unsigned short pid) noexcept;
+    static unsigned char GetEventAction() noexcept;
+    static unsigned char GetEventContainerSubAction() noexcept;
+    static void SetEventCell(const char* cellDescription) noexcept;
+    static void SetEventAction(unsigned char action) noexcept;
+    static void SetEventConsoleCommand(const char* consoleCommand) noexcept;
+    static void AddWorldObject() noexcept;
 
 };
 

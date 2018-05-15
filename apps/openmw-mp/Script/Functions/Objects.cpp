@@ -449,3 +449,45 @@ void ObjectFunctions::SendConsoleCommand(bool broadcast) noexcept
     if (broadcast)
         packet->Send(true);
 }
+
+// All methods below are deprecated versions of methods from above
+
+void ObjectFunctions::ReadLastEvent() noexcept
+{
+    ReadLastObjectList();
+}
+
+void ObjectFunctions::InitializeEvent(unsigned short pid) noexcept
+{
+    InitializeObjectList(pid);
+}
+
+unsigned char ObjectFunctions::GetEventAction() noexcept
+{
+    return GetObjectListAction();
+}
+
+unsigned char ObjectFunctions::GetEventContainerSubAction() noexcept
+{
+    return GetObjectListContainerSubAction();
+}
+
+void ObjectFunctions::SetEventCell(const char* cellDescription) noexcept
+{
+    SetObjectListCell(cellDescription);
+}
+
+void ObjectFunctions::SetEventAction(unsigned char action) noexcept
+{
+    SetObjectListAction(action);
+}
+
+void ObjectFunctions::SetEventConsoleCommand(const char* consoleCommand) noexcept
+{
+    SetObjectListConsoleCommand(consoleCommand);
+}
+
+void ObjectFunctions::AddWorldObject() noexcept
+{
+    AddObject();
+}
