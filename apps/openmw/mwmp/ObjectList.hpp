@@ -1,5 +1,5 @@
-#ifndef OPENMW_WORLDEVENT_HPP
-#define OPENMW_WORLDEVENT_HPP
+#ifndef OPENMW_OBJECTLIST_HPP
+#define OPENMW_OBJECTLIST_HPP
 
 #include <components/openmw-mp/Base/BaseObject.hpp>
 #include "../mwworld/cellstore.hpp"
@@ -90,4 +90,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_WORLDEVENT_HPP
+#endif //OPENMW_OBJECTLIST_HPP

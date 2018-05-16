@@ -1,9 +1,5 @@
-//
-// Created by koncord on 16.04.17.
-//
-
-#ifndef OPENMW_WORLDPROCESSSOR_HPP
-#define OPENMW_WORLDPROCESSSOR_HPP
+#ifndef OPENMW_OBJECTPROCESSSOR_HPP
+#define OPENMW_OBJECTPROCESSSOR_HPP
 
 #include <components/openmw-mp/Log.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
@@ -25,4 +21,4 @@ namespace mwmp
 }
 
 
-#endif //OPENMW_WORLDPROCESSSOR_HPP
+#endif //OPENMW_OBJECTPROCESSSOR_HPP

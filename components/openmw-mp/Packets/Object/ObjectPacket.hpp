@@ -1,5 +1,5 @@
-#ifndef OPENMW_WORLDPACKET_HPP
-#define OPENMW_WORLDPACKET_HPP
+#ifndef OPENMW_OBJECTPACKET_HPP
+#define OPENMW_OBJECTPACKET_HPP
 
 #include <string>
 #include <RakNetTypes.h>
@@ -32,4 +32,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_WORLDPACKET_HPP
+#endif //OPENMW_OBJECTPACKET_HPP
