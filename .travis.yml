@@ -1,7 +1,3 @@
-os:
- - linux
-# - osx
-osx_image: xcode8.3
 language: cpp
 sudo: required
 dist: trusty
@@ -10,6 +6,7 @@ branches:
     - master
     - coverity_scan
     - /openmw-.*$/
+    - /^[0-9]+\.[0-9]+\.[0-9]+.*$/
 env:
   global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
@@ -20,22 +17,25 @@ addons:
   apt:
     sources:
       - sourceline: 'ppa:openmw/openmw'
+      - sourceline: 'ppa:rakhimov/boost'
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-precise-3.6
+      - llvm-toolchain-precise-3.8
     packages: [
       # Dev
-      cmake, clang-3.6, libunshield-dev, libtinyxml-dev,
+      cmake, clang-3.8, libunshield-dev, libtinyxml-dev,
       g++-6,
       # Tests
       libgtest-dev, google-mock,
       # Boost
-      libboost-filesystem-dev, libboost-program-options-dev, libboost-system-dev,
+      libboost-filesystem1.61-dev, libboost-program-options1.61-dev, libboost-system1.61-dev,
       # FFmpeg
       libavcodec-dev, libavformat-dev, libavutil-dev, libswscale-dev,
       # Audio & Video
       libsdl2-dev, qtbase5-dev, libopenal-dev,
       # The other ones from OpenMW ppa
-      libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev
+      libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev,
+      # tes3mp stuff
+      libboost1.61-dev, libqt5opengl5-dev
     ]
 
   coverity_scan:
@@ -50,12 +50,23 @@ matrix:
   include:
     - os: linux
       env:
-        ANALYZE="scan-build-3.6 --use-cc clang-3.6 --use-c++ clang++-3.6 "
+        - ANALYZE="scan-build-3.8 --use-cc clang-3.8 --use-c++ clang++-3.8 "
+        - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
       compiler: clang
+    - os: linux
+      env:
+        - MATRIX_CC="CC=gcc-6 && CXX=g++-6"
+    - os: linux
+      env:
+        - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
   allow_failures:
-    - env: ANALYZE="scan-build-3.6 --use-cc clang-3.6 --use-c++ clang++-3.6 "
+    - env:
+        - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
+    - env:
+        - ANALYZE="scan-build-3.8 --use-cc clang-3.8 --use-c++ clang++-3.8 "
+        - MATRIX_CC="CC=clang-3.8 && CXX=clang++-3.8"
 
-before_install: 
+before_install:
       - ./CI/before_install.${TRAVIS_OS_NAME}.sh
 before_script: ./CI/before_script.${TRAVIS_OS_NAME}.sh
 script:
