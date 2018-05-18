@@ -157,7 +157,7 @@ set(PROCESSORS_OBJECT
         processors/object/ProcessorScriptGlobalFloat.hpp processors/object/ProcessorVideoPlay.hpp
         )
 
-source_group(tes3mp-server\\processors\\world FILES ${PROCESSORS_OBJECT})
+source_group(tes3mp-server\\processors\\object FILES ${PROCESSORS_OBJECT})
 
 set(PROCESSORS
         processors/ProcessorInitializer.cpp
