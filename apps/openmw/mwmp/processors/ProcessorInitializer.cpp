@@ -1,11 +1,6 @@
-//
-// Created by koncord on 31.03.17.
-//
-
 #include "ProcessorInitializer.hpp"
 
 #include "PlayerProcessor.hpp"
-
 #include "player/ProcessorChatMessage.hpp"
 #include "player/ProcessorGUIMessageBox.hpp"
 #include "player/ProcessorHandshake.hpp"
@@ -80,6 +75,7 @@
 #include "object/ProcessorScriptGlobalFloat.hpp"
 #include "object/ProcessorVideoPlay.hpp"
 
+#include "ActorProcessor.hpp"
 #include "actor/ProcessorActorAI.hpp"
 #include "actor/ProcessorActorAnimFlags.hpp"
 #include "actor/ProcessorActorAnimPlay.hpp"
@@ -94,6 +90,8 @@
 #include "actor/ProcessorActorSpeech.hpp"
 #include "actor/ProcessorActorStatsDynamic.hpp"
 #include "actor/ProcessorActorTest.hpp"
+
+#include "WorldstateProcessor.hpp"
 
 using namespace mwmp;
 

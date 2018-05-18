@@ -150,11 +150,11 @@ add_component_dir (openmw-mp
         )
 
 add_component_dir (openmw-mp/Base
-        BaseActor BaseObjectList BasePacketProcessor BasePlayer BaseStructs
+        BaseActor BaseObjectList BasePacketProcessor BasePlayer BaseStructs BaseWorldstate
         )
 
 add_component_dir (openmw-mp/Controllers
-        PlayerPacketController ActorPacketController ObjectPacketController
+        PlayerPacketController ActorPacketController ObjectPacketController WorldstatePacketController
         )
 
 add_component_dir(openmw-mp/Master
@@ -194,6 +194,10 @@ add_component_dir (openmw-mp/Packets/Object
         PacketObjectReset PacketObjectRotate PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap
         PacketMusicPlay PacketVideoPlay PacketScriptLocalShort PacketScriptLocalFloat PacketScriptMemberShort
         PacketScriptMemberFloat PacketScriptGlobalShort PacketScriptGlobalFloat
+        )
+
+add_component_dir (openmw-mp/Packets/Worldstate
+        WorldstatePacket
         )
 
 add_component_dir (fallback

@@ -39,6 +39,7 @@
 #include "processors/PlayerProcessor.hpp"
 #include "processors/ObjectProcessor.hpp"
 #include "processors/ActorProcessor.hpp"
+#include "processors/WorldstateProcessor.hpp"
 #include "GUIController.hpp"
 #include "CellController.hpp"
 
@@ -197,7 +198,7 @@ string listComparison(PacketPreInit::PluginContainer checksums, PacketPreInit::P
 }
 
 Networking::Networking(): peer(RakNet::RakPeerInterface::GetInstance()), playerPacketController(peer),
-    actorPacketController(peer), objectPacketController(peer)
+    actorPacketController(peer), objectPacketController(peer), worldstatePacketController(peer)
 {
 
     RakNet::SocketDescriptor sd;
@@ -208,6 +209,7 @@ Networking::Networking(): peer(RakNet::RakPeerInterface::GetInstance()), playerP
     playerPacketController.SetStream(0, &bsOut);
     actorPacketController.SetStream(0, &bsOut);
     objectPacketController.SetStream(0, &bsOut);
+    worldstatePacketController.SetStream(0, &bsOut);
 
     connected = 0;
     ProcessorInitializer();
@@ -433,6 +435,11 @@ void Networking::receiveMessage(RakNet::Packet *packet)
         if (!ObjectProcessor::Process(*packet, objectList))
             LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled ObjectPacket with identifier %i has arrived", packet->data[0]);
     }
+    else if (worldstatePacketController.ContainsPacket(packet->data[0]))
+    {
+        if (!WorldstateProcessor::Process(*packet, worldstate))
+            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled WorldstatePacket with identifier %i has arrived", packet->data[0]);
+    }
 }
 
 PlayerPacket *Networking::getPlayerPacket(RakNet::MessageID id)
@@ -450,6 +457,11 @@ ObjectPacket *Networking::getObjectPacket(RakNet::MessageID id)
     return objectPacketController.GetPacket(id);
 }
 
+WorldstatePacket *Networking::getWorldstatePacket(RakNet::MessageID id)
+{
+    return worldstatePacketController.GetPacket(id);
+}
+
 LocalPlayer *Networking::getLocalPlayer()
 {
     return mwmp::Main::get().getLocalPlayer();
@@ -463,6 +475,11 @@ ActorList *Networking::getActorList()
 ObjectList *Networking::getObjectList()
 {
     return &objectList;
+}
+
+BaseWorldstate *Networking::getWorldstate()
+{
+    return &worldstate;
 }
 
 bool Networking::isConnected()

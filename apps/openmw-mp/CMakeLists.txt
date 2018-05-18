@@ -164,6 +164,7 @@ set(PROCESSORS
         processors/PlayerProcessor.cpp
         processors/ActorProcessor.cpp
         processors/ObjectProcessor.cpp
+        processors/WorldstateProcessor.cpp
         )
 
 source_group(tes3mp-server\\processors FILES ${PROCESSORS})

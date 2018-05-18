@@ -26,6 +26,7 @@
 #include "processors/PlayerProcessor.hpp"
 #include "processors/ActorProcessor.hpp"
 #include "processors/ObjectProcessor.hpp"
+#include "processors/WorldstateProcessor.hpp"
 
 using namespace mwmp;
 using namespace std;
@@ -46,6 +47,7 @@ Networking::Networking(RakNet::RakPeerInterface *peer) : mclient(nullptr)
     playerPacketController = new PlayerPacketController(peer);
     actorPacketController = new ActorPacketController(peer);
     objectPacketController = new ObjectPacketController(peer);
+    worldstatePacketController = new WorldstatePacketController(peer);
 
     // Set send stream
     playerPacketController->SetStream(0, &bsOut);
@@ -193,6 +195,18 @@ void Networking::processObjectPacket(RakNet::Packet *packet)
 
 }
 
+void Networking::processWorldstatePacket(RakNet::Packet *packet)
+{
+    Player *player = Players::getPlayer(packet->guid);
+
+    if (!player->isHandshaked() || player->getLoadState() != Player::POSTLOADED)
+        return;
+
+    if (!WorldstateProcessor::Process(*packet, baseWorldstate))
+        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled WorldstatePacket with identifier %i has arrived", packet->data[0]);
+
+}
+
 void Networking::update(RakNet::Packet *packet)
 {
     Player *player = Players::getPlayer(packet->guid);
@@ -280,6 +294,11 @@ void Networking::update(RakNet::Packet *packet)
         objectPacketController->SetStream(&bsIn, 0);
         processObjectPacket(packet);
     }
+    else if (worldstatePacketController->ContainsPacket(packet->data[0]))
+    {
+        worldstatePacketController->SetStream(&bsIn, 0);
+        processWorldstatePacket(packet);
+    }
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Unhandled RakNet packet with identifier %i has arrived", packet->data[0]);
 }
@@ -357,6 +376,11 @@ ObjectPacketController *Networking::getObjectPacketController() const
     return objectPacketController;
 }
 
+WorldstatePacketController *Networking::getWorldstatePacketController() const
+{
+    return worldstatePacketController;
+}
+
 BaseActorList *Networking::getLastActorList()
 {
     return &baseActorList;
@@ -365,6 +389,11 @@ BaseActorList *Networking::getLastActorList()
 BaseObjectList *Networking::getLastObjectList()
 {
     return &baseObjectList;
+}
+
+BaseWorldstate *Networking::getLastWorldstate()
+{
+    return &baseWorldstate;
 }
 
 int Networking::getCurrentMpNum()

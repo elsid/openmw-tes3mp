@@ -1,13 +1,10 @@
-//
-// Created by koncord on 12.01.16.
-//
-
 #ifndef OPENMW_NETWORKING_HPP
 #define OPENMW_NETWORKING_HPP
 
 #include <components/openmw-mp/Controllers/PlayerPacketController.hpp>
 #include <components/openmw-mp/Controllers/ActorPacketController.hpp>
 #include <components/openmw-mp/Controllers/ObjectPacketController.hpp>
+#include <components/openmw-mp/Controllers/WorldstatePacketController.hpp>
 #include <components/openmw-mp/Packets/PacketPreInit.hpp>
 #include "Player.hpp"
 
@@ -31,6 +28,7 @@ namespace  mwmp
         void processPlayerPacket(RakNet::Packet *packet);
         void processActorPacket(RakNet::Packet *packet);
         void processObjectPacket(RakNet::Packet *packet);
+        void processWorldstatePacket(RakNet::Packet *packet);
         void update(RakNet::Packet *packet);
 
         unsigned short numberOfConnections() const;
@@ -44,9 +42,11 @@ namespace  mwmp
         PlayerPacketController *getPlayerPacketController() const;
         ActorPacketController *getActorPacketController() const;
         ObjectPacketController *getObjectPacketController() const;
+        WorldstatePacketController *getWorldstatePacketController() const;
 
         BaseActorList *getLastActorList();
         BaseObjectList *getLastObjectList();
+        BaseWorldstate *getLastWorldstate();
 
         int getCurrentMpNum();
         void setCurrentMpNum(int value);
@@ -76,10 +76,12 @@ namespace  mwmp
 
         BaseActorList baseActorList;
         BaseObjectList baseObjectList;
+        BaseWorldstate baseWorldstate;
 
         PlayerPacketController *playerPacketController;
         ActorPacketController *actorPacketController;
         ObjectPacketController *objectPacketController;
+        WorldstatePacketController *worldstatePacketController;
 
         bool running;
         int exitCode;
