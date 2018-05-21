@@ -53,6 +53,7 @@ Networking::Networking(RakNet::RakPeerInterface *peer) : mclient(nullptr)
     playerPacketController->SetStream(0, &bsOut);
     actorPacketController->SetStream(0, &bsOut);
     objectPacketController->SetStream(0, &bsOut);
+    worldstatePacketController->SetStream(0, &bsOut);
 
     running = true;
     exitCode = 0;
@@ -74,6 +75,7 @@ Networking::~Networking()
     delete playerPacketController;
     delete actorPacketController;
     delete objectPacketController;
+    delete worldstatePacketController;
 }
 
 void Networking::setServerPassword(std::string passw) noexcept

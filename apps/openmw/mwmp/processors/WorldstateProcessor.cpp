@@ -1,6 +1,7 @@
-#include "../Networking.hpp"
-#include "WorldstateProcessor.hpp"
 #include "../Main.hpp"
+#include "../Networking.hpp"
+
+#include "WorldstateProcessor.hpp"
 
 using namespace mwmp;
 
@@ -14,6 +15,8 @@ bool WorldstateProcessor::Process(RakNet::Packet &packet, BaseWorldstate &worlds
     worldstate.guid = guid;
 
     WorldstatePacket *myPacket = Main::get().getNetworking()->getWorldstatePacket(packet.data[0]);
+
+    myPacket->setWorldstate(&worldstate);
     myPacket->SetReadStream(&bsIn);
 
     for (auto &processor : processors)
