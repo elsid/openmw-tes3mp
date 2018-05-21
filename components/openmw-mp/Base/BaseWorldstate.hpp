@@ -19,6 +19,10 @@ namespace mwmp
 
         RakNet::RakNetGUID guid;
 
+        int month;
+        int day;
+        double hour;
+
         bool isValid;
     };
 }

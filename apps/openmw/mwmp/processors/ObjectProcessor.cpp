@@ -1,6 +1,7 @@
-#include "ObjectProcessor.hpp"
 #include "../Main.hpp"
 #include "../Networking.hpp"
+
+#include "ObjectProcessor.hpp"
 
 using namespace mwmp;
 

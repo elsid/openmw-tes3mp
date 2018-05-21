@@ -1,6 +1,8 @@
 #ifndef OPENMW_BASESTRUCTS_HPP
 #define OPENMW_BASESTRUCTS_HPP
 
+#include <string>
+
 #include <components/esm/statstate.hpp>
 
 #include <RakNetTypes.h>

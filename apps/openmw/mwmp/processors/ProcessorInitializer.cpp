@@ -8,7 +8,6 @@
 #include "player/ProcessorCellCreate.hpp"
 #include "player/ProcessorRecordDynamic.hpp"
 #include "player/ProcessorGameSettings.hpp"
-#include "player/ProcessorGameTime.hpp"
 #include "player/ProcessorGameWeather.hpp"
 #include "player/ProcessorPlayerAnimFlags.hpp"
 #include "player/ProcessorPlayerAnimPlay.hpp"
@@ -92,6 +91,7 @@
 #include "actor/ProcessorActorTest.hpp"
 
 #include "WorldstateProcessor.hpp"
+#include "worldstate/ProcessorGameTime.hpp"
 
 using namespace mwmp;
 
@@ -104,7 +104,6 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorCellCreate());
     PlayerProcessor::AddProcessor(new ProcessorRecordDynamic());
     PlayerProcessor::AddProcessor(new ProcessorGameSettings());
-    PlayerProcessor::AddProcessor(new ProcessorGameTime());
     PlayerProcessor::AddProcessor(new ProcessorGameWeather());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimFlags());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimPlay());
@@ -184,4 +183,6 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorSpeech());
     ActorProcessor::AddProcessor(new ProcessorActorStatsDynamic());
     ActorProcessor::AddProcessor(new ProcessorActorTest());
+
+    WorldstateProcessor::AddProcessor(new ProcessorGameTime());
 }

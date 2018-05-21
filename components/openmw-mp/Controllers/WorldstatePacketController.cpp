@@ -1,3 +1,5 @@
+#include "../Packets/Worldstate/PacketGameTime.hpp"
+
 #include "WorldstatePacketController.hpp"
 
 template <typename T>
@@ -10,7 +12,7 @@ inline void AddPacket(mwmp::WorldstatePacketController::packets_t *packets, RakN
 
 mwmp::WorldstatePacketController::WorldstatePacketController(RakNet::RakPeerInterface *peer)
 {
-
+    AddPacket<PacketGameTime>(&packets, peer);
 }
 
 
