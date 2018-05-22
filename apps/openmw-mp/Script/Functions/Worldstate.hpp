@@ -13,7 +13,7 @@ class WorldstateFunctions
 public:
 
     /**
-    * \brief Set the game hour for a player and send a GameTime packet to that player.
+    * \brief Set the game hour for a player and send a WorldTime packet to that player.
     *
     * \param pid The player ID.
     * \param hour The hour.
@@ -22,7 +22,7 @@ public:
     static void SetHour(unsigned short pid, double hour) noexcept;
 
     /**
-    * \brief Set the game month for a player and send a GameTime packet to that player.
+    * \brief Set the game month for a player and send a WorldTime packet to that player.
     *
     * \param pid The player ID.
     * \param month The month.
@@ -31,7 +31,7 @@ public:
     static void SetMonth(unsigned short pid, int month) noexcept;
 
     /**
-    * \brief Set the game day for a player and send a GameTime packet to that player.
+    * \brief Set the game day for a player and send a WorldTime packet to that player.
     *
     * \param pid The player ID.
     * \param day The day.

@@ -198,7 +198,7 @@ add_component_dir (openmw-mp/Packets/Object
 
 add_component_dir (openmw-mp/Packets/Worldstate
         WorldstatePacket
-        PacketGameTime
+        PacketWorldTime
         )
 
 add_component_dir (fallback

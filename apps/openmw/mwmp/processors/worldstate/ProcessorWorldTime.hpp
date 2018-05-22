@@ -1,5 +1,5 @@
-#ifndef OPENMW_PROCESSORGAMETIME_HPP
-#define OPENMW_PROCESSORGAMETIME_HPP
+#ifndef OPENMW_PROCESSORWORLDTIME_HPP
+#define OPENMW_PROCESSORWORLDTIME_HPP
 
 
 #include <apps/openmw/mwbase/world.hpp>
@@ -8,12 +8,12 @@
 
 namespace mwmp
 {
-    class ProcessorGameTime : public WorldstateProcessor
+    class ProcessorWorldTime : public WorldstateProcessor
     {
     public:
-        ProcessorGameTime()
+        ProcessorWorldTime()
         {
-            BPP_INIT(ID_GAME_TIME)
+            BPP_INIT(ID_WORLD_TIME)
         }
 
         virtual void Do(WorldstatePacket &packet, BaseWorldstate &worldstate)
@@ -34,4 +34,4 @@ namespace mwmp
 
 
 
-#endif //OPENMW_PROCESSORGAMETIME_HPP
+#endif //OPENMW_PROCESSORWORLDTIME_HPP

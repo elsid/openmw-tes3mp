@@ -1,15 +1,15 @@
-#include "PacketGameTime.hpp"
+#include "PacketWorldTime.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 using namespace mwmp;
 
-PacketGameTime::PacketGameTime(RakNet::RakPeerInterface *peer) : WorldstatePacket(peer)
+PacketWorldTime::PacketWorldTime(RakNet::RakPeerInterface *peer) : WorldstatePacket(peer)
 {
-    packetID = ID_GAME_TIME;
+    packetID = ID_WORLD_TIME;
     orderChannel = CHANNEL_SYSTEM;
 }
 
-void PacketGameTime::Packet(RakNet::BitStream *bs, bool send)
+void PacketWorldTime::Packet(RakNet::BitStream *bs, bool send)
 {
     WorldstatePacket::Packet(bs, send);
 

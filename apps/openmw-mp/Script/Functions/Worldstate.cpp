@@ -23,8 +23,8 @@ void WorldstateFunctions::SetHour(unsigned short pid, double hour) noexcept
     writeWorldstate.month = -1;
     writeWorldstate.day = -1;
 
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_GAME_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_GAME_TIME)->Send(false);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 }
 
 void WorldstateFunctions::SetMonth(unsigned short pid, int month) noexcept
@@ -38,8 +38,8 @@ void WorldstateFunctions::SetMonth(unsigned short pid, int month) noexcept
     writeWorldstate.month = month;
     writeWorldstate.day = -1;
 
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_GAME_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_GAME_TIME)->Send(false);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 
 }
 
@@ -54,6 +54,6 @@ void WorldstateFunctions::SetDay(unsigned short pid, int day) noexcept
     writeWorldstate.month = -1;
     writeWorldstate.day = day;
 
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_GAME_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_GAME_TIME)->Send(false);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 }

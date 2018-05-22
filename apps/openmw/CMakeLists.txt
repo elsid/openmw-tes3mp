@@ -133,7 +133,7 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor ProcessorConsoleComma
     ProcessorScriptMemberFloat ProcessorScriptGlobalShort ProcessorScriptGlobalFloat
     )
 
-add_openmw_dir (mwmp/processors/worldstate ProcessorGameTime
+add_openmw_dir (mwmp/processors/worldstate ProcessorWorldTime
     )
 
 # Main executable
