@@ -359,7 +359,7 @@ void StatsFunctions::SetHealthBase(unsigned short pid, double value) noexcept
     player->creatureStats.mDynamic[0].mBase = value;
 
     if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 0))
-        player->skillIndexChanges.push_back(0);
+        player->statsDynamicIndexChanges.push_back(0);
 }
 
 void StatsFunctions::SetHealthCurrent(unsigned short pid, double value) noexcept
@@ -370,7 +370,7 @@ void StatsFunctions::SetHealthCurrent(unsigned short pid, double value) noexcept
     player->creatureStats.mDynamic[0].mCurrent = value;
 
     if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 0))
-        player->skillIndexChanges.push_back(0);
+        player->statsDynamicIndexChanges.push_back(0);
 }
 
 void StatsFunctions::SetMagickaBase(unsigned short pid, double value) noexcept
@@ -381,7 +381,7 @@ void StatsFunctions::SetMagickaBase(unsigned short pid, double value) noexcept
     player->creatureStats.mDynamic[1].mBase = value;
 
     if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 1))
-        player->skillIndexChanges.push_back(1);
+        player->statsDynamicIndexChanges.push_back(1);
 }
 
 void StatsFunctions::SetMagickaCurrent(unsigned short pid, double value) noexcept
@@ -392,7 +392,7 @@ void StatsFunctions::SetMagickaCurrent(unsigned short pid, double value) noexcep
     player->creatureStats.mDynamic[1].mCurrent = value;
 
     if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 1))
-        player->skillIndexChanges.push_back(1);
+        player->statsDynamicIndexChanges.push_back(1);
 }
 
 void StatsFunctions::SetFatigueBase(unsigned short pid, double value) noexcept
@@ -403,7 +403,7 @@ void StatsFunctions::SetFatigueBase(unsigned short pid, double value) noexcept
     player->creatureStats.mDynamic[2].mBase = value;
 
     if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 2))
-        player->skillIndexChanges.push_back(2);
+        player->statsDynamicIndexChanges.push_back(2);
 }
 
 void StatsFunctions::SetFatigueCurrent(unsigned short pid, double value) noexcept
@@ -414,7 +414,7 @@ void StatsFunctions::SetFatigueCurrent(unsigned short pid, double value) noexcep
     player->creatureStats.mDynamic[2].mCurrent = value;
 
     if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 2))
-        player->skillIndexChanges.push_back(2);
+        player->statsDynamicIndexChanges.push_back(2);
 }
 
 void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attributeId, int value) noexcept
