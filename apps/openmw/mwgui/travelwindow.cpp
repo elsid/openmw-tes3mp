@@ -177,7 +177,16 @@ namespace MWGui
             {
                 MWBase::Environment::get().getMechanicsManager ()->rest (true);
             }
-            MWBase::Environment::get().getWorld()->advanceTime(hours);
+
+            /*
+                Start of tes3mp change (major)
+
+                Multiplayer requires that time not get advanced here
+            */
+            //MWBase::Environment::get().getWorld()->advanceTime(hours);
+            /*
+                End of tes3mp change (major)
+            */
         }
 
         MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Travel);

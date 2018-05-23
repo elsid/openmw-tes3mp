@@ -194,7 +194,16 @@ namespace MWGui
         // advance time
         MWBase::Environment::get().getMechanicsManager()->rest(false);
         MWBase::Environment::get().getMechanicsManager()->rest(false);
-        MWBase::Environment::get().getWorld ()->advanceTime (2);
+
+        /*
+            Start of tes3mp change (major)
+
+            Multiplayer requires that time not get advanced here
+        */
+        //MWBase::Environment::get().getWorld ()->advanceTime (2);
+        /*
+            End of tes3mp change (major)
+        */
 
         setVisible(false);
         mProgressBar.setVisible(true);

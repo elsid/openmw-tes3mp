@@ -228,7 +228,16 @@ namespace MWGui
     {
         mProgressBar.setProgress(cur, total);
         MWBase::Environment::get().getMechanicsManager()->rest(mSleeping);
-        MWBase::Environment::get().getWorld()->advanceTime(1);
+
+        /*
+            Start of tes3mp change (major)
+
+            Multiplayer requires that time not get advanced here
+        */
+        //MWBase::Environment::get().getWorld()->advanceTime(1);
+        /*
+            End of tes3mp change (major)
+        */
 
         MWWorld::Ptr player = MWBase::Environment::get().getWorld()->getPlayerPtr();
         if (player.getClass().getCreatureStats(player).isDead())
