@@ -865,6 +865,19 @@ namespace MWWorld
                 days + mDaysPassed->getInteger());
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set a custom timescale from a server
+    */
+    void World::setTimeScale(float timeScale)
+    {
+        mTimeScale->setFloat(timeScale);
+    }
+    /*
+        End of tes3mp addition
+    */
+
     void World::setHour (double hour)
     {
         if (hour<0)

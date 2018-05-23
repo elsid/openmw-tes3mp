@@ -22,6 +22,7 @@ namespace mwmp
         int month;
         int day;
         double hour;
+        float timeScale;
 
         bool isValid;
     };

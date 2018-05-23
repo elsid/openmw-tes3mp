@@ -194,6 +194,16 @@ namespace MWBase
             virtual void advanceTime (double hours, bool incremental = false) = 0;
             ///< Advance in-game time.
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set a custom timescale from a server
+            */
+            virtual void setTimeScale(float timeScale) = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual void setHour (double hour) = 0;
             ///< Set in-game time hour.
 

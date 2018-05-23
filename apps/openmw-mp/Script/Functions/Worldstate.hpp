@@ -5,15 +5,16 @@
 
 #define WORLDSTATEAPI \
     {"SetHour",                     WorldstateFunctions::SetHour},\
+    {"SetDay",                      WorldstateFunctions::SetDay},\
     {"SetMonth",                    WorldstateFunctions::SetMonth},\
-    {"SetDay",                      WorldstateFunctions::SetDay}
+    {"SetTimeScale",                WorldstateFunctions::SetTimeScale}
 
 class WorldstateFunctions
 {
 public:
 
     /**
-    * \brief Set the game hour for a player and send a WorldTime packet to that player.
+    * \brief Set the world's hour for a player and send a WorldTime packet to that player.
     *
     * \param pid The player ID.
     * \param hour The hour.
@@ -22,7 +23,16 @@ public:
     static void SetHour(unsigned short pid, double hour) noexcept;
 
     /**
-    * \brief Set the game month for a player and send a WorldTime packet to that player.
+    * \brief Set the world's day of the month for a player and send a WorldTime packet to that player.
+    *
+    * \param pid The player ID.
+    * \param day The day.
+    * \return void
+    */
+    static void SetDay(unsigned short pid, int day) noexcept;
+
+    /**
+    * \brief Set the world's month for a player and send a WorldTime packet to that player.
     *
     * \param pid The player ID.
     * \param month The month.
@@ -31,13 +41,13 @@ public:
     static void SetMonth(unsigned short pid, int month) noexcept;
 
     /**
-    * \brief Set the game day for a player and send a WorldTime packet to that player.
+    * \brief Set the world's time scale for a player and send a WorldTime packet to that player.
     *
     * \param pid The player ID.
-    * \param day The day.
+    * \param timeScale The time scale.
     * \return void
     */
-    static void SetDay(unsigned short pid, int day) noexcept;
+    static void SetTimeScale(unsigned short pid, double timeScale) noexcept;
 
 };
 

@@ -306,6 +306,16 @@ namespace MWWorld
             void advanceTime (double hours, bool incremental = false) override;
             ///< Advance in-game time.
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set a custom timescale from a server
+            */
+            void setTimeScale(float timeScale) override;
+            /*
+                End of tes3mp addition
+            */
+
             void setHour (double hour) override;
             ///< Set in-game time hour.
 
