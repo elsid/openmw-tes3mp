@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORRECORDDYNAMIC_HPP
 #define OPENMW_PROCESSORRECORDDYNAMIC_HPP
 
-#include "../PlayerProcessor.hpp"
+#include "../WorldstateProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorRecordDynamic : public PlayerProcessor
+    class ProcessorRecordDynamic : public WorldstateProcessor
     {
     public:
         ProcessorRecordDynamic()
@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_RECORD_DYNAMIC)
         }
 
-        virtual void Do(PlayerPacket &packet, BasePlayer *player)
+        virtual void Do(WorldstatePacket &packet, BaseWorldstate &worldstate)
         {
             // Placeholder
         }

@@ -3,15 +3,15 @@
 
 using namespace mwmp;
 
-PacketRecordDynamic::PacketRecordDynamic(RakNet::RakPeerInterface *peer) : PlayerPacket(peer)
+PacketRecordDynamic::PacketRecordDynamic(RakNet::RakPeerInterface *peer) : WorldstatePacket(peer)
 {
     packetID = ID_RECORD_DYNAMIC;
-    orderChannel = CHANNEL_SYSTEM;
+    orderChannel = CHANNEL_WORLDSTATE;
 }
 
 void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
 {
-    PlayerPacket::Packet(bs, send);
+    WorldstatePacket::Packet(bs, send);
 
     // Placeholder
 }

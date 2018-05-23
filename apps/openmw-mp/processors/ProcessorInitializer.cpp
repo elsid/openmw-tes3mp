@@ -1,7 +1,3 @@
-//
-// Created by koncord on 31.03.17.
-//
-
 #include "ProcessorInitializer.hpp"
 
 #include "Networking.hpp"
@@ -11,7 +7,6 @@
 #include "player/ProcessorChatMsg.hpp"
 #include "player/ProcessorGUIMessageBox.hpp"
 #include "player/ProcessorGameWeather.hpp"
-#include "player/ProcessorRecordDynamic.hpp"
 #include "player/ProcessorPlayerCharGen.hpp"
 #include "player/ProcessorPlayerAnimFlags.hpp"
 #include "player/ProcessorPlayerAnimPlay.hpp"
@@ -79,7 +74,8 @@
 #include "object/ProcessorScriptGlobalShort.hpp"
 #include "object/ProcessorScriptGlobalFloat.hpp"
 #include "object/ProcessorVideoPlay.hpp"
-
+#include "WorldstateProcessor.hpp"
+#include "worldstate/ProcessorRecordDynamic.hpp"
 
 using namespace mwmp;
 
@@ -88,7 +84,6 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorChatMsg());
     PlayerProcessor::AddProcessor(new ProcessorGUIMessageBox());
     PlayerProcessor::AddProcessor(new ProcessorGameWeather());
-    PlayerProcessor::AddProcessor(new ProcessorRecordDynamic());
     PlayerProcessor::AddProcessor(new ProcessorPlayerCharGen());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimFlags());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimPlay());
@@ -156,4 +151,6 @@ void ProcessorInitializer()
     ObjectProcessor::AddProcessor(new ProcessorScriptGlobalShort());
     ObjectProcessor::AddProcessor(new ProcessorScriptGlobalFloat());
     ObjectProcessor::AddProcessor(new ProcessorVideoPlay());
+
+    WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());
 }

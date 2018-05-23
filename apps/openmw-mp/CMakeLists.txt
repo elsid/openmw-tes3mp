@@ -123,23 +123,22 @@ source_group(tes3mp-server\\processors\\actor FILES ${PROCESSORS_ACTOR})
 
 set(PROCESSORS_PLAYER
         processors/player/ProcessorChatMsg.hpp processors/player/ProcessorGUIMessageBox.hpp
-        processors/player/ProcessorRecordDynamic.hpp processors/player/ProcessorGameWeather.hpp
-        processors/player/ProcessorPlayerAnimFlags.hpp processors/player/ProcessorPlayerAnimPlay.hpp
-        processors/player/ProcessorPlayerAttack.hpp processors/player/ProcessorPlayerAttribute.hpp
-        processors/player/ProcessorPlayerBook.hpp processors/player/ProcessorPlayerBounty.hpp
-        processors/player/ProcessorPlayerCellChange.hpp processors/player/ProcessorPlayerCellState.hpp
-        processors/player/ProcessorPlayerCharClass.hpp processors/player/ProcessorPlayerCharGen.hpp
-        processors/player/ProcessorPlayerDeath.hpp processors/player/ProcessorPlayerDisposition.hpp
-        processors/player/ProcessorPlayerEquipment.hpp processors/player/ProcessorPlayerFaction.hpp
-        processors/player/ProcessorPlayerInteraction.hpp processors/player/ProcessorPlayerInventory.hpp
-        processors/player/ProcessorPlayerJournal.hpp processors/player/ProcessorPlayerKillCount.hpp
-        processors/player/ProcessorPlayerLevel.hpp processors/player/ProcessorPlayerMap.hpp
-        processors/player/ProcessorPlayerMiscellaneous.hpp processors/player/ProcessorPlayerPosition.hpp
-        processors/player/ProcessorPlayerQuickKeys.hpp processors/player/ProcessorPlayerRest.hpp
-        processors/player/ProcessorPlayerResurrect.hpp processors/player/ProcessorPlayerShapeshift.hpp
-        processors/player/ProcessorPlayerSkill.hpp processors/player/ProcessorPlayerSpeech.hpp
-        processors/player/ProcessorPlayerSpellbook.hpp processors/player/ProcessorPlayerStatsDynamic.hpp
-        processors/player/ProcessorPlayerTopic.hpp
+        processors/player/ProcessorGameWeather.hpp processors/player/ProcessorPlayerAnimFlags.hpp
+        processors/player/ProcessorPlayerAnimPlay.hpp processors/player/ProcessorPlayerAttack.hpp
+        processors/player/ProcessorPlayerAttribute.hpp processors/player/ProcessorPlayerBook.hpp
+        processors/player/ProcessorPlayerBounty.hpp processors/player/ProcessorPlayerCellChange.hpp
+        processors/player/ProcessorPlayerCellState.hpp processors/player/ProcessorPlayerCharClass.hpp
+        processors/player/ProcessorPlayerCharGen.hpp processors/player/ProcessorPlayerDeath.hpp
+        processors/player/ProcessorPlayerDisposition.hpp processors/player/ProcessorPlayerEquipment.hpp
+        processors/player/ProcessorPlayerFaction.hpp processors/player/ProcessorPlayerInteraction.hpp
+        processors/player/ProcessorPlayerInventory.hpp processors/player/ProcessorPlayerJournal.hpp
+        processors/player/ProcessorPlayerKillCount.hpp processors/player/ProcessorPlayerLevel.hpp
+        processors/player/ProcessorPlayerMap.hpp processors/player/ProcessorPlayerMiscellaneous.hpp
+        processors/player/ProcessorPlayerPosition.hpp processors/player/ProcessorPlayerQuickKeys.hpp
+        processors/player/ProcessorPlayerRest.hpp processors/player/ProcessorPlayerResurrect.hpp
+        processors/player/ProcessorPlayerShapeshift.hpp processors/player/ProcessorPlayerSkill.hpp
+        processors/player/ProcessorPlayerSpeech.hpp processors/player/ProcessorPlayerSpellbook.hpp
+        processors/player/ProcessorPlayerStatsDynamic.hpp processors/player/ProcessorPlayerTopic.hpp
         )
 
 source_group(tes3mp-server\\processors\\player FILES ${PROCESSORS_PLAYER})
@@ -158,6 +157,12 @@ set(PROCESSORS_OBJECT
         )
 
 source_group(tes3mp-server\\processors\\object FILES ${PROCESSORS_OBJECT})
+
+set(PROCESSORS_WORLDSTATE
+        processors/worldstate/ProcessorRecordDynamic.hpp
+        )
+
+source_group(tes3mp-server\\processors\\worldstate FILES ${PROCESSORS_WORLDSTATE})
 
 set(PROCESSORS
         processors/ProcessorInitializer.cpp

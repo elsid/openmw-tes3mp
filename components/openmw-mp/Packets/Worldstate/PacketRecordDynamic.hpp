@@ -1,12 +1,12 @@
 #ifndef OPENMW_PACKETRECORDDYNAMIC_HPP
 #define OPENMW_PACKETRECORDDYNAMIC_HPP
 
-#include <components/openmw-mp/Packets/Player/PlayerPacket.hpp>
+#include <components/openmw-mp/Packets/Worldstate/WorldstatePacket.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 namespace mwmp
 {
-    class PacketRecordDynamic: public PlayerPacket
+    class PacketRecordDynamic: public WorldstatePacket
     {
     public:
         PacketRecordDynamic(RakNet::RakPeerInterface *peer);

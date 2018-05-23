@@ -167,6 +167,7 @@ add_component_dir (openmw-mp/Packets
 
 add_component_dir (openmw-mp/Packets/Actor
         ActorPacket
+
         PacketActorList PacketActorAuthority PacketActorTest PacketActorAI PacketActorAnimFlags PacketActorAnimPlay
         PacketActorAttack PacketActorCellChange PacketActorDeath PacketActorEquipment PacketActorInteraction PacketActorPosition
         PacketActorSpeech PacketActorStatsDynamic
@@ -174,9 +175,10 @@ add_component_dir (openmw-mp/Packets/Actor
 
 add_component_dir (openmw-mp/Packets/Player
         PlayerPacket
+
         PacketHandshake PacketChatMessage PacketGUIBoxes PacketGameSettings PacketGameWeather
 
-        PacketCellCreate PacketRecordDynamic
+        PacketCellCreate
 
         PacketPlayerBaseInfo PacketPlayerCharGen PacketPlayerActiveSkills PacketPlayerAnimFlags PacketPlayerAnimPlay
         PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty
@@ -189,6 +191,7 @@ add_component_dir (openmw-mp/Packets/Player
 
 add_component_dir (openmw-mp/Packets/Object
         ObjectPacket
+
         PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectAttach PacketObjectCollision
         PacketObjectDelete PacketDoorDestination PacketDoorState PacketObjectLock PacketObjectMove PacketObjectPlace
         PacketObjectReset PacketObjectRotate PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap
@@ -198,7 +201,8 @@ add_component_dir (openmw-mp/Packets/Object
 
 add_component_dir (openmw-mp/Packets/Worldstate
         WorldstatePacket
-        PacketWorldTime
+
+        PacketRecordDynamic PacketWorldTime
         )
 
 add_component_dir (fallback
