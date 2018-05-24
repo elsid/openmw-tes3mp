@@ -14,7 +14,10 @@ namespace mwmp
 
         BaseWorldstate()
         {
-
+            month = -1;
+            day = -1;
+            hour = -1;
+            timeScale = -1;
         }
 
         RakNet::RakNetGUID guid;

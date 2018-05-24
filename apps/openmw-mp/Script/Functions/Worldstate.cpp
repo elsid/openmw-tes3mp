@@ -12,66 +12,35 @@ using namespace mwmp;
 
 BaseWorldstate writeWorldstate;
 
-void WorldstateFunctions::SetHour(unsigned short pid, double hour) noexcept
+void WorldstateFunctions::SetHour(double hour) noexcept
 {
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    writeWorldstate.guid = player->guid;
-
     writeWorldstate.hour = hour;
-    writeWorldstate.day = -1;
-    writeWorldstate.month = -1;
-    writeWorldstate.timeScale = -1;
-
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 }
 
-void WorldstateFunctions::SetDay(unsigned short pid, int day) noexcept
+void WorldstateFunctions::SetDay(int day) noexcept
 {
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    writeWorldstate.guid = player->guid;
-
-    writeWorldstate.hour = -1;
     writeWorldstate.day = day;
-    writeWorldstate.month = -1;
-    writeWorldstate.timeScale = -1;
-
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 }
 
-void WorldstateFunctions::SetMonth(unsigned short pid, int month) noexcept
+void WorldstateFunctions::SetMonth(int month) noexcept
 {
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    writeWorldstate.guid = player->guid;
-
-    writeWorldstate.hour = -1;
-    writeWorldstate.day = -1;
     writeWorldstate.month = month;
-    writeWorldstate.timeScale = -1;
-
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 }
 
-void WorldstateFunctions::SetTimeScale(unsigned short pid, double timeScale) noexcept
+void WorldstateFunctions::SetTimeScale(double timeScale) noexcept
+{
+    writeWorldstate.timeScale = timeScale;
+}
+void WorldstateFunctions::SendWorldTime(unsigned short pid, bool toOthers) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
     writeWorldstate.guid = player->guid;
 
-    writeWorldstate.hour = -1;
-    writeWorldstate.day = -1;
-    writeWorldstate.month = -1;
-    writeWorldstate.timeScale = timeScale;
-
     mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
     mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
+
+    if (toOthers)
+        mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(true);
 }

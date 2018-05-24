@@ -7,47 +7,58 @@
     {"SetHour",                     WorldstateFunctions::SetHour},\
     {"SetDay",                      WorldstateFunctions::SetDay},\
     {"SetMonth",                    WorldstateFunctions::SetMonth},\
-    {"SetTimeScale",                WorldstateFunctions::SetTimeScale}
+    {"SetTimeScale",                WorldstateFunctions::SetTimeScale},\
+    \
+    {"SendWorldTime",               WorldstateFunctions::SendWorldTime}
 
 class WorldstateFunctions
 {
 public:
 
     /**
-    * \brief Set the world's hour for a player and send a WorldTime packet to that player.
+    * \brief Set the world's hour in the worldstate stored on the server.
     *
     * \param pid The player ID.
     * \param hour The hour.
     * \return void
     */
-    static void SetHour(unsigned short pid, double hour) noexcept;
+    static void SetHour(double hour) noexcept;
 
     /**
-    * \brief Set the world's day of the month for a player and send a WorldTime packet to that player.
+    * \brief Set the world's day in the worldstate stored on the server.
     *
     * \param pid The player ID.
     * \param day The day.
     * \return void
     */
-    static void SetDay(unsigned short pid, int day) noexcept;
+    static void SetDay(int day) noexcept;
 
     /**
-    * \brief Set the world's month for a player and send a WorldTime packet to that player.
+    * \brief Set the world's month in the worldstate stored on the server.
     *
     * \param pid The player ID.
     * \param month The month.
     * \return void
     */
-    static void SetMonth(unsigned short pid, int month) noexcept;
+    static void SetMonth(int month) noexcept;
 
     /**
-    * \brief Set the world's time scale for a player and send a WorldTime packet to that player.
+    * \brief Set the world's time scale in the worldstate stored on the server.
     *
     * \param pid The player ID.
     * \param timeScale The time scale.
     * \return void
     */
-    static void SetTimeScale(unsigned short pid, double timeScale) noexcept;
+    static void SetTimeScale(double timeScale) noexcept;
+
+    /**
+    * \brief Send a WorldTime packet with the current time and time scale
+    *        to a specific player or to all players.
+    *
+    * \param pid The player ID.
+    * \return void
+    */
+    static void SendWorldTime(unsigned short pid, bool toOthers = false) noexcept;
 
 };
 
