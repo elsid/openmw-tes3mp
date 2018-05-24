@@ -1409,8 +1409,6 @@ namespace MWWorld
         if (pos.z() < terrainHeight)
             pos.z() = terrainHeight;
 
-        pos.z() += 20; // place slightly above. will snap down to ground with code below
-
         if (force || !isFlying(ptr))
         {
             osg::Vec3f traced = mPhysics->traceDown(ptr, pos, 500);
@@ -1656,6 +1654,11 @@ namespace MWWorld
         }
     }
 
+    osg::ref_ptr<osg::Node> World::getInstance (const std::string& modelName)
+    {
+        return mRendering->getInstance(modelName);
+    }
+
     const ESM::Potion *World::createRecord (const ESM::Potion& record)
     {
         return mStore.insert(record);
@@ -1747,7 +1750,7 @@ namespace MWWorld
         if (!paused)
             doPhysics (duration);
 
-        updatePlayer(paused);
+        updatePlayer();
 
         mPhysics->debugDraw();
 
@@ -1763,7 +1766,7 @@ namespace MWWorld
         }
     }
 
-    void World::updatePlayer(bool paused)
+    void World::updatePlayer()
     {
         MWWorld::Ptr player = getPlayerPtr();
 
@@ -1796,7 +1799,7 @@ namespace MWWorld
         bool swimming = isSwimming(player);
 
         static const float i1stPersonSneakDelta = getStore().get<ESM::GameSetting>().find("i1stPersonSneakDelta")->getFloat();
-        if(!paused && sneaking && !(swimming || inair))
+        if (sneaking && !(swimming || inair))
             mRendering->getCamera()->setSneakOffset(i1stPersonSneakDelta);
         else
             mRendering->getCamera()->setSneakOffset(0.f);
@@ -2281,6 +2284,11 @@ namespace MWWorld
     bool World::isOnGround(const MWWorld::Ptr &ptr) const
     {
         return mPhysics->isOnGround(ptr);
+    }
+
+    bool World::isIdle(const MWWorld::Ptr &ptr) const
+    {
+        return mPhysics->isIdle(ptr);
     }
 
     void World::togglePOV()
@@ -3539,9 +3547,9 @@ namespace MWWorld
         mRendering->spawnEffect(model, texture, worldPosition, 1.0f, false);
     }
 
-    void World::spawnEffect(const std::string &model, const std::string &textureOverride, const osg::Vec3f &worldPos)
+    void World::spawnEffect(const std::string &model, const std::string &textureOverride, const osg::Vec3f &worldPos, float scale, bool isMagicVFX)
     {
-        mRendering->spawnEffect(model, textureOverride, worldPos);
+        mRendering->spawnEffect(model, textureOverride, worldPos, scale, isMagicVFX);
     }
 
     void World::explodeSpell(const osg::Vec3f& origin, const ESM::EffectList& effects, const Ptr& caster, const Ptr& ignore, ESM::RangeType rangeType,

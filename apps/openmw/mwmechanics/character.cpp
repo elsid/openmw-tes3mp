@@ -863,6 +863,7 @@ CharacterController::CharacterController(const MWWorld::Ptr &ptr, MWRender::Anim
         refreshCurrentAnims(mIdleState, mMovementState, mJumpState, true);
 
     mAnimation->runAnimation(0.f);
+    mAnimation->updateEffects(0.f);
 
     unpersistAnimationState();
 }
@@ -1869,8 +1870,7 @@ void CharacterController::update(float duration)
 
         if (cls.getEncumbrance(mPtr) <= cls.getCapacity(mPtr))
         {
-            const float encumbrance = cls.getEncumbrance(mPtr) / cls.getCapacity(mPtr);
-
+            const float encumbrance = cls.getNormalizedEncumbrance(mPtr);
             if (sneak)
                 fatigueLoss = fFatigueSneakBase + encumbrance * fFatigueSneakMult;
             else
@@ -2118,6 +2118,13 @@ void CharacterController::update(float duration)
     }
 
     osg::Vec3f moved = mAnimation->runAnimation(mSkipAnim ? 0.f : duration);
+
+    // treat player specifically since he is not in rendering mObjects
+    if (mPtr == getPlayer())
+    {
+        mAnimation->updateEffects(mSkipAnim ? 0.f : duration);
+    }
+
     if(duration > 0.0f)
         moved /= duration;
     else
@@ -2150,7 +2157,8 @@ void CharacterController::update(float duration)
         moved.z() = 1.0;
 
     // Update movement
-    if(mMovementAnimationControlled && mPtr.getClass().isActor())
+    // We should not apply movement for standing actors
+    if(mMovementAnimationControlled && mPtr.getClass().isActor() && (movement.length2() > 0.f || !world->isIdle(mPtr)))
         world->queueMovement(mPtr, moved);
 
     mSkipAnim = false;
@@ -2331,6 +2339,7 @@ void CharacterController::forceStateUpdate()
     }
 
     mAnimation->runAnimation(0.f);
+    mAnimation->updateEffects(0.f);
 }
 
 CharacterController::KillResult CharacterController::kill()
