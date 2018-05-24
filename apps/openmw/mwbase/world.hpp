@@ -200,9 +200,19 @@ namespace MWBase
             /*
                 Start of tes3mp addition
 
-                Make it possible to set a custom timescale from a server
+                Make it possible to set a custom timeScale from elsewhere
             */
             virtual void setTimeScale(float timeScale) = 0;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set the number of days passed from elsewhere
+            */
+            virtual void setDaysPassed(int daysPassed) = 0;
             /*
                 End of tes3mp addition
             */

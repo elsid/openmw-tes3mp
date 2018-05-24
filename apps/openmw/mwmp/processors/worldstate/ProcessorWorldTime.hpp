@@ -29,7 +29,10 @@ namespace mwmp
                 
                 if (worldstate.month != -1)
                     world->setMonth(worldstate.month);
-                
+
+                if (worldstate.daysPassed != -1)
+                    world->setDaysPassed(worldstate.daysPassed);
+
                 if (worldstate.timeScale != -1)
                     world->setTimeScale(worldstate.timeScale);
             }

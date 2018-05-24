@@ -309,9 +309,19 @@ namespace MWWorld
             /*
                 Start of tes3mp addition
 
-                Make it possible to set a custom timescale from a server
+                Make it possible to set a custom timeScale from elsewhere
             */
             void setTimeScale(float timeScale) override;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set the number of days passed from elsewhere
+            */
+            void setDaysPassed(int daysPassed) override;
             /*
                 End of tes3mp addition
             */

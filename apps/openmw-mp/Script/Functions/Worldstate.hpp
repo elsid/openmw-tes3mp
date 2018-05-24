@@ -7,6 +7,7 @@
     {"SetHour",                     WorldstateFunctions::SetHour},\
     {"SetDay",                      WorldstateFunctions::SetDay},\
     {"SetMonth",                    WorldstateFunctions::SetMonth},\
+    {"SetDaysPassed",               WorldstateFunctions::SetDaysPassed},\
     {"SetTimeScale",                WorldstateFunctions::SetTimeScale},\
     \
     {"SendWorldTime",               WorldstateFunctions::SendWorldTime}
@@ -18,7 +19,6 @@ public:
     /**
     * \brief Set the world's hour in the worldstate stored on the server.
     *
-    * \param pid The player ID.
     * \param hour The hour.
     * \return void
     */
@@ -27,7 +27,6 @@ public:
     /**
     * \brief Set the world's day in the worldstate stored on the server.
     *
-    * \param pid The player ID.
     * \param day The day.
     * \return void
     */
@@ -36,11 +35,18 @@ public:
     /**
     * \brief Set the world's month in the worldstate stored on the server.
     *
-    * \param pid The player ID.
     * \param month The month.
     * \return void
     */
     static void SetMonth(int month) noexcept;
+
+    /**
+    * \brief Set the world's days passed in the worldstate stored on the server.
+    *
+    * \param daysPassed The days passed.
+    * \return void
+    */
+    static void SetDaysPassed(int daysPassed) noexcept;
 
     /**
     * \brief Set the world's time scale in the worldstate stored on the server.

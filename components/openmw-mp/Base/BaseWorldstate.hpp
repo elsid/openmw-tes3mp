@@ -17,6 +17,8 @@ namespace mwmp
             month = -1;
             day = -1;
             hour = -1;
+
+            daysPassed = -1;
             timeScale = -1;
         }
 
@@ -25,6 +27,8 @@ namespace mwmp
         int month;
         int day;
         double hour;
+
+        int daysPassed;
         float timeScale;
 
         bool isValid;
