@@ -63,9 +63,10 @@ public:
     * \param pid The player ID for whom the input dialog should appear.
     * \param id The numerical ID of the input dialog.
     * \param label The text at the top of the input dialog.
+    * \parm note The text at the bottom of the input dialog.
     * \return void
     */
-    static void InputDialog(unsigned short pid, int id, const char *label) noexcept;
+    static void InputDialog(unsigned short pid, int id, const char *label, const char *note) noexcept;
 
     /**
     * \brief Display a password dialog at the center of the screen.
