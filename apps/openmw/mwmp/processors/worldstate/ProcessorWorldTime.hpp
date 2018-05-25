@@ -21,6 +21,7 @@ namespace mwmp
             if (isLocal())
             {
                 MWBase::World *world = MWBase::Environment::get().getWorld();
+
                 if (worldstate.hour != -1)
                     world->setHour(worldstate.hour);
                 
@@ -29,6 +30,9 @@ namespace mwmp
                 
                 if (worldstate.month != -1)
                     world->setMonth(worldstate.month);
+
+                if (worldstate.year != -1)
+                    world->setYear(worldstate.year);
 
                 if (worldstate.daysPassed != -1)
                     world->setDaysPassed(worldstate.daysPassed);

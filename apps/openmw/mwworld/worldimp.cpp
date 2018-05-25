@@ -865,32 +865,6 @@ namespace MWWorld
                 days + mDaysPassed->getInteger());
     }
 
-    /*
-        Start of tes3mp addition
-
-        Make it possible to set a custom timeScale from elsewhere
-    */
-    void World::setTimeScale(float timeScale)
-    {
-        mTimeScale->setFloat(timeScale);
-    }
-    /*
-        End of tes3mp addition
-    */
-
-    /*
-        Start of tes3mp addition
-
-        Make it possible to set the number of days passed from elsewhere
-    */
-    void World::setDaysPassed(int days)
-    {
-        mDaysPassed->setInteger(days);
-    }
-    /*
-        End of tes3mp addition
-    */
-
     void World::setHour (double hour)
     {
         if (hour<0)
@@ -958,6 +932,45 @@ namespace MWWorld
 
         mRendering->skySetDate (mDay->getInteger(), month);
     }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set the year from elsewhere
+    */
+    void World::setYear(int year)
+    {
+        mYear->setInteger(year);
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set the number of days passed from elsewhere
+    */
+    void World::setDaysPassed(int days)
+    {
+        mDaysPassed->setInteger(days);
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set a custom timeScale from elsewhere
+    */
+    void World::setTimeScale(float timeScale)
+    {
+        mTimeScale->setFloat(timeScale);
+    }
+    /*
+        End of tes3mp addition
+    */
 
     int World::getDay() const
     {

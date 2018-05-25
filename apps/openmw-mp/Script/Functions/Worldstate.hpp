@@ -7,6 +7,8 @@
     {"SetHour",                     WorldstateFunctions::SetHour},\
     {"SetDay",                      WorldstateFunctions::SetDay},\
     {"SetMonth",                    WorldstateFunctions::SetMonth},\
+    {"SetYear",                     WorldstateFunctions::SetYear},\
+    \
     {"SetDaysPassed",               WorldstateFunctions::SetDaysPassed},\
     {"SetTimeScale",                WorldstateFunctions::SetTimeScale},\
     \
@@ -39,6 +41,14 @@ public:
     * \return void
     */
     static void SetMonth(int month) noexcept;
+
+    /**
+    * \brief Set the world's year in the worldstate stored on the server.
+    *
+    * \param year The year.
+    * \return void
+    */
+    static void SetYear(int year) noexcept;
 
     /**
     * \brief Set the world's days passed in the worldstate stored on the server.

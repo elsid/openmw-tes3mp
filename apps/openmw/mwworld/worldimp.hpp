@@ -306,12 +306,21 @@ namespace MWWorld
             void advanceTime (double hours, bool incremental = false) override;
             ///< Advance in-game time.
 
+            void setHour (double hour) override;
+            ///< Set in-game time hour.
+
+            void setMonth (int month) override;
+            ///< Set in-game time month.
+
+            void setDay (int day) override;
+            ///< Set in-game time day.
+
             /*
                 Start of tes3mp addition
 
-                Make it possible to set a custom timeScale from elsewhere
+                Make it possible to set the year from elsewhere
             */
-            void setTimeScale(float timeScale) override;
+            void setYear(int year) override;
             /*
                 End of tes3mp addition
             */
@@ -326,14 +335,15 @@ namespace MWWorld
                 End of tes3mp addition
             */
 
-            void setHour (double hour) override;
-            ///< Set in-game time hour.
+            /*
+                Start of tes3mp addition
 
-            void setMonth (int month) override;
-            ///< Set in-game time month.
-
-            void setDay (int day) override;
-            ///< Set in-game time day.
+                Make it possible to set a custom timeScale from elsewhere
+            */
+            void setTimeScale(float timeScale) override;
+            /*
+                End of tes3mp addition
+            */
 
             int getDay() const override;
             int getMonth() const override;

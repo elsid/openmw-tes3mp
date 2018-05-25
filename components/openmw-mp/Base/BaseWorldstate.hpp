@@ -24,9 +24,10 @@ namespace mwmp
 
         RakNet::RakNetGUID guid;
 
-        int month;
-        int day;
         double hour;
+        int day;
+        int month;
+        int year;
 
         int daysPassed;
         float timeScale;

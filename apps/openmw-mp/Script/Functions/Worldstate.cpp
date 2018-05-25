@@ -27,6 +27,11 @@ void WorldstateFunctions::SetMonth(int month) noexcept
     writeWorldstate.month = month;
 }
 
+void WorldstateFunctions::SetYear(int year) noexcept
+{
+    writeWorldstate.year = year;
+}
+
 void WorldstateFunctions::SetDaysPassed(int daysPassed) noexcept
 {
     writeWorldstate.daysPassed = daysPassed;

@@ -197,12 +197,21 @@ namespace MWBase
             virtual void advanceTime (double hours, bool incremental = false) = 0;
             ///< Advance in-game time.
 
+            virtual void setHour (double hour) = 0;
+            ///< Set in-game time hour.
+
+            virtual void setMonth (int month) = 0;
+            ///< Set in-game time month.
+
+            virtual void setDay (int day) = 0;
+            ///< Set in-game time day.
+
             /*
                 Start of tes3mp addition
 
-                Make it possible to set a custom timeScale from elsewhere
+                Make it possible to set the year from elsewhere
             */
-            virtual void setTimeScale(float timeScale) = 0;
+            virtual void setYear(int year) = 0;
             /*
                 End of tes3mp addition
             */
@@ -217,14 +226,15 @@ namespace MWBase
                 End of tes3mp addition
             */
 
-            virtual void setHour (double hour) = 0;
-            ///< Set in-game time hour.
+            /*
+                Start of tes3mp addition
 
-            virtual void setMonth (int month) = 0;
-            ///< Set in-game time month.
-
-            virtual void setDay (int day) = 0;
-            ///< Set in-game time day.
+                Make it possible to set a custom timeScale from elsewhere
+            */
+            virtual void setTimeScale(float timeScale) = 0;
+            /*
+                End of tes3mp addition
+            */
 
             virtual int getDay() const = 0;
             virtual int getMonth() const = 0;
