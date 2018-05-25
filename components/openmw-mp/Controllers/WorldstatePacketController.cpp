@@ -1,4 +1,5 @@
 #include "../Packets/Worldstate/PacketRecordDynamic.hpp"
+#include "../Packets/Worldstate/PacketWorldCollisionOverride.hpp"
 #include "../Packets/Worldstate/PacketWorldTime.hpp"
 
 #include "WorldstatePacketController.hpp"
@@ -14,6 +15,7 @@ inline void AddPacket(mwmp::WorldstatePacketController::packets_t *packets, RakN
 mwmp::WorldstatePacketController::WorldstatePacketController(RakNet::RakPeerInterface *peer)
 {
     AddPacket<PacketRecordDynamic>(&packets, peer);
+    AddPacket<PacketWorldCollisionOverride>(&packets, peer);
     AddPacket<PacketWorldTime>(&packets, peer);
 }
 

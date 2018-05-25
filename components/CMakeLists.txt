@@ -202,7 +202,7 @@ add_component_dir (openmw-mp/Packets/Object
 add_component_dir (openmw-mp/Packets/Worldstate
         WorldstatePacket
 
-        PacketRecordDynamic PacketWorldTime
+        PacketRecordDynamic PacketWorldCollisionOverride PacketWorldTime
         )
 
 add_component_dir (fallback

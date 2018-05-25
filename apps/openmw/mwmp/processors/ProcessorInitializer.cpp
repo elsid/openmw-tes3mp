@@ -91,6 +91,7 @@
 
 #include "WorldstateProcessor.hpp"
 #include "worldstate/ProcessorRecordDynamic.hpp"
+#include "worldstate/ProcessorWorldCollisionOverride.hpp"
 #include "worldstate/ProcessorWorldTime.hpp"
 
 using namespace mwmp;
@@ -184,5 +185,6 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorTest());
 
     WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());
+    WorldstateProcessor::AddProcessor(new ProcessorWorldCollisionOverride());
     WorldstateProcessor::AddProcessor(new ProcessorWorldTime());
 }
