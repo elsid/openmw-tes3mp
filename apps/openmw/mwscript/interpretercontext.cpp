@@ -270,12 +270,16 @@ namespace MWScript
 
     bool InterpreterContext::menuMode()
     {
-        /* Disabled by tes3mp, because being in a menu should not pause scripts in it
+        /*
+            Start of tes3mp change (major)
 
-        return MWBase::Environment::get().getWindowManager()->isGuiMode();
+            Being in a menu should not pause scripts in multiplayer, so always return false
         */
-
+        //return MWBase::Environment::get().getWindowManager()->isGuiMode();
         return false;
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     int InterpreterContext::getGlobalShort (const std::string& name) const
@@ -672,10 +676,17 @@ namespace MWScript
 
         Locals& locals = getMemberLocals (scriptId, global);
 
-        // Added by tes3mp so it can be reused by it
+        /*
+            Start of tes3mp change (minor)
+
+            Declare an integer so it can be reused below for multiplayer script sync purposes
+        */
         int index = findLocalVariableIndex(scriptId, name, 's');
 
         locals.mShorts[index] = value;
+        /*
+            End of tes3mp change (minor)
+        */
 
         /*
             Start of tes3mp addition

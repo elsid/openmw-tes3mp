@@ -278,10 +278,11 @@ namespace MWWorld
             {
                 ESM::Position pos;
 
-                // Major change made by tes3mp
-                //
-                // If Pelagiad exists, spawn there; otherwise, spawn at 0,0
+                /*
+                    Start of tes3mp change (major)
 
+                    If Pelagiad exists, spawn there; otherwise, spawn at 0 ,0
+                */
                 if (findExteriorPosition("Pelagiad", pos))
                 {
                     changeToExteriorCell(pos, true);
@@ -298,6 +299,9 @@ namespace MWWorld
                     pos.rot[2] = 0;
                     mWorldScene->changeToExteriorCell(pos, true);
                 }
+                /*
+                    End of tes3mp change (major)
+                */
             }
         }
 
@@ -2557,10 +2561,16 @@ namespace MWWorld
 
     void World::hurtStandingActors(const ConstPtr &object, float healthPerSecond)
     {
-        /* Disabled by tes3mp, because being in a menu should not pause the game in it
+        /*
+            Start of tes3mp change (major)
 
-        if (MWBase::Environment::get().getWindowManager()->isGuiMode())
-            return;
+            Being in a menu should not prevent actors from being hurt in multiplayer,
+            so that check has been commented out
+        */
+        //if (MWBase::Environment::get().getWindowManager()->isGuiMode())
+        //    return;
+        /*
+            End of tes3mp change (major)
         */
 
         std::vector<MWWorld::Ptr> actors;
@@ -2594,10 +2604,16 @@ namespace MWWorld
 
     void World::hurtCollidingActors(const ConstPtr &object, float healthPerSecond)
     {
-        /* Disabled by tes3mp, because being in a menu should not pause the game in it
+        /*
+            Start of tes3mp change (major)
 
-        if (MWBase::Environment::get().getWindowManager()->isGuiMode())
-            return;
+            Being in a menu should not prevent actors from being hurt in multiplayer,
+            so that check has been commented out
+        */
+        //if (MWBase::Environment::get().getWindowManager()->isGuiMode())
+        //    return;
+        /*
+            End of tes3mp change (major)
         */
 
         std::vector<MWWorld::Ptr> actors;
