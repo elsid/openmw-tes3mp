@@ -71,8 +71,10 @@ DedicatedPlayer *PlayerList::getPlayer(const MWWorld::Ptr &ptr)
     {
         if (p.second == 0 || p.second->getPtr().mRef == 0)
             continue;
-        string refid = ptr.getCellRef().getRefId();
-        if (p.second->getPtr().getCellRef().getRefId() == refid)
+        
+        string refId = ptr.getCellRef().getRefId();
+        
+        if (p.second->getPtr().getCellRef().getRefId() == refId)
             return p.second;
     }
     return 0;
@@ -81,6 +83,10 @@ DedicatedPlayer *PlayerList::getPlayer(const MWWorld::Ptr &ptr)
 bool PlayerList::isDedicatedPlayer(const MWWorld::Ptr &ptr)
 {
     if (ptr.mRef == nullptr)
+        return false;
+
+    // Players always have 0 as their refNumIndex and mpNum
+    if (ptr.getCellRef().getRefNum().mIndex != 0 || ptr.getCellRef().getMpNum() != 0)
         return false;
 
     return (getPlayer(ptr) != 0);
