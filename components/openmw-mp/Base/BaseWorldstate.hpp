@@ -32,6 +32,11 @@ namespace mwmp
         int daysPassed;
         float timeScale;
 
+        bool hasPlayerCollision;
+        bool hasActorCollision;
+        bool hasPlacedObjectCollision;
+        bool useActorCollisionForPlacedObjects;
+
         bool isValid;
     };
 }

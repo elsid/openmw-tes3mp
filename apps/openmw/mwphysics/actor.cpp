@@ -1,5 +1,18 @@
 #include "actor.hpp"
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include <components/openmw-mp/Log.hpp>
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/PlayerList.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include <BulletCollision/CollisionShapes/btCapsuleShape.h>
 #include <BulletCollision/CollisionShapes/btBoxShape.h>
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
@@ -53,6 +66,27 @@ Actor::Actor(const MWWorld::Ptr& ptr, osg::ref_ptr<const Resource::BulletShape> 
     updatePosition();
 
     addCollisionMask(getCollisionMask());
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to disable collision for players or regular actors from a packet
+    */
+    mwmp::BaseWorldstate *worldstate = mwmp::Main::get().getNetworking()->getWorldstate();
+
+    if (mwmp::PlayerList::isDedicatedPlayer(ptr))
+    {
+        if (!worldstate->hasPlayerCollision)
+            enableCollisionBody(false);
+    }
+    else
+    {
+        if (!worldstate->hasActorCollision)
+            enableCollisionBody(false);
+    }
+    /*
+        End of tes3mp addition
+    */
 }
 
 Actor::~Actor()

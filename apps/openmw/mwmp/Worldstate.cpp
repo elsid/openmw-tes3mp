@@ -7,7 +7,10 @@ using namespace std;
 
 Worldstate::Worldstate()
 {
-
+    hasPlayerCollision = true;
+    hasActorCollision = true;
+    hasPlacedObjectCollision = false;
+    useActorCollisionForPlacedObjects = false;
 }
 
 Worldstate::~Worldstate()

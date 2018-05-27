@@ -13,5 +13,8 @@ void PacketWorldCollisionOverride::Packet(RakNet::BitStream *bs, bool send)
 {
     WorldstatePacket::Packet(bs, send);
 
-    // Placeholder
+    RW(worldstate->hasPlayerCollision, send);
+    RW(worldstate->hasActorCollision, send);
+    RW(worldstate->hasPlacedObjectCollision, send);
+    RW(worldstate->useActorCollisionForPlacedObjects, send);
 }

@@ -1,5 +1,16 @@
 #include "clothing.hpp"
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include <components/esm/loadclot.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -33,6 +44,27 @@ namespace MWClass
     void Clothing::insertObject(const MWWorld::Ptr& ptr, const std::string& model, MWPhysics::PhysicsSystem& physics) const
     {
         // TODO: add option somewhere to enable collision for placeable objects
+
+        /*
+            Start of tes3mp addition
+
+            Make it possible to enable collision for this object class from a packet
+        */
+        if (!model.empty())
+        {
+            mwmp::BaseWorldstate *worldstate = mwmp::Main::get().getNetworking()->getWorldstate();
+
+            if (worldstate->hasPlacedObjectCollision)
+            {
+                if (worldstate->useActorCollisionForPlacedObjects)
+                    physics.addObject(ptr, model, MWPhysics::CollisionType_Actor);
+                else
+                    physics.addObject(ptr, model, MWPhysics::CollisionType_World);
+            }
+        }
+        /*
+            End of tes3mp addition
+        */
     }
 
     std::string Clothing::getModel(const MWWorld::ConstPtr &ptr) const

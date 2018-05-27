@@ -41,6 +41,27 @@ void WorldstateFunctions::SetTimeScale(double timeScale) noexcept
 {
     writeWorldstate.timeScale = timeScale;
 }
+
+void WorldstateFunctions::SetPlayerCollisionState(bool state) noexcept
+{
+    writeWorldstate.hasPlayerCollision = state;
+}
+
+void WorldstateFunctions::SetActorCollisionState(bool state) noexcept
+{
+    writeWorldstate.hasActorCollision = state;
+}
+
+void WorldstateFunctions::SetPlacedObjectCollisionState(bool state) noexcept
+{
+    writeWorldstate.hasPlacedObjectCollision = state;
+}
+
+void WorldstateFunctions::UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept
+{
+    writeWorldstate.useActorCollisionForPlacedObjects = useActorCollision;
+}
+
 void WorldstateFunctions::SendWorldTime(unsigned short pid, bool toOthers) noexcept
 {
     Player *player;
@@ -53,4 +74,18 @@ void WorldstateFunctions::SendWorldTime(unsigned short pid, bool toOthers) noexc
 
     if (toOthers)
         mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(true);
+}
+
+void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool toOthers) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    writeWorldstate.guid = player->guid;
+
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->setWorldstate(&writeWorldstate);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->Send(false);
+
+    if (toOthers)
+        mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->Send(true);
 }
