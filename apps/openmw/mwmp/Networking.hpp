@@ -1,7 +1,3 @@
-//
-// Created by koncord on 04.01.16.
-//
-
 #ifndef OPENMW_NETWORKING_HPP
 #define OPENMW_NETWORKING_HPP
 
@@ -9,8 +5,6 @@
 #include <BitStream.h>
 #include <string>
 
-#include "ActorList.hpp"
-#include "ObjectList.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 #include <components/openmw-mp/Controllers/PlayerPacketController.hpp>
@@ -19,6 +13,10 @@
 #include <components/openmw-mp/Controllers/WorldstatePacketController.hpp>
 
 #include <components/files/collections.hpp>
+
+#include "ActorList.hpp"
+#include "ObjectList.hpp"
+#include "Worldstate.hpp"
 
 namespace mwmp
 {
@@ -47,7 +45,7 @@ namespace mwmp
         LocalPlayer *getLocalPlayer();
         ActorList *getActorList();
         ObjectList *getObjectList();
-        BaseWorldstate *getWorldstate();
+        Worldstate *getWorldstate();
 
     private:
         bool connected;
@@ -62,7 +60,7 @@ namespace mwmp
 
         ActorList actorList;
         ObjectList objectList;
-        BaseWorldstate worldstate;
+        Worldstate worldstate;
 
         void receiveMessage(RakNet::Packet *packet);
 

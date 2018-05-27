@@ -1,7 +1,3 @@
-//
-// Created by koncord on 04.01.16.
-//
-
 #include <stdexcept>
 #include <iostream>
 #include <string>
@@ -477,7 +473,7 @@ ObjectList *Networking::getObjectList()
     return &objectList;
 }
 
-BaseWorldstate *Networking::getWorldstate()
+Worldstate *Networking::getWorldstate()
 {
     return &worldstate;
 }
