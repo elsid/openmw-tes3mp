@@ -1439,6 +1439,8 @@ namespace MWWorld
         if (pos.z() < terrainHeight)
             pos.z() = terrainHeight;
 
+        pos.z() += 20; // place slightly above. will snap down to ground with code below
+
         if (force || !isFlying(ptr))
         {
             osg::Vec3f traced = mPhysics->traceDown(ptr, pos, 500);
@@ -1682,11 +1684,6 @@ namespace MWWorld
             default:
                 return mRendering->toggleRenderMode(mode);
         }
-    }
-
-    osg::ref_ptr<osg::Node> World::getInstance (const std::string& modelName)
-    {
-        return mRendering->getInstance(modelName);
     }
 
     const ESM::Potion *World::createRecord (const ESM::Potion& record)
@@ -2314,11 +2311,6 @@ namespace MWWorld
     bool World::isOnGround(const MWWorld::Ptr &ptr) const
     {
         return mPhysics->isOnGround(ptr);
-    }
-
-    bool World::isIdle(const MWWorld::Ptr &ptr) const
-    {
-        return mPhysics->isIdle(ptr);
     }
 
     void World::togglePOV()
@@ -3589,9 +3581,9 @@ namespace MWWorld
         mRendering->spawnEffect(model, texture, worldPosition, 1.0f, false);
     }
 
-    void World::spawnEffect(const std::string &model, const std::string &textureOverride, const osg::Vec3f &worldPos, float scale, bool isMagicVFX)
+    void World::spawnEffect(const std::string &model, const std::string &textureOverride, const osg::Vec3f &worldPos)
     {
-        mRendering->spawnEffect(model, textureOverride, worldPos, scale, isMagicVFX);
+        mRendering->spawnEffect(model, textureOverride, worldPos);
     }
 
     void World::explodeSpell(const osg::Vec3f& origin, const ESM::EffectList& effects, const Ptr& caster, const Ptr& ignore, ESM::RangeType rangeType,
