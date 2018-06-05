@@ -80,13 +80,16 @@ void ObjectList::addContainerItem(mwmp::BaseObject& baseObject, const MWWorld::P
     containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
     containerItem.actionCount = actionCount;
 
-    LOG_APPEND(Log::LOG_INFO, "-- Adding container item %s", containerItem.refId.c_str());
+    LOG_APPEND(Log::LOG_INFO, "--- Adding container item %s", containerItem.refId.c_str());
 
     baseObject.containerItems.push_back(containerItem);
 }
 
 void ObjectList::addEntireContainer(const MWWorld::Ptr& ptr)
 {
+    LOG_APPEND(Log::LOG_INFO, "-- Adding entire container %s %i-%i", ptr.getCellRef().getRefId().c_str(),
+        ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum());
+
     MWWorld::ContainerStore& containerStore = ptr.getClass().getContainerStore(ptr);
 
     mwmp::BaseObject baseObject = getBaseObject(ptr);
@@ -111,14 +114,14 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
     {
         baseObject = baseObjects.at(i);
 
-        //LOG_APPEND(Log::LOG_VERBOSE, "- container cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNumIndex, baseObject.mpNum);
+        LOG_APPEND(Log::LOG_VERBOSE, "- container cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNumIndex, baseObject.mpNum);
 
         MWWorld::Ptr ptrFound = cellStore->searchExact(baseObject.refNumIndex, baseObject.mpNum);
 
         if (ptrFound)
         {
-            //LOG_APPEND(Log::LOG_VERBOSE, "-- Found %s, %i, %i", ptrFound.getCellRef().getRefId().c_str(),
-            //                   ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
+            LOG_APPEND(Log::LOG_VERBOSE, "-- Found %s, %i, %i", ptrFound.getCellRef().getRefId().c_str(),
+                ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
 
             bool isCurrentContainer = false;
             bool hasActorEquipment = ptrFound.getClass().isActor() && ptrFound.getClass().hasInventoryStore(ptrFound);
