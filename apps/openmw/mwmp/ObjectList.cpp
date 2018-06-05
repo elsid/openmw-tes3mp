@@ -149,7 +149,8 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
             bool isLocalTakeAll = isLocalEvent && containerSubAction == BaseObjectList::TAKE_ALL;
             std::string takeAllSound = "";
 
-            MWWorld::Ptr ownerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
+            MWWorld::Ptr ownerPtr = ptrFound.getClass().isActor() ? ptrFound : MWBase::Environment::get().getWorld()->getPlayerPtr();
+
             for (const auto &containerItem : baseObject.containerItems)
             {
                 //LOG_APPEND(Log::LOG_VERBOSE, "-- containerItem cellRef: %s, count: %i, actionCount: %i",
