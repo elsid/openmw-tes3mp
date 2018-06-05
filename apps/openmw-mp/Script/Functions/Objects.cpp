@@ -24,14 +24,23 @@ void ObjectFunctions::ReadLastObjectList() noexcept
     readObjectList = mwmp::Networking::getPtr()->getLastObjectList();
 }
 
-void ObjectFunctions::InitializeObjectList(unsigned short pid) noexcept
+void ObjectFunctions::ClearObjectList() noexcept
+{
+    writeObjectList.cell.blank();
+    writeObjectList.baseObjects.clear();
+}
+
+void ObjectFunctions::SetObjectListPid(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    writeObjectList.cell.blank();
-    writeObjectList.baseObjects.clear();
     writeObjectList.guid = player->guid;
+}
+
+void ObjectFunctions::CopyLastObjectListToStore() noexcept
+{
+    writeObjectList = *readObjectList;
 }
 
 unsigned int ObjectFunctions::GetObjectChangesSize() noexcept
@@ -315,9 +324,9 @@ void ObjectFunctions::SetContainerItemEnchantmentCharge(double enchantmentCharge
     tempContainerItem.enchantmentCharge = enchantmentCharge;
 }
 
-void ObjectFunctions::SetReceivedContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept
+void ObjectFunctions::SetContainerItemActionCountByIndex(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept
 {
-    readObjectList->baseObjects.at(objectIndex).containerItems.at(itemIndex).actionCount = actionCount;
+    writeObjectList.baseObjects.at(objectIndex).containerItems.at(itemIndex).actionCount = actionCount;
 }
 
 void ObjectFunctions::AddObject() noexcept
@@ -425,15 +434,10 @@ void ObjectFunctions::SendDoorDestination(bool broadcast) noexcept
         packet->Send(true);
 }
 
-void ObjectFunctions::SendContainer(bool broadcast, bool useLastReadObjectList) noexcept
+void ObjectFunctions::SendContainer(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONTAINER);
-    
-    if (useLastReadObjectList)
-        packet->setObjectList(readObjectList);
-    else
-        packet->setObjectList(&writeObjectList);
-    
+    packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
     if (broadcast)
@@ -455,6 +459,12 @@ void ObjectFunctions::SendConsoleCommand(bool broadcast) noexcept
 void ObjectFunctions::ReadLastEvent() noexcept
 {
     ReadLastObjectList();
+}
+
+void ObjectFunctions::InitializeObjectList(unsigned short pid) noexcept
+{
+    ClearObjectList();
+    SetObjectListPid(pid);
 }
 
 void ObjectFunctions::InitializeEvent(unsigned short pid) noexcept

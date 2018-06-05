@@ -3,7 +3,11 @@
 
 #define OBJECTAPI \
     {"ReadLastObjectList",                    ObjectFunctions::ReadLastObjectList},\
-    {"InitializeObjectList",                  ObjectFunctions::InitializeObjectList},\
+    \
+    {"ClearObjectList",                       ObjectFunctions::ClearObjectList},\
+    {"SetObjectListPid",                      ObjectFunctions::SetObjectListPid},\
+    \
+    {"CopyLastObjectListToStore",             ObjectFunctions::CopyLastObjectListToStore},\
     \
     {"GetObjectChangesSize",                  ObjectFunctions::GetObjectChangesSize},\
     {"GetObjectListAction",                   ObjectFunctions::GetObjectListAction},\
@@ -66,7 +70,7 @@
     {"SetContainerItemCharge",                ObjectFunctions::SetContainerItemCharge},\
     {"SetContainerItemEnchantmentCharge",     ObjectFunctions::SetContainerItemEnchantmentCharge},\
     \
-    {"SetReceivedContainerItemActionCount",   ObjectFunctions::SetReceivedContainerItemActionCount},\
+    {"SetContainerItemActionCountByIndex",    ObjectFunctions::SetContainerItemActionCountByIndex},\
     \
     {"AddObject",                             ObjectFunctions::AddObject},\
     {"AddContainerItem",                      ObjectFunctions::AddContainerItem},\
@@ -84,6 +88,7 @@
     {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
     \
     {"ReadLastEvent",                         ObjectFunctions::ReadLastEvent},\
+    {"InitializeObjectList",                  ObjectFunctions::InitializeObjectList},\
     {"InitializeEvent",                       ObjectFunctions::InitializeEvent},\
     {"GetEventAction",                        ObjectFunctions::GetEventAction},\
     {"GetEventContainerSubAction",            ObjectFunctions::GetEventContainerSubAction},\
@@ -106,12 +111,26 @@ public:
     /**
     * \brief Clear the data from the last object list sent by the server.
     *
-    * This is used to initialize the sending of new Object packets.
+    * \return void
+    */
+    static void ClearObjectList() noexcept;
+
+    /**
+    * \brief Set the pid attached to the ObjectList.
     *
     * \param pid The player ID to whom the object list should be attached.
     * \return void
     */
-    static void InitializeObjectList(unsigned short pid) noexcept;
+    static void SetObjectListPid(unsigned short pid) noexcept;
+
+    /**
+    * \brief Take the contents of the read-only object list last received by the
+    *        server from a player and move its contents to the stored object list
+    *        that can be sent by the server.
+    *
+    * \return void
+    */
+    static void CopyLastObjectListToStore() noexcept;
 
     /**
     * \brief Get the number of indexes in the read object list's object changes.
@@ -612,7 +631,7 @@ public:
 
     /**
     * \brief Set the action count of the container item at a certain itemIndex in the container
-    * changes of the object at a certain objectIndex in the read object list's object changes.
+    * changes of the object at a certain objectIndex in the object list stored on the server.
     *
     * When resending a received Container packet, this allows you to correct the amount of items
     * removed from a container by a player when it conflicts with what other players have already
@@ -623,7 +642,7 @@ public:
     * \param actionCount The action count.
     * \return void
     */
-    static void SetReceivedContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept;
+    static void SetContainerItemActionCountByIndex(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept;
 
     /**
     * \brief Add a copy of the server's temporary object to the server's temporary object list.
@@ -744,7 +763,7 @@ public:
     *
     * \return void
     */
-    static void SendContainer(bool broadcast = false, bool useLastReadObjectList = false) noexcept;
+    static void SendContainer(bool broadcast = false) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.
@@ -760,6 +779,7 @@ public:
     // All methods below are deprecated versions of methods from above
 
     static void ReadLastEvent() noexcept;
+    static void InitializeObjectList(unsigned short pid) noexcept;
     static void InitializeEvent(unsigned short pid) noexcept;
     static unsigned char GetEventAction() noexcept;
     static unsigned char GetEventContainerSubAction() noexcept;
