@@ -40,6 +40,7 @@ namespace mwmp
                     objectList.reset();
                     objectList.cell = *ptrCellStore->getCell();
                     objectList.action = mwmp::BaseObjectList::SET;
+                    objectList.containerSubAction = mwmp::BaseObjectList::REPLY_TO_REQUEST;
                     objectList.addRequestedContainers(ptrCellStore, requestObjects);
 
                     if (objectList.baseObjects.size() > 0)
