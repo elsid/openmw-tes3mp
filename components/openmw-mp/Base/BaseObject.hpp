@@ -94,7 +94,8 @@ namespace mwmp
             NONE = 0,
             DRAG = 1,
             DROP = 2,
-            TAKE_ALL = 3
+            TAKE_ALL = 3,
+            REPLY_TO_REQUEST = 4
         };
 
         RakNet::RakNetGUID guid;
@@ -106,7 +107,7 @@ namespace mwmp
         std::string consoleCommand;
 
         unsigned char action; // 0 - Clear and set in entirety, 1 - Add item, 2 - Remove item, 3 - Request items
-        unsigned char containerSubAction; // 0 - None, 1 - Drag, 2 - Take all
+        unsigned char containerSubAction; // 0 - None, 1 - Drag, 2 - Drop, 3 - Take all, 4 - Reply to request
 
         bool isValid;
     };
