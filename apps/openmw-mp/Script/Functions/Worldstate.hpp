@@ -4,6 +4,18 @@
 #include "../Types.hpp"
 
 #define WORLDSTATEAPI \
+    {"ReadLastWorldstate",                WorldstateFunctions::ReadLastWorldstate},\
+    \
+    {"ClearMapChanges",                   WorldstateFunctions::ClearMapChanges},\
+    \
+    {"GetMapChangesSize",                 WorldstateFunctions::GetMapChangesSize},\
+    \
+    {"GetMapTileCellX",                   WorldstateFunctions::GetMapTileCellX},\
+    {"GetMapTileCellY",                   WorldstateFunctions::GetMapTileCellY},\
+    \
+    {"SaveMapTileImageFile",              WorldstateFunctions::SaveMapTileImageFile},\
+    {"LoadMapTileImageFile",              WorldstateFunctions::LoadMapTileImageFile},\
+    \
     {"SetHour",                           WorldstateFunctions::SetHour},\
     {"SetDay",                            WorldstateFunctions::SetDay},\
     {"SetMonth",                          WorldstateFunctions::SetMonth},\
@@ -16,6 +28,7 @@
     {"SetPlacedObjectCollisionState",     WorldstateFunctions::SetPlacedObjectCollisionState},\
     {"UseActorCollisionForPlacedObjects", WorldstateFunctions::UseActorCollisionForPlacedObjects},\
     \
+    {"SendWorldMap",                      WorldstateFunctions::SendWorldMap},\
     {"SendWorldTime",                     WorldstateFunctions::SendWorldTime},\
     {"SendWorldCollisionOverride",        WorldstateFunctions::SendWorldCollisionOverride}
 
@@ -24,7 +37,69 @@ class WorldstateFunctions
 public:
 
     /**
-    * \brief Set the world's hour in the worldstate stored on the server.
+    * \brief Use the last worldstate received by the server as the one being read.
+    *
+    * \return void
+    */
+    static void ReadLastWorldstate() noexcept;
+
+    /**
+    * \brief Clear the map changes for the write-only worldstate.
+    *
+    * This is used to initialize the sending of new WorldMap packets.
+    *
+    * \return void
+    */
+    static void ClearMapChanges() noexcept;
+
+    /**
+    * \brief Get the number of indexes in the read worldstate's map changes.
+    *
+    * \return The number of indexes.
+    */
+    static unsigned int GetMapChangesSize() noexcept;
+
+    /**
+    * \brief Get the X coordinate of the cell corresponding to the map tile at a certain index in
+    *        the read worldstate's map changes.
+    *
+    * \param i The index of the map tile.
+    * \return The X coordinate of the cell.
+    */
+    static int GetMapTileCellX(unsigned int index) noexcept;
+
+    /**
+    * \brief Get the Y coordinate of the cell corresponding to the map tile at a certain index in
+    *        the read worldstate's map changes.
+    *
+    * \param i The index of the map tile.
+    * \return The Y coordinate of the cell.
+    */
+    static int GetMapTileCellY(unsigned int index) noexcept;
+
+    /**
+    * \brief Save the .png image data of the map tile at a certain index in the read worldstate's
+    *        map changes.
+    *
+    * \param i The index of the map tile.
+    * \param filePath The file path of the resulting file.
+    * \return void
+    */
+    static void SaveMapTileImageFile(unsigned int index, const char *filePath) noexcept;
+
+    /**
+    * \brief Load a .png file as the image data for a map tile and add it to the write-only worldstate
+    *        stored on the server.
+    *
+    * \param cellX The X coordinate of the cell corresponding to the map tile.
+    * \param cellY The Y coordinate of the cell corresponding to the map tile.
+    * \param filePath The file path of the loaded file.
+    * \return void
+    */
+    static void LoadMapTileImageFile(int cellX, int cellY, const char* filePath) noexcept;
+
+    /**
+    * \brief Set the world's hour in the write-only worldstate stored on the server.
     *
     * \param hour The hour.
     * \return void
@@ -32,7 +107,7 @@ public:
     static void SetHour(double hour) noexcept;
 
     /**
-    * \brief Set the world's day in the worldstate stored on the server.
+    * \brief Set the world's day in the write-only worldstate stored on the server.
     *
     * \param day The day.
     * \return void
@@ -40,7 +115,7 @@ public:
     static void SetDay(int day) noexcept;
 
     /**
-    * \brief Set the world's month in the worldstate stored on the server.
+    * \brief Set the world's month in the write-only worldstate stored on the server.
     *
     * \param month The month.
     * \return void
@@ -48,7 +123,7 @@ public:
     static void SetMonth(int month) noexcept;
 
     /**
-    * \brief Set the world's year in the worldstate stored on the server.
+    * \brief Set the world's year in the write-only worldstate stored on the server.
     *
     * \param year The year.
     * \return void
@@ -56,7 +131,7 @@ public:
     static void SetYear(int year) noexcept;
 
     /**
-    * \brief Set the world's days passed in the worldstate stored on the server.
+    * \brief Set the world's days passed in the write-only worldstate stored on the server.
     *
     * \param daysPassed The days passed.
     * \return void
@@ -64,7 +139,7 @@ public:
     static void SetDaysPassed(int daysPassed) noexcept;
 
     /**
-    * \brief Set the world's time scale in the worldstate stored on the server.
+    * \brief Set the world's time scale in the write-only worldstate stored on the server.
     *
     * \param pid The player ID.
     * \param timeScale The time scale.
@@ -73,7 +148,8 @@ public:
     static void SetTimeScale(double timeScale) noexcept;
 
     /**
-    * \brief Set the collision state for other players.
+    * \brief Set the collision state for other players in the write-only worldstate stored
+    *        on the server.
     *
     * \param state The collision state.
     * \return void
@@ -81,7 +157,8 @@ public:
     static void SetPlayerCollisionState(bool state) noexcept;
 
     /**
-    * \brief Set the collision state for actors.
+    * \brief Set the collision state for actors in the write-only worldstate stored on the
+    *        server.
     *
     * \param state The collision state.
     * \return void
@@ -89,7 +166,8 @@ public:
     static void SetActorCollisionState(bool state) noexcept;
 
     /**
-    * \brief Set the collision state for placed objects.
+    * \brief Set the collision state for placed objects in the write-only worldstate stored
+    *        on the server.
     *
     * \param state The collision state.
     * \return void
@@ -97,9 +175,8 @@ public:
     static void SetPlacedObjectCollisionState(bool state) noexcept;
 
     /**
-    * \brief Whether placed objects with collision turned on should use
-    *        actor collision, i.e. whether they should be slippery
-    *        and prevent players from standing on them.
+    * \brief Whether placed objects with collision turned on should use actor collision, i.e.
+    *        whether they should be slippery and prevent players from standing on them.
     *
     * \param useActorCollision Whether to use actor collision.
     * \return void
@@ -107,22 +184,37 @@ public:
     static void UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept;
 
     /**
-    * \brief Send a WorldTime packet with the current time and time scale
-    *        to a specific player or to all players.
+    * \brief Send a WorldMap packet with the current set of map changes in the write-only
+    *        worldstate.
     *
-    * \param pid The player ID.
+    * \param pid The player ID attached to the packet.
+    * \param broadcast Whether this packet should be sent only to the attached player
+    *                  or to all players on the server.
     * \return void
     */
-    static void SendWorldTime(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendWorldMap(unsigned short pid, bool broadcast = false) noexcept;
 
     /**
-    * \brief Send a WorldCollisionOverride packet with the current collision overrides
-    *        to a specific player or to all players.
+    * \brief Send a WorldTime packet with the current time and time scale in the write-only
+    *        worldstate.
     *
-    * \param pid The player ID.
+    * \param pid The player ID attached to the packet.
+    * \param broadcast Whether this packet should be sent only to the attached player
+    *                  or to all players on the server.
     * \return void
     */
-    static void SendWorldCollisionOverride(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendWorldTime(unsigned short pid, bool broadcast = false) noexcept;
+
+    /**
+    * \brief Send a WorldCollisionOverride packet with the current collision overrides in
+    *        the write-only worldstate.
+    *
+    * \param pid The player ID attached to the packet.
+    * \param broadcast Whether this packet should be sent only to the attached player
+    *                  or to all players on the server.
+    * \return void
+    */
+    static void SendWorldCollisionOverride(unsigned short pid, bool broadcast = false) noexcept;
 
 };
 

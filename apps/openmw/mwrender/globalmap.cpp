@@ -26,7 +26,8 @@
 */
 #include <components/openmw-mp/Log.hpp>
 #include "../mwmp/Main.hpp"
-#include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/Worldstate.hpp"
 /*
     End of tes3mp addition
 */
@@ -660,7 +661,7 @@ namespace MWRender
                 std::string stringData = ostream.str();
                 std::vector<char> vectorData = std::vector<char>(stringData.begin(), stringData.end());
 
-                mwmp::Main::get().getLocalPlayer()->sendMapExplored(originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY), vectorData);
+                mwmp::Main::get().getNetworking()->getWorldstate()->sendMapExplored(originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY), vectorData);
             }
             /*
                 End of tes3mp addition

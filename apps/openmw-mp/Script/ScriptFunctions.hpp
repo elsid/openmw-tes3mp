@@ -323,7 +323,6 @@ public:
             {"OnPlayerDisposition",      Function<void, unsigned short>()},
             {"OnPlayerBook",             Function<void, unsigned short>()},
             {"OnPlayerMiscellaneous",    Function<void, unsigned short>()},
-            {"OnPlayerMap",              Function<void, unsigned short>()},
             {"OnPlayerInteraction",      Function<void, unsigned short>()},
             {"OnPlayerRest",             Function<void, unsigned short>()},
             {"OnRecordDynamic",          Function<void, unsigned short>()},
@@ -346,6 +345,7 @@ public:
             {"OnPlayerSendMessage",      Function<bool, unsigned short, const char*>()},
             {"OnPlayerEndCharGen",       Function<void, unsigned short>()},
             {"OnGUIAction",              Function<void, unsigned short, int, const char*>()},
+            {"OnWorldMap",               Function<void, unsigned short>()},
             {"OnMpNumIncrement",         Function<void, int>()},
             {"OnRequestPluginList",      Function<const char *, unsigned int, unsigned int>()}
     };

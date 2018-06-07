@@ -11,6 +11,56 @@ using namespace std;
 using namespace mwmp;
 
 BaseWorldstate writeWorldstate;
+BaseWorldstate *readWorldstate;
+
+void WorldstateFunctions::ReadLastWorldstate() noexcept
+{
+    readWorldstate = mwmp::Networking::getPtr()->getLastWorldstate();
+}
+
+void WorldstateFunctions::ClearMapChanges() noexcept
+{
+    writeWorldstate.mapChanges.mapTiles.clear();
+}
+
+unsigned int WorldstateFunctions::GetMapChangesSize() noexcept
+{
+    return readWorldstate->mapChanges.mapTiles.size();
+}
+
+int WorldstateFunctions::GetMapTileCellX(unsigned int index) noexcept
+{
+    return readWorldstate->mapChanges.mapTiles.at(index).x;
+}
+
+int WorldstateFunctions::GetMapTileCellY(unsigned int index) noexcept
+{
+    return readWorldstate->mapChanges.mapTiles.at(index).y;
+}
+
+void WorldstateFunctions::SaveMapTileImageFile(unsigned int index, const char *filePath) noexcept
+{
+    if (index >= readWorldstate->mapChanges.mapTiles.size())
+        return;
+
+    const std::vector<char>& imageData = readWorldstate->mapChanges.mapTiles.at(index).imageData;
+
+    std::ofstream outputFile(filePath, std::ios::binary);
+    std::ostream_iterator<char> outputIterator(outputFile);
+    std::copy(imageData.begin(), imageData.end(), outputIterator);
+}
+
+void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char* filePath) noexcept
+{
+    mwmp::MapTile mapTile;
+    mapTile.x = cellX;
+    mapTile.y = cellY;
+
+    std::ifstream inputFile(filePath, std::ios::binary);
+    mapTile.imageData = std::vector<char>(std::istreambuf_iterator<char>(inputFile), std::istreambuf_iterator<char>());
+
+    writeWorldstate.mapChanges.mapTiles.push_back(mapTile);
+}
 
 void WorldstateFunctions::SetHour(double hour) noexcept
 {
@@ -62,7 +112,21 @@ void WorldstateFunctions::UseActorCollisionForPlacedObjects(bool useActorCollisi
     writeWorldstate.useActorCollisionForPlacedObjects = useActorCollision;
 }
 
-void WorldstateFunctions::SendWorldTime(unsigned short pid, bool toOthers) noexcept
+void WorldstateFunctions::SendWorldMap(unsigned short pid, bool broadcast) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    writeWorldstate.guid = player->guid;
+
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP)->setWorldstate(&writeWorldstate);
+    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP)->Send(false);
+
+    if (broadcast)
+        mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP)->Send(true);
+}
+
+void WorldstateFunctions::SendWorldTime(unsigned short pid, bool broadcast) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -72,11 +136,11 @@ void WorldstateFunctions::SendWorldTime(unsigned short pid, bool toOthers) noexc
     mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
     mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
 
-    if (toOthers)
+    if (broadcast)
         mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(true);
 }
 
-void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool toOthers) noexcept
+void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool broadcast) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -86,6 +150,6 @@ void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool to
     mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->setWorldstate(&writeWorldstate);
     mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->Send(false);
 
-    if (toOthers)
+    if (broadcast)
         mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->Send(true);
 }

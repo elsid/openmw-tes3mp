@@ -4,10 +4,7 @@
 #include "../Types.hpp"
 
 #define CELLAPI \
-    {"InitializeMapChanges",    CellFunctions::InitializeMapChanges},\
-    \
     {"GetCellStateChangesSize", CellFunctions::GetCellStateChangesSize},\
-    {"GetMapChangesSize",       CellFunctions::GetMapChangesSize},\
     \
     {"GetCellStateType",        CellFunctions::GetCellStateType},\
     {"GetCellStateDescription", CellFunctions::GetCellStateDescription},\
@@ -20,32 +17,15 @@
     {"GetRegion",               CellFunctions::GetRegion},\
     {"IsChangingRegion",        CellFunctions::IsChangingRegion},\
     \
-    {"GetMapTileCellX",         CellFunctions::GetMapTileCellX},\
-    {"GetMapTileCellY",         CellFunctions::GetMapTileCellY},\
-    {"SaveMapTileImageFile",    CellFunctions::SaveMapTileImageFile},\
-    \
     {"SetCell",                 CellFunctions::SetCell},\
     {"SetExteriorCell",         CellFunctions::SetExteriorCell},\
     \
-    {"LoadMapTileImageFile",    CellFunctions::LoadMapTileImageFile},\
-    \
-    {"SendCell",                CellFunctions::SendCell},\
-    {"SendMapChanges",          CellFunctions::SendMapChanges}
+    {"SendCell",                CellFunctions::SendCell}
 
 
 class CellFunctions
 {
 public:
-
-    /**
-    * \brief Clear the last recorded map changes for a player.
-    *
-    * This is used to initialize the sending of new PlayerMap packets.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \return void
-    */
-    static void InitializeMapChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest cell state changes.
@@ -54,14 +34,6 @@ public:
     * \return The number of indexes.
     */
     static unsigned int GetCellStateChangesSize(unsigned short pid) noexcept;
-
-    /**
-    * \brief Get the number of indexes in a player's latest map changes.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \return The number of indexes.
-    */
-    static unsigned int GetMapChangesSize(unsigned short pid) noexcept;
 
     /**
     * \brief Get the cell state type at a certain index in a player's latest cell state changes.
@@ -132,37 +104,6 @@ public:
     static bool IsChangingRegion(unsigned short pid) noexcept;
 
     /**
-    * \brief Get the X coordinate of the cell corresponding to the map tile at a certain index in a
-    *        player's latest map changes.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \param i The index of the map tile.
-    * \return The X coordinate of the cell.
-    */
-    static int GetMapTileCellX(unsigned short pid, unsigned int i) noexcept;
-
-    /**
-    * \brief Get the Y coordinate of the cell corresponding to the map tile at a certain index in a
-    *        player's latest map changes.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \param i The index of the map tile.
-    * \return The Y coordinate of the cell.
-    */
-    static int GetMapTileCellY(unsigned short pid, unsigned int i) noexcept;
-
-    /**
-    * \brief Save the .png image data of the map tile at a certain index in a player's latest map changes
-    *        to a file.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \param i The index of the map tile.
-    * \param filePath The file path of the resulting file.
-    * \return void
-    */
-    static void SaveMapTileImageFile(unsigned short pid, unsigned int i, const char *filePath) noexcept;
-
-    /**
     * \brief Set the cell of a player.
     *
     * This changes the cell recorded for that player in the server memory, but does not by itself
@@ -191,18 +132,6 @@ public:
     static void SetExteriorCell(unsigned short pid, int x, int y) noexcept;
 
     /**
-    * \brief Load a .png file as the image data for a map tile and add it to the map changes for
-    *        a player.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \param cellX The X coordinate of the cell corresponding to the map tile.
-    * \param cellY The Y coordinate of the cell corresponding to the map tile.
-    * \param filePath The file path of the loaded file.
-    * \return void
-    */
-    static void LoadMapTileImageFile(unsigned short pid, int cellX, int cellY, const char* filePath) noexcept;
-
-    /**
     * \brief Send a PlayerCellChange packet about a player.
     *
     * It is only sent to the affected player.
@@ -212,15 +141,6 @@ public:
     */
     static void SendCell(unsigned short pid) noexcept;
 
-    /**
-    * \brief Send a PlayerMap packet with a player's recorded map changes.
-    *
-    * \param pid The player ID whose map changes should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
-    * \return void
-    */
-    static void SendMapChanges(unsigned short pid, bool toOthers = false) noexcept;
 };
 
 #endif //OPENMW_CELLAPI_HPP

@@ -1,5 +1,5 @@
-#include "PacketWorldTime.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
+#include "PacketWorldTime.hpp"
 
 using namespace mwmp;
 

@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_RECORD_DYNAMIC)
         }
 
-        virtual void Do(WorldstatePacket &packet, BaseWorldstate &worldstate)
+        virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)
         {
             // Placeholder
         }

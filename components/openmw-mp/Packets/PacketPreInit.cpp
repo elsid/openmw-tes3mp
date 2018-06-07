@@ -1,7 +1,3 @@
-//
-// Created by koncord on 05.03.17.
-//
-
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <boost/foreach.hpp>
 #include "PacketPreInit.hpp"

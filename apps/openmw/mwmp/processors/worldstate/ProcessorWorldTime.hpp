@@ -16,7 +16,7 @@ namespace mwmp
             BPP_INIT(ID_WORLD_TIME)
         }
 
-        virtual void Do(WorldstatePacket &packet, BaseWorldstate &worldstate)
+        virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)
         {
             MWBase::World *world = MWBase::Environment::get().getWorld();
 

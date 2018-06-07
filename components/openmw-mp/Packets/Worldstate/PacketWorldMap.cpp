@@ -1,32 +1,32 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include "PacketPlayerMap.hpp"
+#include "PacketWorldMap.hpp"
 
 using namespace std;
 using namespace mwmp;
 
-PacketPlayerMap::PacketPlayerMap(RakNet::RakPeerInterface *peer) : PlayerPacket(peer)
+PacketWorldMap::PacketWorldMap(RakNet::RakPeerInterface *peer) : WorldstatePacket(peer)
 {
-    packetID = ID_PLAYER_MAP;
+    packetID = ID_WORLD_MAP;
 }
 
-void PacketPlayerMap::Packet(RakNet::BitStream *bs, bool send)
+void PacketWorldMap::Packet(RakNet::BitStream *bs, bool send)
 {
-    PlayerPacket::Packet(bs, send);
+    WorldstatePacket::Packet(bs, send);
 
     uint32_t changesCount;
 
     if (send)
-        changesCount = static_cast<uint32_t>(player->mapChanges.mapTiles.size());
+        changesCount = static_cast<uint32_t>(worldstate->mapChanges.mapTiles.size());
 
     RW(changesCount, send);
 
     if (!send)
     {
-        player->mapChanges.mapTiles.clear();
-        player->mapChanges.mapTiles.resize(changesCount);
+        worldstate->mapChanges.mapTiles.clear();
+        worldstate->mapChanges.mapTiles.resize(changesCount);
     }
 
-    for (auto &&mapTile : player->mapChanges.mapTiles)
+    for (auto &&mapTile : worldstate->mapChanges.mapTiles)
     {
         RW(mapTile.x, send);
         RW(mapTile.y, send);

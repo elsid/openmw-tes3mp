@@ -67,7 +67,6 @@ namespace mwmp
         void setShapeshift();
         void setMarkLocation();
         void setSelectedSpell();
-        void setMapExplored();
 
         void sendClass();
         void sendInventory();
@@ -90,7 +89,6 @@ namespace mwmp
         void sendWerewolfState(bool isWerewolf);
         void sendMarkLocation(const ESM::Cell& newMarkCell, const ESM::Position& newMarkPosition);
         void sendSelectedSpell(const std::string& newSelectedSpellId);
-        void sendMapExplored(int x, int y, const std::vector<char>& imageData);
 
         void clearCellStates();
         void clearCurrentContainer();

@@ -133,12 +133,12 @@ set(PROCESSORS_PLAYER
         processors/player/ProcessorPlayerFaction.hpp processors/player/ProcessorPlayerInteraction.hpp
         processors/player/ProcessorPlayerInventory.hpp processors/player/ProcessorPlayerJournal.hpp
         processors/player/ProcessorPlayerKillCount.hpp processors/player/ProcessorPlayerLevel.hpp
-        processors/player/ProcessorPlayerMap.hpp processors/player/ProcessorPlayerMiscellaneous.hpp
-        processors/player/ProcessorPlayerPosition.hpp processors/player/ProcessorPlayerQuickKeys.hpp
-        processors/player/ProcessorPlayerRest.hpp processors/player/ProcessorPlayerResurrect.hpp
-        processors/player/ProcessorPlayerShapeshift.hpp processors/player/ProcessorPlayerSkill.hpp
-        processors/player/ProcessorPlayerSpeech.hpp processors/player/ProcessorPlayerSpellbook.hpp
-        processors/player/ProcessorPlayerStatsDynamic.hpp processors/player/ProcessorPlayerTopic.hpp
+        processors/player/ProcessorPlayerMiscellaneous.hpp processors/player/ProcessorPlayerPosition.hpp
+        processors/player/ProcessorPlayerQuickKeys.hpp processors/player/ProcessorPlayerRest.hpp
+        processors/player/ProcessorPlayerResurrect.hpp processors/player/ProcessorPlayerShapeshift.hpp
+        processors/player/ProcessorPlayerSkill.hpp processors/player/ProcessorPlayerSpeech.hpp
+        processors/player/ProcessorPlayerSpellbook.hpp processors/player/ProcessorPlayerStatsDynamic.hpp
+        processors/player/ProcessorPlayerTopic.hpp
         )
 
 source_group(tes3mp-server\\processors\\player FILES ${PROCESSORS_PLAYER})
@@ -159,7 +159,7 @@ set(PROCESSORS_OBJECT
 source_group(tes3mp-server\\processors\\object FILES ${PROCESSORS_OBJECT})
 
 set(PROCESSORS_WORLDSTATE
-        processors/worldstate/ProcessorRecordDynamic.hpp
+        processors/worldstate/ProcessorRecordDynamic.hpp processors/worldstate/ProcessorWorldMap.hpp
         )
 
 source_group(tes3mp-server\\processors\\worldstate FILES ${PROCESSORS_WORLDSTATE})
@@ -180,7 +180,7 @@ include_directories("./")
 
 add_executable(tes3mp-server
         ${SERVER} ${SERVER_HEADER}
-        ${PROCESSORS_ACTOR} ${PROCESSORS_PLAYER} ${PROCESSORS_OBJECT} ${PROCESSORS}
+        ${PROCESSORS_ACTOR} ${PROCESSORS_PLAYER} ${PROCESSORS_OBJECT} ${PROCESSORS_WORLDSTATE} ${PROCESSORS}
         ${APPLE_BUNDLE_RESOURCES}
         )
 add_definitions(-std=gnu++14 -Wno-ignored-qualifiers)

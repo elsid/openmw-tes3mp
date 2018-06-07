@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.01.16.
-//
-
 #ifndef OPENMW_PACKETPLAYERANIMFLAGS_HPP
 #define OPENMW_PACKETPLAYERANIMFLAGS_HPP
 

@@ -11,9 +11,9 @@ namespace mwmp
     class WorldstateProcessor : public BasePacketProcessor<WorldstateProcessor>, public BaseClientPacketProcessor
     {
     public:
-        virtual void Do(WorldstatePacket &packet, BaseWorldstate &worldstate) = 0;
+        virtual void Do(WorldstatePacket &packet, Worldstate &worldstate) = 0;
 
-        static bool Process(RakNet::Packet &packet, BaseWorldstate &worldstate);
+        static bool Process(RakNet::Packet &packet, Worldstate &worldstate);
     };
 }
 

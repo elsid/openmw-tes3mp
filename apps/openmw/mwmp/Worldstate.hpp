@@ -13,6 +13,10 @@ namespace mwmp
         Worldstate();
         virtual ~Worldstate();
 
+        void setMapExplored();
+
+        void sendMapExplored(int x, int y, const std::vector<char>& imageData);
+
     private:
         Networking *getNetworking();
 

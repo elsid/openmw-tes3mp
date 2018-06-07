@@ -1,7 +1,3 @@
-//
-// Created by koncord on 05.03.17.
-//
-
 #ifndef OPENMW_PACKETPREINIT_HPP
 #define OPENMW_PACKETPREINIT_HPP
 

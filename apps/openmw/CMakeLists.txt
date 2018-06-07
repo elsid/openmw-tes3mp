@@ -119,9 +119,10 @@ add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageB
     ProcessorPlayerBehavior ProcessorPlayerBook ProcessorPlayerBounty ProcessorPlayerCellChange ProcessorPlayerCellState
     ProcessorPlayerCharClass ProcessorPlayerCharGen ProcessorPlayerDeath ProcessorPlayerDisposition ProcessorPlayerEquipment
     ProcessorPlayerFaction ProcessorPlayerInteraction ProcessorPlayerInventory ProcessorPlayerJail ProcessorPlayerJournal
-    ProcessorPlayerKillCount ProcessorPlayerLevel ProcessorPlayerMap ProcessorPlayerMiscellaneous ProcessorPlayerMomentum
-    ProcessorPlayerPosition ProcessorPlayerQuickKeys ProcessorPlayerReputation ProcessorPlayerResurrect ProcessorPlayerShapeshift
-    ProcessorPlayerSkill ProcessorPlayerSpeech ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic ProcessorPlayerTopic
+    ProcessorPlayerKillCount ProcessorPlayerLevel ProcessorPlayerMiscellaneous ProcessorPlayerMomentum
+    ProcessorPlayerPosition ProcessorPlayerQuickKeys ProcessorPlayerReputation ProcessorPlayerResurrect
+    ProcessorPlayerShapeshift ProcessorPlayerSkill ProcessorPlayerSpeech ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic
+    ProcessorPlayerTopic
     )
 
 add_openmw_dir (mwmp/processors/object BaseObjectProcessor ProcessorConsoleCommand ProcessorContainer
@@ -132,7 +133,8 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor ProcessorConsoleComma
     ProcessorScriptMemberShort ProcessorScriptMemberFloat ProcessorScriptGlobalShort ProcessorScriptGlobalFloat
     )
 
-add_openmw_dir (mwmp/processors/worldstate ProcessorRecordDynamic ProcessorWorldCollisionOverride ProcessorWorldTime
+add_openmw_dir (mwmp/processors/worldstate ProcessorRecordDynamic ProcessorWorldCollisionOverride ProcessorWorldMap
+    ProcessorWorldTime
     )
 
 # Main executable

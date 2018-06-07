@@ -1,12 +1,25 @@
 #ifndef OPENMW_BASEWORLDSTATE_HPP
 #define OPENMW_BASEWORLDSTATE_HPP
 
+#include <vector>
+
 #include <components/openmw-mp/Base/BaseStructs.hpp>
 
 #include <RakNetTypes.h>
 
 namespace mwmp
 {
+    struct MapTile
+    {
+        int x;
+        int y;
+        std::vector<char> imageData;
+    };
+
+    struct MapChanges
+    {
+        std::vector<MapTile> mapTiles;
+    };
 
     class BaseWorldstate
     {
@@ -36,6 +49,8 @@ namespace mwmp
         bool hasActorCollision;
         bool hasPlacedObjectCollision;
         bool useActorCollisionForPlacedObjects;
+
+        MapChanges mapChanges;
 
         bool isValid;
     };
