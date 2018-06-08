@@ -58,7 +58,6 @@ Special thanks (in alphabetical order)
     Jeremiah
     Lewis Sadlier
     Luc Keating
-    Malseph
     Michael Zagar (Zoops)
     Olaxan
     psi29a
