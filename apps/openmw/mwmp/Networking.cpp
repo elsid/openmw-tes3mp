@@ -203,7 +203,7 @@ Networking::Networking(): peer(RakNet::RakPeerInterface::GetInstance()), playerP
     RakNet::SocketDescriptor sd;
     sd.port=0;
     auto b = peer->Startup(1, &sd, 1);
-    RakAssert(b==RakNet::RAKNET_STARTED);
+    RakAssert(b==RakNet::CRABNET_STARTED);
 
     playerPacketController.SetStream(0, &bsOut);
     actorPacketController.SetStream(0, &bsOut);
