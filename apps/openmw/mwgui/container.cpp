@@ -372,13 +372,16 @@ namespace MWGui
         if(mDragAndDrop == NULL || !mDragAndDrop->mIsOnDragAndDrop)
         {
             onTakeAllButtonClicked(mTakeButton);
-
+            
+            if (mPtr.getClass().isPersistent(mPtr))
+                MWBase::Environment::get().getWindowManager()->messageBox("#{sDisposeCorpseFail}");
             /*
-                Start of tes3mp addition
+                Start of tes3mp change (major)
 
-                Send an ID_OBJECT_DELETE packet every time a corpse is disposed of
+                Instead of deleting the corpse on this client, simply send an ID_OBJECT_DELETE
+                packet to the server as a request for the deletion
             */
-            if (!mPtr.getClass().isPersistent(mPtr))
+            else
             {
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
@@ -386,13 +389,8 @@ namespace MWGui
                 objectList->sendObjectDelete();
             }
             /*
-                End of tes3mp addition
+                End of tes3mp change (major)
             */
-
-            if (mPtr.getClass().isPersistent(mPtr))
-                MWBase::Environment::get().getWindowManager()->messageBox("#{sDisposeCorpseFail}");
-            else
-                MWBase::Environment::get().getWorld()->deleteObject(mPtr);
 
             mPtr = MWWorld::Ptr();
         }
