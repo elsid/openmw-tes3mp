@@ -200,7 +200,7 @@ Networking::Networking(): peer(RakNet::RakPeerInterface::GetInstance()), playerP
     RakNet::SocketDescriptor sd;
     sd.port=0;
     auto b = peer->Startup(1, &sd, 1);
-    RakAssert(b==RakNet::RAKNET_STARTED);
+    RakAssert(b==RakNet::CRABNET_STARTED);
 
     playerPacketController.SetStream(0, &bsOut);
     actorPacketController.SetStream(0, &bsOut);
@@ -300,6 +300,13 @@ void Networking::connect(const std::string &ip, unsigned short port, std::vector
                 {
                     errmsg = "Version mismatch!\nYour client is on version " TES3MP_VERSION "\n"
                         "Please make sure the server is on the same version.";
+                    queue = false;
+                    break;
+                }
+                case ID_INCOMPATIBLE_PROTOCOL_VERSION:
+                {
+                    errmsg = "Network protocol mismatch!\nMake sure your client is really on the same version\n"
+                        "as the server you are trying to connect to.";
                     queue = false;
                     break;
                 }

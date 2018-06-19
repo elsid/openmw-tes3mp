@@ -321,7 +321,7 @@ void Networking::newPlayer(RakNet::RakNetGUID guid)
         if (pl->first == guid) continue;
 
         // If an invalid key makes it into the Players map, ignore it
-        else if (pl->first == RakNet::UNASSIGNED_RAKNET_GUID) continue;
+        else if (pl->first == RakNet::UNASSIGNED_CRABNET_GUID) continue;
 
         // if player not fully connected
         else if (pl->second == nullptr) continue;
