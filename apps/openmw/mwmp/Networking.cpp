@@ -305,6 +305,13 @@ void Networking::connect(const std::string &ip, unsigned short port, std::vector
                     queue = false;
                     break;
                 }
+                case ID_INCOMPATIBLE_PROTOCOL_VERSION:
+                {
+                    errmsg = "Network protocol mismatch!\nMake sure your client is really on the same version\n"
+                        "as the server you are trying to connect to.";
+                    queue = false;
+                    break;
+                }
                 case ID_CONNECTION_REQUEST_ACCEPTED:
                 {
                     serverAddr = packet->systemAddress;
