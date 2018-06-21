@@ -5,6 +5,8 @@
 
     Include additional headers for multiplayer purposes
 */
+#include <components/openmw-mp/Log.hpp>
+#include "../mwbase/windowmanager.hpp"
 #include "../mwmp/Main.hpp"
 #include "../mwmp/CellController.hpp"
 /*
@@ -46,7 +48,7 @@ namespace MWWorld
                 Update LocalActors before we unload their cells, so packets with their cell changes
                 can be sent
             */
-            mwmp::Main::get().getCellController()->updateLocal(false);
+            mwmp::Main::get().getCellController()->updateLocal(true);
             /*
                 End of tes3mp addition
             */
@@ -69,6 +71,25 @@ namespace MWWorld
         }
         else
         {
+            /*
+                Start of tes3mp change (major)
+
+                Only allow LocalActors to teleport across cells
+            */
+            if (!mwmp::Main::get().getCellController()->isLocalActor(actor))
+            {
+                MWBase::Environment::get().getWindowManager()->messageBox("That NPC can't follow you because their AI is running on another player's client.");
+                return;
+            }
+            else
+            {
+                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Teleporting actor %s-%i-%i to new cell", actor.getCellRef().getRefId().c_str(),
+                    actor.getCellRef().getRefNum().mIndex, actor.getCellRef().getMpNum());
+            }
+            /*
+                End of tes3mp change (major)
+            */
+
             if (mCellName.empty())
             {
                 int cellX;

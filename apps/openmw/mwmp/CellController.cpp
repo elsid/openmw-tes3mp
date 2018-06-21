@@ -204,14 +204,14 @@ bool CellController::isLocalActor(MWWorld::Ptr ptr)
 
     std::string actorIndex = generateMapIndex(ptr);
 
-    return (localActorsToCells.count(actorIndex) > 0 && isInitializedCell(localActorsToCells.at(actorIndex)));
+    return localActorsToCells.count(actorIndex) > 0;
 }
 
 bool CellController::isLocalActor(int refNumIndex, int mpNum)
 {
     std::string actorIndex = generateMapIndex(refNumIndex, mpNum);
 
-    return (localActorsToCells.count(actorIndex) > 0 && isInitializedCell(localActorsToCells.at(actorIndex)));
+    return localActorsToCells.count(actorIndex) > 0;
 }
 
 LocalActor *CellController::getLocalActor(MWWorld::Ptr ptr)
@@ -247,14 +247,14 @@ bool CellController::isDedicatedActor(MWWorld::Ptr ptr)
 
     std::string actorIndex = generateMapIndex(ptr);
 
-    return (dedicatedActorsToCells.count(actorIndex) > 0 && isInitializedCell(dedicatedActorsToCells.at(actorIndex)));
+    return dedicatedActorsToCells.count(actorIndex) > 0;
 }
 
 bool CellController::isDedicatedActor(int refNumIndex, int mpNum)
 {
     std::string actorIndex = generateMapIndex(refNumIndex, mpNum);
 
-    return (dedicatedActorsToCells.count(actorIndex) > 0 && isInitializedCell(dedicatedActorsToCells.at(actorIndex)));
+    return dedicatedActorsToCells.count(actorIndex) > 0;
 }
 
 DedicatedActor *CellController::getDedicatedActor(MWWorld::Ptr ptr)
