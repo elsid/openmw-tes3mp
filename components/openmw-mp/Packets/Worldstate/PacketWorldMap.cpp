@@ -1,4 +1,5 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
+#include <components/openmw-mp/Log.hpp>
 #include "PacketWorldMap.hpp"
 
 using namespace std;
@@ -31,17 +32,25 @@ void PacketWorldMap::Packet(RakNet::BitStream *bs, bool send)
         RW(mapTile.x, send);
         RW(mapTile.y, send);
 
-        uint32_t imageDataCount;
+        uint32_t imageDataSize;
 
         if (send)
-            imageDataCount = static_cast<uint32_t>(mapTile.imageData.size());
+            imageDataSize = static_cast<uint32_t>(mapTile.imageData.size());
 
-        RW(imageDataCount, send);
+        RW(imageDataSize, send);
+
+        if (imageDataSize > mwmp::maxImageDataSize)
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_WORLD_MAP packet where tile %i, %i had an imageDataSize of %i",
+                mapTile.x, mapTile.y, imageDataSize);
+            LOG_APPEND(Log::LOG_ERROR, "- The packet was ignored after that point");
+            return;
+        }
 
         if (!send)
         {
             mapTile.imageData.clear();
-            mapTile.imageData.resize(imageDataCount);
+            mapTile.imageData.resize(imageDataSize);
         }
 
         for (auto &&imageChar : mapTile.imageData)

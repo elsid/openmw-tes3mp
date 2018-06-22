@@ -59,7 +59,16 @@ void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char*
     std::ifstream inputFile(filePath, std::ios::binary);
     mapTile.imageData = std::vector<char>(std::istreambuf_iterator<char>(inputFile), std::istreambuf_iterator<char>());
 
-    writeWorldstate.mapChanges.mapTiles.push_back(mapTile);
+    if (mapTile.imageData.size() > mwmp::maxImageDataSize)
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Error loading image file for map tile: "
+            "%s has a size of %i, which is over the maximum allowed of %i!",
+            filePath, mapTile.imageData.size(), mwmp::maxImageDataSize);
+    }
+    else
+    {
+        writeWorldstate.mapChanges.mapTiles.push_back(mapTile);
+    }
 }
 
 void WorldstateFunctions::SetHour(double hour) noexcept
