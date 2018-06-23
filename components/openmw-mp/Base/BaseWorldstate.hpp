@@ -9,7 +9,7 @@
 
 namespace mwmp
 {
-    static const int maxImageDataSize = 1400;
+    static const int maxImageDataSize = 1800;
 
     struct MapTile
     {
