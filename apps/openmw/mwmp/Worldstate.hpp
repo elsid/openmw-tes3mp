@@ -13,11 +13,18 @@ namespace mwmp
         Worldstate();
         virtual ~Worldstate();
 
+        bool containsExploredMapTile(int cellX, int cellY);
+
+        void markExploredMapTile(int cellX, int cellY);
+
         void setMapExplored();
 
-        void sendMapExplored(int x, int y, const std::vector<char>& imageData);
+        void sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData);
 
     private:
+
+        std::vector<MapTile> exploredMapTiles;
+
         Networking *getNetworking();
 
     };

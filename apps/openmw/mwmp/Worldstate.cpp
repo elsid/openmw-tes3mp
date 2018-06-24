@@ -31,21 +31,43 @@ Networking *Worldstate::getNetworking()
     return mwmp::Main::get().getNetworking();
 }
 
-void Worldstate::sendMapExplored(int x, int y, const std::vector<char>& imageData)
+bool Worldstate::containsExploredMapTile(int cellX, int cellY)
+{
+    for (const auto &mapTile : exploredMapTiles)
+    {
+        if (mapTile.x == cellX && mapTile.y == cellY)
+            return true;
+    }
+
+    return false;
+}
+
+void Worldstate::markExploredMapTile(int cellX, int cellY)
+{
+    mwmp::MapTile exploredTile;
+    exploredTile.x = cellX;
+    exploredTile.y = cellY;
+    exploredMapTiles.push_back(exploredTile);
+}
+
+void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData)
 {
     mapChanges.mapTiles.clear();
 
     mwmp::MapTile mapTile;
-    mapTile.x = x;
-    mapTile.y = y;
+    mapTile.x = cellX;
+    mapTile.y = cellY;
     mapTile.imageData = imageData;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_MAP with x: %i, y: %i", x, y);
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_PLAYER_MAP with x: %i, y: %i", cellX, cellY);
 
     mapChanges.mapTiles.push_back(mapTile);
 
     getNetworking()->getWorldstatePacket(ID_WORLD_MAP)->setWorldstate(this);
     getNetworking()->getWorldstatePacket(ID_WORLD_MAP)->Send();
+
+    // Keep this tile marked as explored so we don't send any more packets for it
+    markExploredMapTile(mapTile.x, mapTile.y);
 }
 
 void Worldstate::setMapExplored()
@@ -58,5 +80,8 @@ void Worldstate::setMapExplored()
             MWBase::Environment::get().getWindowManager()->addVisitedLocation(cellStore->getCell()->mName, mapTile.x, mapTile.y);
 
         MWBase::Environment::get().getWindowManager()->setGlobalMapImage(mapTile.x, mapTile.y, mapTile.imageData);
+
+        // Keep this tile marked as explored so we don't send any more packets for it
+        markExploredMapTile(mapTile.x, mapTile.y);
     }
 }
