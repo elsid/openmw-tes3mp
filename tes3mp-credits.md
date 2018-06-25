@@ -60,7 +60,10 @@ Special thanks (in alphabetical order)
     Lewis Sadlier
     Luc Keating
     Michael Zagar (Zoops)
+    Nac
+    NicholasAH (Jónas Hafthorsson)
     Olaxan
+    ppsychrite
     psi29a
     Rhiyo
     Scorcio
