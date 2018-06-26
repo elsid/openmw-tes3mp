@@ -80,14 +80,14 @@ void ObjectList::addContainerItem(mwmp::BaseObject& baseObject, const MWWorld::P
     containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
     containerItem.actionCount = actionCount;
 
-    LOG_APPEND(Log::LOG_INFO, "--- Adding container item %s", containerItem.refId.c_str());
+    LOG_APPEND(Log::LOG_VERBOSE, "--- Adding container item %s", containerItem.refId.c_str());
 
     baseObject.containerItems.push_back(containerItem);
 }
 
 void ObjectList::addEntireContainer(const MWWorld::Ptr& ptr)
 {
-    LOG_APPEND(Log::LOG_INFO, "-- Adding entire container %s %i-%i", ptr.getCellRef().getRefId().c_str(),
+    LOG_APPEND(Log::LOG_VERBOSE, "-- Adding entire container %s %i-%i", ptr.getCellRef().getRefId().c_str(),
         ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum());
 
     MWWorld::ContainerStore& containerStore = ptr.getClass().getContainerStore(ptr);
