@@ -178,6 +178,11 @@ int ObjectFunctions::GetContainerItemActionCount(unsigned int objectIndex, unsig
         .containerItems.at(itemIndex).actionCount;
 }
 
+bool ObjectFunctions::DoesObjectHaveContainer(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).hasContainer;
+}
+
 void ObjectFunctions::SetObjectListCell(const char* cellDescription) noexcept
 {
     writeObjectList.cell = Utils::getCellFromDescription(cellDescription);

@@ -809,6 +809,7 @@ void ObjectList::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
     baseObject.charge = ptr.getCellRef().getCharge();
     baseObject.enchantmentCharge = ptr.getCellRef().getEnchantmentCharge();
     baseObject.droppedByPlayer = droppedByPlayer;
+    baseObject.hasContainer = ptr.getClass().hasContainerStore(ptr);
 
     // Make sure we send the RefData position instead of the CellRef one, because that's what
     // we actually see on this client

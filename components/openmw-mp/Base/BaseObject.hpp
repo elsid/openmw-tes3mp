@@ -60,6 +60,8 @@ namespace mwmp
         Target master;
         bool hasMaster;
 
+        bool hasContainer;
+
         std::vector<ContainerItem> containerItems;
         unsigned int containerItemCount;
 

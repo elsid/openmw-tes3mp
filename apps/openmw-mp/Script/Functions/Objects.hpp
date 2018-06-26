@@ -38,6 +38,8 @@
     {"GetContainerItemEnchantmentCharge",     ObjectFunctions::GetContainerItemEnchantmentCharge},\
     {"GetContainerItemActionCount",           ObjectFunctions::GetContainerItemActionCount},\
     \
+    {"DoesObjectHaveContainer",               ObjectFunctions::DoesObjectHaveContainer},\
+    \
     {"SetObjectListCell",                     ObjectFunctions::SetObjectListCell},\
     {"SetObjectListAction",                   ObjectFunctions::SetObjectListAction},\
     {"SetObjectListConsoleCommand",           ObjectFunctions::SetObjectListConsoleCommand},\
@@ -359,6 +361,18 @@ public:
     * \return The action count.
     */
     static int GetContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex) noexcept;
+
+    /**
+    * \brief Check whether the object at a certain index in the read object list's object
+    * changes has a container.
+    * 
+    * Note: Only ObjectLists from ObjectPlace packets contain this information. Objects from
+    *       received ObjectSpawn packets can always be assumed to have a container.
+    *
+    * \param i The index of the object.
+    * \return Whether the object has a container.
+    */
+    static bool DoesObjectHaveContainer(unsigned int i) noexcept;
 
     /**
     * \brief Set the cell of the temporary object list stored on the server.

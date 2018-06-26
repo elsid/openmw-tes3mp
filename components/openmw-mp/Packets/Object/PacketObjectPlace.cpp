@@ -18,4 +18,5 @@ void PacketObjectPlace::Object(BaseObject &baseObject, bool send)
     RW(baseObject.goldValue, send);
     RW(baseObject.position, send);
     RW(baseObject.droppedByPlayer, send);
+    RW(baseObject.hasContainer, send);
 }
