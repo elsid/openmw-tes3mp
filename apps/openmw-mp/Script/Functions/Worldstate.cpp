@@ -18,6 +18,11 @@ void WorldstateFunctions::ReadLastWorldstate() noexcept
     readWorldstate = mwmp::Networking::getPtr()->getLastWorldstate();
 }
 
+void WorldstateFunctions::CopyLastWorldstateToStore() noexcept
+{
+    writeWorldstate = *readWorldstate;
+}
+
 void WorldstateFunctions::ClearMapChanges() noexcept
 {
     writeWorldstate.mapChanges.mapTiles.clear();

@@ -6,6 +6,8 @@
 #define WORLDSTATEAPI \
     {"ReadLastWorldstate",                WorldstateFunctions::ReadLastWorldstate},\
     \
+    {"CopyLastWorldstateToStore",         WorldstateFunctions::CopyLastWorldstateToStore},\
+    \
     {"ClearMapChanges",                   WorldstateFunctions::ClearMapChanges},\
     \
     {"GetMapChangesSize",                 WorldstateFunctions::GetMapChangesSize},\
@@ -42,6 +44,15 @@ public:
     * \return void
     */
     static void ReadLastWorldstate() noexcept;
+
+    /**
+    * \brief Take the contents of the read-only worldstate last received by the
+    *        server from a player and move its contents to the stored worldstate
+    *        that can be sent by the server.
+    *
+    * \return void
+    */
+    static void CopyLastWorldstateToStore() noexcept;
 
     /**
     * \brief Clear the map changes for the write-only worldstate.
