@@ -391,8 +391,6 @@ namespace MWGui
             /*
                 End of tes3mp change (major)
             */
-
-            mPtr = MWWorld::Ptr();
         }
     }
 
