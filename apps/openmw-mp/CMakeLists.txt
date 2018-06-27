@@ -113,10 +113,10 @@ source_group(tes3mp-server FILES ${SERVER} ${SERVER_HEADER})
 set(PROCESSORS_ACTOR
         processors/actor/ProcessorActorAnimFlags.hpp processors/actor/ProcessorActorAnimPlay.hpp
         processors/actor/ProcessorActorAttack.hpp processors/actor/ProcessorActorCellChange.hpp
-        processors/actor/ProcessorActorEquipment.hpp processors/actor/ProcessorActorInteraction.hpp
-        processors/actor/ProcessorActorList.hpp processors/actor/ProcessorActorPosition.hpp
-        processors/actor/ProcessorActorSpeech.hpp processors/actor/ProcessorActorStatsDynamic.hpp
-        processors/actor/ProcessorActorTest.hpp
+        processors/actor/ProcessorActorDeath.hpp processors/actor/ProcessorActorEquipment.hpp
+        processors/actor/ProcessorActorInteraction.hpp processors/actor/ProcessorActorList.hpp
+        processors/actor/ProcessorActorPosition.hpp processors/actor/ProcessorActorSpeech.hpp
+        processors/actor/ProcessorActorStatsDynamic.hpp processors/actor/ProcessorActorTest.hpp
         )
 
 source_group(tes3mp-server\\processors\\actor FILES ${PROCESSORS_ACTOR})

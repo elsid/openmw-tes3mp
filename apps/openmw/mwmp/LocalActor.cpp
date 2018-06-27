@@ -30,6 +30,7 @@ LocalActor::LocalActor()
     wasForceJumping = false;
     wasForceMoveJumping = false;
     wasFlying = false;
+    wasDead = false;
 
     attack.type = Attack::MELEE;
     attack.shouldSend = false;
@@ -179,6 +180,22 @@ void LocalActor::updateStatsDynamic(bool forceUpdate)
         creatureStats.mDead = ptrCreatureStats->isDead();
 
         mwmp::Main::get().getNetworking()->getActorList()->addStatsDynamicActor(*this);
+
+        if (creatureStats.mDead && !wasDead)
+        {
+            if (deathReason.empty())
+                deathReason = "suicide";
+
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_DEATH about %s-%i-%i to server",
+                refId.c_str(), refNumIndex, mpNum);
+            LOG_APPEND(Log::LOG_INFO, "- deathReason was %s", deathReason.c_str());
+
+            mwmp::Main::get().getNetworking()->getActorList()->addDeathActor(*this);
+
+            deathReason = "";
+        }
+
+        wasDead = creatureStats.mDead;
     }
 }
 

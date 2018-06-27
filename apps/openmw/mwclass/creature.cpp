@@ -540,6 +540,8 @@ namespace MWClass
             Start of tes3mp addition
 
             If the attacker was the LocalPlayer or LocalActor, record their target and send a packet with it
+
+            If the victim was a LocalActor who died, record their attacker as the deathReason
         */
         mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
 
@@ -552,6 +554,14 @@ namespace MWClass
             MechanicsHelper::assignAttackTarget(localAttack, ptr);
 
             localAttack->shouldSend = true;
+        }
+
+        if (mwmp::Main::get().getCellController()->isLocalActor(ptr))
+        {
+            if (getCreatureStats(ptr).isDead())
+            {
+                mwmp::Main::get().getCellController()->getLocalActor(ptr)->deathReason = attacker.getClass().getName(attacker);
+            }
         }
         /*
             End of tes3mp addition

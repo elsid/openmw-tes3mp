@@ -32,6 +32,7 @@ void ActorList::reset()
     animPlayActors.clear();
     speechActors.clear();
     statsDynamicActors.clear();
+    deathActors.clear();
     equipmentActors.clear();
     attackActors.clear();
     cellChangeActors.clear();
@@ -71,6 +72,11 @@ void ActorList::addSpeechActor(LocalActor localActor)
 void ActorList::addStatsDynamicActor(LocalActor localActor)
 {
     statsDynamicActors.push_back(localActor);
+}
+
+void ActorList::addDeathActor(LocalActor localActor)
+{
+    deathActors.push_back(localActor);
 }
 
 void ActorList::addEquipmentActor(LocalActor localActor)
@@ -135,6 +141,16 @@ void ActorList::sendStatsDynamicActors()
         baseActors = statsDynamicActors;
         Main::get().getNetworking()->getActorPacket(ID_ACTOR_STATS_DYNAMIC)->setActorList(this);
         Main::get().getNetworking()->getActorPacket(ID_ACTOR_STATS_DYNAMIC)->Send();
+    }
+}
+
+void ActorList::sendDeathActors()
+{
+    if (deathActors.size() > 0)
+    {
+        baseActors = deathActors;
+        Main::get().getNetworking()->getActorPacket(ID_ACTOR_DEATH)->setActorList(this);
+        Main::get().getNetworking()->getActorPacket(ID_ACTOR_DEATH)->Send();
     }
 }
 

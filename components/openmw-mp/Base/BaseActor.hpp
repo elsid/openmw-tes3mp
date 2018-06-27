@@ -39,6 +39,8 @@ namespace mwmp
         Animation animation;
         Attack attack;
 
+        std::string deathReason;
+
         bool hasAiTarget;
         Target aiTarget;
         unsigned int aiAction;

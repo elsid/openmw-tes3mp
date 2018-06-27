@@ -93,6 +93,7 @@ void Cell::updateLocal(bool forceUpdate)
     actorList->sendAnimFlagsActors();
     actorList->sendAnimPlayActors();
     actorList->sendSpeechActors();
+    actorList->sendDeathActors();
     actorList->sendStatsDynamicActors();
     actorList->sendEquipmentActors();
     actorList->sendAttackActors();
@@ -369,6 +370,11 @@ void Cell::initializeLocalActor(const MWWorld::Ptr& ptr)
     LocalActor *actor = new LocalActor();
     actor->cell = *store->getCell();
     actor->setPtr(ptr);
+
+    // Note that this actor was already dead when we were given control over it,
+    // to avoid sending an ActorDeath packet
+    if (ptr.getClass().getCreatureStats(ptr).isDead())
+        actor->wasDead = true;
 
     std::string mapIndex = Main::get().getCellController()->generateMapIndex(ptr);
     localActors[mapIndex] = actor;

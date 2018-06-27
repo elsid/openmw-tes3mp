@@ -953,6 +953,8 @@ namespace MWClass
 
             If the victim was the LocalPlayer, check whether packets should be sent about
             their new dynamic stats and position
+
+            If the victim was a LocalActor who died, record their attacker as the deathReason
         */
         mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
 
@@ -976,6 +978,13 @@ namespace MWClass
             if (getCreatureStats(ptr).isDead())
             {
                 mwmp::Main::get().getLocalPlayer()->deathReason = attacker.getClass().getName(attacker);
+            }
+        }
+        else if (mwmp::Main::get().getCellController()->isLocalActor(ptr))
+        {
+            if (getCreatureStats(ptr).isDead())
+            {
+                mwmp::Main::get().getCellController()->getLocalActor(ptr)->deathReason = attacker.getClass().getName(attacker);
             }
         }
         /*

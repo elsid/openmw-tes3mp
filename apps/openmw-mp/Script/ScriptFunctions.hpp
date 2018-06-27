@@ -340,6 +340,7 @@ public:
             {"OnObjectTrap",             Function<void, unsigned short, const char*>()},
             {"OnActorList",              Function<void, unsigned short, const char*>()},
             {"OnActorEquipment",         Function<void, unsigned short, const char*>()},
+            {"OnActorDeath",             Function<void, unsigned short, const char*>()},
             {"OnActorCellChange",        Function<void, unsigned short, const char*>()},
             {"OnActorTest",              Function<void, unsigned short, const char*>()},
             {"OnPlayerSendMessage",      Function<bool, unsigned short, const char*>()},

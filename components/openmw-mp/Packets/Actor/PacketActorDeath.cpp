@@ -11,5 +11,5 @@ PacketActorDeath::PacketActorDeath(RakNet::RakPeerInterface *peer) : ActorPacket
 
 void PacketActorDeath::Actor(BaseActor &actor, bool send)
 {
-        // Placeholder to be filled in later
+    RW(actor.deathReason, send);
 }

@@ -168,6 +168,11 @@ double ActorFunctions::GetActorEquipmentItemEnchantmentCharge(unsigned int i, un
     return readActorList->baseActors.at(i).equipmentItems[slot].enchantmentCharge;
 }
 
+const char *ActorFunctions::GetActorDeathReason(unsigned int i) noexcept
+{
+    return readActorList->baseActors.at(i).deathReason.c_str();
+}
+
 bool ActorFunctions::DoesActorHavePosition(unsigned int i) noexcept
 {
     return readActorList->baseActors.at(i).hasPositionData;

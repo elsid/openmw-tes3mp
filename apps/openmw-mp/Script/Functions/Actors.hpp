@@ -36,6 +36,8 @@
     {"GetActorEquipmentItemCharge",            ActorFunctions::GetActorEquipmentItemCharge},\
     {"GetActorEquipmentItemEnchantmentCharge", ActorFunctions::GetActorEquipmentItemEnchantmentCharge},\
     \
+    {"GetActorDeathReason",                    ActorFunctions::GetActorDeathReason},\
+    \
     {"DoesActorHavePosition",                  ActorFunctions::DoesActorHavePosition},\
     {"DoesActorHaveStatsDynamic",              ActorFunctions::DoesActorHaveStatsDynamic},\
     \
@@ -314,6 +316,14 @@ public:
     * \return The enchantment charge.
     */
     static double GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept;
+
+    /**
+    * \brief Get the death reason of the actor at a certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \return The death reason.
+    */
+    static const char *GetActorDeathReason(unsigned int i) noexcept;
 
     /**
     * \brief Check whether there is any positional data for the actor at a certain index in
