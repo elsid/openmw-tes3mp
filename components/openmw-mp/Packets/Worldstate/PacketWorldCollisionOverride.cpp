@@ -17,4 +17,22 @@ void PacketWorldCollisionOverride::Packet(RakNet::BitStream *bs, bool send)
     RW(worldstate->hasActorCollision, send);
     RW(worldstate->hasPlacedObjectCollision, send);
     RW(worldstate->useActorCollisionForPlacedObjects, send);
+
+    uint32_t enforcedCollisionCount;
+
+    if (send)
+        enforcedCollisionCount = static_cast<uint32_t>(worldstate->enforcedCollisionRefIds.size());
+
+    RW(enforcedCollisionCount, send);
+
+    if (!send)
+    {
+        worldstate->enforcedCollisionRefIds.clear();
+        worldstate->enforcedCollisionRefIds.resize(enforcedCollisionCount);
+    }
+
+    for (auto &&enforcedCollisionRefId : worldstate->enforcedCollisionRefIds)
+    {
+        RW(enforcedCollisionRefId, send);
+    }
 }

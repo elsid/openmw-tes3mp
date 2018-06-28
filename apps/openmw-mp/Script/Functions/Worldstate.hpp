@@ -27,6 +27,9 @@
     {"SetPlacedObjectCollisionState",     WorldstateFunctions::SetPlacedObjectCollisionState},\
     {"UseActorCollisionForPlacedObjects", WorldstateFunctions::UseActorCollisionForPlacedObjects},\
     \
+    {"AddEnforcedCollisionRefId",         WorldstateFunctions::AddEnforcedCollisionRefId},\
+    {"ClearEnforcedCollisionRefIds",      WorldstateFunctions::ClearEnforcedCollisionRefIds},\
+    \
     {"SaveMapTileImageFile",              WorldstateFunctions::SaveMapTileImageFile},\
     {"LoadMapTileImageFile",              WorldstateFunctions::LoadMapTileImageFile},\
     \
@@ -172,6 +175,23 @@ public:
     * \return void
     */
     static void UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept;
+
+    /**
+    * \brief Add a refId to the list of refIds for which collision should be enforced
+    *        irrespective of other settings.
+    *
+    * \param refId The refId.
+    * \return void
+    */
+    static void AddEnforcedCollisionRefId(const char* refId) noexcept;
+
+    /**
+    * \brief Clear the list of refIdsd for which collision should be enforced irrespective
+    *        of other settings.
+    *
+    * \return void
+    */
+    static void ClearEnforcedCollisionRefIds() noexcept;
 
     /**
     * \brief Save the .png image data of the map tile at a certain index in the read worldstate's

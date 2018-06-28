@@ -93,6 +93,16 @@ void WorldstateFunctions::UseActorCollisionForPlacedObjects(bool useActorCollisi
     writeWorldstate.useActorCollisionForPlacedObjects = useActorCollision;
 }
 
+void WorldstateFunctions::AddEnforcedCollisionRefId(const char *refId) noexcept
+{
+    writeWorldstate.enforcedCollisionRefIds.push_back(refId);
+}
+
+void WorldstateFunctions::ClearEnforcedCollisionRefIds() noexcept
+{
+    writeWorldstate.enforcedCollisionRefIds.clear();
+}
+
 void WorldstateFunctions::SaveMapTileImageFile(unsigned int index, const char *filePath) noexcept
 {
     if (index >= readWorldstate->mapChanges.mapTiles.size())
