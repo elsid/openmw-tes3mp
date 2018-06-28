@@ -28,6 +28,7 @@ namespace Utils
     bool compareDoubles(double a, double b, double epsilon);
 
     bool vectorContains(std::vector<int>* vectorChecked, int value);
+    bool vectorContains(std::vector<std::string>* vectorChecked, std::string value);
 
     std::string replaceString(const std::string &source, const char *find, const char *replace);
 

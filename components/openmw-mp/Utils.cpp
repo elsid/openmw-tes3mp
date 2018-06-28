@@ -90,6 +90,11 @@ bool Utils::vectorContains(std::vector<int>* vectorChecked, int value)
     return std::find(vectorChecked->begin(), vectorChecked->end(), value) != vectorChecked->end();
 }
 
+bool Utils::vectorContains(std::vector<std::string>* vectorChecked, std::string value)
+{
+    return std::find(vectorChecked->begin(), vectorChecked->end(), value) != vectorChecked->end();
+}
+
 std::string Utils::toString(int num)
 {
     std::ostringstream stream;
