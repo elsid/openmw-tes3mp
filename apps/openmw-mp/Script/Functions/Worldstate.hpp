@@ -15,9 +15,6 @@
     {"GetMapTileCellX",                   WorldstateFunctions::GetMapTileCellX},\
     {"GetMapTileCellY",                   WorldstateFunctions::GetMapTileCellY},\
     \
-    {"SaveMapTileImageFile",              WorldstateFunctions::SaveMapTileImageFile},\
-    {"LoadMapTileImageFile",              WorldstateFunctions::LoadMapTileImageFile},\
-    \
     {"SetHour",                           WorldstateFunctions::SetHour},\
     {"SetDay",                            WorldstateFunctions::SetDay},\
     {"SetMonth",                          WorldstateFunctions::SetMonth},\
@@ -29,6 +26,9 @@
     {"SetActorCollisionState",            WorldstateFunctions::SetActorCollisionState},\
     {"SetPlacedObjectCollisionState",     WorldstateFunctions::SetPlacedObjectCollisionState},\
     {"UseActorCollisionForPlacedObjects", WorldstateFunctions::UseActorCollisionForPlacedObjects},\
+    \
+    {"SaveMapTileImageFile",              WorldstateFunctions::SaveMapTileImageFile},\
+    {"LoadMapTileImageFile",              WorldstateFunctions::LoadMapTileImageFile},\
     \
     {"SendWorldMap",                      WorldstateFunctions::SendWorldMap},\
     {"SendWorldTime",                     WorldstateFunctions::SendWorldTime},\
@@ -87,27 +87,6 @@ public:
     * \return The Y coordinate of the cell.
     */
     static int GetMapTileCellY(unsigned int index) noexcept;
-
-    /**
-    * \brief Save the .png image data of the map tile at a certain index in the read worldstate's
-    *        map changes.
-    *
-    * \param i The index of the map tile.
-    * \param filePath The file path of the resulting file.
-    * \return void
-    */
-    static void SaveMapTileImageFile(unsigned int index, const char *filePath) noexcept;
-
-    /**
-    * \brief Load a .png file as the image data for a map tile and add it to the write-only worldstate
-    *        stored on the server.
-    *
-    * \param cellX The X coordinate of the cell corresponding to the map tile.
-    * \param cellY The Y coordinate of the cell corresponding to the map tile.
-    * \param filePath The file path of the loaded file.
-    * \return void
-    */
-    static void LoadMapTileImageFile(int cellX, int cellY, const char* filePath) noexcept;
 
     /**
     * \brief Set the world's hour in the write-only worldstate stored on the server.
@@ -193,6 +172,27 @@ public:
     * \return void
     */
     static void UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept;
+
+    /**
+    * \brief Save the .png image data of the map tile at a certain index in the read worldstate's
+    *        map changes.
+    *
+    * \param i The index of the map tile.
+    * \param filePath The file path of the resulting file.
+    * \return void
+    */
+    static void SaveMapTileImageFile(unsigned int index, const char *filePath) noexcept;
+
+    /**
+    * \brief Load a .png file as the image data for a map tile and add it to the write-only worldstate
+    *        stored on the server.
+    *
+    * \param cellX The X coordinate of the cell corresponding to the map tile.
+    * \param cellY The Y coordinate of the cell corresponding to the map tile.
+    * \param filePath The file path of the loaded file.
+    * \return void
+    */
+    static void LoadMapTileImageFile(int cellX, int cellY, const char* filePath) noexcept;
 
     /**
     * \brief Send a WorldMap packet with the current set of map changes in the write-only
