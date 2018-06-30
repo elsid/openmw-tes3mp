@@ -8,6 +8,7 @@
     Include additional headers for multiplayer purposes
 */
 #include <components/openmw-mp/Log.hpp>
+#include "../mwmechanics/creaturestats.hpp"
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/CellController.hpp"
@@ -107,7 +108,10 @@ namespace MWMechanics
                         {
                             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                             objectList->reset();
-                            objectList->addObjectSpawn(placed, mActor);
+
+                            MWMechanics::CreatureStats *actorCreatureStats = &mActor.getClass().getCreatureStats(mActor);
+
+                            objectList->addObjectSpawn(placed, mActor, actorCreatureStats->getActiveSpells().getEffectDuration(it->first));
                             objectList->sendObjectSpawn();
                         }
 

@@ -319,6 +319,26 @@ namespace MWMechanics
         End of tes3mp addition
     */
 
+    /*
+        Start of tes3mp addition
+
+        Make it easy to get an effect's duration
+    */
+    float ActiveSpells::getEffectDuration(short effectId)
+    {
+        for (TContainer::iterator it = mSpells.begin(); it != mSpells.end(); ++it)
+        {
+            for (std::vector<ActiveEffect>::iterator effectIt = it->second.mEffects.begin();
+                effectIt != it->second.mEffects.end();)
+            {
+                return effectIt->mDuration;
+            }
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
+
     void ActiveSpells::clear()
     {
         mSpells.clear();

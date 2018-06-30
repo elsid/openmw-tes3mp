@@ -24,6 +24,7 @@
     {"GetObjectState",                        ObjectFunctions::GetObjectState},\
     {"GetObjectDoorState",                    ObjectFunctions::GetObjectDoorState},\
     {"GetObjectLockLevel",                    ObjectFunctions::GetObjectLockLevel},\
+    {"GetObjectSummonDuration",               ObjectFunctions::GetObjectSummonDuration},\
     {"GetObjectPosX",                         ObjectFunctions::GetObjectPosX},\
     {"GetObjectPosY",                         ObjectFunctions::GetObjectPosY},\
     {"GetObjectPosZ",                         ObjectFunctions::GetObjectPosZ},\
@@ -55,6 +56,7 @@
     {"SetObjectState",                        ObjectFunctions::SetObjectState},\
     {"SetObjectLockLevel",                    ObjectFunctions::SetObjectLockLevel},\
     {"SetObjectDisarmState",                  ObjectFunctions::SetObjectDisarmState},\
+    {"SetObjectSummonDuration",               ObjectFunctions::SetObjectSummonDuration},\
     {"SetObjectMasterState",                  ObjectFunctions::SetObjectMasterState},\
     {"SetObjectPosition",                     ObjectFunctions::SetObjectPosition},\
     {"SetObjectRotation",                     ObjectFunctions::SetObjectRotation},\
@@ -249,6 +251,17 @@ public:
     * \return The lock level.
     */
     static int GetObjectLockLevel(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the summon duration of the object at a certain index in the read object list's object
+    * changes.
+    *
+    * Note: Returns -1 if indefinite.
+    *
+    * \param i The index of the object.
+    * \return The summon duration.
+    */
+    static double GetObjectSummonDuration(unsigned int i) noexcept;
 
     /**
     * \brief Get the X position of the object at a certain index in the read object list's object
@@ -508,6 +521,14 @@ public:
     * \return void
     */
     static void SetObjectLockLevel(int lockLevel) noexcept;
+
+    /**
+    * \brief Set the summon duration of the temporary object stored on the server.
+    *
+    * \param summonDuration The summon duration.
+    * \return void
+    */
+    static void SetObjectSummonDuration(float summonDuration) noexcept;
 
     /**
     * \brief Set the disarm state of the temporary object stored on the server.

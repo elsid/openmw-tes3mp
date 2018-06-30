@@ -13,6 +13,7 @@ void PacketObjectSpawn::Object(BaseObject &baseObject, bool send)
 {
     ObjectPacket::Object(baseObject, send);
     RW(baseObject.position, send);
+    RW(baseObject.summonDuration, send);
 
     RW(baseObject.hasMaster, send);
 

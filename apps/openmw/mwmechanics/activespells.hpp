@@ -104,6 +104,16 @@ namespace MWMechanics
                 End of tes3mp addition
             */
 
+            /*
+                Start of tes3mp addition
+
+                Make it easy to get an effect's duration
+            */
+            float getEffectDuration(short effectId);
+            /*
+                End of tes3mp addition
+            */
+
             /// Remove all spells
             void clear();
 

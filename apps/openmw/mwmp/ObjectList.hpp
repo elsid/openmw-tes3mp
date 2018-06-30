@@ -51,7 +51,7 @@ namespace mwmp
 
         void addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer = false);
         void addObjectSpawn(const MWWorld::Ptr& ptr);
-        void addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master);
+        void addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master, float spawnDuration);
         void addObjectDelete(const MWWorld::Ptr& ptr);
         void addObjectLock(const MWWorld::Ptr& ptr, int lockLevel);
         void addObjectTrap(const MWWorld::Ptr& ptr, const ESM::Position& pos, bool isDisarmed);

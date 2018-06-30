@@ -839,6 +839,7 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr)
     baseObject.refId = ptr.getCellRef().getRefId();
     baseObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
     baseObject.mpNum = 0;
+    baseObject.summonDuration = -1;
     baseObject.hasMaster = false;
 
     // Make sure we send the RefData position instead of the CellRef one, because that's what
@@ -848,7 +849,7 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr)
     addObject(baseObject);
 }
 
-void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master)
+void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master, float duration)
 {
     cell = *ptr.getCell()->getCell();
 
@@ -856,6 +857,7 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& mas
     baseObject.refId = ptr.getCellRef().getRefId();
     baseObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
     baseObject.mpNum = 0;
+    baseObject.summonDuration = duration;
 
     baseObject.hasMaster = true;
 

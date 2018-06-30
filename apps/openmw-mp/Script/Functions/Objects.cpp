@@ -113,6 +113,11 @@ int ObjectFunctions::GetObjectLockLevel(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).lockLevel;
 }
 
+double ObjectFunctions::GetObjectSummonDuration(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).summonDuration;
+}
+
 double ObjectFunctions::GetObjectPosX(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).position.pos[0];
@@ -246,6 +251,11 @@ void ObjectFunctions::SetObjectState(bool objectState) noexcept
 void ObjectFunctions::SetObjectLockLevel(int lockLevel) noexcept
 {
     tempObject.lockLevel = lockLevel;
+}
+
+void ObjectFunctions::SetObjectSummonDuration(float summonDuration) noexcept
+{
+    tempObject.summonDuration = summonDuration;
 }
 
 void ObjectFunctions::SetObjectDisarmState(bool disarmState) noexcept
