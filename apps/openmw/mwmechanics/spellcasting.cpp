@@ -20,6 +20,7 @@
 #include "../mwmp/PlayerList.hpp"
 #include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/ObjectList.hpp"
+#include "../mwmp/CellController.hpp"
 #include "../mwmp/MechanicsHelper.hpp"
 /*
     End of tes3mp addition
@@ -531,6 +532,30 @@ namespace MWMechanics
                         bool wasDead = target.getClass().getCreatureStats(target).isDead();
                         effectTick(target.getClass().getCreatureStats(target), target, EffectKey(*effectIt), magnitude);
                         bool isDead = target.getClass().getCreatureStats(target).isDead();
+
+                        /*
+                            Start of tes3mp addition
+
+                            If the victim was a LocalPlayer or LocalActor who died, record their attacker as the deathReason
+                        */
+                        if (!wasDead && isDead)
+                        {
+                            bool isSuicide = target == caster || caster.isEmpty();
+
+                            if (target == MWMechanics::getPlayer())
+                            {
+                                mwmp::Main::get().getLocalPlayer()->deathReason = isSuicide ?
+                                    "suicide" : caster.getClass().getName(caster);
+                            }
+                            else if (mwmp::Main::get().getCellController()->isLocalActor(target))
+                            {
+                                mwmp::Main::get().getCellController()->getLocalActor(target)->deathReason = isSuicide ?
+                                    "suicide" : caster.getClass().getName(caster);
+                            }
+                        }
+                        /*
+                            End of tes3mp addition
+                        */
 
                         if (!wasDead && isDead)
                             MWBase::Environment::get().getMechanicsManager()->actorKilled(target, caster);
