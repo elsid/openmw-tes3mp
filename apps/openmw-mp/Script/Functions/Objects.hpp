@@ -24,6 +24,7 @@
     {"GetObjectState",                        ObjectFunctions::GetObjectState},\
     {"GetObjectDoorState",                    ObjectFunctions::GetObjectDoorState},\
     {"GetObjectLockLevel",                    ObjectFunctions::GetObjectLockLevel},\
+    {"GetObjectSummonState",                  ObjectFunctions::GetObjectSummonState},\
     {"GetObjectSummonDuration",               ObjectFunctions::GetObjectSummonDuration},\
     {"GetObjectPosX",                         ObjectFunctions::GetObjectPosX},\
     {"GetObjectPosY",                         ObjectFunctions::GetObjectPosY},\
@@ -57,7 +58,7 @@
     {"SetObjectLockLevel",                    ObjectFunctions::SetObjectLockLevel},\
     {"SetObjectDisarmState",                  ObjectFunctions::SetObjectDisarmState},\
     {"SetObjectSummonDuration",               ObjectFunctions::SetObjectSummonDuration},\
-    {"SetObjectMasterState",                  ObjectFunctions::SetObjectMasterState},\
+    {"SetObjectSummonState",                  ObjectFunctions::SetObjectSummonState},\
     {"SetObjectPosition",                     ObjectFunctions::SetObjectPosition},\
     {"SetObjectRotation",                     ObjectFunctions::SetObjectRotation},\
     \
@@ -251,6 +252,16 @@ public:
     * \return The lock level.
     */
     static int GetObjectLockLevel(unsigned int i) noexcept;
+
+    /**
+    * \brief Check whether the object at a certain index in the read object list's object changes
+    * is a summon.
+    *
+    * Only living actors can have be summoned.
+    *
+    * \return The summon state.
+    */
+    static bool GetObjectSummonState(unsigned int i) noexcept;
 
     /**
     * \brief Get the summon duration of the object at a certain index in the read object list's object
@@ -539,15 +550,15 @@ public:
     static void SetObjectDisarmState(bool disarmState) noexcept;
 
     /**
-    * \brief Set the master state of the temporary object stored on the server.
+    * \brief Set the summon state of the temporary object stored on the server.
     *
-    * This only affects living actors and determines whether they are followers of another
+    * This only affects living actors and determines whether they are summons of another
     * living actor.
     *
-    * \param masterState The master state.
+    * \param summonState The summon state.
     * \return void
     */
-    static void SetObjectMasterState(bool masterState) noexcept;
+    static void SetObjectSummonState(bool summonState) noexcept;
 
     /**
     * \brief Set the position of the temporary object stored on the server.

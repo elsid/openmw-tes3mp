@@ -113,6 +113,11 @@ int ObjectFunctions::GetObjectLockLevel(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).lockLevel;
 }
 
+bool ObjectFunctions::GetObjectSummonState(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).isSummon;
+}
+
 double ObjectFunctions::GetObjectSummonDuration(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).summonDuration;
@@ -263,9 +268,9 @@ void ObjectFunctions::SetObjectDisarmState(bool disarmState) noexcept
     tempObject.isDisarmed = disarmState;
 }
 
-void ObjectFunctions::SetObjectMasterState(bool masterState) noexcept
+void ObjectFunctions::SetObjectSummonState(bool summonState) noexcept
 {
-    tempObject.hasMaster = masterState;
+    tempObject.isSummon = summonState;
 }
 
 void ObjectFunctions::SetObjectPosition(double x, double y, double z) noexcept

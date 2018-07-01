@@ -57,9 +57,9 @@ namespace mwmp
         bool isDisarmed;
         bool droppedByPlayer;
 
+        bool isSummon;
         float summonDuration;
         Target master;
-        bool hasMaster;
 
         bool hasContainer;
 

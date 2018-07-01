@@ -338,7 +338,7 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
 
             newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, baseObject.position);
 
-            if (baseObject.hasMaster)
+            if (baseObject.isSummon)
             {
                 MWWorld::Ptr masterPtr;
 
@@ -839,8 +839,8 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr)
     baseObject.refId = ptr.getCellRef().getRefId();
     baseObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
     baseObject.mpNum = 0;
+    baseObject.isSummon = false;
     baseObject.summonDuration = -1;
-    baseObject.hasMaster = false;
 
     // Make sure we send the RefData position instead of the CellRef one, because that's what
     // we actually see on this client
@@ -857,9 +857,8 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& mas
     baseObject.refId = ptr.getCellRef().getRefId();
     baseObject.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
     baseObject.mpNum = 0;
+    baseObject.isSummon = true;
     baseObject.summonDuration = duration;
-
-    baseObject.hasMaster = true;
 
     if (master == MWBase::Environment::get().getWorld()->getPlayerPtr())
     {

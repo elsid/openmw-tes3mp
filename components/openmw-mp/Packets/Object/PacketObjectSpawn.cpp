@@ -15,9 +15,9 @@ void PacketObjectSpawn::Object(BaseObject &baseObject, bool send)
     RW(baseObject.position, send);
     RW(baseObject.summonDuration, send);
 
-    RW(baseObject.hasMaster, send);
+    RW(baseObject.isSummon, send);
 
-    if (baseObject.hasMaster)
+    if (baseObject.isSummon)
     {
         RW(baseObject.master.isPlayer, send);
 
