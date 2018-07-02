@@ -44,7 +44,7 @@ namespace mwmp
                     rule = &ruleIt->second;
                 }
 
-                packet->RW(key, send, QueryData::maxStringLength);
+                packet->RW(key, send, false, QueryData::maxStringLength);
                 if (!send)
                 {
                     ruleIt = server.rules.insert(pair<string, ServerRule>(key, ServerRule())).first;
@@ -77,7 +77,7 @@ namespace mwmp
             }
 
             for(auto &&player : server.players)
-                packet->RW(player, send, QueryData::maxStringLength);
+                packet->RW(player, send, false, QueryData::maxStringLength);
 
 
             int32_t pluginsCount = server.plugins.size();
@@ -94,7 +94,7 @@ namespace mwmp
 
             for (auto &&plugin : server.plugins)
             {
-                packet->RW(plugin.name, send, QueryData::maxStringLength);
+                packet->RW(plugin.name, send, false, QueryData::maxStringLength);
                 packet->RW(plugin.hash, send);
             }
         }

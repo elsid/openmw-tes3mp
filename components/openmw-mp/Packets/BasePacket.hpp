@@ -76,7 +76,9 @@ namespace mwmp
                 bs->Read(data);
         }
 
-        void RW(std::string &str, bool write, std::string::size_type maxSize = std::string::npos, bool compress = false)
+        const static uint32_t maxStrSize = 64 * 1024; // 64 KiB
+
+        void RW(std::string &str, bool write, bool compress = false, std::string::size_type maxSize = maxStrSize)
         {
             if (write)
             {
