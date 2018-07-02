@@ -86,9 +86,6 @@ void Script::UnloadScripts()
 {
     //Public::DeleteAll();
     scripts.clear();
-#if defined (ENABLE_TERRA)
-    terra_llvmshutdown();
-#endif
 }
 
 void Script::LoadScript(const char *script, const char *base)

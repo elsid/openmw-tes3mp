@@ -21,26 +21,21 @@ if(ENABLE_BREAKPAD)
     include_directories(${CMAKE_SOURCE_DIR}/extern/breakpad/src ${Breakpad_Headers})
 endif(ENABLE_BREAKPAD)
 
-option(BUILD_WITH_LUA "Enable Terra/Lua language" ON)
-option(FORCE_LUA "Use Lua instead Terra" OFF)
+option(BUILD_WITH_LUA "Enable Lua language" ON)
 if(BUILD_WITH_LUA)
-    #set(Terra_ROOT ${CMAKE_SOURCE_DIR}/external/terra/)
-    if(WIN32 OR FORCE_LUA)
-        find_package(Lua51 REQUIRED)
-        MESSAGE(STATUS "Found LUA_LIBRARY: ${LUA_LIBRARY}")
-        MESSAGE(STATUS "Found LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
-    else()
-        find_package(Terra REQUIRED)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_TERRA")
-    endif()
+
+    find_package(Lua51 REQUIRED)
+    MESSAGE(STATUS "Found LUA_LIBRARY: ${LUA_LIBRARY}")
+    MESSAGE(STATUS "Found LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
+
     set(LuaScript_Sources
             Script/LangLua/LangLua.cpp
             Script/LangLua/LuaFunc.cpp)
-    set(LuaScript_Headers ${Terra_INCLUDES} ${LUA_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/extern/LuaBridge ${CMAKE_SOURCE_DIR}/extern/LuaBridge/detail
+    set(LuaScript_Headers ${LUA_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/extern/LuaBridge ${CMAKE_SOURCE_DIR}/extern/LuaBridge/detail
             Script/LangLua/LangLua.hpp)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_LUA")
-    include_directories(${Terra_INCLUDES} ${LUA_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
+    include_directories(${LUA_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
 endif(BUILD_WITH_LUA)
 
 set(NativeScript_Sources
@@ -170,7 +165,6 @@ target_link_libraries(tes3mp-server
     #${Boost_PROGRAM_OPTIONS_LIBRARY}
     ${RakNet_LIBRARY}
     components
-    ${Terra_LIBRARY}
     ${LUA_LIBRARIES}
     ${Breakpad_Library}
     ${CallFF_LIBRARY}

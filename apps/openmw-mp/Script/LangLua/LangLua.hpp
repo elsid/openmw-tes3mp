@@ -5,11 +5,7 @@
 #ifndef PLUGINSYSTEM3_LANGLUA_HPP
 #define PLUGINSYSTEM3_LANGLUA_HPP
 
-#ifdef ENABLE_TERRA
-#include <terra/terra.h>
-#else
 #include "lua.hpp"
-#endif
 
 #include <extern/LuaBridge/LuaBridge.h>
 #include <LuaBridge.h>
