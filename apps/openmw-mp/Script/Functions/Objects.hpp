@@ -26,6 +26,7 @@
     {"GetObjectLockLevel",                    ObjectFunctions::GetObjectLockLevel},\
     {"GetObjectSummonState",                  ObjectFunctions::GetObjectSummonState},\
     {"GetObjectSummonDuration",               ObjectFunctions::GetObjectSummonDuration},\
+    {"DoesObjectHavePlayerSummoner",          ObjectFunctions::DoesObjectHavePlayerSummoner},\
     {"GetObjectPosX",                         ObjectFunctions::GetObjectPosX},\
     {"GetObjectPosY",                         ObjectFunctions::GetObjectPosY},\
     {"GetObjectPosZ",                         ObjectFunctions::GetObjectPosZ},\
@@ -257,7 +258,7 @@ public:
     * \brief Check whether the object at a certain index in the read object list's object changes
     * is a summon.
     *
-    * Only living actors can have be summoned.
+    * Only living actors can be summoned.
     *
     * \return The summon state.
     */
@@ -273,6 +274,16 @@ public:
     * \return The summon duration.
     */
     static double GetObjectSummonDuration(unsigned int i) noexcept;
+
+    /**
+    * \brief Check whether the object at a certain index in the read object list's object changes
+    * has a player as its summoner.
+    *
+    * Only living actors can be summoned.
+    *
+    * \return The summon state.
+    */
+    static bool DoesObjectHavePlayerSummoner(unsigned int i) noexcept;
 
     /**
     * \brief Get the X position of the object at a certain index in the read object list's object

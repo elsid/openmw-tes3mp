@@ -123,6 +123,11 @@ double ObjectFunctions::GetObjectSummonDuration(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).summonDuration;
 }
 
+bool ObjectFunctions::DoesObjectHavePlayerSummoner(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).master.isPlayer;
+}
+
 double ObjectFunctions::GetObjectPosX(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).position.pos[0];
