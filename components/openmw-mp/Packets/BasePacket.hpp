@@ -46,16 +46,17 @@ namespace mwmp
 
     protected:
         template<class templateType>
-        void RW(templateType &data, uint32_t size, bool write)
+        bool RW(templateType &data, uint32_t size, bool write)
         {
             if (write)
                 bs->Write(data, size);
             else
-                bs->Read(data, size);
+                return bs->Read(data, size);
+            return true;
         }
 
         template<class templateType>
-        void RW(templateType &data, bool write, bool compress = 0)
+        bool RW(templateType &data, bool write, bool compress = 0)
         {
             if (write)
             {
@@ -63,28 +64,31 @@ namespace mwmp
                     bs->WriteCompressed(data);
                 else
                     bs->Write(data);
+                return true;
             }
             else
             {
                 if (compress)
-                    bs->ReadCompressed(data);
+                    return bs->ReadCompressed(data);
                 else
-                    bs->Read(data);
+                    return bs->Read(data);
             }
         }
 
-        void RW(bool &data, bool write)
+        bool RW(bool &data, bool write)
         {
             if (write)
                 bs->Write(data);
             else
-                bs->Read(data);
+                return bs->Read(data);
+            return true;
         }
 
         const static uint32_t maxStrSize = 64 * 1024; // 64 KiB
 
-        void RW(std::string &str, bool write, bool compress = false, std::string::size_type maxSize = maxStrSize)
+        bool RW(std::string &str, bool write, bool compress = false, std::string::size_type maxSize = maxStrSize)
         {
+            bool res = true;
             if (write)
             {
                 if (compress)
@@ -100,13 +104,19 @@ namespace mwmp
             {
                 RakNet::RakString rstr;
                 if (compress)
-                    rstr.DeserializeCompressed(bs);
+                    res = rstr.DeserializeCompressed(bs);
                 else
-                    bs->Read(rstr);
+                    res = bs->Read(rstr);
 
-                rstr.Truncate(rstr.GetLength() > maxSize ? maxSize : rstr.GetLength());
-                str = rstr.C_String();
+                if (res)
+                {
+                    rstr.Truncate(rstr.GetLength() > maxSize ? maxSize : rstr.GetLength());
+                    str = rstr.C_String();
+                }
+                else
+                    str = std::string();
             }
+            return res;
         }
 
     protected:
