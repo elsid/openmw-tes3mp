@@ -25,7 +25,7 @@ namespace MWWorld
 
         Get the mMpNum (unique multiplayer reference number) of a CellRef
     */
-    int CellRef::getMpNum() const
+    unsigned int CellRef::getMpNum() const
     {
         return mCellRef.mMpNum;
     }
@@ -38,7 +38,7 @@ namespace MWWorld
 
         Set the mMpNum (unique multiplayer reference number) of a CellRef
     */
-    void CellRef::setMpNum(int index)
+    void CellRef::setMpNum(unsigned int index)
     {
         mCellRef.mMpNum = index;
     }

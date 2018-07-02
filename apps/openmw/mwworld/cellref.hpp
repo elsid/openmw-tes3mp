@@ -33,7 +33,7 @@ namespace MWWorld
 
             Get the mMpNum (unique multiplayer reference number) of a CellRef
         */
-        int getMpNum() const;
+        unsigned int getMpNum() const;
         /*
             End of tes3mp addition
         */
@@ -43,7 +43,7 @@ namespace MWWorld
 
             Set the mMpNum (unique multiplayer reference number) of a CellRef
         */
-        void setMpNum(int index);
+        void setMpNum(unsigned int index);
         /*
             End of tes3mp addition
         */
