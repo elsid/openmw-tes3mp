@@ -10,7 +10,7 @@ namespace mwmp
     class PacketPreInit : public BasePacket
     {
     public:
-        typedef std::vector<unsigned> HashList;
+        typedef std::vector<uint32_t> HashList;
         typedef std::pair<std::string, HashList> PluginPair;
         typedef std::vector<PluginPair> PluginContainer;
 
@@ -20,6 +20,9 @@ namespace mwmp
         void setChecksums(PluginContainer *checksums);
     private:
         PluginContainer *checksums;
+        const static uint32_t maxPlugins = 256;
+        const static uint32_t pluginNameMaxLength = 256;
+        const static uint32_t maxHashes = 16;
     };
 }
 
