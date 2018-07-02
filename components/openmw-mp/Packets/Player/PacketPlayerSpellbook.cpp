@@ -39,13 +39,13 @@ void PacketPlayerSpellbook::Packet(RakNet::BitStream *bs, bool send)
             RW(spell.mData.mCost, send, true);
             RW(spell.mData.mFlags, send, true);
 
-            int effectCount = 0;
+            uint32_t effectCount = 0;
             if (send)
                 effectCount = spell.mEffects.mList.size();
 
             RW(effectCount, send, true);
 
-            for (unsigned int j = 0; j < effectCount; j++)
+            for (uint32_t j = 0; j < effectCount; j++)
             {
                 ESM::ENAMstruct effect;
                 if (send)
