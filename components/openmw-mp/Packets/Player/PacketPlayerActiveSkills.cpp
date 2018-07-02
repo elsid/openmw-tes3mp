@@ -16,7 +16,7 @@ void PacketPlayerActiveSkills::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    unsigned long spells = 0;
+    uint32_t spells = 0;
 
     if (send)
         spells = player->activeSpells.mSpells.size();
@@ -29,7 +29,7 @@ void PacketPlayerActiveSkills::Packet(RakNet::BitStream *bs, bool send)
         {
             RW(spell->first, true);
             RW(spell->second.mTimeStamp, true);
-            unsigned long effects = spell->second.mEffects.size();
+            uint32_t effects = spell->second.mEffects.size();
             RW(effects, true);
 
             for (std::vector<ESM::ActiveEffect>::const_iterator effect = spell->second.mEffects.begin();
@@ -38,17 +38,17 @@ void PacketPlayerActiveSkills::Packet(RakNet::BitStream *bs, bool send)
 
         }
     else
-        for (unsigned int i = 0; i < spells; i++)
+        for (uint32_t i = 0; i < spells; i++)
         {
             ESM::ActiveSpells::TContainer::value_type spell;
 
             RW(spell.first, false);
             RW(spell.second.mTimeStamp, false);
-            unsigned long effects;
+            uint32_t effects;
             RW(effects, false);
 
             ESM::ActiveEffect effect;
-            for (unsigned int j = 0; j < effects; j++)
+            for (uint32_t j = 0; j < effects; j++)
             {
                 RW(effect, false);
                 spell.second.mEffects.push_back(effect);
