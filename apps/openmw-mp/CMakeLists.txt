@@ -7,7 +7,6 @@ if(UNIX) #temporarily disabled for non-unix
     endif(NOT (${CMAKE_CXX_COMPILER} MATCHES "aarch64" OR ${CMAKE_CXX_COMPILER} MATCHES "arm"))
 endif(UNIX)
 
-option(BUILD_WITH_PAWN "Enable Pawn language" OFF)
 option(ENABLE_BREAKPAD "Enable Google Breakpad for Crash reporting" OFF)
 
 if(ENABLE_BREAKPAD)
@@ -21,25 +20,6 @@ if(ENABLE_BREAKPAD)
     endif (UNIX)
     include_directories(${CMAKE_SOURCE_DIR}/extern/breakpad/src ${Breakpad_Headers})
 endif(ENABLE_BREAKPAD)
-
-if(BUILD_WITH_PAWN)
-
-    add_subdirectory(amx)
-
-    #set(Pawn_ROOT ${CMAKE_SOURCE_DIR}/external/pawn/)
-    set(Pawn_INCLUDES ${Pawn_ROOT}/include)
-    set(Pawn_LIBRARY ${Pawn_ROOT}/lib/libamx.a)
-    set(PawnScript_Sources
-            Script/LangPawn/LangPAWN.cpp
-            Script/LangPawn/PawnFunc.cpp)
-    set(PawnScript_Headers ${Pawn_INCLUDES}
-            Script/LangPawn/LangPAWN.hpp
-            )
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_PAWN -DPAWN_CELL_SIZE=64")
-    #include_directories(${Pawn_INCLUDES})
-    include_directories("./amx/linux")
-endif(BUILD_WITH_PAWN)
 
 option(BUILD_WITH_LUA "Enable Terra/Lua language" ON)
 option(FORCE_LUA "Use Lua instead Terra" OFF)
@@ -93,7 +73,6 @@ set(SERVER
     Script/Functions/Timer.cpp
 
     Script/API/TimerAPI.cpp Script/API/PublicFnAPI.cpp
-        ${PawnScript_Sources}
         ${LuaScript_Sources}
         ${NativeScript_Sources}
 
@@ -103,7 +82,6 @@ set(SERVER_HEADER
         Script/Types.hpp Script/Script.hpp Script/SystemInterface.hpp
         Script/ScriptFunction.hpp Script/Platform.hpp Script/Language.hpp
         Script/ScriptFunctions.hpp Script/API/TimerAPI.hpp Script/API/PublicFnAPI.hpp
-        ${PawnScript_Headers}
         ${LuaScript_Headers}
         ${NativeScript_Headers}
         ${CallFF_INCLUDES}
@@ -194,7 +172,6 @@ target_link_libraries(tes3mp-server
     components
     ${Terra_LIBRARY}
     ${LUA_LIBRARIES}
-    ${Pawn_LIBRARY}
     ${Breakpad_Library}
     ${CallFF_LIBRARY}
 )

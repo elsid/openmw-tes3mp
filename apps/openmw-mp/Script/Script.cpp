@@ -5,9 +5,6 @@
 #include "Script.hpp"
 #include "LangNative/LangNative.hpp"
 
-#if defined (ENABLE_PAWN)
-#include "LangPawn/LangPAWN.hpp"
-#endif
 #if defined (ENABLE_LUA)
 #include "LangLua/LangLua.hpp"
 #endif
@@ -34,13 +31,6 @@ Script::Script(const char *path)
         script_type = SCRIPT_CPP;
         lang = new LangNative();
     }
-#if defined (ENABLE_PAWN)
-    else if (strstr(path, ".amx"))
-    {
-        lang = new LangPAWN();
-        script_type = SCRIPT_PAWN;
-    }
-#endif
 #if defined (ENABLE_LUA)
     else if (strstr(path, ".lua") || strstr(path, ".t"))
     {

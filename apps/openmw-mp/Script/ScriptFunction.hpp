@@ -12,14 +12,7 @@
 #include "LangLua/LangLua.hpp"
 #endif
 
-#if defined (ENABLE_PAWN)
-#include <amx.h>
-#endif
-
 typedef unsigned long long(*ScriptFunc)();
-#if defined (ENABLE_PAWN)
-typedef std::string ScriptFuncPAWN;
-#endif
 #if defined (ENABLE_LUA)
 typedef std::string ScriptFuncLua;
 #endif
@@ -30,13 +23,6 @@ protected:
     union
     {
         ScriptFunc fCpp;
-#if defined (ENABLE_PAWN)
-        struct
-        {
-            AMX *amx;
-            ScriptFuncPAWN name;
-        } fPawn;
-#endif
 #if defined (ENABLE_LUA)
         struct
         {
@@ -53,16 +39,12 @@ protected:
     enum
     {
         SCRIPT_CPP,
-        SCRIPT_PAWN,
         SCRIPT_LUA
     };
 
     ScriptFunction(ScriptFunc fCpp, char ret_type, const std::string &def);
 #if defined (ENABLE_LUA)
     ScriptFunction(const ScriptFuncLua &fPawn, lua_State *lua, char ret_type, const std::string &def);
-#endif
-#if defined (ENABLE_PAWN)
-    ScriptFunction(const ScriptFuncPAWN &fPawn, AMX *amx, char ret_type, const std::string &def);
 #endif
     virtual ~ScriptFunction();
 

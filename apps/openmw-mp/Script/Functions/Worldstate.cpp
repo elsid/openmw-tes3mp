@@ -4,6 +4,7 @@
 #include <apps/openmw-mp/Networking.hpp>
 #include <apps/openmw-mp/Player.hpp>
 #include <apps/openmw-mp/Script/ScriptFunctions.hpp>
+#include <fstream>
 
 #include "Worldstate.hpp"
 

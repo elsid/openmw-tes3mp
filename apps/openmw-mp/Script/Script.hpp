@@ -24,7 +24,6 @@ private:
     enum
     {
         SCRIPT_CPP,
-        SCRIPT_PAWN,
         SCRIPT_LUA
     };
 
@@ -93,13 +92,6 @@ public:
 
             if (script->script_type == SCRIPT_CPP)
                 result = reinterpret_cast<FunctionEllipsis<CallBackReturn<I>>>(callback)(std::forward<Args>(args)...);
-#if defined (ENABLE_PAWN)
-            else if (script->script_type == SCRIPT_PAWN)
-            {
-                boost::any any = script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);
-                result = reinterpret_cast<CallBackReturn<I>> ((int)boost::any_cast<int64_t>(any)); // TODO: WTF?! int?!
-            }
-#endif
 #if defined (ENABLE_LUA)
             else if (script->script_type == SCRIPT_LUA)
             {
@@ -133,10 +125,6 @@ public:
 
             if (script->script_type == SCRIPT_CPP)
                 reinterpret_cast<FunctionEllipsis<CallBackReturn<I>>>(callback)(std::forward<Args>(args)...);
-#if defined (ENABLE_PAWN)
-            else if (script->script_type == SCRIPT_PAWN)
-                script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);
-#endif
 #if defined (ENABLE_LUA)
             else if (script->script_type == SCRIPT_LUA)
                 script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);

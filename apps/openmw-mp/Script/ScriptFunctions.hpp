@@ -24,7 +24,6 @@
 #include <Script/Functions/Stats.hpp>
 #include <Script/Functions/Worldstate.hpp>
 #include <RakNetTypes.h>
-//#include <amx/amx.h>
 #include <tuple>
 #include <apps/openmw-mp/Player.hpp>
 #include "ScriptFunction.hpp"

@@ -22,9 +22,6 @@ namespace mwmp
     public:
 
         Timer(ScriptFunc callback, long msec, const std::string& def, std::vector<boost::any> args);
-#if defined(ENABLE_PAWN)
-        Timer(AMX *amx, ScriptFuncPAWN callback, long msec, const std::string& def, std::vector<boost::any> args);
-#endif
 #if defined(ENABLE_LUA)
         Timer(lua_State *lua, ScriptFuncLua callback, long msec, const std::string& def, std::vector<boost::any> args);
 #endif
@@ -45,9 +42,6 @@ namespace mwmp
     class TimerAPI
     {
     public:
-#if defined(ENABLE_PAWN)
-        static int CreateTimerPAWN(AMX *amx, ScriptFuncPAWN callback, long msec, const std::string& def, std::vector<boost::any> args);
-#endif
 #if defined(ENABLE_LUA)
         static int CreateTimerLua(lua_State *lua, ScriptFuncLua callback, long msec, const std::string& def, std::vector<boost::any> args);
 #endif

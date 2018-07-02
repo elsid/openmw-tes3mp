@@ -200,7 +200,6 @@ int main(int argc, char *argv[])
 
     Utils::printVersion("TES3MP dedicated server", TES3MP_VERSION, version.mCommitHash, TES3MP_PROTO_VERSION);
 
-    setenv("AMXFILE", moddir.c_str(), 1);
     setenv("MOD_DIR", moddir.c_str(), 1); // hack for lua
 
     setenv("LUA_PATH", Utils::convertPath(plugin_home + "/scripts/?.lua" + ";"

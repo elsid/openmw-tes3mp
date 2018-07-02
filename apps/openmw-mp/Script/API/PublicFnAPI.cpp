@@ -25,14 +25,6 @@ Public::Public(ScriptFuncLua _public, lua_State *lua, const std::string &name, c
     publics.emplace(name, this);
 }
 
-#if defined(ENABLE_PAWN)
-Public::Public(ScriptFuncPAWN _public, AMX* amx, const std::string& name, char ret_type, const std::string& def): ScriptFunction(_public, amx, ret_type, def)
-{
-    publics.emplace(name, this);
-}
-#endif
-
-
 boost::any Public::Call(const std::string &name, const std::vector<boost::any> &args)
 {
     auto it = publics.find(name);
@@ -66,21 +58,6 @@ bool Public::IsLua(const std::string &name)
     return it->second->script_type == SCRIPT_LUA;
 #endif
 }
-
-bool Public::IsPAWN(const std::string &name)
-{
-#if !defined(ENABLE_PAWN)
-    return false;
-#else
-    auto it = publics.find(name);
-
-    if (it == publics.end())
-        throw runtime_error("Public with name \"" + name + "\" does not exist");
-
-    return it->second->script_type == SCRIPT_PAWN;
-#endif
-}
-
 
 void Public::DeleteAll()
 {

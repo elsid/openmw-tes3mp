@@ -17,14 +17,6 @@ Timer::Timer(ScriptFunc callback, long msec, const std::string& def, std::vector
     end = true;
 }
 
-#if defined(ENABLE_PAWN)
-Timer::Timer(AMX *amx, ScriptFuncPAWN callback, long msec, const std::string &def, std::vector<boost::any> args): ScriptFunction(callback, amx, 'v', def)
-{
-    targetMsec = msec;
-    this->args = args;
-    end = true;
-}
-#endif
 #if defined(ENABLE_LUA)
 Timer::Timer(lua_State *lua, ScriptFuncLua callback, long msec, const std::string& def, std::vector<boost::any> args): ScriptFunction(callback, lua, 'v', def)
 {
@@ -76,30 +68,6 @@ void Timer::Start()
 
 int TimerAPI::pointer = 0;
 std::unordered_map<int, Timer* > TimerAPI::timers;
-
-#if defined(ENABLE_PAWN)
-int TimerAPI::CreateTimerPAWN(AMX *amx, ScriptFuncPAWN callback, long msec, const string& def, std::vector<boost::any> args)
-{
-    int id = -1;
-
-    for (auto timer : timers)
-    {
-        if (timer.second != nullptr)
-            continue;
-        timer.second = new Timer(amx, callback, msec, def, args);
-        id = timer.first;
-    }
-
-    if (id == -1)
-    {
-        timers[pointer] = new Timer(amx, callback, msec, def, args);
-        id = pointer;
-        pointer++;
-    }
-
-    return id;
-}
-#endif
 
 #if defined(ENABLE_LUA)
 int TimerAPI::CreateTimerLua(lua_State *lua, ScriptFuncLua callback, long msec, const std::string& def, std::vector<boost::any> args)

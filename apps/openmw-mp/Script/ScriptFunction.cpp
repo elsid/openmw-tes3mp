@@ -14,10 +14,6 @@
 #include "LangLua/LangLua.hpp"
 #endif
 
-#if defined (ENABLE_PAWN)
-#include "LangPawn/LangPAWN.hpp"
-#endif
-
 using namespace std;
 
 ScriptFunction::ScriptFunction(ScriptFunc fCpp,char ret_type, const string &def) :
@@ -33,24 +29,9 @@ ScriptFunction::ScriptFunction(const ScriptFuncLua &fLua, lua_State *lua, char r
 }
 #endif
 
-#if defined (ENABLE_PAWN)
-ScriptFunction::ScriptFunction(const ScriptFuncPAWN &fPawn, AMX *amx, char ret_type, const string &def) :
-        fPawn({amx, fPawn}), def(def), ret_type(ret_type), script_type(SCRIPT_PAWN)
-{
-
-}
-#endif
-
 
 ScriptFunction::~ScriptFunction()
 {
-#if defined (ENABLE_PAWN)
-    if (script_type == SCRIPT_PAWN)
-        fPawn.name.~ScriptFuncPAWN();
-#if defined (ENABLE_LUA)
-    else
-#endif
-#endif
 #if defined (ENABLE_LUA)
     if (script_type == SCRIPT_LUA)
         fLua.name.~ScriptFuncLua();
@@ -63,37 +44,6 @@ boost::any ScriptFunction::Call(const vector<boost::any> &args)
 
     if (def.length() != args.size())
         throw runtime_error("Script call: Number of arguments does not match definition");
-#if defined (ENABLE_PAWN)
-    if (script_type == SCRIPT_PAWN)
-    {
-        LangPAWN langPawn(fPawn.amx);
-        boost::any any = langPawn.Call(fPawn.name.c_str(), def.c_str(), args);
-        result = boost::any();
-
-        cell ret = boost::any_cast<cell>(any);
-
-        switch (ret_type)
-        {
-            case 'i':
-                result = static_cast<unsigned int>(ret);
-                break;
-            case 'q':
-                result = static_cast<signed int>(ret);
-                break;
-            case 's':
-                throw runtime_error("Pawn call: the Pawn does not supported strings in public functions");
-            case 'f':
-
-                result =  static_cast<double>(amx_ctof(ret));
-                break;
-            case 'v':
-                result = boost::any();
-                break;
-            default:
-                throw runtime_error("Pawn call: Unknown return type" + ret_type);
-        }
-    }
-#endif
 #if defined (ENABLE_LUA)
     else if (script_type == SCRIPT_LUA)
     {
