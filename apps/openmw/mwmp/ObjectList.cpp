@@ -144,7 +144,7 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
             if (action == BaseObjectList::SET)
                 containerStore.clear();
 
-            bool isLocalDrop = isLocalEvent && containerSubAction == BaseObjectList::DROP;
+            // bool isLocalDrop = isLocalEvent && containerSubAction == BaseObjectList::DROP;
             bool isLocalDrag = isLocalEvent && containerSubAction == BaseObjectList::DRAG;
             bool isLocalTakeAll = isLocalEvent && containerSubAction == BaseObjectList::TAKE_ALL;
             std::string takeAllSound = "";
