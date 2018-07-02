@@ -26,7 +26,7 @@ void PacketMasterQuery::Packet(RakNet::BitStream *bs, bool send)
     if (send)
         bs->Write(packetID);
 
-    int serversCount = servers->size();
+    int32_t serversCount = servers->size();
 
     RW(serversCount, send);
 
@@ -36,7 +36,7 @@ void PacketMasterQuery::Packet(RakNet::BitStream *bs, bool send)
 
     QueryData server;
     string addr;
-    unsigned short port;
+    uint16_t port;
     while (serversCount--)
     {
         if (send)
@@ -49,6 +49,12 @@ void PacketMasterQuery::Packet(RakNet::BitStream *bs, bool send)
         RW(port, send);
 
         ProxyMasterPacket::addServer(this, server, send);
+
+        if(addr.empty())
+        {
+            std::cerr << "Address empty. Aborting PacketMasterQuery::Packet" << std::endl;
+            return;
+        }
 
         if (send)
             serverIt++;

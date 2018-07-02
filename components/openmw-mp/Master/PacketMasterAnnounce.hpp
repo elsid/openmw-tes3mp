@@ -15,12 +15,12 @@ namespace mwmp
     {
         friend class ProxyMasterPacket;
     public:
-        PacketMasterAnnounce(RakNet::RakPeerInterface *peer);
+        explicit PacketMasterAnnounce(RakNet::RakPeerInterface *peer);
 
-        virtual void Packet(RakNet::BitStream *bs, bool send);
+        void Packet(RakNet::BitStream *bs, bool send) override;
 
         void SetServer(QueryData *server);
-        void SetFunc(int keep);
+        void SetFunc(uint32_t keep);
         int GetFunc();
 
         enum Func
@@ -31,7 +31,7 @@ namespace mwmp
         };
     private:
         QueryData *server;
-        int func;
+        uint32_t func;
     };
 }
 

@@ -83,7 +83,7 @@ void MasterClient::SetRuleString(std::string key, std::string value)
     {
         ServerRule rule;
         rule.str = value;
-        rule.type = 's';
+        rule.type = ServerRule::Type::string;
         queryData.rules.insert({key, rule});
         updated = true;
     }
@@ -98,7 +98,7 @@ void MasterClient::SetRuleValue(std::string key, double value)
     {
         ServerRule rule;
         rule.val = value;
-        rule.type = 'v';
+        rule.type = ServerRule::Type::number;
         queryData.rules.insert({key, rule});
         updated = true;
     }

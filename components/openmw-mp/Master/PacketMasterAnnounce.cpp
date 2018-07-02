@@ -35,7 +35,7 @@ void PacketMasterAnnounce::SetServer(QueryData *_server)
     server = _server;
 }
 
-void PacketMasterAnnounce::SetFunc(int _func)
+void PacketMasterAnnounce::SetFunc(uint32_t _func)
 {
     func = _func;
 }

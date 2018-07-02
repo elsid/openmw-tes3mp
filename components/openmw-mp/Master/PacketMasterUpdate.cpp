@@ -24,7 +24,7 @@ void PacketMasterUpdate::Packet(RakNet::BitStream *bs, bool send)
         bs->Write(packetID);
 
     string addr = server->first.ToString(false);
-    unsigned short port = server->first.GetPort();
+    uint16_t port = server->first.GetPort();
 
     RW(addr, send);
     RW(port, send);

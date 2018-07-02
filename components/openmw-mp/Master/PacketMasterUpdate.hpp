@@ -15,9 +15,9 @@ namespace mwmp
     {
         friend class ProxyMasterPacket;
     public:
-        PacketMasterUpdate(RakNet::RakPeerInterface *peer);
+        explicit PacketMasterUpdate(RakNet::RakPeerInterface *peer);
 
-        virtual void Packet(RakNet::BitStream *bs, bool send);
+        void Packet(RakNet::BitStream *bs, bool send) override;
 
         void SetServer(std::pair<RakNet::SystemAddress, QueryData> *serverPair);
     private:
