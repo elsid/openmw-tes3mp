@@ -334,6 +334,7 @@ namespace MWMechanics
                 return effectIt->mDuration;
             }
         }
+        return 0.f;
     }
     /*
         End of tes3mp addition
