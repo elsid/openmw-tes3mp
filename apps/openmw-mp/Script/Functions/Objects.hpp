@@ -24,9 +24,14 @@
     {"GetObjectState",                        ObjectFunctions::GetObjectState},\
     {"GetObjectDoorState",                    ObjectFunctions::GetObjectDoorState},\
     {"GetObjectLockLevel",                    ObjectFunctions::GetObjectLockLevel},\
+    \
     {"GetObjectSummonState",                  ObjectFunctions::GetObjectSummonState},\
     {"GetObjectSummonDuration",               ObjectFunctions::GetObjectSummonDuration},\
     {"DoesObjectHavePlayerSummoner",          ObjectFunctions::DoesObjectHavePlayerSummoner},\
+    {"GetObjectSummonerRefId",                ObjectFunctions::GetObjectSummonerRefId},\
+    {"GetObjectSummonerRefNumIndex",          ObjectFunctions::GetObjectSummonerRefNumIndex},\
+    {"GetObjectSummonerMpNum",                ObjectFunctions::GetObjectSummonerMpNum},\
+    \
     {"GetObjectPosX",                         ObjectFunctions::GetObjectPosX},\
     {"GetObjectPosY",                         ObjectFunctions::GetObjectPosY},\
     {"GetObjectPosZ",                         ObjectFunctions::GetObjectPosZ},\
@@ -281,9 +286,37 @@ public:
     *
     * Only living actors can be summoned.
     *
-    * \return The summon state.
+    * \return Whether a player is the summoner of the object.
     */
     static bool DoesObjectHavePlayerSummoner(unsigned int i) noexcept;
+
+
+    /**
+    * \brief Get the refId of the summoner of the object at a certain index in the read object
+    * list's object changes.
+    *
+    * \param i The index of the summoner.
+    * \return The refNumIndex.
+    */
+    static const char *GetObjectSummonerRefId(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the refNumIndex of the summoner of the object at a certain index in the read object
+    * list's object changes.
+    *
+    * \param i The index of the summoner.
+    * \return The refNumIndex.
+    */
+    static int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the mpNum of the summoner of the object at a certain index in the read object list's
+    * object changes.
+    *
+    * \param i The index of the summoner.
+    * \return The mpNum.
+    */
+    static int GetObjectSummonerMpNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the X position of the object at a certain index in the read object list's object

@@ -128,6 +128,21 @@ bool ObjectFunctions::DoesObjectHavePlayerSummoner(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).master.isPlayer;
 }
 
+const char *ObjectFunctions::GetObjectSummonerRefId(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).master.refId.c_str();
+}
+
+int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).master.refNumIndex;
+}
+
+int ObjectFunctions::GetObjectSummonerMpNum(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).master.mpNum;
+}
+
 double ObjectFunctions::GetObjectPosX(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).position.pos[0];
