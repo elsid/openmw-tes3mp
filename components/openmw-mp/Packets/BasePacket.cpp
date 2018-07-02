@@ -17,6 +17,7 @@ BasePacket::BasePacket(RakNet::RakPeerInterface *peer)
 void BasePacket::Packet(RakNet::BitStream *bs, bool send)
 {
     this->bs = bs;
+    packetValid = true;
 
     if (send)
     {

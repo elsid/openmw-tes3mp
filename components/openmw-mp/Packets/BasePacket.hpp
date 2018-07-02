@@ -39,6 +39,11 @@ namespace mwmp
             return packetID;
         }
 
+        bool isPacketValid() const
+        {
+            return packetValid;
+        }
+
     protected:
         template<class templateType>
         void RW(templateType &data, uint32_t size, bool write)
@@ -112,6 +117,7 @@ namespace mwmp
         RakNet::BitStream *bsRead, *bsSend, *bs;
         RakNet::RakPeerInterface *peer;
         RakNet::RakNetGUID guid;
+        bool packetValid;
     };
 }
 

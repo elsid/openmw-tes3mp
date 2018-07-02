@@ -217,7 +217,7 @@ void Networking::update(RakNet::Packet *packet)
 
     bsIn.IgnoreBytes((unsigned int) RakNet::RakNetGUID::size()); // Ignore GUID from received packet
 
-    if (player == 0)
+    if (player == nullptr)
     {
         if (packet->data[0] == ID_GAME_PREINIT)
         {
@@ -228,6 +228,13 @@ void Networking::update(RakNet::Packet *packet)
             packetPreInit.SetReadStream(&bsIn);
             packetPreInit.setChecksums(&plugins);
             packetPreInit.Read();
+
+            if (!packetPreInit.isPacketValid())
+            {
+                LOG_APPEND(Log::LOG_ERROR, "Invalid packetPreInit");
+                peer->CloseConnection(packet->systemAddress, false); // close connection without notification
+                return;
+            }
 
             auto plugin = plugins.begin();
             if (samples.size() == plugins.size())
