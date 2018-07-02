@@ -14,11 +14,6 @@ BasePacket::BasePacket(RakNet::RakPeerInterface *peer)
     this->peer = peer;
 }
 
-BasePacket::~BasePacket()
-{
-
-}
-
 void BasePacket::Packet(RakNet::BitStream *bs, bool send)
 {
     this->bs = bs;
@@ -42,9 +37,9 @@ void BasePacket::SetSendStream(RakNet::BitStream *bitStream)
 
 void BasePacket::SetStreams(RakNet::BitStream *inStream, RakNet::BitStream *outStream)
 {
-    if (inStream != 0)
+    if (inStream != nullptr)
         bsRead = inStream;
-    if (outStream != 0)
+    if (outStream != nullptr)
         bsSend = outStream;
 }
 

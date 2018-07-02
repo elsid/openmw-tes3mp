@@ -12,9 +12,9 @@ namespace mwmp
     class BasePacket
     {
     public:
-        BasePacket(RakNet::RakPeerInterface *peer);
+        explicit BasePacket(RakNet::RakPeerInterface *peer);
 
-        virtual ~BasePacket();
+        virtual ~BasePacket() = default;
 
         virtual void Packet(RakNet::BitStream *bs, bool send);
         virtual uint32_t Send(bool toOtherPlayers = true);
@@ -29,19 +29,19 @@ namespace mwmp
         void SetStreams(RakNet::BitStream *inStream, RakNet::BitStream *outStream);
         virtual uint32_t RequestData(RakNet::RakNetGUID guid);
 
-        static size_t headerSize()
+        static inline uint32_t headerSize()
         {
-            return (size_t)(1 + RakNet::RakNetGUID::size()); // packetID + RakNetGUID (uint64_t)
+            return static_cast<uint32_t>(1 + RakNet::RakNetGUID::size()); // packetID + RakNetGUID (uint64_t)
         }
 
-        unsigned char GetPacketID()
+        uint8_t GetPacketID() const
         {
             return packetID;
         }
 
     protected:
         template<class templateType>
-        void RW(templateType &data, unsigned int size, bool write)
+        void RW(templateType &data, uint32_t size, bool write)
         {
             if (write)
                 bs->Write(data, size);
@@ -76,16 +76,16 @@ namespace mwmp
                 bs->Read(data);
         }
 
-        void RW(std::string &str, bool write, bool compress = 0)
+        void RW(std::string &str, bool write, std::string::size_type maxSize = std::string::npos, bool compress = false)
         {
             if (write)
             {
                 if (compress)
-                    RakNet::RakString::SerializeCompressed(str.c_str(), bs);
+                    RakNet::RakString::SerializeCompressed(str.substr(0, maxSize).c_str(), bs); // todo: remove extra copy of string
                 else
                 {
                     RakNet::RakString rstr;
-                    rstr = str.c_str();
+                    rstr.AppendBytes(str.c_str(), str.size() > maxSize ? maxSize : str.size());
                     bs->Write(rstr);
                 }
             }
@@ -96,15 +96,17 @@ namespace mwmp
                     rstr.DeserializeCompressed(bs);
                 else
                     bs->Read(rstr);
+
+                rstr.Truncate(rstr.GetLength() > maxSize ? maxSize : rstr.GetLength());
                 str = rstr.C_String();
             }
         }
 
     protected:
-        unsigned char packetID;
+        uint8_t packetID;
         PacketReliability reliability;
         PacketPriority priority;
-        int orderChannel;
+        int8_t orderChannel;
         RakNet::BitStream *bsRead, *bsSend, *bs;
         RakNet::RakPeerInterface *peer;
         RakNet::RakNetGUID guid;
