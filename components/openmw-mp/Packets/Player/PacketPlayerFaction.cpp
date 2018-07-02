@@ -29,7 +29,7 @@ void PacketPlayerFaction::Packet(RakNet::BitStream *bs, bool send)
         if (send)
             faction = player->factionChanges.factions.at(i);
 
-        RW(faction.factionId, send, 1);
+        RW(faction.factionId, send, true);
 
         if (player->factionChanges.action == FactionChanges::RANK)
             RW(faction.rank, send);

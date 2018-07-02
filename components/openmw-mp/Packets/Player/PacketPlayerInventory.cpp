@@ -33,7 +33,7 @@ void PacketPlayerInventory::Packet(RakNet::BitStream *bs, bool send)
         if (send)
             item = player->inventoryChanges.items.at(i);
 
-        RW(item.refId, send, 1);
+        RW(item.refId, send, true);
         RW(item.count, send);
         RW(item.charge, send);
         RW(item.enchantmentCharge, send);

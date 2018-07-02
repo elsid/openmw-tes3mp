@@ -28,12 +28,12 @@ void PacketPlayerJournal::Packet(RakNet::BitStream *bs, bool send)
             journalItem = player->journalChanges.journalItems.at(i);
 
         RW(journalItem.type, send);
-        RW(journalItem.quest, send, 1);
+        RW(journalItem.quest, send, true);
         RW(journalItem.index, send);
 
         if (journalItem.type == JournalItem::ENTRY)
         {
-            RW(journalItem.actorRefId, send, 1);
+            RW(journalItem.actorRefId, send, true);
         }
 
         if (!send)

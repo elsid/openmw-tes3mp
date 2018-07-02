@@ -27,7 +27,7 @@ void PacketPlayerBook::Packet(RakNet::BitStream *bs, bool send)
         if (send)
             book = player->bookChanges.books.at(i);
 
-        RW(book.bookId, send, 1);
+        RW(book.bookId, send, true);
 
         if (!send)
             player->bookChanges.books.push_back(book);

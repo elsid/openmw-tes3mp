@@ -27,7 +27,7 @@ void PacketObjectSpawn::Object(BaseObject &baseObject, bool send)
         }
         else
         {
-            RW(baseObject.master.refId, send, 1);
+            RW(baseObject.master.refId, send, true);
             RW(baseObject.master.refNumIndex, send);
             RW(baseObject.master.mpNum, send);
         }

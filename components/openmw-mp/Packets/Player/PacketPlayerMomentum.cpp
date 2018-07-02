@@ -13,5 +13,5 @@ void PacketPlayerMomentum::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
     
-    RW(player->momentum.pos, send, 1);
+    RW(player->momentum.pos, send, true);
 }

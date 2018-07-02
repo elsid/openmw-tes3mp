@@ -17,13 +17,13 @@ void mwmp::PacketPlayerCellChange::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    RW(player->cell.mData, send, 1);
-    RW(player->cell.mName, send, 1);
+    RW(player->cell.mData, send, true);
+    RW(player->cell.mName, send, true);
 
-    RW(player->previousCellPosition.pos, send, 1);
+    RW(player->previousCellPosition.pos, send, true);
 
     RW(player->isChangingRegion, send);
 
     if (player->isChangingRegion)
-        RW(player->cell.mRegion, send, 1);
+        RW(player->cell.mRegion, send, true);
 }

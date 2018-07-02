@@ -18,8 +18,8 @@ void mwmp::PacketPlayerClass::Packet(RakNet::BitStream *bs, bool send)
 
     if (player->charClass.mId.empty()) // custom class
     {
-        RW(player->charClass.mName, send, 1);
-        RW(player->charClass.mDescription, send, 1);
-        RW(player->charClass.mData, send, 1);
+        RW(player->charClass.mName, send, true);
+        RW(player->charClass.mDescription, send, true);
+        RW(player->charClass.mData, send, true);
     }
 }

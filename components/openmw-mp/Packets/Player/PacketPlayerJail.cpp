@@ -16,6 +16,6 @@ void PacketPlayerJail::Packet(RakNet::BitStream *bs, bool send)
     RW(player->jailDays, send);
     RW(player->ignoreJailTeleportation, send);
     RW(player->ignoreJailSkillIncreases, send);
-    RW(player->jailProgressText, send, 1);
-    RW(player->jailEndText, send, 1);
+    RW(player->jailProgressText, send, true);
+    RW(player->jailEndText, send, true);
 }

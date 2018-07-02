@@ -11,8 +11,8 @@ PacketActorPosition::PacketActorPosition(RakNet::RakPeerInterface *peer) : Actor
 
 void PacketActorPosition::Actor(BaseActor &actor, bool send)
 {
-    RW(actor.position, send, 1);
-    RW(actor.direction, send, 1);
+    RW(actor.position, send, true);
+    RW(actor.direction, send, true);
 
     actor.hasPositionData = true;
 }

@@ -28,8 +28,8 @@ void mwmp::PacketPlayerCellState::Packet(RakNet::BitStream *bs, bool send)
             cellState = player->cellStateChanges.cellStates.at(i);
         
         RW(cellState.type, send);
-        RW(cellState.cell.mData, send, 1);
-        RW(cellState.cell.mName, send, 1);
+        RW(cellState.cell.mData, send, true);
+        RW(cellState.cell.mName, send, true);
 
         if (!send)
             player->cellStateChanges.cellStates.push_back(cellState);

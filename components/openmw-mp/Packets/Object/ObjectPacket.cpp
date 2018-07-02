@@ -63,8 +63,8 @@ bool ObjectPacket::PacketHeader(RakNet::BitStream *bs, bool send)
 
     if (hasCellData)
     {
-        RW(objectList->cell.mData, send, 1);
-        RW(objectList->cell.mName, send, 1);
+        RW(objectList->cell.mData, send, true);
+        RW(objectList->cell.mName, send, true);
     }
 
     return true;

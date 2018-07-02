@@ -17,11 +17,11 @@ void PacketDoorDestination::Object(BaseObject &baseObject, bool send)
 
     if (baseObject.teleportState)
     {
-        RW(baseObject.destinationCell.mData, send, 1);
-        RW(baseObject.destinationCell.mName, send, 1);
+        RW(baseObject.destinationCell.mData, send, true);
+        RW(baseObject.destinationCell.mName, send, true);
 
-        RW(baseObject.destinationPosition.pos, send, 1);
-        RW(baseObject.destinationPosition.rot[0], send, 1);
-        RW(baseObject.destinationPosition.rot[2], send, 1);
+        RW(baseObject.destinationPosition.pos, send, true);
+        RW(baseObject.destinationPosition.rot[0], send, true);
+        RW(baseObject.destinationPosition.rot[2], send, true);
     }
 }

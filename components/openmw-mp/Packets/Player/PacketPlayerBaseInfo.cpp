@@ -16,15 +16,15 @@ void PacketPlayerBaseInfo::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    RW(player->npc.mName, send, 1);
-    RW(player->npc.mModel, send, 1);
-    RW(player->npc.mRace, send, 1);
-    RW(player->npc.mHair, send, 1);
-    RW(player->npc.mHead, send, 1);
+    RW(player->npc.mName, send, true);
+    RW(player->npc.mModel, send, true);
+    RW(player->npc.mRace, send, true);
+    RW(player->npc.mHair, send, true);
+    RW(player->npc.mHead, send, true);
 
     RW(player->npc.mFlags, send);
 
-    RW(player->birthsign, send, 1);
+    RW(player->birthsign, send, true);
 
     RW(player->resetStats, send);
 }

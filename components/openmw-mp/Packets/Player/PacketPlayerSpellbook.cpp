@@ -29,21 +29,21 @@ void PacketPlayerSpellbook::Packet(RakNet::BitStream *bs, bool send)
         if (send)
             spell = player->spellbookChanges.spells.at(i);
 
-        RW(spell.mId, send, 1);
+        RW(spell.mId, send, true);
 
         if(spell.mId.find("$dynamic") != string::npos)
         {
-            RW(spell.mName, send, 1);
+            RW(spell.mName, send, true);
 
-            RW(spell.mData.mType, send, 1);
-            RW(spell.mData.mCost, send, 1);
-            RW(spell.mData.mFlags, send, 1);
+            RW(spell.mData.mType, send, true);
+            RW(spell.mData.mCost, send, true);
+            RW(spell.mData.mFlags, send, true);
 
             int effectCount = 0;
             if (send)
                 effectCount = spell.mEffects.mList.size();
 
-            RW(effectCount, send, 1);
+            RW(effectCount, send, true);
 
             for (unsigned int j = 0; j < effectCount; j++)
             {
@@ -51,14 +51,14 @@ void PacketPlayerSpellbook::Packet(RakNet::BitStream *bs, bool send)
                 if (send)
                     effect = spell.mEffects.mList.at(j);
 
-                RW(effect.mEffectID, send, 1);
-                RW(effect.mSkill, send, 1);
-                RW(effect.mAttribute, send, 1);
-                RW(effect.mRange, send, 1);
-                RW(effect.mArea, send, 1);
-                RW(effect.mDuration, send, 1);
-                RW(effect.mMagnMin, send, 1);
-                RW(effect.mMagnMax, send, 1);
+                RW(effect.mEffectID, send, true);
+                RW(effect.mSkill, send, true);
+                RW(effect.mAttribute, send, true);
+                RW(effect.mRange, send, true);
+                RW(effect.mArea, send, true);
+                RW(effect.mDuration, send, true);
+                RW(effect.mMagnMin, send, true);
+                RW(effect.mMagnMax, send, true);
 
                 if(!send)
                     spell.mEffects.mList.push_back(effect);

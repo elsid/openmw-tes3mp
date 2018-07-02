@@ -22,7 +22,7 @@ namespace mwmp
         {
             PlayerPacket::Packet(bs, send);
 
-            RW(player->deathReason, send, 1);
+            RW(player->deathReason, send, true);
         }
     };
 }

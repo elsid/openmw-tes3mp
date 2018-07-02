@@ -11,9 +11,9 @@ PacketActorCellChange::PacketActorCellChange(RakNet::RakPeerInterface *peer) : A
 
 void PacketActorCellChange::Actor(BaseActor &actor, bool send)
 {
-    RW(actor.cell.mData, send, 1);
-    RW(actor.cell.mName, send, 1);
+    RW(actor.cell.mData, send, true);
+    RW(actor.cell.mName, send, true);
 
-    RW(actor.position, send, 1);
-    RW(actor.direction, send, 1);
+    RW(actor.position, send, true);
+    RW(actor.direction, send, true);
 }

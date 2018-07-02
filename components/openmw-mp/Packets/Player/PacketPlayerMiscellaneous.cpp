@@ -16,13 +16,13 @@ void PacketPlayerMiscellaneous::Packet(RakNet::BitStream *bs, bool send)
 
     if (player->miscellaneousChangeType == mwmp::MISCELLANEOUS_CHANGE_TYPE::MARK_LOCATION)
     {
-        RW(player->markCell.mData, send, 1);
-        RW(player->markCell.mName, send, 1);
+        RW(player->markCell.mData, send, true);
+        RW(player->markCell.mName, send, true);
 
         RW(player->markPosition.pos, send);
         RW(player->markPosition.rot[0], send);
         RW(player->markPosition.rot[2], send);
     }
     else if (player->miscellaneousChangeType == mwmp::MISCELLANEOUS_CHANGE_TYPE::SELECTED_SPELL)
-        RW(player->selectedSpellId, send, 1);
+        RW(player->selectedSpellId, send, true);
 }
