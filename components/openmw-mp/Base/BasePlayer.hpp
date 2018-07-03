@@ -233,15 +233,15 @@ namespace mwmp
 
         // Track only the indexes of the attributes that have been changed,
         // with the attribute values themselves being stored in creatureStats.mAttributes
-        std::vector<int> attributeIndexChanges;
+        std::vector<uint8_t> attributeIndexChanges;
 
         // Track only the indexes of the skills that have been changed,
         // with the skill values themselves being stored in npcStats.mSkills
-        std::vector<int> skillIndexChanges;
+        std::vector<uint8_t> skillIndexChanges;
 
         // Track only the indexes of the dynamic states that have been changed,
         // with the dynamicStats themselves being stored in creatureStats.mDynamic
-        std::vector<int> statsDynamicIndexChanges;
+        std::vector<uint8_t> statsDynamicIndexChanges;
 
         // Track only the indexes of the equipment items that have been changed,
         // with the items themselves being stored in equipmentItems

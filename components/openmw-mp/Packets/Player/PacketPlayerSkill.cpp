@@ -38,6 +38,11 @@ void PacketPlayerSkill::Packet(RakNet::BitStream *bs, bool send)
         for (auto &&skillId : player->skillIndexChanges)
         {
             RW(skillId, send);
+            if (skillId >= 27)
+            {
+                packetValid = false;
+                return;
+            }
             RW(player->npcStats.mSkills[skillId], send);
         }
     }

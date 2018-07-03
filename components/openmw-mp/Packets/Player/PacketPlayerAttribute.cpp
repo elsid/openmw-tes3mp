@@ -39,6 +39,12 @@ void PacketPlayerAttribute::Packet(RakNet::BitStream *bs, bool send)
         {
             RW(attributeIndex, send);
 
+            if (attributeIndex >= 8)
+            {
+                packetValid = false;
+                return;
+            }
+
             RW(player->creatureStats.mAttributes[attributeIndex], send);
             RW(player->npcStats.mSkillIncrease[attributeIndex], send);
         }

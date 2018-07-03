@@ -37,7 +37,11 @@ void PacketPlayerStatsDynamic::Packet(RakNet::BitStream *bs, bool send)
         for (auto &&statsDynamicIndex : player->statsDynamicIndexChanges)
         {
             RW(statsDynamicIndex, send);
-
+            if (statsDynamicIndex >= 3)
+            {
+                packetValid = false;
+                return;
+            }
             RW(player->creatureStats.mDynamic[statsDynamicIndex], send);
         }
     }
