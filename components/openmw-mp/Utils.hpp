@@ -5,6 +5,7 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <algorithm>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -27,8 +28,11 @@ namespace Utils
 
     bool compareDoubles(double a, double b, double epsilon);
 
-    bool vectorContains(std::vector<int>* vectorChecked, int value);
-    bool vectorContains(std::vector<std::string>* vectorChecked, std::string value);
+    template <class Type>
+    bool vectorContains(const std::vector<Type> &vectorChecked, const Type &value)
+    {
+        return std::find(vectorChecked.begin(), vectorChecked.end(), value) != vectorChecked.end();
+    }
 
     std::string replaceString(const std::string &source, const char *find, const char *replace);
 

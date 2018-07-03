@@ -45,7 +45,7 @@ void ItemFunctions::EquipItem(unsigned short pid, unsigned short slot, const cha
     player->equipmentItems[slot].charge = charge;
     player->equipmentItems[slot].enchantmentCharge = enchantmentCharge;
 
-    if (!Utils::vectorContains(&player->equipmentIndexChanges, slot))
+    if (!Utils::vectorContains(player->equipmentIndexChanges, slot))
         player->equipmentIndexChanges.push_back(slot);
 }
 

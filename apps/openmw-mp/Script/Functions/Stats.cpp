@@ -358,7 +358,7 @@ void StatsFunctions::SetHealthBase(unsigned short pid, double value) noexcept
 
     player->creatureStats.mDynamic[0].mBase = value;
 
-    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 0))
+    if (!Utils::vectorContains(player->statsDynamicIndexChanges, 0))
         player->statsDynamicIndexChanges.push_back(0);
 }
 
@@ -369,7 +369,7 @@ void StatsFunctions::SetHealthCurrent(unsigned short pid, double value) noexcept
 
     player->creatureStats.mDynamic[0].mCurrent = value;
 
-    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 0))
+    if (!Utils::vectorContains(player->statsDynamicIndexChanges, 0))
         player->statsDynamicIndexChanges.push_back(0);
 }
 
@@ -380,7 +380,7 @@ void StatsFunctions::SetMagickaBase(unsigned short pid, double value) noexcept
 
     player->creatureStats.mDynamic[1].mBase = value;
 
-    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 1))
+    if (!Utils::vectorContains(player->statsDynamicIndexChanges, 1))
         player->statsDynamicIndexChanges.push_back(1);
 }
 
@@ -391,7 +391,7 @@ void StatsFunctions::SetMagickaCurrent(unsigned short pid, double value) noexcep
 
     player->creatureStats.mDynamic[1].mCurrent = value;
 
-    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 1))
+    if (!Utils::vectorContains(player->statsDynamicIndexChanges, 1))
         player->statsDynamicIndexChanges.push_back(1);
 }
 
@@ -402,7 +402,7 @@ void StatsFunctions::SetFatigueBase(unsigned short pid, double value) noexcept
 
     player->creatureStats.mDynamic[2].mBase = value;
 
-    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 2))
+    if (!Utils::vectorContains(player->statsDynamicIndexChanges, 2))
         player->statsDynamicIndexChanges.push_back(2);
 }
 
@@ -413,7 +413,7 @@ void StatsFunctions::SetFatigueCurrent(unsigned short pid, double value) noexcep
 
     player->creatureStats.mDynamic[2].mCurrent = value;
 
-    if (!Utils::vectorContains(&player->statsDynamicIndexChanges, 2))
+    if (!Utils::vectorContains(player->statsDynamicIndexChanges, 2))
         player->statsDynamicIndexChanges.push_back(2);
 }
 
@@ -427,7 +427,7 @@ void StatsFunctions::SetAttributeBase(unsigned short pid, unsigned short attribu
 
     player->creatureStats.mAttributes[attributeId].mBase = value;
 
-    if (!Utils::vectorContains(&player->attributeIndexChanges, attributeId))
+    if (!Utils::vectorContains(player->attributeIndexChanges, attributeId))
         player->attributeIndexChanges.push_back(attributeId);
 }
 
@@ -441,7 +441,7 @@ void StatsFunctions::ClearAttributeModifier(unsigned short pid, unsigned short a
 
     player->creatureStats.mAttributes[attributeId].mMod = 0;
 
-    if (!Utils::vectorContains(&player->attributeIndexChanges, attributeId))
+    if (!Utils::vectorContains(player->attributeIndexChanges, attributeId))
         player->attributeIndexChanges.push_back(attributeId);
 }
 
@@ -455,7 +455,7 @@ void StatsFunctions::SetSkillBase(unsigned short pid, unsigned short skillId, in
 
     player->npcStats.mSkills[skillId].mBase = value;
 
-    if (!Utils::vectorContains(&player->skillIndexChanges, skillId))
+    if (!Utils::vectorContains(player->skillIndexChanges, skillId))
         player->skillIndexChanges.push_back(skillId);
 }
 
@@ -469,7 +469,7 @@ void StatsFunctions::ClearSkillModifier(unsigned short pid, unsigned short skill
 
     player->npcStats.mSkills[skillId].mMod = 0;
 
-    if (!Utils::vectorContains(&player->skillIndexChanges, skillId))
+    if (!Utils::vectorContains(player->skillIndexChanges, skillId))
         player->skillIndexChanges.push_back(skillId);
 }
 
@@ -483,7 +483,7 @@ void StatsFunctions::SetSkillProgress(unsigned short pid, unsigned short skillId
 
     player->npcStats.mSkills[skillId].mProgress = value;
 
-    if (!Utils::vectorContains(&player->skillIndexChanges, skillId))
+    if (!Utils::vectorContains(player->skillIndexChanges, skillId))
         player->skillIndexChanges.push_back(skillId);
 }
 
@@ -497,7 +497,7 @@ void StatsFunctions::SetSkillIncrease(unsigned short pid, unsigned int attribute
 
     player->npcStats.mSkillIncrease[attributeId] = value;
 
-    if (!Utils::vectorContains(&player->attributeIndexChanges, attributeId))
+    if (!Utils::vectorContains(player->attributeIndexChanges, attributeId))
         player->attributeIndexChanges.push_back(attributeId);
 }
 

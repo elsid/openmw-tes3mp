@@ -59,7 +59,7 @@ namespace MWClass
         {
             mwmp::BaseWorldstate *worldstate = mwmp::Main::get().getNetworking()->getWorldstate();
 
-            if (worldstate->hasPlacedObjectCollision || Utils::vectorContains(&worldstate->enforcedCollisionRefIds, ptr.getCellRef().getRefId()))
+            if (worldstate->hasPlacedObjectCollision || Utils::vectorContains(worldstate->enforcedCollisionRefIds, ptr.getCellRef().getRefId()))
             {
                 if (worldstate->useActorCollisionForPlacedObjects)
                     physics.addObject(ptr, model, MWPhysics::CollisionType_Actor);
