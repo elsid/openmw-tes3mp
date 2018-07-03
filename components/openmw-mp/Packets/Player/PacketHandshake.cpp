@@ -16,6 +16,11 @@ PacketHandshake::PacketHandshake(RakNet::RakPeerInterface *peer) : PlayerPacket(
 void PacketHandshake::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
-    RW(player->npc.mName, send);
-    RW(player->passw, send);
+
+    if (!RW(player->npc.mName, send, true, maxNameLen) ||
+        !RW(player->passw, send, true, maxPasswLen))
+    {
+        packetValid = false;
+        return;
+    }
 }

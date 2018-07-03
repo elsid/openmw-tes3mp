@@ -15,6 +15,9 @@ namespace mwmp
         PacketHandshake(RakNet::RakPeerInterface *peer);
 
         virtual void Packet(RakNet::BitStream *bs, bool send);
+
+        const static uint32_t maxNameLen = 256;
+        const static uint32_t maxPasswLen = 256;
     };
 }
 

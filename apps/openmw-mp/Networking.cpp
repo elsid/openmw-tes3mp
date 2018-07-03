@@ -99,6 +99,13 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
         myPacket->setPlayer(player);
         myPacket->Read();
 
+        if (!myPacket->isPacketValid())
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Invalid handshake packet from %d", player->getId());
+            kickPlayer(player->guid);
+            return;
+        }
+
         if (player->isHandshaked())
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong handshake with player %d, name: %s", player->getId(),
