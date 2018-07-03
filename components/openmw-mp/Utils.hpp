@@ -28,8 +28,8 @@ namespace Utils
 
     bool compareDoubles(double a, double b, double epsilon);
 
-    template <class Type>
-    bool vectorContains(const std::vector<Type> &vectorChecked, const Type &value)
+    template <class Type, class Type2>
+    bool vectorContains(const std::vector<Type> &vectorChecked, const Type2 &value)
     {
         return std::find(vectorChecked.begin(), vectorChecked.end(), value) != vectorChecked.end();
     }
