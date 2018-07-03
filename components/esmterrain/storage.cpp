@@ -24,6 +24,8 @@ namespace ESMTerrain
     };
 
     LandObject::LandObject()
+        : mLand(nullptr)
+        , mLoadFlags(0)
     {
     }
 
@@ -361,6 +363,11 @@ namespace ESMTerrain
 
     std::string Storage::getTextureName(UniqueTextureId id)
     {
+        // Goes under used terrain blend transitions
+        static const std::string baseTexture = "textures\\tx_black_01.dds";
+        if (id.first == -1)
+            return baseTexture;
+
         static const std::string defaultTexture = "textures\\_land_default.dds";
         if (id.first == 0)
             return defaultTexture; // Not sure if the default texture really is hardcoded?
@@ -396,11 +403,9 @@ namespace ESMTerrain
         // Save the used texture indices so we know the total number of textures
         // and number of required blend maps
         std::set<UniqueTextureId> textureIndices;
-        // Due to the way the blending works, the base layer will always shine through in between
-        // blend transitions (eg halfway between two texels, both blend values will be 0.5, so 25% of base layer visible).
-        // To get a consistent look, we need to make sure to use the same base layer in all cells.
-        // So we're always adding _land_default.dds as the base layer here, even if it's not referenced in this cell.
-        textureIndices.insert(std::make_pair(0,0));
+        // Due to the way the blending works, the base layer will bleed between texture transitions so we want it to be a black texture
+        // The subsequent passes are added instead of blended, so this gives the correct result
+        textureIndices.insert(std::make_pair(-1,0)); // -1 goes to tx_black_01
 
         LandCache cache;
 
@@ -430,13 +435,16 @@ namespace ESMTerrain
 
         // Second iteration - create and fill in the blend maps
         const int blendmapSize = (realTextureSize-1) * chunkSize + 1;
+        // We need to upscale the blendmap 2x with nearest neighbor sampling to look like Vanilla
+        const int imageScaleFactor = 2;
+        const int blendmapImageSize = blendmapSize * imageScaleFactor;
 
         for (int i=0; i<numBlendmaps; ++i)
         {
             GLenum format = pack ? GL_RGBA : GL_ALPHA;
 
             osg::ref_ptr<osg::Image> image (new osg::Image);
-            image->allocateImage(blendmapSize, blendmapSize, 1, format, GL_UNSIGNED_BYTE);
+            image->allocateImage(blendmapImageSize, blendmapImageSize, 1, format, GL_UNSIGNED_BYTE);
             unsigned char* pData = image->data();
 
             for (int y=0; y<blendmapSize; ++y)
@@ -449,13 +457,17 @@ namespace ESMTerrain
                     int blendIndex = (pack ? static_cast<int>(std::floor((layerIndex - 1) / 4.f)) : layerIndex - 1);
                     int channel = pack ? std::max(0, (layerIndex-1) % 4) : 0;
 
-                    if (blendIndex == i)
-                        pData[(blendmapSize - y - 1)*blendmapSize*channels + x*channels + channel] = 255;
-                    else
-                        pData[(blendmapSize - y - 1)*blendmapSize*channels + x*channels + channel] = 0;
+                    int alpha = (blendIndex == i) ? 255 : 0;
+
+                    int realY = (blendmapSize - y - 1)*imageScaleFactor;
+                    int realX = x*imageScaleFactor;
+
+                    pData[((realY+0)*blendmapImageSize + realX + 0)*channels + channel] = alpha;
+                    pData[((realY+1)*blendmapImageSize + realX + 0)*channels + channel] = alpha;
+                    pData[((realY+0)*blendmapImageSize + realX + 1)*channels + channel] = alpha;
+                    pData[((realY+1)*blendmapImageSize + realX + 1)*channels + channel] = alpha;
                 }
             }
-
             blendmaps.push_back(image);
         }
     }
@@ -608,15 +620,6 @@ namespace ESMTerrain
 
         mLayerInfoMap[texture] = info;
 
-        return info;
-    }
-
-    Terrain::LayerInfo Storage::getDefaultLayer()
-    {
-        Terrain::LayerInfo info;
-        info.mDiffuseMap = "textures\\_land_default.dds";
-        info.mParallax = false;
-        info.mSpecular = false;
         return info;
     }
 

@@ -31,6 +31,8 @@
 #include <components/sceneutil/skeleton.hpp>
 #include <components/sceneutil/positionattitudetransform.hpp>
 
+#include <components/settings/settings.hpp>
+
 #include <components/fallback/fallback.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -98,7 +100,13 @@ namespace
 
         void apply(osg::MatrixTransform& trans)
         {
-            mMap[Misc::StringUtils::lowerCase(trans.getName())] = &trans;
+            // Take transformation for first found node in file
+            const std::string nodeName = Misc::StringUtils::lowerCase(trans.getName());
+            if (mMap.find(nodeName) == mMap.end())
+            {
+                mMap[nodeName] = &trans;
+            }
+
             traverse(trans);
         }
 
@@ -466,6 +474,8 @@ namespace MWRender
             mAnimationTimePtr[i].reset(new AnimationTime);
 
         mLightListCallback = new SceneUtil::LightListCallback;
+
+        mUseAdditionalSources = Settings::Manager::getBool ("use additional anim sources", "Game");
     }
 
     Animation::~Animation()
@@ -536,6 +546,35 @@ namespace MWRender
         return mKeyframes->mTextKeys;
     }
 
+    void Animation::loadAllAnimationsInFolder(const std::string &model, const std::string &baseModel)
+    {
+        const std::map<std::string, VFS::File*>& index = mResourceSystem->getVFS()->getIndex();
+
+        std::string animationPath = model;
+        if (animationPath.find("meshes") == 0)
+        {
+            animationPath.replace(0, 6, "animations");
+        }
+        animationPath.replace(animationPath.size()-3, 3, "/");
+
+        mResourceSystem->getVFS()->normalizeFilename(animationPath);
+
+        std::map<std::string, VFS::File*>::const_iterator found = index.lower_bound(animationPath);
+        while (found != index.end())
+        {
+            const std::string& name = found->first;
+            if (name.size() >= animationPath.size() && name.substr(0, animationPath.size()) == animationPath)
+            {
+                size_t pos = name.find_last_of('.');
+                if (pos != std::string::npos && name.compare(pos, name.size()-pos, ".kf") == 0)
+                    addSingleAnimSource(name, baseModel);
+            }
+            else
+                break;
+            ++found;
+        }
+    }
+
     void Animation::addAnimSource(const std::string &model, const std::string& baseModel)
     {
         std::string kfname = model;
@@ -546,6 +585,14 @@ namespace MWRender
         else
             return;
 
+        addSingleAnimSource(kfname, baseModel);
+
+        if (mUseAdditionalSources)
+            loadAllAnimationsInFolder(kfname, baseModel);
+    }
+
+    void Animation::addSingleAnimSource(const std::string &kfname, const std::string& baseModel)
+    {
         if(!mResourceSystem->getVFS()->exists(kfname))
             return;
 
@@ -1048,11 +1095,28 @@ namespace MWRender
 
     osg::Vec3f Animation::runAnimation(float duration)
     {
+        // If we have scripted animations, play only them
+        bool hasScriptedAnims = false;
+        for (AnimStateMap::iterator stateiter = mStates.begin(); stateiter != mStates.end(); stateiter++)
+        {
+            if (stateiter->second.mPriority.contains(int(MWMechanics::Priority_Persistent)) && stateiter->second.mPlaying)
+            {
+                hasScriptedAnims = true;
+                break;
+            }
+        }
+
         osg::Vec3f movement(0.f, 0.f, 0.f);
         AnimStateMap::iterator stateiter = mStates.begin();
         while(stateiter != mStates.end())
         {
             AnimState &state = stateiter->second;
+            if (hasScriptedAnims && !state.mPriority.contains(int(MWMechanics::Priority_Persistent)))
+            {
+                ++stateiter;
+                continue;
+            }
+
             const NifOsg::TextKeyMap &textkeys = state.mSource->getTextKeys();
             NifOsg::TextKeyMap::const_iterator textkey(textkeys.upper_bound(state.getTime()));
 
@@ -1125,6 +1189,10 @@ namespace MWRender
             if (enable)
                 mHeadController->setRotate(osg::Quat(mHeadPitchRadians, osg::Vec3f(1,0,0)) * osg::Quat(mHeadYawRadians, osg::Vec3f(0,0,1)));
         }
+
+        // Scripted animations should not cause movement
+        if (hasScriptedAnims)
+            return osg::Vec3f(0, 0, 0);
 
         return movement;
     }

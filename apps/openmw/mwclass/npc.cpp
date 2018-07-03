@@ -367,8 +367,10 @@ namespace MWClass
 
                 data->mNpcStats.setNeedRecalcDynamicStats(true);
             }
+
+            // Persistent actors with 0 health do not play death animation
             if (data->mNpcStats.isDead())
-                data->mNpcStats.setDeathAnimationFinished(true);
+                data->mNpcStats.setDeathAnimationFinished(ptr.getClass().isPersistent(ptr));
 
             // race powers
             const ESM::Race *race = MWBase::Environment::get().getWorld()->getStore().get<ESM::Race>().find(ref->mBase->mRace);
@@ -873,22 +875,24 @@ namespace MWClass
                 float x = damage / (damage + getArmorRating(ptr));
                 damage *= std::max(gmst.fCombatArmorMinMult->getFloat(), x);
                 int damageDiff = static_cast<int>(unmitigatedDamage - damage);
-                if (damage < 1)
-                    damage = 1;
+                damage = std::max(1.f, damage);
+                damageDiff = std::max(1, damageDiff);
 
                 MWWorld::InventoryStore &inv = getInventoryStore(ptr);
                 MWWorld::ContainerStoreIterator armorslot = inv.getSlot(hitslot);
                 MWWorld::Ptr armor = ((armorslot != inv.end()) ? *armorslot : MWWorld::Ptr());
                 if(!armor.isEmpty() && armor.getTypeName() == typeid(ESM::Armor).name())
                 {
-                    int armorhealth = armor.getClass().getItemHealth(armor);
-                    armorhealth -= std::min(std::max(1, damageDiff),
-                                                 armorhealth);
-                    armor.getCellRef().setCharge(armorhealth);
+                    if (attacker.isEmpty() || (!attacker.isEmpty() && !(object.isEmpty() && !attacker.getClass().isNpc()))) // Unarmed creature attacks don't affect armor condition
+                    {
+                        int armorhealth = armor.getClass().getItemHealth(armor);
+                        armorhealth -= std::min(damageDiff, armorhealth);
+                        armor.getCellRef().setCharge(armorhealth);
 
-                    // Armor broken? unequip it
-                    if (armorhealth == 0)
-                        armor = *inv.unequipItem(armor, ptr);
+                        // Armor broken? unequip it
+                        if (armorhealth == 0)
+                            armor = *inv.unequipItem(armor, ptr);
+                    }
 
                     if (ptr == MWMechanics::getPlayer())
                         skillUsageSucceeded(ptr, armor.getClass().getEquipmentSkill(armor), 0);
@@ -1507,6 +1511,9 @@ namespace MWClass
     {
         const MWMechanics::CreatureStats& creatureStats = ptr.getClass().getCreatureStats(ptr);
         if (ptr.getRefData().getCount() > 0 && !creatureStats.isDead())
+            return;
+
+        if (!creatureStats.isDeathAnimationFinished())
             return;
 
         const MWWorld::Store<ESM::GameSetting>& gmst = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>();

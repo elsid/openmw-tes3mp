@@ -22,6 +22,7 @@ Programmers
     alexanderkjall
     Alexander Nadeau (wareya)
     Alexander Olofsson (Ace)
+    Alex S (docwest)
     Allofich
     Andrei Kortunov (akortunov)
     AnyOldName3
@@ -37,6 +38,7 @@ Programmers
     Britt Mathis (galdor557)
     Capostrophic
     cc9cii
+    Cédric Mocquillon
     Chris Boyce (slothlife)
     Chris Robinson (KittyCat)
     Cory F. Cohen (cfcohen)
@@ -62,6 +64,8 @@ Programmers
     Evgeniy Mineev (sandstranger)
     Federico Guerra (FedeWar)
     Fil Krynicki (filkry)
+    Finbar Crago (finbar-crago)
+    Florian Weber (Florianjw)
     Gašper Sedej
     gugus/gus
     Hallfaer Tuilinn
@@ -171,6 +175,7 @@ Programmers
 Documentation
 -------------
 
+    Adam Bowen (adamnbowen)
     Alejandro Sanchez (HiPhish)
     Bodillium
     Bret Curtis (psi29a)

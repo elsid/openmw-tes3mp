@@ -588,7 +588,7 @@ namespace MWMechanics
                         || (effectIt->mEffectID == ESM::MagicEffect::CommandCreature && target.getTypeName() == typeid(ESM::Creature).name()))
                         && !caster.isEmpty() && caster.getClass().isActor() && target != getPlayer() && magnitude >= target.getClass().getCreatureStats(target).getLevel())
                         {
-                            MWMechanics::AiFollow package(caster.getCellRef().getRefId(), true);
+                            MWMechanics::AiFollow package(caster, true);
                             target.getClass().getCreatureStats(target).getAiSequence().stack(package, target);
                         }
 
@@ -685,8 +685,9 @@ namespace MWMechanics
             {
                 const MWWorld::ESMStore& store = MWBase::Environment::get().getWorld()->getStore();
                 const ESM::MagicEffect *magiceffect = store.get<ESM::MagicEffect>().find(effectId);
-                MWRender::Animation* animation = MWBase::Environment::get().getWorld()->getAnimation(target);     
-                animation->addSpellCastGlow(magiceffect);
+                MWRender::Animation* animation = MWBase::Environment::get().getWorld()->getAnimation(target);
+                if (animation)
+                    animation->addSpellCastGlow(magiceffect);
                 if (target.getCellRef().getLockLevel() < magnitude) //If the door is not already locked to a higher value, lock it to spell magnitude
                 {
                     if (caster == getPlayer())
@@ -712,15 +713,17 @@ namespace MWMechanics
             {
                 const MWWorld::ESMStore& store = MWBase::Environment::get().getWorld()->getStore();
                 const ESM::MagicEffect *magiceffect = store.get<ESM::MagicEffect>().find(effectId);
-                MWRender::Animation* animation = MWBase::Environment::get().getWorld()->getAnimation(target);     
-                animation->addSpellCastGlow(magiceffect);
+                MWRender::Animation* animation = MWBase::Environment::get().getWorld()->getAnimation(target);
+                if (animation)
+                    animation->addSpellCastGlow(magiceffect);
                 if (target.getCellRef().getLockLevel() <= magnitude)
                 {
                     if (target.getCellRef().getLockLevel() > 0)
                     {
                         MWBase::Environment::get().getSoundManager()->playSound3D(target, "Open Lock", 1.f, 1.f);
-                        if (!caster.isEmpty() && caster.getClass().isActor())
-                            MWBase::Environment::get().getMechanicsManager()->objectOpened(caster, target);
+                        if (!caster.isEmpty())
+                            MWBase::Environment::get().getMechanicsManager()->objectOpened(getPlayer(), target);
+                            // Use the player instead of the caster for vanilla crime compatibility
 
                         if (caster == getPlayer())
                             MWBase::Environment::get().getWindowManager()->messageBox("#{sMagicOpenSuccess}");

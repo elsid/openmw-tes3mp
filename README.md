@@ -3,7 +3,7 @@ TES3MP
 
 [![Build Status](https://travis-ci.org/TES3MP/openmw-tes3mp.svg?branch=master)](https://travis-ci.org/TES3MP/openmw-tes3mp)
 
-TES3MP is a project aiming to add multiplayer functionality to [OpenMW](https://github.com/OpenMW/openmw), a free and open source engine recreation of the popular Bethesda Softworks game "The Elder Scrolls III: Morrowind".
+TES3MP is a project aiming to add multiplayer functionality to [OpenMW](https://github.com/OpenMW/openmw), an open-source game engine that supports playing "The Elder Scrolls III: Morrowind" by Bethesda Softworks.
 
 * TES3MP version: 0.6.3
 * OpenMW version: 0.44.0

@@ -577,6 +577,10 @@ void CharacterController::refreshIdleAnims(const WeaponInfo* weap, CharacterStat
 
 void CharacterController::refreshCurrentAnims(CharacterState idle, CharacterState movement, JumpingState jump, bool force)
 {
+    // If the current animation is persistent, do not touch it
+    if (isPersistentAnimPlaying())
+        return;
+
     if (mPtr.getClass().isActor())
         refreshHitRecoilAnims();
 
@@ -774,11 +778,17 @@ void CharacterController::playRandomDeath(float startpoint)
     {
         mDeathState = chooseRandomDeathState();
     }
+
+    // Do not interrupt scripted animation by death
+    if (isPersistentAnimPlaying())
+        return;
+
     playDeath(startpoint, mDeathState);
 }
 
 CharacterController::CharacterController(const MWWorld::Ptr &ptr, MWRender::Animation *anim)
     : mPtr(ptr)
+    , mWeapon(MWWorld::Ptr())
     , mAnimation(anim)
     , mIdleState(CharState_None)
     , mMovementState(CharState_None)
@@ -858,8 +868,8 @@ CharacterController::CharacterController(const MWWorld::Ptr &ptr, MWRender::Anim
         mIdleState = CharState_Idle;
     }
 
-
-    if(mDeathState == CharState_None)
+    // Do not update animation status for dead actors
+    if(mDeathState == CharState_None && (!cls.isActor() || !cls.getCreatureStats(mPtr).isDead()))
         refreshCurrentAnims(mIdleState, mMovementState, mJumpState, true);
 
     mAnimation->runAnimation(0.f);
@@ -1216,17 +1226,26 @@ bool CharacterController::updateWeaponState()
 
     const bool isWerewolf = cls.isNpc() && cls.getNpcStats(mPtr).isWerewolf();
 
-    std::string soundid;
+    std::string upSoundId;
+    std::string downSoundId;
     if (mPtr.getClass().hasInventoryStore(mPtr))
     {
         MWWorld::InventoryStore &inv = cls.getInventoryStore(mPtr);
-        MWWorld::ConstContainerStoreIterator weapon = getActiveWeapon(stats, inv, &weaptype);
-        if(weapon != inv.end() && !(weaptype == WeapType_None && mWeaponType == WeapType_Spell))
-        {
-            soundid = (weaptype == WeapType_None) ?
-                                   weapon->getClass().getDownSoundId(*weapon) :
-                                   weapon->getClass().getUpSoundId(*weapon);
-        }
+        MWWorld::ContainerStoreIterator weapon = getActiveWeapon(stats, inv, &weaptype);
+        if(stats.getDrawState() == DrawState_Spell)
+            weapon = inv.getSlot(MWWorld::InventoryStore::Slot_CarriedRight);
+
+        if(weapon != inv.end() && mWeaponType != WeapType_HandToHand && weaptype > WeapType_HandToHand && weaptype < WeapType_Spell)
+            upSoundId = weapon->getClass().getUpSoundId(*weapon);
+
+        if(weapon != inv.end() && mWeaponType > WeapType_HandToHand && mWeaponType < WeapType_Spell)
+            downSoundId = weapon->getClass().getDownSoundId(*weapon);
+
+        // weapon->HtH switch: weapon is empty already, so we need to take sound from previous weapon
+        if(weapon == inv.end() && !mWeapon.isEmpty() && weaptype == WeapType_HandToHand && mWeaponType != WeapType_Spell)
+            downSoundId = mWeapon.getClass().getDownSoundId(mWeapon);
+
+        mWeapon = weapon != inv.end() ? *weapon : MWWorld::Ptr();
     }
 
     MWRender::Animation::AnimPriority priorityWeapon(Priority_Weapon);
@@ -1241,34 +1260,50 @@ bool CharacterController::updateWeaponState()
     if(weaptype != mWeaponType && !isKnockedOut() &&
         !isKnockedDown() && !isRecovery())
     {
-        forcestateupdate = true;
-
-        mAnimation->showCarriedLeft(updateCarriedLeftVisible(weaptype));
-
         std::string weapgroup;
-        if(weaptype == WeapType_None)
+        if ((!isWerewolf || mWeaponType != WeapType_Spell)
+            && mUpperBodyState != UpperCharState_UnEquipingWeap
+            && !isStillWeapon)
         {
-            if (!isWerewolf || mWeaponType != WeapType_Spell)
+            // Note: we do not disable unequipping animation automatically to avoid body desync
+            getWeaponGroup(mWeaponType, weapgroup);
+            mAnimation->play(weapgroup, priorityWeapon,
+                              MWRender::Animation::BlendMask_All, false,
+                              1.0f, "unequip start", "unequip stop", 0.0f, 0);
+            mUpperBodyState = UpperCharState_UnEquipingWeap;
+
+            if(!downSoundId.empty())
             {
-                getWeaponGroup(mWeaponType, weapgroup);
-                mAnimation->play(weapgroup, priorityWeapon,
-                                 MWRender::Animation::BlendMask_All, true,
-                                 1.0f, "unequip start", "unequip stop", 0.0f, 0);
-                mUpperBodyState = UpperCharState_UnEquipingWeap;
+                MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
+                sndMgr->playSound3D(mPtr, downSoundId, 1.0f, 1.0f);
             }
         }
-        else
+
+        float complete;
+        bool animPlaying = mAnimation->getInfo(mCurrentWeapon, &complete);
+        if (!animPlaying || complete >= 1.0f)
         {
+            forcestateupdate = true;
+            mAnimation->showCarriedLeft(updateCarriedLeftVisible(weaptype));
+
             getWeaponGroup(weaptype, weapgroup);
             mAnimation->setWeaponGroup(weapgroup);
 
             if (!isStillWeapon)
             {
-                mAnimation->showWeapons(false);
-                mAnimation->play(weapgroup, priorityWeapon,
-                                 MWRender::Animation::BlendMask_All, true,
-                                 1.0f, "equip start", "equip stop", 0.0f, 0);
-                mUpperBodyState = UpperCharState_EquipingWeap;
+                if (weaptype == WeapType_None)
+                {
+                    // Disable current weapon animation manually
+                    mAnimation->disable(mCurrentWeapon);
+                }
+                else
+                {
+                    mAnimation->showWeapons(false);
+                    mAnimation->play(weapgroup, priorityWeapon,
+                                    MWRender::Animation::BlendMask_All, true,
+                                    1.0f, "equip start", "equip stop", 0.0f, 0);
+                    mUpperBodyState = UpperCharState_EquipingWeap;
+                }
             }
 
             if(isWerewolf)
@@ -1281,16 +1316,16 @@ bool CharacterController::updateWeaponState()
                     sndMgr->playSound3D(mPtr, sound->mId, 1.0f, 1.0f);
                 }
             }
-        }
 
-        if(!soundid.empty() && !isStillWeapon)
-        {
-            MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
-            sndMgr->playSound3D(mPtr, soundid, 1.0f, 1.0f);
-        }
+            mWeaponType = weaptype;
+            getWeaponGroup(mWeaponType, mCurrentWeapon);
 
-        mWeaponType = weaptype;
-        getWeaponGroup(mWeaponType, mCurrentWeapon);
+            if(!upSoundId.empty() && !isStillWeapon)
+            {
+                MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
+                sndMgr->playSound3D(mPtr, upSoundId, 1.0f, 1.0f);
+            }
+        }
     }
 
     if(isWerewolf)
@@ -1332,6 +1367,10 @@ bool CharacterController::updateWeaponState()
             mUpperBodyState = UpperCharState_WeapEquiped;
         }
     }
+
+    // Combat for actors with persistent animations obviously will be buggy
+    if (isPersistentAnimPlaying())
+        return forcestateupdate;
 
     float complete;
     bool animPlaying;
@@ -2110,13 +2149,16 @@ void CharacterController::update(float duration)
         // not done in constructor since we need to give scripts a chance to set the mSkipAnim flag
         if (!mSkipAnim && mDeathState != CharState_None && mCurrentDeath.empty())
         {
-            playDeath(1.f, mDeathState);
+            // Fast-forward death animation to end for persisting corpses or corpses after end of death animation
+            if (cls.isPersistent(mPtr) || cls.getCreatureStats(mPtr).isDeathAnimationFinished())
+                playDeath(1.f, mDeathState);
         }
         // We must always queue movement, even if there is none, to apply gravity.
         world->queueMovement(mPtr, osg::Vec3f(0.f, 0.f, 0.f));
     }
 
-    osg::Vec3f moved = mAnimation->runAnimation(mSkipAnim ? 0.f : duration);
+    bool isPersist = isPersistentAnimPlaying();
+    osg::Vec3f moved = mAnimation->runAnimation(mSkipAnim && !isPersist ? 0.f : duration);
     if(duration > 0.0f)
         moved /= duration;
     else
@@ -2220,7 +2262,7 @@ void CharacterController::unpersistAnimationState()
 
         bool loopfallback = (mAnimQueue.front().mGroup.compare(0,4,"idle") == 0);
         mAnimation->play(anim.mGroup,
-                         Priority_Default, MWRender::Animation::BlendMask_All, false, 1.0f,
+                         Priority_Persistent, MWRender::Animation::BlendMask_All, false, 1.0f,
                          "start", "stop", complete, anim.mLoopCount, loopfallback);
     }
 }
@@ -2228,6 +2270,10 @@ void CharacterController::unpersistAnimationState()
 bool CharacterController::playGroup(const std::string &groupname, int mode, int count, bool persist)
 {
     if(!mAnimation || !mAnimation->hasAnimation(groupname))
+        return false;
+
+    // We should not interrupt persistent animations by non-persistent ones
+    if (isPersistentAnimPlaying() && !persist)
         return false;
 
     // If this animation is a looped animation (has a "loop start" key) that is already playing
@@ -2259,15 +2305,14 @@ bool CharacterController::playGroup(const std::string &groupname, int mode, int 
 
     if(mode != 0 || mAnimQueue.empty() || !isAnimPlaying(mAnimQueue.front().mGroup))
     {
-        clearAnimQueue();
-        mAnimQueue.push_back(entry);
+        clearAnimQueue(persist);
 
         mAnimation->disable(mCurrentIdle);
         mCurrentIdle.clear();
 
         mIdleState = CharState_SpecialIdle;
         bool loopfallback = (entry.mGroup.compare(0,4,"idle") == 0);
-        mAnimation->play(groupname, Priority_Default,
+        mAnimation->play(groupname, persist && groupname != "idle" ? Priority_Persistent : Priority_Default,
                             MWRender::Animation::BlendMask_All, false, 1.0f,
                             ((mode==2) ? "loop start" : "start"), "stop", 0.0f, count-1, loopfallback);
 
@@ -2292,14 +2337,31 @@ bool CharacterController::playGroup(const std::string &groupname, int mode, int 
     else
     {
         mAnimQueue.resize(1);
-        mAnimQueue.push_back(entry);
     }
+
+    // "PlayGroup idle" is a special case, used to remove to stop scripted animations playing
+    if (groupname == "idle")
+        entry.mPersist = false;
+
+    mAnimQueue.push_back(entry);
+
     return true;
 }
 
 void CharacterController::skipAnim()
 {
     mSkipAnim = true;
+}
+
+bool CharacterController::isPersistentAnimPlaying()
+{
+    if (!mAnimQueue.empty())
+    {
+        AnimationQueueEntry& first = mAnimQueue.front();
+        return first.mPersist && isAnimPlaying(first.mGroup);
+    }
+
+    return false;
 }
 
 bool CharacterController::isAnimPlaying(const std::string &groupName)
@@ -2309,12 +2371,19 @@ bool CharacterController::isAnimPlaying(const std::string &groupName)
     return mAnimation->isPlaying(groupName);
 }
 
-
-void CharacterController::clearAnimQueue()
+void CharacterController::clearAnimQueue(bool clearPersistAnims)
 {
-    if(!mAnimQueue.empty())
+    // Do not interrupt scripted animations, if we want to keep them
+    if ((!isPersistentAnimPlaying() || clearPersistAnims) && !mAnimQueue.empty())
         mAnimation->disable(mAnimQueue.front().mGroup);
-    mAnimQueue.clear();
+
+    for (AnimationQueue::iterator it = mAnimQueue.begin(); it != mAnimQueue.end();)
+    {
+        if (clearPersistAnims || !it->mPersist)
+            it = mAnimQueue.erase(it);
+        else
+            ++it;
+    }
 }
 
 void CharacterController::forceStateUpdate()
@@ -2324,6 +2393,7 @@ void CharacterController::forceStateUpdate()
     clearAnimQueue();
 
     refreshCurrentAnims(mIdleState, mMovementState, mJumpState, true);
+
     if(mDeathState != CharState_None)
     {
         playRandomDeath();

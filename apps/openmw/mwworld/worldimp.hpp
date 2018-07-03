@@ -228,6 +228,7 @@ namespace MWWorld
 
             bool toggleWater() override;
             bool toggleWorld() override;
+            bool toggleBorders() override;
 
             void adjustSky() override;
 
@@ -645,6 +646,7 @@ namespace MWWorld
 
             /// \todo this does not belong here
             void screenshot (osg::Image* image, int w, int h) override;
+            bool screenshot360 (osg::Image* image, std::string settingStr) override;
 
             /// Find center of exterior cell above land surface
             /// \return false if exterior with given name not exists, true otherwise
@@ -690,7 +692,7 @@ namespace MWWorld
             void launchProjectile (MWWorld::Ptr actor, MWWorld::ConstPtr projectile,
                                            const osg::Vec3f& worldPos, const osg::Quat& orient, MWWorld::Ptr bow, float speed, float attackStrength) override;
 
-            void applyLoopingParticles(const MWWorld::Ptr& ptr);
+            void applyLoopingParticles(const MWWorld::Ptr& ptr) override;
 
             const std::vector<std::string>& getContentFiles() const override;
             void breakInvisibility (const MWWorld::Ptr& actor) override;

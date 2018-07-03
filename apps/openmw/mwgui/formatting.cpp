@@ -31,6 +31,17 @@ namespace MWGui
 
             boost::algorithm::replace_all(mText, "\r", "");
 
+            // vanilla game does not show any text after the last EOL tag.
+            const std::string lowerText = Misc::StringUtils::lowerCase(mText);
+            int brIndex = lowerText.rfind("<br>");
+            int pIndex = lowerText.rfind("<p>");
+            if (brIndex == pIndex)
+                mText = "";
+            else if (brIndex > pIndex)
+                mText = mText.substr(0, brIndex+4);
+            else
+                mText = mText.substr(0, pIndex+3);
+
             registerTag("br", Event_BrTag);
             registerTag("p", Event_PTag);
             registerTag("img", Event_ImgTag);

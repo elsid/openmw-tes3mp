@@ -2,11 +2,13 @@
 
 #include <stdexcept>
 
+#include <osg/Fog>
 #include <osg/Depth>
 #include <osg/TexEnvCombine>
 #include <osg/Texture2D>
 #include <osg/TexMat>
 #include <osg/Material>
+#include <osg/BlendFunc>
 
 #include <components/shader/shadermanager.hpp>
 
@@ -25,6 +27,9 @@ namespace Terrain
             matrix.preMultTranslate(osg::Vec3f(0.5f, 0.5f, 0.f));
             matrix.preMultScale(osg::Vec3f(scale, scale, 1.f));
             matrix.preMultTranslate(osg::Vec3f(-0.5f, -0.5f, 0.f));
+            // We need to nudge the blendmap to look like vanilla.
+            // This causes visible seams unless the blendmap's resolution is doubled, but Vanilla also doubles the blendmap, apparently.
+            matrix.preMultTranslate(osg::Vec3f(1.0f/blendmapScale/4.0f, 1.0f/blendmapScale/4.0f, 0.f));
 
             texMat = new osg::TexMat(matrix);
 
@@ -56,23 +61,51 @@ namespace Terrain
         }
         return depth;
     }
+    osg::ref_ptr<osg::Depth> getLequalDepth()
+    {
+        static osg::ref_ptr<osg::Depth> depth;
+        if (!depth)
+        {
+            depth = new osg::Depth;
+            depth->setFunction(osg::Depth::LEQUAL);
+        }
+        return depth;
+    }
 
     std::vector<osg::ref_ptr<osg::StateSet> > createPasses(bool useShaders, bool forcePerPixelLighting, bool clampLighting, Shader::ShaderManager* shaderManager, const std::vector<TextureLayer> &layers,
                                                            const std::vector<osg::ref_ptr<osg::Texture2D> > &blendmaps, int blendmapScale, float layerTileSize)
     {
         std::vector<osg::ref_ptr<osg::StateSet> > passes;
 
-        bool firstLayer = true;
         unsigned int blendmapIndex = 0;
         unsigned int passIndex = 0;
         for (std::vector<TextureLayer>::const_iterator it = layers.begin(); it != layers.end(); ++it)
         {
+            bool firstLayer = (it == layers.begin());
+
             osg::ref_ptr<osg::StateSet> stateset (new osg::StateSet);
 
             if (!firstLayer)
             {
+                static osg::ref_ptr<osg::BlendFunc> blendFunc;
+                if (!blendFunc)
+                {
+                    blendFunc= new osg::BlendFunc();
+                    blendFunc->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE);
+                }
                 stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
+                stateset->setAttributeAndModes(blendFunc, osg::StateAttribute::ON);
+
                 stateset->setAttributeAndModes(getEqualDepth(), osg::StateAttribute::ON);
+            }
+            // disable fog if we're the first layer of several - supposed to be completely black
+            if (firstLayer && blendmaps.size() > 0)
+            {
+                osg::ref_ptr<osg::Fog> fog (new osg::Fog);
+                fog->setStart(10000000);
+                fog->setEnd(10000000);
+                stateset->setAttributeAndModes(fog, osg::StateAttribute::OFF|osg::StateAttribute::OVERRIDE);
+                stateset->setAttributeAndModes(getLequalDepth(), osg::StateAttribute::ON);
             }
 
             int texunit = 0;
@@ -154,8 +187,6 @@ namespace Terrain
                 if (layerTileSize != 1.f)
                     stateset->setTextureAttributeAndModes(texunit, getLayerTexMat(layerTileSize), osg::StateAttribute::ON);
             }
-
-            firstLayer = false;
 
             stateset->setRenderBinDetails(passIndex++, "RenderBin");
 

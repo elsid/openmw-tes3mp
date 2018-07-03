@@ -495,7 +495,11 @@ void OMW::Engine::createWindow(Settings::Manager& settings)
     traits->windowName = SDL_GetWindowTitle(mWindow);
     traits->windowDecoration = !(SDL_GetWindowFlags(mWindow)&SDL_WINDOW_BORDERLESS);
     traits->screenNum = SDL_GetWindowDisplayIndex(mWindow);
-    // FIXME: Some way to get these settings back from the SDL window?
+    // We tried to get rid of the hardcoding but failed: https://github.com/OpenMW/openmw/pull/1771
+    // Here goes kcat's quote:
+    // It's ultimately a chicken and egg problem, and the reason why the code is like it was in the first place.
+    // It needs a context to get the current attributes, but it needs the attributes to set up the context.
+    // So it just specifies the same values that were given to SDL in the hopes that it's good enough to what the window eventually gets.
     traits->red = 8;
     traits->green = 8;
     traits->blue = 8;
@@ -537,9 +541,8 @@ void OMW::Engine::setWindowIcon()
     else
     {
         osg::ref_ptr<osg::Image> image = result.getImage();
-        SDL_Surface* surface = SDLUtil::imageToSurface(image, true);
-        SDL_SetWindowIcon(mWindow, surface);
-        SDL_FreeSurface(surface);
+        auto surface = SDLUtil::imageToSurface(image, true);
+        SDL_SetWindowIcon(mWindow, surface.get());
     }
 }
 
@@ -608,7 +611,7 @@ void OMW::Engine::prepareEngine (Settings::Manager & settings)
     else
         gameControllerdb = ""; //if it doesn't exist, pass in an empty string
 
-    MWInput::InputManager* input = new MWInput::InputManager (mWindow, mViewer, mScreenCaptureHandler, keybinderUser, keybinderUserExists, gameControllerdb, mGrab);
+    MWInput::InputManager* input = new MWInput::InputManager (mWindow, mViewer, mScreenCaptureHandler, mScreenCaptureOperation, keybinderUser, keybinderUserExists, gameControllerdb, mGrab);
     mEnvironment.setInputManager (input);
 
     std::string myguiResources = (mResDir / "mygui").string();
@@ -776,8 +779,11 @@ void OMW::Engine::go()
 
     settingspath = loadSettings (settings);
 
-    mScreenCaptureHandler = new osgViewer::ScreenCaptureHandler(new WriteScreenshotToFileOperation(mCfgMgr.getUserDataPath().string(),
-        Settings::Manager::getString("screenshot format", "General")));
+    mScreenCaptureOperation = new WriteScreenshotToFileOperation(mCfgMgr.getUserDataPath().string(),
+        Settings::Manager::getString("screenshot format", "General"));
+
+    mScreenCaptureHandler = new osgViewer::ScreenCaptureHandler(mScreenCaptureOperation);
+
     mViewer->addEventHandler(mScreenCaptureHandler);
 
     mEnvironment.setFrameRateLimit(Settings::Manager::getFloat("framerate limit", "Video"));

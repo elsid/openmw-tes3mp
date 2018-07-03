@@ -1,8 +1,67 @@
 0.45.0
 ------
+
+    Bug #1990: Sunrise/sunset not set correct
+    Bug #2222: Fatigue's effect on selling price is backwards
+    Bug #2326: After a bound item expires the last equipped item of that type is not automatically re-equipped
+    Bug #2455: Creatures attacks degrade armor
+    Bug #2562: Forcing AI to activate a teleport door sometimes causes a crash
+    Bug #2772: Non-existing class or faction freezes the game
+    Bug #2835: Player able to slowly move when overencumbered
+    Bug #2852: No murder bounty when a player follower commits murder
+    Bug #2862: [macOS] Can't quit launcher using Command-Q or OpenMW->Quit
+    Bug #2971: Compiler did not reject lines with naked expressions beginning with x.y
+    Bug #3374: Touch spells not hitting kwama foragers
+    Bug #3486: [Mod] NPC Commands does not work
+    Bug #3591: Angled hit distance too low
+    Bug #3629: DB assassin attack never triggers creature spawning
+    Bug #3876: Landscape texture painting is misaligned
+    Bug #3897: Have Goodbye give all choices the effects of Goodbye
+    Bug #3911: [macOS] Typing in the "Content List name" dialog box produces double characters
+    Bug #3993: Terrain texture blending map is not upscaled
+    Bug #3997: Almalexia doesn't pace
+    Bug #4036: Weird behaviour of AI packages if package target has non-unique ID
+    Bug #4047: OpenMW not reporting its version number in MacOS; OpenMW-CS not doing it fully
+    Bug #4125: OpenMW logo cropped on bugtracker
+    Bug #4215: OpenMW shows book text after last EOL tag
+    Bug #4221: Characters get stuck in V-shaped terrain
+    Bug #4251: Stationary NPCs do not return to their position after combat
+    Bug #4286: Scripted animations can be interrupted
+    Bug #4291: Non-persistent actors that started the game as dead do not play death animations
     Bug #4293: Faction members are not aware of faction ownerships in barter
+    Bug #4307: World cleanup should remove dead bodies only if death animation is finished
+    Bug #4327: Missing animations during spell/weapon stance switching
+    Bug #4368: Settings window ok button doesn't have key focus by default
+    Bug #4393: NPCs walk back to where they were after using ResetActors
+    Bug #4416: Handle exception if we try to play non-music file
+    Bug #4419: MRK NiStringExtraData is handled incorrectly
     Bug #4426: RotateWorld behavior is incorrect
+    Bug #4429: [Windows] Error on build INSTALL.vcxproj project (debug) with cmake 3.7.2
+    Bug #4431: "Lock 0" console command is a no-op
+    Bug #4432: Guards behaviour is incorrect if they do not have AI packages
     Bug #4433: Guard behaviour is incorrect with Alarm = 0
+    Bug #4451: Script fails to compile when using "Begin, [ScriptName]" syntax
+    Bug #4452: Default terrain texture bleeds through texture transitions
+    Bug #4453: Quick keys behaviour is invalid for equipment
+    Bug #4454: AI opens doors too slow
+    Bug #4457: Item without CanCarry flag prevents shield autoequipping in dark areas
+    Bug #4458: AiWander console command handles idle chances incorrectly
+    Bug #4459: NotCell dialogue condition doesn't support partial matches
+    Bug #4461: "Open" spell from non-player caster isn't a crime
+    Bug #4469: Abot Silt Striders – Model turn 90 degrees on horizontal
+    Bug #4474: No fallback when getVampireHead fails
+    Bug #4475: Scripted animations should not cause movement
+    Bug #4479: "Game" category on Advanced page is getting too long
+    Bug #4480: Segfalt in QuickKeysMenu when item no longer in inventory
+    Feature #3276: Editor: Search- Show number of (remaining) search results and indicate a search without any results
+    Feature #3641: Editor: Limit FPS in 3d preview window
+    Feature #4222: 360° screenshots
+    Feature #4256: Implement ToggleBorders (TB) console command
+    Feature #4324: Add CFBundleIdentifier in Info.plist to allow for macOS function key shortcuts
+    Feature #4345: Add equivalents for the command line commands to Launcher
+    Feature #4404: Editor: All EnumDelegate fields should have their items sorted alphabetically
+    Feature #4444: Per-group KF-animation files support
+    Feature #4466: Editor: Add option to ignore "Base" records when running verifier
 
 0.44.0
 ------
@@ -88,6 +147,7 @@
     Bug #4412: openmw-iniimporter ignores data paths from config
     Bug #4413: Moving with 0 strength uses all of your fatigue
     Bug #4420: Camera flickering when I open up and close menus while sneaking
+    Bug #4424: [macOS] Cursor is either empty or garbage when compiled against macOS 10.13 SDK
     Bug #4435: Item health is considered a signed integer
     Bug #4441: Adding items to currently disabled weapon-wielding creatures crashes the game
     Feature #1786: Round up encumbrance value in the encumbrance bar
