@@ -28,6 +28,7 @@
     {"GetObjectSummonState",                  ObjectFunctions::GetObjectSummonState},\
     {"GetObjectSummonDuration",               ObjectFunctions::GetObjectSummonDuration},\
     {"DoesObjectHavePlayerSummoner",          ObjectFunctions::DoesObjectHavePlayerSummoner},\
+    {"GetObjectSummonerPid",                  ObjectFunctions::GetObjectSummonerPid},\
     {"GetObjectSummonerRefId",                ObjectFunctions::GetObjectSummonerRefId},\
     {"GetObjectSummonerRefNumIndex",          ObjectFunctions::GetObjectSummonerRefNumIndex},\
     {"GetObjectSummonerMpNum",                ObjectFunctions::GetObjectSummonerMpNum},\
@@ -290,13 +291,21 @@ public:
     */
     static bool DoesObjectHavePlayerSummoner(unsigned int i) noexcept;
 
+    /**
+    * \brief Get the player ID of the summoner of the object at a certain index in the read object
+    * list's object changes.
+    *
+    * \param i The index of the object.
+    * \return The player ID of the summoner.
+    */
+    static unsigned int GetObjectSummonerPid(unsigned int i) noexcept;
 
     /**
     * \brief Get the refId of the summoner of the object at a certain index in the read object
     * list's object changes.
     *
-    * \param i The index of the summoner.
-    * \return The refNumIndex.
+    * \param i The index of the object.
+    * \return The refId of the summoner.
     */
     static const char *GetObjectSummonerRefId(unsigned int i) noexcept;
 
@@ -304,8 +313,8 @@ public:
     * \brief Get the refNumIndex of the summoner of the object at a certain index in the read object
     * list's object changes.
     *
-    * \param i The index of the summoner.
-    * \return The refNumIndex.
+    * \param i The index of the object.
+    * \return The refNumIndex of the summoner.
     */
     static int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
 
@@ -313,8 +322,8 @@ public:
     * \brief Get the mpNum of the summoner of the object at a certain index in the read object list's
     * object changes.
     *
-    * \param i The index of the summoner.
-    * \return The mpNum.
+    * \param i The index of the object.
+    * \return The mpNum of the summoner.
     */
     static int GetObjectSummonerMpNum(unsigned int i) noexcept;
 
