@@ -351,7 +351,7 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
                 {
                     LOG_APPEND(Log::LOG_VERBOSE, "-- Actor has master: %s", masterPtr.getCellRef().getRefId().c_str());
 
-                    MWMechanics::AiFollow package(masterPtr.getCellRef().getRefId());
+                    MWMechanics::AiFollow package(masterPtr);
                     newPtr.getClass().getCreatureStats(newPtr).getAiSequence().stack(package, newPtr);
 
                     MWRender::Animation* anim = MWBase::Environment::get().getWorld()->getAnimation(newPtr);
