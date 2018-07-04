@@ -183,6 +183,22 @@ namespace MWMechanics
 
         for (std::map<CreatureStats::SummonKey, int>::iterator it = creatureMap.begin(); it != creatureMap.end(); )
         {
+            /*
+                Start of tes3mp addition
+
+                If we're iterating over a SummonKey matching an actorId of -1, that means it's a summon
+                yet to be sent back to us by the server and we should skip over it, because deleting it
+                here would mean it becomes just a regular creature when the server sends it back to us
+            */
+            if (it->second == -1)
+            {
+                ++it;
+                continue;
+            }
+            /*
+                End of tes3mp addition
+            */
+
             MWWorld::Ptr ptr = MWBase::Environment::get().getWorld()->searchPtrViaActorId(it->second);
             if (ptr.isEmpty() || (ptr.getClass().getCreatureStats(ptr).isDead() && ptr.getClass().getCreatureStats(ptr).isDeathAnimationFinished()))
             {
