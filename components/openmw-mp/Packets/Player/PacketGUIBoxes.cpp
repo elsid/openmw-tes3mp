@@ -17,7 +17,7 @@ void PacketGUIBoxes::Packet(RakNet::BitStream *bs, bool send)
     RW(player->guiMessageBox.type, send);
     RW(player->guiMessageBox.label, send);
 
-    RW(player->guiMessageBox.data, send);
+    RW(player->guiMessageBox.data, send, true);
 
     if (player->guiMessageBox.type == BasePlayer::GUIMessageBox::CustomMessageBox)
         RW(player->guiMessageBox.buttons, send);
