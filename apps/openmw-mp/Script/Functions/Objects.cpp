@@ -134,6 +134,8 @@ unsigned int ObjectFunctions::GetObjectSummonerPid(unsigned int i) noexcept
     
     if (player != nullptr)
         return player->getId();
+
+    return -1;
 }
 
 const char *ObjectFunctions::GetObjectSummonerRefId(unsigned int i) noexcept
