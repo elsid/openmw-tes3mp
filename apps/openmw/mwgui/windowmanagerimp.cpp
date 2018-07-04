@@ -1565,10 +1565,14 @@ namespace MWGui
     */
     void WindowManager::setQuickKey(int slot, int quickKeyType, MWWorld::Ptr item, const std::string& spellId)
     {
-        mQuickKeysMenu->setSelectedIndex(slot);
-
-        switch (quickKeyType)
+        if (slot > 0)
         {
+            // The actual indexes recorded for quick keys are always 1 higher than their
+            // indexes in the mKey vector, so adjust for the latter
+            mQuickKeysMenu->setSelectedIndex(slot - 1);
+
+            switch (quickKeyType)
+            {
             case QuickKeysMenu::Type_Unassigned:
                 mQuickKeysMenu->unassignIndex(slot);
                 break;
@@ -1581,6 +1585,7 @@ namespace MWGui
             case QuickKeysMenu::Type_Magic:
                 mQuickKeysMenu->onAssignMagic(spellId);
                 break;
+            }
         }
     }
     /*

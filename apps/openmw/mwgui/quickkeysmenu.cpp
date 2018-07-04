@@ -169,7 +169,7 @@ namespace MWGui
         */
         if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen() && !mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
         {
-            mwmp::Main::get().getLocalPlayer()->sendQuickKey(index, Type_Unassigned);
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(key->index, Type_Unassigned);
         }
         /*
             End of tes3mp addition
@@ -183,7 +183,7 @@ namespace MWGui
     */
     void QuickKeysMenu::unassignIndex(int index)
     {
-        unassign(mQuickKeyButtons[index], index);
+        unassign(&mKey[index]);
     }
     /*
         End of tes3mp addition
@@ -281,7 +281,7 @@ namespace MWGui
             by a player, not by a packet received from the server
         */
         if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
-            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_Item, item.getCellRef().getRefId());
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelected->index, Type_Item, item.getCellRef().getRefId());
         /*
             End of tes3mp addition
         */
@@ -316,7 +316,7 @@ namespace MWGui
             Send a PLAYER_QUICKKEYS packet whenever a key is assigned to an item's magic
         */
         if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
-            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_MagicItem, item.getCellRef().getRefId());
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelected->index, Type_MagicItem, item.getCellRef().getRefId());
         /*
             End of tes3mp addition
         */
@@ -360,7 +360,7 @@ namespace MWGui
             Send a PLAYER_QUICKKEYS packet whenever a key is assigned to a spell
         */
         if (!mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
-            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelectedIndex, Type_Magic, spellId);
+            mwmp::Main::get().getLocalPlayer()->sendQuickKey(mSelected->index, Type_Magic, spellId);
         /*
             End of tes3mp addition
         */
@@ -517,7 +517,7 @@ namespace MWGui
     */
     void QuickKeysMenu::setSelectedIndex(int index)
     {
-        mSelectedIndex = index;
+        mSelected = &mKey[index];
     }
     /*
         End of tes3mp addition
