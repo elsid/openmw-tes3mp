@@ -24,9 +24,10 @@ endif(ENABLE_BREAKPAD)
 option(BUILD_WITH_LUA "Enable Lua language" ON)
 if(BUILD_WITH_LUA)
 
-    find_package(Lua51 REQUIRED)
-    MESSAGE(STATUS "Found LUA_LIBRARY: ${LUA_LIBRARY}")
-    MESSAGE(STATUS "Found LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
+    find_package(LuaJit REQUIRED)
+
+    MESSAGE(STATUS "Found LuaJit_LIBRARIES: ${LuaJit_LIBRARIES}")
+    MESSAGE(STATUS "Found LuaJit_INCLUDE_DIRS: ${LuaJit_INCLUDE_DIRS}")
 
     set(LuaScript_Sources
             Script/LangLua/LangLua.cpp
@@ -35,7 +36,7 @@ if(BUILD_WITH_LUA)
             Script/LangLua/LangLua.hpp)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_LUA")
-    include_directories(${LUA_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
+    include_directories(${LuaJit_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
 endif(BUILD_WITH_LUA)
 
 set(NativeScript_Sources
@@ -165,7 +166,7 @@ target_link_libraries(tes3mp-server
     #${Boost_PROGRAM_OPTIONS_LIBRARY}
     ${RakNet_LIBRARY}
     components
-    ${LUA_LIBRARIES}
+    ${LuaJit_LIBRARIES}
     ${Breakpad_Library}
     ${CallFF_LIBRARY}
 )
