@@ -30,6 +30,8 @@ namespace mwmp
         int refNumIndex;
         int mpNum;
 
+        std::string name; // Remove this once the server can get names corresponding to different refIds
+
         RakNet::RakNetGUID guid;
     };
 

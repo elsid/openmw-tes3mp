@@ -116,6 +116,7 @@ mwmp::Target MechanicsHelper::getTarget(const MWWorld::Ptr& ptr)
         target.refId = ptrRef->getRefId();
         target.refNumIndex = ptrRef->getRefNum().mIndex;
         target.mpNum = ptrRef->getMpNum();
+        target.name = ptr.getClass().getName(ptr);
     }
 
     return target;
@@ -127,6 +128,8 @@ void MechanicsHelper::clearTarget(mwmp::Target& target)
     target.refId.clear();
     target.refNumIndex = -1;
     target.mpNum = -1;
+
+    target.name.clear();
 }
 
 bool MechanicsHelper::isEmptyTarget(const mwmp::Target& target)
