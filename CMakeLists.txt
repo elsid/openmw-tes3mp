@@ -209,7 +209,6 @@ endif()
 IF(BUILD_OPENMW OR BUILD_OPENCS)
 
     find_package(OpenSceneGraph 3.3.4 REQUIRED osgDB osgViewer osgText osgGA osgParticle osgUtil osgFX)
-    include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
 
     set(USED_OSG_PLUGINS
                     osgdb_bmp
@@ -250,7 +249,8 @@ IF(BUILD_OPENMW OR BUILD_OPENCS)
     find_package(SDL2 REQUIRED)
     find_package(OpenAL REQUIRED)
     find_package(Bullet ${REQUIRED_BULLET_VERSION} REQUIRED COMPONENTS BulletCollision LinearMath)
-
+ELSE()
+    include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS}) # HACK: DO NOT MOVE IT. Used for server only build
 ENDIF(BUILD_OPENMW OR BUILD_OPENCS)
 
 
