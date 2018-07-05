@@ -17,6 +17,10 @@ namespace MechanicsHelper
 
     MWWorld::Ptr getPlayerPtr(const mwmp::Target& target);
 
+    mwmp::Target getTarget(const MWWorld::Ptr& ptr);
+    void clearTarget(mwmp::Target& target);
+    bool isEmptyTarget(const mwmp::Target& target);
+
     void assignAttackTarget(mwmp::Attack* attack, const MWWorld::Ptr& target);
     void resetAttack(mwmp::Attack* attack);
 

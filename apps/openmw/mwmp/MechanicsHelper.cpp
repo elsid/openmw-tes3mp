@@ -94,6 +94,49 @@ MWWorld::Ptr MechanicsHelper::getPlayerPtr(const Target& target)
     return nullptr;
 }
 
+mwmp::Target MechanicsHelper::getTarget(const MWWorld::Ptr& ptr)
+{
+    mwmp::Target target;
+
+    if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())
+    {
+        target.isPlayer = true;
+        target.guid = mwmp::Main::get().getLocalPlayer()->guid;
+    }
+    else if (mwmp::PlayerList::isDedicatedPlayer(ptr))
+    {
+        target.isPlayer = true;
+        target.guid = mwmp::PlayerList::getPlayer(ptr)->guid;
+    }
+    else
+    {
+        MWWorld::CellRef *ptrRef = &ptr.getCellRef();
+
+        target.isPlayer = false;
+        target.refId = ptrRef->getRefId();
+        target.refNumIndex = ptrRef->getRefNum().mIndex;
+        target.mpNum = ptrRef->getMpNum();
+    }
+
+    return target;
+}
+
+void MechanicsHelper::clearTarget(mwmp::Target& target)
+{
+    target.isPlayer = false;
+    target.refId.clear();
+    target.refNumIndex = -1;
+    target.mpNum = -1;
+}
+
+bool MechanicsHelper::isEmptyTarget(const mwmp::Target& target)
+{
+    if (target.isPlayer == false && target.refId.empty())
+        return true;
+
+    return false;
+}
+
 void MechanicsHelper::assignAttackTarget(Attack* attack, const MWWorld::Ptr& target)
 {
     if (target == MWBase::Environment::get().getWorld()->getPlayerPtr())
