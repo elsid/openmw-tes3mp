@@ -1,5 +1,5 @@
-#ifndef OPENMW_PacketObjectMove_HPP
-#define OPENMW_PacketObjectMove_HPP
+#ifndef OPENMW_PACKETOBJECTMOVE_HPP
+#define OPENMW_PACKETOBJECTMOVE_HPP
 
 #include <components/openmw-mp/Packets/Object/ObjectPacket.hpp>
 
@@ -14,4 +14,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_PacketObjectMove_HPP
+#endif //OPENMW_PACKETOBJECTMOVE_HPP
