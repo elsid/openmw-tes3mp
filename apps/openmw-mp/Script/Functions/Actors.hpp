@@ -36,7 +36,12 @@
     {"GetActorEquipmentItemCharge",            ActorFunctions::GetActorEquipmentItemCharge},\
     {"GetActorEquipmentItemEnchantmentCharge", ActorFunctions::GetActorEquipmentItemEnchantmentCharge},\
     \
-    {"GetActorDeathReason",                    ActorFunctions::GetActorDeathReason},\
+    {"DoesActorHavePlayerKiller",              ActorFunctions::DoesActorHavePlayerKiller},\
+    {"GetActorKillerPid",                      ActorFunctions::GetActorKillerPid},\
+    {"GetActorKillerRefId",                    ActorFunctions::GetActorKillerRefId},\
+    {"GetActorKillerRefNumIndex",              ActorFunctions::GetActorKillerRefNumIndex},\
+    {"GetActorKillerMpNum",                    ActorFunctions::GetActorKillerMpNum},\
+    {"GetActorKillerName",                     ActorFunctions::GetActorKillerName},\
     \
     {"DoesActorHavePosition",                  ActorFunctions::DoesActorHavePosition},\
     {"DoesActorHaveStatsDynamic",              ActorFunctions::DoesActorHaveStatsDynamic},\
@@ -147,7 +152,7 @@ public:
     * \param i The index of the actor.
     * \return The refNumIndex.
     */
-    static int GetActorRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetActorRefNumIndex(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the actor at a certain index in the read actor list.
@@ -155,7 +160,7 @@ public:
     * \param i The index of the actor.
     * \return The mpNum.
     */
-    static int GetActorMpNum(unsigned int i) noexcept;
+    static unsigned int GetActorMpNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the X position of the actor at a certain index in the read actor list.
@@ -318,12 +323,52 @@ public:
     static double GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept;
 
     /**
-    * \brief Get the death reason of the actor at a certain index in the read actor list.
+    * \brief Check whether the killer of the actor at a certain index in the read actor list is a player.
     *
     * \param i The index of the actor.
-    * \return The death reason.
+    * \return Whether the actor was killed by a player.
     */
-    static const char *GetActorDeathReason(unsigned int i) noexcept;
+    static bool DoesActorHavePlayerKiller(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the player ID of the killer of the actor at a certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \return The player ID of the killer.
+    */
+    static int GetActorKillerPid(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the refId of the actor killer of the actor at a certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \return The refId of the killer.
+    */
+    static const char *GetActorKillerRefId(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the refNumIndex of the actor killer of the actor at a certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \return The refNumIndex of the killer.
+    */
+    static unsigned int GetActorKillerRefNumIndex(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the mpNum of the actor killer of the actor at a certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \return The mpNum of the killer.
+    */
+    static unsigned int GetActorKillerMpNum(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the name of the actor killer of the actor at a certain index in the read actor list.
+    *
+    * \param i The index of the actor.
+    * \return The name of the killer.
+    */
+    static const char *GetActorKillerName(unsigned int i) noexcept;
 
     /**
     * \brief Check whether there is any positional data for the actor at a certain index in

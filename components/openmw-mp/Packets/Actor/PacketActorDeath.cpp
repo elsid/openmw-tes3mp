@@ -11,5 +11,18 @@ PacketActorDeath::PacketActorDeath(RakNet::RakPeerInterface *peer) : ActorPacket
 
 void PacketActorDeath::Actor(BaseActor &actor, bool send)
 {
-    RW(actor.deathReason, send);
+    RW(actor.killer.isPlayer, send);
+
+    if (actor.killer.isPlayer)
+    {
+        RW(actor.killer.guid, send);
+    }
+    else
+    {
+        RW(actor.killer.refId, send, true);
+        RW(actor.killer.refNumIndex, send);
+        RW(actor.killer.mpNum, send);
+
+        RW(actor.killer.name, send, true);
+    }
 }

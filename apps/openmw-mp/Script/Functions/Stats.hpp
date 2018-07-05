@@ -38,8 +38,6 @@
     \
     {"GetBounty",               StatsFunctions::GetBounty},\
     \
-    {"GetDeathReason",          StatsFunctions::GetDeathReason},\
-    \
     {"SetName",                 StatsFunctions::SetName},\
     {"SetRace",                 StatsFunctions::SetRace},\
     {"SetHead",                 StatsFunctions::SetHead},\
@@ -315,16 +313,6 @@ public:
     * \return The bounty.
     */
     static int GetBounty(unsigned short pid) noexcept;
-
-    /**
-    * \brief Get the reason for a player's death.
-    *
-    * As of now, the reason is either "suicide" or the name of the killer.
-    *
-    * \param pid The player ID.
-    * \return The reason.
-    */
-    static const char *GetDeathReason(unsigned short pid) noexcept;
 
     /**
     * \brief Set the name of a player.

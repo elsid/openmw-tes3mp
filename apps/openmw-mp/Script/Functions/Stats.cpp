@@ -253,14 +253,6 @@ int StatsFunctions::GetBounty(unsigned short pid) noexcept
     return player->npcStats.mBounty;
 }
 
-const char *StatsFunctions::GetDeathReason(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, 0);
-
-    return player->deathReason.c_str();
-}
-
 void StatsFunctions::SetName(unsigned short pid, const char *name) noexcept
 {
     Player *player;

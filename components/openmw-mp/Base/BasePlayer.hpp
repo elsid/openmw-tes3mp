@@ -306,7 +306,7 @@ namespace mwmp
 
         bool isChangingRegion;
 
-        std::string deathReason;
+        Target killer;
 
         int jailDays;
         bool ignoreJailTeleportation;

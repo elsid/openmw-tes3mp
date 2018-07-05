@@ -975,20 +975,20 @@ namespace MWClass
         
         if (ptr == MWMechanics::getPlayer())
         {
-            mwmp::Main::get().getLocalPlayer()->updateStatsDynamic(true);
-            mwmp::Main::get().getLocalPlayer()->updatePosition(true); // fix position after getting damage;
-
             // Record the attacker as the LocalPlayer's death reason
             if (getCreatureStats(ptr).isDead())
             {
-                mwmp::Main::get().getLocalPlayer()->deathReason = attacker.getClass().getName(attacker);
+                mwmp::Main::get().getLocalPlayer()->killer = MechanicsHelper::getTarget(attacker);
             }
+
+            mwmp::Main::get().getLocalPlayer()->updateStatsDynamic(true);
+            mwmp::Main::get().getLocalPlayer()->updatePosition(true); // fix position after getting damage;
         }
         else if (mwmp::Main::get().getCellController()->isLocalActor(ptr))
         {
             if (getCreatureStats(ptr).isDead())
             {
-                mwmp::Main::get().getCellController()->getLocalActor(ptr)->deathReason = attacker.getClass().getName(attacker);
+                mwmp::Main::get().getCellController()->getLocalActor(ptr)->killer = MechanicsHelper::getTarget(attacker);
             }
         }
         /*

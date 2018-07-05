@@ -14,6 +14,13 @@
     {"GetMarkRotZ",                 MechanicsFunctions::GetMarkRotZ},\
     {"GetSelectedSpellId",          MechanicsFunctions::GetSelectedSpellId},\
     \
+    {"DoesPlayerHavePlayerKiller",  MechanicsFunctions::DoesPlayerHavePlayerKiller},\
+    {"GetPlayerKillerPid",          MechanicsFunctions::GetPlayerKillerPid},\
+    {"GetPlayerKillerRefId",        MechanicsFunctions::GetPlayerKillerRefId},\
+    {"GetPlayerKillerRefNumIndex",  MechanicsFunctions::GetPlayerKillerRefNumIndex},\
+    {"GetPlayerKillerMpNum",        MechanicsFunctions::GetPlayerKillerMpNum},\
+    {"GetPlayerKillerName",         MechanicsFunctions::GetPlayerKillerName},\
+    \
     {"SetMarkCell",                 MechanicsFunctions::SetMarkCell},\
     {"SetMarkPos",                  MechanicsFunctions::SetMarkPos},\
     {"SetMarkRot",                  MechanicsFunctions::SetMarkRot},\
@@ -23,7 +30,9 @@
     {"SendSelectedSpell",           MechanicsFunctions::SendSelectedSpell},\
     \
     {"Jail",                        MechanicsFunctions::Jail},\
-    {"Resurrect",                   MechanicsFunctions::Resurrect}
+    {"Resurrect",                   MechanicsFunctions::Resurrect},\
+    \
+    {"GetDeathReason",              MechanicsFunctions::GetDeathReason}
 
 class MechanicsFunctions
 {
@@ -92,6 +101,54 @@ public:
     * \return The spell ID.
     */
     static const char *GetSelectedSpellId(unsigned short pid) noexcept;
+
+    /**
+    * \brief Check whether the killer of a certain player is also a player.
+    *
+    * \param pid The player ID of the killed player.
+    * \return Whether the player was killed by another player.
+    */
+    static bool DoesPlayerHavePlayerKiller(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the player ID of the killer of a certain player.
+    *
+    * \param pid The player ID of the killed player.
+    * \return The player ID of the killer.
+    */
+    static int GetPlayerKillerPid(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the refId of the actor killer of a certain player.
+    *
+    * \param pid The player ID of the killed player.
+    * \return The refId of the killer.
+    */
+    static const char *GetPlayerKillerRefId(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the refNumIndex of the actor killer of a certain player.
+    *
+    * \param pid The player ID of the killed player.
+    * \return The refNumIndex of the killer.
+    */
+    static unsigned int GetPlayerKillerRefNumIndex(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the mpNum of the actor killer of a certain player.
+    *
+    * \param pid The player ID of the killed player.
+    * \return The mpNum of the killer.
+    */
+    static unsigned int GetPlayerKillerMpNum(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the name of the actor killer of a certain player.
+    *
+    * \param pid The player ID of the killed player.
+    * \return The name of the killer.
+    */
+    static const char *GetPlayerKillerName(unsigned short pid) noexcept;
 
     /**
     * \brief Set the Mark cell of a player.
@@ -197,6 +254,10 @@ public:
     * \return void
     */
     static void Resurrect(unsigned short pid, unsigned int type) noexcept;
+
+    // All methods below are deprecated versions of methods from above
+
+    static const char *GetDeathReason(unsigned short pid) noexcept;
 };
 
 #endif //OPENMW_MECHANICSAPI_HPP

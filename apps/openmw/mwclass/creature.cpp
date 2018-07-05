@@ -561,7 +561,7 @@ namespace MWClass
         {
             if (getCreatureStats(ptr).isDead())
             {
-                mwmp::Main::get().getCellController()->getLocalActor(ptr)->deathReason = attacker.getClass().getName(attacker);
+                mwmp::Main::get().getCellController()->getLocalActor(ptr)->killer = MechanicsHelper::getTarget(attacker);
             }
         }
         /*

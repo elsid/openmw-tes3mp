@@ -68,6 +68,59 @@ double MechanicsFunctions::GetMarkRotZ(unsigned short pid) noexcept
     return player->markPosition.rot[2];
 }
 
+bool MechanicsFunctions::DoesPlayerHavePlayerKiller(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, false);
+
+    return player->killer.isPlayer;
+}
+
+int MechanicsFunctions::GetPlayerKillerPid(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    Player *killer = Players::getPlayer(player->killer.guid);
+
+    if (killer != nullptr)
+        return killer->getId();
+
+    return -1;
+}
+
+const char *MechanicsFunctions::GetPlayerKillerRefId(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, "");
+
+    return player->killer.refId.c_str();
+}
+
+unsigned int MechanicsFunctions::GetPlayerKillerRefNumIndex(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->killer.refNumIndex;
+}
+
+unsigned int MechanicsFunctions::GetPlayerKillerMpNum(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->killer.mpNum;
+}
+
+const char *MechanicsFunctions::GetPlayerKillerName(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, "");
+
+    return player->killer.name.c_str();
+}
+
 const char *MechanicsFunctions::GetSelectedSpellId(unsigned short pid) noexcept
 {
     Player *player;
@@ -159,4 +212,24 @@ void MechanicsFunctions::Resurrect(unsigned short pid, unsigned int type) noexce
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT)->setPlayer(player);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT)->Send(false);
     mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT)->Send(true);
+}
+
+// All methods below are deprecated versions of methods from above
+
+const char *MechanicsFunctions::GetDeathReason(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    if (player->killer.isPlayer)
+    {
+        Player *killerPlayer = Players::getPlayer(player->killer.guid);
+
+        if (killerPlayer != nullptr)
+            return killerPlayer->npc.mName.c_str();
+    }
+    else if (!player->killer.name.empty())
+        return player->killer.name.c_str();
+
+    return "suicide";
 }

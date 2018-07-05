@@ -179,7 +179,7 @@ public:
     * \param i The index of the object.
     * \return The refNumIndex.
     */
-    static int GetObjectRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetObjectRefNumIndex(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the object at a certain index in the read object list's object changes.
@@ -187,7 +187,7 @@ public:
     * \param i The index of the object.
     * \return The mpNum.
     */
-    static int GetObjectMpNum(unsigned int i) noexcept;
+    static unsigned int GetObjectMpNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the count of the object at a certain index in the read object list's object changes.
@@ -317,7 +317,7 @@ public:
     * \param i The index of the object.
     * \return The refNumIndex of the summoner.
     */
-    static int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the actor summoner of the object at a certain index in the read object list's
@@ -326,7 +326,7 @@ public:
     * \param i The index of the object.
     * \return The mpNum of the summoner.
     */
-    static int GetObjectSummonerMpNum(unsigned int i) noexcept;
+    static unsigned int GetObjectSummonerMpNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the X position of the object at a certain index in the read object list's object

@@ -132,7 +132,7 @@ const char *ScriptFunctions::GetProtocolVersion() noexcept
 int ScriptFunctions::GetAvgPing(unsigned short pid) noexcept
 {
     Player *player;
-    GET_PLAYER(pid, player,-1);
+    GET_PLAYER(pid, player, -1);
     return mwmp::Networking::get().getAvgPing(player->guid);
 }
 

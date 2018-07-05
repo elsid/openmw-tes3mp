@@ -183,16 +183,15 @@ void LocalActor::updateStatsDynamic(bool forceUpdate)
 
         if (creatureStats.mDead && !wasDead)
         {
-            if (deathReason.empty())
-                deathReason = "suicide";
+            if (MechanicsHelper::isEmptyTarget(killer))
+                killer = MechanicsHelper::getTarget(ptr);
 
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_DEATH about %s-%i-%i to server",
                 refId.c_str(), refNumIndex, mpNum);
-            LOG_APPEND(Log::LOG_INFO, "- deathReason was %s", deathReason.c_str());
 
             mwmp::Main::get().getNetworking()->getActorList()->addDeathActor(*this);
 
-            deathReason = "";
+            MechanicsHelper::clearTarget(killer);
         }
 
         wasDead = creatureStats.mDead;

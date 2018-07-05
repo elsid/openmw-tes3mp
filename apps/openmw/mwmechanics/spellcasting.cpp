@@ -544,13 +544,13 @@ namespace MWMechanics
 
                             if (target == MWMechanics::getPlayer())
                             {
-                                mwmp::Main::get().getLocalPlayer()->deathReason = isSuicide ?
-                                    "suicide" : caster.getClass().getName(caster);
+                                mwmp::Main::get().getLocalPlayer()->killer = isSuicide ?
+                                    MechanicsHelper::getTarget(target) : MechanicsHelper::getTarget(caster);
                             }
                             else if (mwmp::Main::get().getCellController()->isLocalActor(target))
                             {
-                                mwmp::Main::get().getCellController()->getLocalActor(target)->deathReason = isSuicide ?
-                                    "suicide" : caster.getClass().getName(caster);
+                                mwmp::Main::get().getCellController()->getLocalActor(target)->killer = isSuicide ?
+                                    MechanicsHelper::getTarget(target) : MechanicsHelper::getTarget(caster);
                             }
                         }
                         /*

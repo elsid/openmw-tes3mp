@@ -39,7 +39,7 @@ namespace mwmp
         Animation animation;
         Attack attack;
 
-        std::string deathReason;
+        Target killer;
 
         bool hasAiTarget;
         Target aiTarget;

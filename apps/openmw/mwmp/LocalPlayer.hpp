@@ -31,7 +31,6 @@ namespace mwmp
         void updateEquipment(bool forceUpdate = false);
         void updateInventory(bool forceUpdate = false);
         void updateAttack();
-        void updateDeadState(bool forceUpdate = false);
         void updateAnimFlags(bool forceUpdate = false);
 
         void addItems();

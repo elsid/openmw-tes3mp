@@ -61,7 +61,6 @@ LocalPlayer::LocalPlayer()
     
     attack.shouldSend = false;
 
-    deathReason = "suicide";
     isChangingRegion = false;
 
     jailProgressText = "";
@@ -102,7 +101,6 @@ void LocalPlayer::update()
         updatePosition();
         updateAnimFlags();
         updateAttack();
-        updateDeadState();
         updateEquipment();
         updateStatsDynamic();
         updateAttributes();
@@ -234,9 +232,27 @@ void LocalPlayer::updateStatsDynamic(bool forceUpdate)
         magicka.writeState(creatureStats.mDynamic[1]);
         fatigue.writeState(creatureStats.mDynamic[2]);
 
+        creatureStats.mDead = ptrCreatureStats->isDead();
+
         exchangeFullInfo = false;
         getNetworking()->getPlayerPacket(ID_PLAYER_STATS_DYNAMIC)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_STATS_DYNAMIC)->Send();
+
+        static bool wasDead = false;
+
+        if (creatureStats.mDead && !wasDead)
+        {
+            if (MechanicsHelper::isEmptyTarget(killer))
+                killer = MechanicsHelper::getTarget(getPlayerPtr());
+
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_DEATH about myself to server");
+            getNetworking()->getPlayerPacket(ID_PLAYER_DEATH)->setPlayer(this);
+            getNetworking()->getPlayerPacket(ID_PLAYER_DEATH)->Send();
+
+            MechanicsHelper::clearTarget(killer);
+        }
+
+        wasDead = creatureStats.mDead;
     }
 }
 
@@ -569,30 +585,6 @@ void LocalPlayer::updateAttack()
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTACK)->Send();
 
         attack.shouldSend = false;
-    }
-}
-
-void LocalPlayer::updateDeadState(bool forceUpdate)
-{
-    MWWorld::Ptr ptrPlayer = getPlayerPtr();
-
-    MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
-    static bool isDead = false;
-
-    if (ptrNpcStats->isDead() && !isDead)
-    {
-        creatureStats.mDead = true;
-
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_DEATH to server about myself");
-        LOG_APPEND(Log::LOG_INFO, "- deathReason was %s", deathReason.c_str());
-        getNetworking()->getPlayerPacket(ID_PLAYER_DEATH)->setPlayer(this);
-        getNetworking()->getPlayerPacket(ID_PLAYER_DEATH)->Send();
-        isDead = true;
-    }
-    else if (ptrNpcStats->getHealth().getCurrent() > 0 && isDead)
-    {
-        deathReason = "suicide";
-        isDead = false;
     }
 }
 

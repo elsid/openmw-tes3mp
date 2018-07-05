@@ -63,12 +63,12 @@ const char *ObjectFunctions::GetObjectRefId(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).refId.c_str();
 }
 
-int ObjectFunctions::GetObjectRefNumIndex(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectRefNumIndex(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).refNumIndex;
 }
 
-int ObjectFunctions::GetObjectMpNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectMpNum(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).mpNum;
 }
@@ -143,12 +143,12 @@ const char *ObjectFunctions::GetObjectSummonerRefId(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).master.refId.c_str();
 }
 
-int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).master.refNumIndex;
 }
 
-int ObjectFunctions::GetObjectSummonerMpNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectSummonerMpNum(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).master.mpNum;
 }

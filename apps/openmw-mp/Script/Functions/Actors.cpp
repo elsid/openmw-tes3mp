@@ -63,12 +63,12 @@ const char *ActorFunctions::GetActorRefId(unsigned int i) noexcept
     return readActorList->baseActors.at(i).refId.c_str();
 }
 
-int ActorFunctions::GetActorRefNumIndex(unsigned int i) noexcept
+unsigned int ActorFunctions::GetActorRefNumIndex(unsigned int i) noexcept
 {
     return readActorList->baseActors.at(i).refNumIndex;
 }
 
-int ActorFunctions::GetActorMpNum(unsigned int i) noexcept
+unsigned int ActorFunctions::GetActorMpNum(unsigned int i) noexcept
 {
     return readActorList->baseActors.at(i).mpNum;
 }
@@ -168,9 +168,39 @@ double ActorFunctions::GetActorEquipmentItemEnchantmentCharge(unsigned int i, un
     return readActorList->baseActors.at(i).equipmentItems[slot].enchantmentCharge;
 }
 
-const char *ActorFunctions::GetActorDeathReason(unsigned int i) noexcept
+bool ActorFunctions::DoesActorHavePlayerKiller(unsigned int i) noexcept
 {
-    return readActorList->baseActors.at(i).deathReason.c_str();
+    return readActorList->baseActors.at(i).killer.isPlayer;
+}
+
+int ActorFunctions::GetActorKillerPid(unsigned int i) noexcept
+{
+    Player *player = Players::getPlayer(readActorList->baseActors.at(i).killer.guid);
+
+    if (player != nullptr)
+        return player->getId();
+
+    return -1;
+}
+
+const char *ActorFunctions::GetActorKillerRefId(unsigned int i) noexcept
+{
+    return readActorList->baseActors.at(i).killer.refId.c_str();
+}
+
+unsigned int ActorFunctions::GetActorKillerRefNumIndex(unsigned int i) noexcept
+{
+    return readActorList->baseActors.at(i).killer.refNumIndex;
+}
+
+unsigned int ActorFunctions::GetActorKillerMpNum(unsigned int i) noexcept
+{
+    return readActorList->baseActors.at(i).killer.mpNum;
+}
+
+const char *ActorFunctions::GetActorKillerName(unsigned int i) noexcept
+{
+    return readActorList->baseActors.at(i).killer.name.c_str();
 }
 
 bool ActorFunctions::DoesActorHavePosition(unsigned int i) noexcept
