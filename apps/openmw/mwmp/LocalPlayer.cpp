@@ -61,6 +61,10 @@ LocalPlayer::LocalPlayer()
     
     attack.shouldSend = false;
 
+    killer.isPlayer = false;
+    killer.refId = "";
+    killer.name = "";
+
     isChangingRegion = false;
 
     jailProgressText = "";

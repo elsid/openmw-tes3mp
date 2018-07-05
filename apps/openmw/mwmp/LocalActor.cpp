@@ -36,6 +36,10 @@ LocalActor::LocalActor()
     attack.shouldSend = false;
     attack.instant = false;
 
+    killer.isPlayer = false;
+    killer.refId = "";
+    killer.name = "";
+
     creatureStats.mDead = false;
 }
 
