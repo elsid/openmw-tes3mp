@@ -859,26 +859,7 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& mas
     baseObject.mpNum = 0;
     baseObject.isSummon = true;
     baseObject.summonDuration = duration;
-
-    if (master == MWBase::Environment::get().getWorld()->getPlayerPtr())
-    {
-        baseObject.master.isPlayer = true;
-        baseObject.master.guid = mwmp::Main::get().getLocalPlayer()->guid;
-    }
-    else if (mwmp::PlayerList::isDedicatedPlayer(master))
-    {
-        baseObject.master.isPlayer = true;
-        baseObject.master.guid = mwmp::PlayerList::getPlayer(master)->guid;
-    }
-    else
-    {
-        MWWorld::CellRef *masterRef = &master.getCellRef();
-
-        baseObject.master.isPlayer = false;
-        baseObject.master.refId = masterRef->getRefId();
-        baseObject.master.refNumIndex = masterRef->getRefNum().mIndex;
-        baseObject.master.mpNum = masterRef->getMpNum();
-    }
+    baseObject.master = MechanicsHelper::getTarget(master);
 
     // Make sure we send the RefData position instead of the CellRef one, because that's what
     // we actually see on this client
