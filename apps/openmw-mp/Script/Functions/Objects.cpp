@@ -128,7 +128,7 @@ bool ObjectFunctions::DoesObjectHavePlayerSummoner(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).master.isPlayer;
 }
 
-unsigned int ObjectFunctions::GetObjectSummonerPid(unsigned int i) noexcept
+int ObjectFunctions::GetObjectSummonerPid(unsigned int i) noexcept
 {
     Player *player = Players::getPlayer(readObjectList->baseObjects.at(i).master.guid);
     

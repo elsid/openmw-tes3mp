@@ -287,6 +287,7 @@ public:
     *
     * Only living actors can be summoned.
     *
+    * \param i The index of the object.
     * \return Whether a player is the summoner of the object.
     */
     static bool DoesObjectHavePlayerSummoner(unsigned int i) noexcept;
@@ -298,10 +299,10 @@ public:
     * \param i The index of the object.
     * \return The player ID of the summoner.
     */
-    static unsigned int GetObjectSummonerPid(unsigned int i) noexcept;
+    static int GetObjectSummonerPid(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refId of the summoner of the object at a certain index in the read object
+    * \brief Get the refId of the actor summoner of the object at a certain index in the read object
     * list's object changes.
     *
     * \param i The index of the object.
@@ -310,7 +311,7 @@ public:
     static const char *GetObjectSummonerRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the summoner of the object at a certain index in the read object
+    * \brief Get the refNumIndex of the actor summoner of the object at a certain index in the read object
     * list's object changes.
     *
     * \param i The index of the object.
@@ -319,7 +320,7 @@ public:
     static int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
 
     /**
-    * \brief Get the mpNum of the summoner of the object at a certain index in the read object list's
+    * \brief Get the mpNum of the actor summoner of the object at a certain index in the read object list's
     * object changes.
     *
     * \param i The index of the object.
