@@ -17,8 +17,6 @@ namespace mwmp
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s from %s", strPacketID.c_str(), player.npc.mName.c_str());
             
-            packet.Send(true);
-
             Script::Call<Script::CallbackIdentity("OnObjectLock")>(player.getId(), objectList.cell.getDescription().c_str());
         }
     };

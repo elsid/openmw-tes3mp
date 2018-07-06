@@ -23,11 +23,6 @@ namespace mwmp
                 objectList.baseObjects.at(i).mpNum = mwmp::Networking::getPtr()->incrementMpNum();
             }
 
-            // Send this packet back to the original sender with the mpNum generation from above,
-            // then send it to the other players
-            packet.Send(false);
-            packet.Send(true);
-
             Script::Call<Script::CallbackIdentity("OnObjectSpawn")>(player.getId(), objectList.cell.getDescription().c_str());
         }
     };
