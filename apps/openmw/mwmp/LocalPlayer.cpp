@@ -44,6 +44,8 @@ using namespace std;
 
 LocalPlayer::LocalPlayer()
 {
+    deathTime = time(0);
+
     charGenState.currentStage = 0;
     charGenState.endStage = 1;
     charGenState.isFinished = false;
@@ -800,6 +802,9 @@ void LocalPlayer::resurrect()
     // Record that the player has died since the last attempt was made to arrest them,
     // used to make guards lenient enough to attempt an arrest again
     diedSinceArrestAttempt = true;
+
+    deathTime = time(0);
+
     LOG_APPEND(Log::LOG_INFO, "- diedSinceArrestAttempt is now true");
 
     // Record that we are no longer a known werewolf, to avoid being attacked infinitely

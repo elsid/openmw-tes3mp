@@ -324,6 +324,25 @@ void MWMechanics::NpcStats::setSkillIncrease(int attribute, int value)
     End of tes3mp addition
 */
 
+/*
+    Start of tes3mp addition
+
+    Make it possible to get and set the time of the last crime witnessed by the NPC,
+    used to stop combat with a player after that player dies and is resurrected
+*/
+std::time_t MWMechanics::NpcStats::getCrimeTime()
+{
+    return mCrimeTime;
+}
+
+void MWMechanics::NpcStats::setCrimeTime(std::time_t crimeTime)
+{
+    mCrimeTime = crimeTime;
+}
+/*
+    End of tes3mp addition
+*/
+
 void MWMechanics::NpcStats::levelUp()
 {
     const MWWorld::Store<ESM::GameSetting> &gmst =
@@ -412,6 +431,17 @@ int MWMechanics::NpcStats::getCrimeId() const
 void MWMechanics::NpcStats::setCrimeId(int id)
 {
     mCrimeId = id;
+
+    /*
+        Start of tes3mp addition
+
+        Record this as the time of the last crime witnessed by this NPC
+    */
+    if (id != -1)
+        setCrimeTime(time(0));
+    /*
+        End of tes3mp addition
+    */
 }
 
 bool MWMechanics::NpcStats::hasSkillsForRank (const std::string& factionId, int rank) const

@@ -15,6 +15,8 @@ namespace mwmp
         LocalPlayer();
         virtual ~LocalPlayer();
 
+        time_t deathTime;
+
         void update();
 
         bool processCharGen();

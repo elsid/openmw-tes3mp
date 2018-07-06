@@ -1197,16 +1197,22 @@ namespace MWMechanics
                 /*
                     Start of tes3mp addition
 
-                    If the player has died, stop combat with them as though they had
-                    paid their bounty
+                    If the player has died since their crime was committed, stop combat
+                    with them as though they have paid their bounty
                 */
-                else if (mwmp::Main::get().getLocalPlayer()->diedSinceArrestAttempt)
+                else if (mwmp::Main::get().getLocalPlayer()->diedSinceArrestAttempt && creatureStats.getAiSequence().isInCombat(player))
                 {
-                    if (creatureStats.getAiSequence().isInCombat(player))
+                    if (difftime(mwmp::Main::get().getLocalPlayer()->deathTime, npcStats.getCrimeTime()))
                     {
                         creatureStats.getAiSequence().stopCombat();
                         creatureStats.setAttacked(false);
                         creatureStats.setAlarmed(false);
+                        creatureStats.setAiSetting(CreatureStats::AI_Fight, ptr.getClass().getBaseFightRating(ptr));
+
+                        npcStats.setCrimeId(-1);
+                        npcStats.setCrimeTime(time(0));
+                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "NPC %s %i-%i has forgiven player's crimes after the player's death",
+                            ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum());
                     }
                 }
                 /*

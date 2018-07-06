@@ -6,6 +6,16 @@
 #include <string>
 #include <vector>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include <time.h>
+/*
+    End of tes3mp addition
+*/
+
 #include "creaturestats.hpp"
 
 namespace ESM
@@ -25,6 +35,16 @@ namespace MWMechanics
 
             int mReputation;
             int mCrimeId;
+
+            /*
+                Start of tes3mp addition
+
+                Add a variable used to track the time of the most recent crime by a player
+            */
+            time_t mCrimeTime = time(0);
+            /*
+                End of tes3mp addition
+            */
 
             // ----- used by the player only, maybe should be moved at some point -------
             int mBounty;
@@ -93,6 +113,18 @@ namespace MWMechanics
             void setLevelProgress(int value);
             int getSkillIncrease(int attribute) const;
             void setSkillIncrease(int attribute, int value);
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to get and set the time of the last crime witnessed by the NPC,
+                used to stop combat with a player after that player dies and is resurrected
+            */
+            time_t getCrimeTime();
+            void setCrimeTime(time_t crimeTime);
             /*
                 End of tes3mp addition
             */
