@@ -111,12 +111,17 @@ mwmp::Target MechanicsHelper::getTarget(const MWWorld::Ptr& ptr)
     else
     {
         MWWorld::CellRef *ptrRef = &ptr.getCellRef();
-
-        target.isPlayer = false;
-        target.refId = ptrRef->getRefId();
-        target.refNumIndex = ptrRef->getRefNum().mIndex;
-        target.mpNum = ptrRef->getMpNum();
-        target.name = ptr.getClass().getName(ptr);
+        
+        if (ptrRef)
+        {
+            target.isPlayer = false;
+            target.refId = ptrRef->getRefId();
+            target.refNumIndex = ptrRef->getRefNum().mIndex;
+            target.mpNum = ptrRef->getMpNum();
+            target.name = ptr.getClass().getName(ptr);
+        }
+        else
+            clearTarget(target);
     }
 
     return target;
