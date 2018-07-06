@@ -1202,7 +1202,7 @@ namespace MWMechanics
                 */
                 else if (mwmp::Main::get().getLocalPlayer()->diedSinceArrestAttempt && creatureStats.getAiSequence().isInCombat(player))
                 {
-                    if (difftime(mwmp::Main::get().getLocalPlayer()->deathTime, npcStats.getCrimeTime()))
+                    if (difftime(mwmp::Main::get().getLocalPlayer()->deathTime, npcStats.getCrimeTime()) > 0)
                     {
                         creatureStats.getAiSequence().stopCombat();
                         creatureStats.setAttacked(false);
