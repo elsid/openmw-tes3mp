@@ -12,6 +12,13 @@ namespace mwmp
         {
             BPP_INIT(ID_VIDEO_PLAY)
         }
+
+        void Do(ObjectPacket &packet, Player &player, BaseObjectList &objectList) override
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s from %s", strPacketID.c_str(), player.npc.mName.c_str());
+
+            Script::Call<Script::CallbackIdentity("OnVideoPlay")>(player.getId(), objectList.cell.getDescription().c_str());
+        }
     };
 }
 

@@ -337,6 +337,7 @@ public:
             {"OnObjectLock",             Function<void, unsigned short, const char*>()},
             {"OnObjectScale",            Function<void, unsigned short, const char*>()},
             {"OnObjectTrap",             Function<void, unsigned short, const char*>()},
+            {"OnVideoPlay",              Function<void, unsigned short, const char*>()},
             {"OnActorList",              Function<void, unsigned short, const char*>()},
             {"OnActorEquipment",         Function<void, unsigned short, const char*>()},
             {"OnActorDeath",             Function<void, unsigned short, const char*>()},
