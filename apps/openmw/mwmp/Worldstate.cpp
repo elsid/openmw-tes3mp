@@ -65,9 +65,6 @@ void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& 
 
     getNetworking()->getWorldstatePacket(ID_WORLD_MAP)->setWorldstate(this);
     getNetworking()->getWorldstatePacket(ID_WORLD_MAP)->Send();
-
-    // Keep this tile marked as explored so we don't send any more packets for it
-    markExploredMapTile(mapTile.x, mapTile.y);
 }
 
 void Worldstate::setMapExplored()

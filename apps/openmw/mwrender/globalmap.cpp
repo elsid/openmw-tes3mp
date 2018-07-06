@@ -651,6 +651,7 @@ namespace MWRender
                 Send an ID_PLAYER_MAP packet with this map tile to the server, but only if:
                 1) We have recorded the exterior cell corresponding to this tile's coordinates
                 2) The tile has not previously been marked as explored in this client's mwmp::Worldstate
+                3) The tile does not belong to a Wilderness cell
             */
             if (originToCellX.count(imageDest.mX) > 0 && originToCellY.count(imageDest.mY) > 0)
             {
@@ -661,28 +662,34 @@ namespace MWRender
 
                 if (!worldstate->containsExploredMapTile(cellX, cellY))
                 {
-                    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "New global map tile corresponds to cell %i, %i", originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY));
+                    // Keep this tile marked as explored so we don't send any more packets for it
+                    worldstate->markExploredMapTile(cellX, cellY);
 
-                    osgDB::ReaderWriter* readerwriter = osgDB::Registry::instance()->getReaderWriterForExtension("png");
-                    if (!readerwriter)
+                    if (MWBase::Environment::get().getWorld()->getExterior(cellX, cellY)->getCell()->mContextList.empty() == false)
                     {
-                        std::cerr << "Error: Can't write temporary map image, no '" << "png" << "' readerwriter found" << std::endl;
-                        return;
+                        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "New global map tile corresponds to cell %i, %i", originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY));
+
+                        osgDB::ReaderWriter* readerwriter = osgDB::Registry::instance()->getReaderWriterForExtension("png");
+                        if (!readerwriter)
+                        {
+                            std::cerr << "Error: Can't write temporary map image, no '" << "png" << "' readerwriter found" << std::endl;
+                            return;
+                        }
+
+                        std::ostringstream ostream;
+
+                        osgDB::ReaderWriter::WriteResult result = readerwriter->writeImage(*imageDest.mImage, ostream);
+
+                        if (!result.success())
+                        {
+                            std::cerr << "Error: Can't write temporary map image: " << result.message() << " code " << result.status() << std::endl;
+                        }
+
+                        std::string stringData = ostream.str();
+                        std::vector<char> vectorData = std::vector<char>(stringData.begin(), stringData.end());
+
+                        worldstate->sendMapExplored(cellX, cellY, vectorData);
                     }
-
-                    std::ostringstream ostream;
-
-                    osgDB::ReaderWriter::WriteResult result = readerwriter->writeImage(*imageDest.mImage, ostream);
-
-                    if (!result.success())
-                    {
-                        std::cerr << "Error: Can't write temporary map image: " << result.message() << " code " << result.status() << std::endl;
-                    }
-
-                    std::string stringData = ostream.str();
-                    std::vector<char> vectorData = std::vector<char>(stringData.begin(), stringData.end());
-
-                    worldstate->sendMapExplored(cellX, cellY, vectorData);
                 }
             }
             /*
