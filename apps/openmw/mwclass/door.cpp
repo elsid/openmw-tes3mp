@@ -187,7 +187,17 @@ namespace MWClass
             // using a key disarms the trap
             if(isTrapped)
             {
-                ptr.getCellRef().setTrap("");
+                /*
+                    Start of tes3mp change (major)
+
+                    Disable unilateral trap disarming on this client and expect the server's reply to our
+                    packet to do it instead
+                */
+                //ptr.getCellRef().setTrap("");
+                /*
+                    End of tes3mp change (major)
+                */
+
                 MWBase::Environment::get().getSoundManager()->playSound3D(ptr, "Disarm Trap", 1.0f, 1.0f);
                 isTrapped = false;
 

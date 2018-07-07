@@ -40,8 +40,18 @@ namespace MWWorld
             MWMechanics::CastSpell cast(mTrapSource, actor);
             cast.mHitPosition = actorPosition;
             cast.cast(mSpellId);
-        }   
-        mTrapSource.getCellRef().setTrap("");
+        }
+
+        /*
+            Start of tes3mp change (major)
+
+            Disable unilateral trap disarming on this client and expect the server's reply to our
+            packet to do it instead
+        */
+        //mTrapSource.getCellRef().setTrap("");
+        /*
+            End of tes3mp change (major)
+        */
 
         /*
             Start of tes3mp addition

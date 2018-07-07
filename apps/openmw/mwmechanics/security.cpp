@@ -132,7 +132,16 @@ namespace MWMechanics
             MWBase::Environment::get().getMechanicsManager()->objectOpened(mActor, trap);
             if (Misc::Rng::roll0to99() <= x)
             {
-                trap.getCellRef().setTrap("");
+                /*
+                    Start of tes3mp change (major)
+
+                    Disable unilateral trap disarming on this client and expect the server's reply to our
+                    packet to do it instead
+                */
+                //trap.getCellRef().setTrap("");
+                /*
+                    End of tes3mp change (major)
+                */
 
                 resultSound = "Disarm Trap";
                 resultMessage = "#{sTrapSuccess}";
