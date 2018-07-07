@@ -67,7 +67,27 @@ public:
     */
     static void SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
+    /**
+    * \brief Play a certain animation on a player's character by sending a PlayerAnimation
+    *        packet.
+    *
+    * \param pid The player ID of the character playing the animation.
+    * \param groupname The groupname of the animation.
+    * \param mode The mode of the animation.
+    * \param count The number of times the animation should be played.
+    * \param bool Whether the animation should persist or not.
+    * \return void
+    */
     static void PlayAnimation(unsigned short pid, const char* groupname, int mode, int count, bool persist) noexcept;
+
+    /**
+    * \brief Play a certain sound for a player as spoken by their character by sending
+    *        a PlayerSound packet.
+    *
+    * \param pid The player ID of the character playing the sound.
+    * \param sound The path of the sound file.
+    * \return void
+    */
     static void PlaySpeech(unsigned short pid, const char* sound) noexcept;
 
 private:
