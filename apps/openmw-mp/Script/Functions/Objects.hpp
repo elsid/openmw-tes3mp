@@ -40,6 +40,8 @@
     {"GetObjectRotY",                         ObjectFunctions::GetObjectRotY},\
     {"GetObjectRotZ",                         ObjectFunctions::GetObjectRotZ},\
     \
+    {"GetVideoFilename",                      ObjectFunctions::GetVideoFilename},\
+    \
     {"GetContainerChangesSize",               ObjectFunctions::GetContainerChangesSize},\
     {"GetContainerItemRefId",                 ObjectFunctions::GetContainerItemRefId},\
     {"GetContainerItemCount",                 ObjectFunctions::GetContainerItemCount},\
@@ -97,6 +99,7 @@
     {"SendDoorState",                         ObjectFunctions::SendDoorState},\
     {"SendDoorDestination",                   ObjectFunctions::SendDoorDestination},\
     {"SendContainer",                         ObjectFunctions::SendContainer},\
+    {"SendVideoPlay",                         ObjectFunctions::SendVideoPlay},\
     {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
     \
     {"ReadLastEvent",                         ObjectFunctions::ReadLastEvent},\
@@ -380,6 +383,14 @@ public:
     * \return The Z rotation.
     */
     static double GetObjectRotZ(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the videoFilename of the object at a certain index in the read object list's object 
+    * changes.
+    *
+    * \return The videoFilename.
+    */
+    static const char *GetVideoFilename(unsigned int i) noexcept;
 
     /**
     * \brief Get the number of container item indexes of the object at a certain index in the
@@ -864,6 +875,16 @@ public:
     * \return void
     */
     static void SendContainer(bool broadcast = false) noexcept;
+
+    /**
+    * \brief Send a VideoPlay packet.
+    *
+    * \param broadcast Whether this packet should be sent only to the player for whom the current
+    *                  object list was initialized or to everyone on the server.
+    *
+    * \return void
+    */
+    static void SendVideoPlay(bool broadcast = false) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.

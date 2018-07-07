@@ -183,6 +183,11 @@ double ObjectFunctions::GetObjectRotZ(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).position.rot[2];
 }
 
+const char *ObjectFunctions::GetVideoFilename(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).videoFilename.c_str();
+}
+
 unsigned int ObjectFunctions::GetContainerChangesSize(unsigned int objectIndex) noexcept
 {
     return readObjectList->baseObjects.at(objectIndex).containerItemCount;
@@ -487,6 +492,16 @@ void ObjectFunctions::SendDoorDestination(bool broadcast) noexcept
 void ObjectFunctions::SendContainer(bool broadcast) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONTAINER);
+    packet->setObjectList(&writeObjectList);
+    packet->Send(false);
+
+    if (broadcast)
+        packet->Send(true);
+}
+
+void ObjectFunctions::SendVideoPlay(bool broadcast) noexcept
+{
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_VIDEO_PLAY);
     packet->setObjectList(&writeObjectList);
     packet->Send(false);
 
