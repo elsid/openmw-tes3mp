@@ -1,7 +1,3 @@
-//
-// Created by koncord on 24.01.16.
-//
-
 #ifndef SCRIPTFUNCTIONS_HPP
 #define SCRIPTFUNCTIONS_HPP
 
@@ -9,6 +5,7 @@
 #include <Script/Functions/Books.hpp>
 #include <Script/Functions/Cells.hpp>
 #include <Script/Functions/CharClass.hpp>
+#include <Script/Functions/Chat.hpp>
 #include <Script/Functions/Dialogue.hpp>
 #include <Script/Functions/Factions.hpp>
 #include <Script/Functions/GUI.hpp>
@@ -55,34 +52,6 @@ public:
     * \return void
     */
     static void StopServer(int code) noexcept;
-
-    /**
-    * \brief Send a message to a certain player.
-    *
-    * \param pid The player ID.
-    * \param message The contents of the message.
-    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
-    *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
-    * \return void
-    */
-    static void SendMessage(unsigned short pid, const char *message, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
-
-    /**
-    * \brief Remove all messages from chat for a certain player.
-    *
-    * \param pid The player ID.
-    * \return void
-    */
-    static void CleanChatForPid(unsigned short pid);
-
-    /**
-    * \brief Remove all messages from chat for everyone on the server.
-    *
-    * \return void
-    */
-    static void CleanChat();
 
      /**
      * \brief Create a timer that will run a script function after a certain interval.
@@ -260,8 +229,6 @@ public:
 
             {"StopServer",          ScriptFunctions::StopServer},
 
-            {"SendMessage",         ScriptFunctions::SendMessage},
-
             {"Kick",                ScriptFunctions::Kick},
             {"BanAddress",          ScriptFunctions::BanAddress},
             {"UnbanAddress",        ScriptFunctions::UnbanAddress},
@@ -274,14 +241,13 @@ public:
             {"SetServerPassword",   ScriptFunctions::SetServerPassword},
             {"SetRuleString",       ScriptFunctions::SetRuleString},
             {"SetRuleValue",        ScriptFunctions::SetRuleValue},
-            {"CleanChatForPid",     ScriptFunctions::CleanChatForPid},
-            {"CleanChat",           ScriptFunctions::CleanChat},
             {"GetIP",               ScriptFunctions::GetIP},
 
             ACTORAPI,
             BOOKAPI,
             CELLAPI,
             CHARCLASSAPI,
+            CHATAPI,
             DIALOGUEAPI,
             FACTIONAPI,
             GUIAPI,
