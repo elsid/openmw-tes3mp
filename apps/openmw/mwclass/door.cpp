@@ -171,8 +171,19 @@ namespace MWClass
         {
             if(actor == MWMechanics::getPlayer())
                 MWBase::Environment::get().getWindowManager()->messageBox(keyName + " #{sKeyUsed}");
-            if(isLocked)
-                unlock(ptr); //Call the function here. because that makes sense.
+
+            /*
+                Start of tes3mp change (major)
+
+                Disable unilateral unlocking on this client and expect the server's reply to our
+                packet to do it instead
+            */
+            //if(isLocked)
+            //    unlock(ptr); //Call the function here. because that makes sense.
+            /*
+                End of tes3mp change (major)
+            */
+
             // using a key disarms the trap
             if(isTrapped)
             {

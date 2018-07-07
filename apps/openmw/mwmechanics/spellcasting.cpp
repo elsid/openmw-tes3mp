@@ -692,7 +692,17 @@ namespace MWMechanics
                 {
                     if (caster == getPlayer())
                         MWBase::Environment::get().getWindowManager()->messageBox("#{sMagicLockSuccess}");
-                    target.getClass().lock(target, static_cast<int>(magnitude));
+
+                    /*
+                        Start of tes3mp change (major)
+
+                        Disable unilateral locking on this client and expect the server's reply to our
+                        packet to do it instead
+                    */
+                    //target.getClass().lock(target, static_cast<int>(magnitude));
+                    /*
+                        End of tes3mp change (major)
+                    */
 
                     /*
                         Start of tes3mp addition
@@ -728,7 +738,17 @@ namespace MWMechanics
                         if (caster == getPlayer())
                             MWBase::Environment::get().getWindowManager()->messageBox("#{sMagicOpenSuccess}");
                     }
-                    target.getClass().unlock(target);
+
+                    /*
+                        Start of tes3mp change (major)
+
+                        Disable unilateral locking on this client and expect the server's reply to our
+                        packet to do it instead
+                    */
+                    //target.getClass().unlock(target);
+                    /*
+                        End of tes3mp change (major)
+                    */
 
                     /*
                         Start of tes3mp addition

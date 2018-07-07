@@ -68,7 +68,16 @@ namespace MWMechanics
             MWBase::Environment::get().getMechanicsManager()->objectOpened(mActor, lock);
             if (Misc::Rng::roll0to99() <= x)
             {
-                lock.getClass().unlock(lock);
+                /*
+                    Start of tes3mp change (major)
+
+                    Disable unilateral locking on this client and expect the server's reply to our
+                    packet to do it instead
+                */
+                //lock.getClass().unlock(lock);
+                /*
+                    End of tes3mp change (major)
+                */
 
                 /*
                     Start of tes3mp addition

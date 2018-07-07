@@ -221,7 +221,16 @@ namespace MWScript
                         End of tes3mp addition
                     */
 
-                    ptr.getClass().lock (ptr, lockLevel);
+                    /*
+                        Start of tes3mp change (major)
+
+                        Disable unilateral locking on this client and expect the server's reply to our
+                        packet to do it instead
+                    */
+                    //ptr.getClass().lock (ptr, lockLevel);
+                    /*
+                        End of tes3mp change (major)
+                    */
 
                     // Instantly reset door to closed state
                     // This is done when using Lock in scripts, but not when using Lock spells.
@@ -261,7 +270,16 @@ namespace MWScript
                         End of tes3mp addition
                     */
 
-                    ptr.getClass().unlock (ptr);
+                    /*
+                        Start of tes3mp change (major)
+
+                        Disable unilateral unlocking on this client and expect the server's reply to our
+                        packet to do it instead
+                    */
+                    //ptr.getClass().unlock (ptr);
+                    /*
+                        End of tes3mp change (major)
+                    */
                 }
         };
 
