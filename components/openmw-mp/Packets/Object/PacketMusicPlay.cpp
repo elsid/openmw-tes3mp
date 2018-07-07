@@ -10,5 +10,5 @@ PacketMusicPlay::PacketMusicPlay(RakNet::RakPeerInterface *peer) : ObjectPacket(
 
 void PacketMusicPlay::Object(BaseObject &baseObject, bool send)
 {
-    RW(baseObject.filename, send);
+    RW(baseObject.musicFilename, send);
 }

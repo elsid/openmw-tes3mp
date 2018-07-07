@@ -43,7 +43,9 @@ namespace mwmp
         ESM::Cell destinationCell;
         ESM::Position destinationPosition;
 
-        std::string filename;
+        std::string musicFilename;
+
+        std::string videoFilename;
         bool allowSkipping;
 
         std::string animGroup;

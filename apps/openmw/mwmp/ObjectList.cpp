@@ -735,9 +735,9 @@ void ObjectList::playMusic()
 {
     for (const auto &baseObject : baseObjects)
     {
-        LOG_APPEND(Log::LOG_VERBOSE, "- filename: %s", baseObject.filename.c_str());
+        LOG_APPEND(Log::LOG_VERBOSE, "- filename: %s", baseObject.musicFilename.c_str());
 
-        MWBase::Environment::get().getSoundManager()->streamMusic(baseObject.filename);
+        MWBase::Environment::get().getSoundManager()->streamMusic(baseObject.musicFilename);
     }
 }
 
@@ -745,10 +745,10 @@ void ObjectList::playVideo()
 {
     for (const auto &baseObject : baseObjects)
     {
-        LOG_APPEND(Log::LOG_VERBOSE, "- filename: %s, allowSkipping: %s", baseObject.filename.c_str(),
+        LOG_APPEND(Log::LOG_VERBOSE, "- filename: %s, allowSkipping: %s", baseObject.videoFilename.c_str(),
             baseObject.allowSkipping ? "true" : "false");
 
-        MWBase::Environment::get().getWindowManager()->playVideo(baseObject.filename, baseObject.allowSkipping);
+        MWBase::Environment::get().getWindowManager()->playVideo(baseObject.videoFilename, baseObject.allowSkipping);
     }
 }
 
@@ -956,14 +956,14 @@ void ObjectList::addDoorState(const MWWorld::Ptr& ptr, int state)
 void ObjectList::addMusicPlay(std::string filename)
 {
     mwmp::BaseObject baseObject;
-    baseObject.filename = filename;
+    baseObject.musicFilename = filename;
     addObject(baseObject);
 }
 
 void ObjectList::addVideoPlay(std::string filename, bool allowSkipping)
 {
     mwmp::BaseObject baseObject;
-    baseObject.filename = filename;
+    baseObject.videoFilename = filename;
     baseObject.allowSkipping = allowSkipping;
     addObject(baseObject);
 }

@@ -10,6 +10,6 @@ PacketVideoPlay::PacketVideoPlay(RakNet::RakPeerInterface *peer) : ObjectPacket(
 
 void PacketVideoPlay::Object(BaseObject &baseObject, bool send)
 {
-    RW(baseObject.filename, send);
+    RW(baseObject.videoFilename, send);
     RW(baseObject.allowSkipping, send);
 }
