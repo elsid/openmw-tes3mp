@@ -144,11 +144,13 @@ public:
     * \brief Send a PlayerFaction packet with a player's recorded faction changes.
     *
     * \param pid The player ID whose faction changes should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendFactionChanges(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendFactionChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 private:
 
 };

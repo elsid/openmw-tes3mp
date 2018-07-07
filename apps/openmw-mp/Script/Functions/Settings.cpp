@@ -70,6 +70,8 @@ void SettingFunctions::SendSettings(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player,);
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GAME_SETTINGS)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GAME_SETTINGS)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GAME_SETTINGS);
+    packet->setPlayer(player);
+
+    packet->Send(false);
 }

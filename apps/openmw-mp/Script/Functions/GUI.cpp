@@ -18,8 +18,10 @@ void GUIFunctions::_MessageBox(unsigned short pid, int id, const char *label) no
     player->guiMessageBox.label = label;
     player->guiMessageBox.type = Player::GUIMessageBox::MessageBox;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX);
+    packet->setPlayer(player);
+
+    packet->Send(false);
 }
 
 void GUIFunctions::CustomMessageBox(unsigned short pid, int id, const char *label, const char *buttons) noexcept
@@ -32,8 +34,10 @@ void GUIFunctions::CustomMessageBox(unsigned short pid, int id, const char *labe
     player->guiMessageBox.buttons = buttons;
     player->guiMessageBox.type = Player::GUIMessageBox::CustomMessageBox;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX);
+    packet->setPlayer(player);
+
+    packet->Send(false);
 }
 
 void GUIFunctions::InputDialog(unsigned short pid, int id, const char *label, const char *note) noexcept
@@ -46,8 +50,10 @@ void GUIFunctions::InputDialog(unsigned short pid, int id, const char *label, co
     player->guiMessageBox.note = note;
     player->guiMessageBox.type = Player::GUIMessageBox::InputDialog;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX);
+    packet->setPlayer(player);
+    
+    packet->Send(false);
 }
 
 void GUIFunctions::PasswordDialog(unsigned short pid, int id, const char *label, const char *note) noexcept
@@ -60,8 +66,10 @@ void GUIFunctions::PasswordDialog(unsigned short pid, int id, const char *label,
     player->guiMessageBox.note = note;
     player->guiMessageBox.type = Player::GUIMessageBox::PasswordDialog;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX);
+    packet->setPlayer(player);
+    
+    packet->Send(false);
 }
 
 void GUIFunctions::ListBox(unsigned short pid, int id, const char *label, const char *items)
@@ -74,8 +82,10 @@ void GUIFunctions::ListBox(unsigned short pid, int id, const char *label, const 
     player->guiMessageBox.data = items;
     player->guiMessageBox.type = Player::GUIMessageBox::ListBox;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_GUI_MESSAGEBOX);
+    packet->setPlayer(player);
+    
+    packet->Send(false);
 }
 
 void GUIFunctions::InitializeQuickKeyChanges(unsigned short pid) noexcept

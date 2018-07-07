@@ -78,7 +78,9 @@ void ShapeshiftFunctions::SendShapeshift(unsigned short pid)
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT)->Send(false);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT)->Send(true);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SHAPESHIFT);
+    packet->setPlayer(player);
+
+    packet->Send(false);
+    packet->Send(true);
 }

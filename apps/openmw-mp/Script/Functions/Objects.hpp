@@ -779,22 +779,24 @@ public:
     /**
     * \brief Send an ObjectPlace packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectPlace(bool broadcast = false) noexcept;
+    static void SendObjectPlace(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send an ObjectSpawn packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectSpawn(bool broadcast = false) noexcept;
+    static void SendObjectSpawn(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send an ObjectDelete packet.
@@ -804,17 +806,18 @@ public:
     *
     * \return void
     */
-    static void SendObjectDelete(bool broadcast = false) noexcept;
+    static void SendObjectDelete(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send an ObjectLock packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectLock(bool broadcast = false) noexcept;
+    static void SendObjectLock(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send an ObjectTrap packet.
@@ -824,77 +827,84 @@ public:
     *
     * \return void
     */
-    static void SendObjectTrap(bool broadcast = false) noexcept;
+    static void SendObjectTrap(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send an ObjectScale packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectScale(bool broadcast = false) noexcept;
+    static void SendObjectScale(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send an ObjectState packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectState(bool broadcast = false) noexcept;
+    static void SendObjectState(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a DoorState packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendDoorState(bool broadcast = false) noexcept;
+    static void SendDoorState(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a DoorDestination packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendDoorDestination(bool broadcast = false) noexcept;
+    static void SendDoorDestination(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a Container packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendContainer(bool broadcast = false) noexcept;
+    static void SendContainer(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a VideoPlay packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendVideoPlay(bool broadcast = false) noexcept;
+    static void SendVideoPlay(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.
     *
-    * \param broadcast Whether this packet should be sent only to the player for whom the current
-    *                  object list was initialized or to everyone on the server.
-    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendConsoleCommand(bool broadcast = false) noexcept;
+    static void SendConsoleCommand(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
 
     // All methods below are deprecated versions of methods from above

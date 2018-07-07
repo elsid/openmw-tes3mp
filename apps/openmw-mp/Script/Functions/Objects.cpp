@@ -399,123 +399,135 @@ void ObjectFunctions::AddContainerItem() noexcept
     tempContainerItem = emptyContainerItem;
 }
 
-void ObjectFunctions::SendObjectPlace(bool broadcast) noexcept
+void ObjectFunctions::SendObjectPlace(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_PLACE);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendObjectSpawn(bool broadcast) noexcept
+void ObjectFunctions::SendObjectSpawn(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_SPAWN);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendObjectDelete(bool broadcast) noexcept
+void ObjectFunctions::SendObjectDelete(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_DELETE);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
-
-    if (broadcast)
+    
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendObjectLock(bool broadcast) noexcept
+void ObjectFunctions::SendObjectLock(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_LOCK);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendObjectTrap(bool broadcast) noexcept
+void ObjectFunctions::SendObjectTrap(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_TRAP);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendObjectScale(bool broadcast) noexcept
+void ObjectFunctions::SendObjectScale(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_SCALE);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendObjectState(bool broadcast) noexcept
+void ObjectFunctions::SendObjectState(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_STATE);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendDoorState(bool broadcast) noexcept
+void ObjectFunctions::SendDoorState(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_DOOR_STATE);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendDoorDestination(bool broadcast) noexcept
+void ObjectFunctions::SendDoorDestination(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_DOOR_DESTINATION);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendContainer(bool broadcast) noexcept
+void ObjectFunctions::SendContainer(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONTAINER);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendVideoPlay(bool broadcast) noexcept
+void ObjectFunctions::SendVideoPlay(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_VIDEO_PLAY);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void ObjectFunctions::SendConsoleCommand(bool broadcast) noexcept
+void ObjectFunctions::SendConsoleCommand(bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_CONSOLE_COMMAND);
     packet->setObjectList(&writeObjectList);
-    packet->Send(false);
 
-    if (broadcast)
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
         packet->Send(true);
 }
 

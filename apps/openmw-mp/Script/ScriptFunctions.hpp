@@ -61,10 +61,13 @@ public:
     *
     * \param pid The player ID.
     * \param message The contents of the message.
-    * \param broadcast Whether the message should also be sent to other players.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendMessage(unsigned short pid, const char *message, bool broadcast) noexcept;
+    static void SendMessage(unsigned short pid, const char *message, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Remove all messages from chat for a certain player.

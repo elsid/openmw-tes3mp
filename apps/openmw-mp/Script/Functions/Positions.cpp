@@ -133,8 +133,10 @@ void PositionFunctions::SendPos(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_POSITION)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_POSITION)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_POSITION);
+    packet->setPlayer(player);
+
+    packet->Send(false);
 }
 
 void PositionFunctions::SendMomentum(unsigned short pid) noexcept
@@ -142,6 +144,8 @@ void PositionFunctions::SendMomentum(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MOMENTUM)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MOMENTUM)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MOMENTUM);
+    packet->setPlayer(player);
+
+    packet->Send(false);
 }

@@ -168,18 +168,25 @@ void ItemFunctions::SendEquipment(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT)->Send(false);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT)->Send(true);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_EQUIPMENT);
+    packet->setPlayer(player);
+
+    packet->Send(false);
+    packet->Send(true);
 
     player->equipmentIndexChanges.clear();
 }
 
-void ItemFunctions::SendInventoryChanges(unsigned short pid, bool toOthers) noexcept
+void ItemFunctions::SendInventoryChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_INVENTORY)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_INVENTORY)->Send(toOthers);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_INVENTORY);
+    packet->setPlayer(player);
+
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }

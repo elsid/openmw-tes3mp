@@ -171,8 +171,10 @@ void MechanicsFunctions::SendMarkLocation(unsigned short pid)
 
     player->miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::MARK_LOCATION;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS);
+    packet->setPlayer(player);
+    
+    packet->Send(false);
 }
 
 void MechanicsFunctions::SendSelectedSpell(unsigned short pid)
@@ -182,8 +184,10 @@ void MechanicsFunctions::SendSelectedSpell(unsigned short pid)
 
     player->miscellaneousChangeType = mwmp::MISCELLANEOUS_CHANGE_TYPE::SELECTED_SPELL;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_MISCELLANEOUS);
+    packet->setPlayer(player);
+    
+    packet->Send(false);
 }
 
 void MechanicsFunctions::Jail(unsigned short pid, int jailDays, bool ignoreJailTeleportation, bool ignoreJailSkillIncreases,
@@ -198,8 +202,10 @@ void MechanicsFunctions::Jail(unsigned short pid, int jailDays, bool ignoreJailT
     player->jailProgressText = jailProgressText;
     player->jailEndText = jailEndText;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JAIL)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JAIL)->Send(false);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JAIL);
+    packet->setPlayer(player);
+    
+    packet->Send(false);
 }
 
 void MechanicsFunctions::Resurrect(unsigned short pid, unsigned int type) noexcept
@@ -209,9 +215,11 @@ void MechanicsFunctions::Resurrect(unsigned short pid, unsigned int type) noexce
 
     player->resurrectType = type;
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT)->Send(false);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT)->Send(true);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_RESURRECT);
+    packet->setPlayer(player);
+
+    packet->Send(false);
+    packet->Send(true);
 }
 
 // All methods below are deprecated versions of methods from above

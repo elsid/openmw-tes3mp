@@ -175,31 +175,37 @@ public:
     * \brief Send a PlayerJournal packet with a player's recorded journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendJournalChanges(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendJournalChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a PlayerKillCount packet with a player's recorded kill count changes.
     *
     * \param pid The player ID whose kill count changes should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendKillChanges(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendKillChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a PlayerReputation packet with a player's recorded reputation.
     *
     * \param pid The player ID whose reputation should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendReputation(unsigned short pid, bool toOthers) noexcept;
+    static void SendReputation(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
 private:
 

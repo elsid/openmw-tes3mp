@@ -149,29 +149,44 @@ int QuestFunctions::GetReputation(unsigned short pid) noexcept
     return player->npcStats.mReputation;
 }
 
-void QuestFunctions::SendJournalChanges(unsigned short pid, bool toOthers) noexcept
+void QuestFunctions::SendJournalChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JOURNAL)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JOURNAL)->Send(toOthers);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JOURNAL);
+    packet->setPlayer(player);
+
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
-void QuestFunctions::SendKillChanges(unsigned short pid, bool toOthers) noexcept
+void QuestFunctions::SendKillChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT)->Send(toOthers);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT);
+    packet->setPlayer(player);
+
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
-void QuestFunctions::SendReputation(unsigned short pid, bool toOthers) noexcept
+void QuestFunctions::SendReputation(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_REPUTATION)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_REPUTATION)->Send(toOthers);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_REPUTATION);
+    packet->setPlayer(player);
+
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }

@@ -59,11 +59,13 @@ public:
     * \brief Send a PlayerTopic packet with a player's recorded topic changes.
     *
     * \param pid The player ID whose topic changes should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendTopicChanges(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendTopicChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     static void PlayAnimation(unsigned short pid, const char* groupname, int mode = 0, int count = 1, bool persist = false) noexcept;
     static void PlaySpeech(unsigned short pid, const char* sound) noexcept;

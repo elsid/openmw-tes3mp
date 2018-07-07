@@ -45,13 +45,18 @@ const char *DialogueFunctions::GetTopicId(unsigned short pid, unsigned int i) no
     return player->topicChanges.topics.at(i).topicId.c_str();
 }
 
-void DialogueFunctions::SendTopicChanges(unsigned short pid, bool toOthers) noexcept
+void DialogueFunctions::SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_TOPIC)->setPlayer(player);
-    mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_TOPIC)->Send(toOthers);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_TOPIC);
+    packet->setPlayer(player);
+
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
 void DialogueFunctions::PlayAnimation(unsigned short pid, const char* groupname, int mode, int count, bool persist) noexcept
@@ -66,6 +71,7 @@ void DialogueFunctions::PlayAnimation(unsigned short pid, const char* groupname,
 
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ANIM_PLAY);
     packet->setPlayer(player);
+
     packet->Send(false);
     player->sendToLoaded(packet);
 }
@@ -79,6 +85,7 @@ void DialogueFunctions::PlaySpeech(unsigned short pid, const char* sound) noexce
 
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPEECH);
     packet->setPlayer(player);
+
     packet->Send(false);
     player->sendToLoaded(packet);
 }

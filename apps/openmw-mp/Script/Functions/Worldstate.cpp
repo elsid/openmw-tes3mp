@@ -137,44 +137,50 @@ void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char*
     }
 }
 
-void WorldstateFunctions::SendWorldMap(unsigned short pid, bool broadcast) noexcept
+void WorldstateFunctions::SendWorldMap(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
     writeWorldstate.guid = player->guid;
 
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP)->Send(false);
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP);
+    packet->setWorldstate(&writeWorldstate);
 
-    if (broadcast)
-        mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP)->Send(true);
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
-void WorldstateFunctions::SendWorldTime(unsigned short pid, bool broadcast) noexcept
+void WorldstateFunctions::SendWorldTime(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
     writeWorldstate.guid = player->guid;
 
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(false);
-
-    if (broadcast)
-        mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME)->Send(true);
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME);
+    packet->setWorldstate(&writeWorldstate);
+    
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
-void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool broadcast) noexcept
+void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
     writeWorldstate.guid = player->guid;
 
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->setWorldstate(&writeWorldstate);
-    mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->Send(false);
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE);
+    packet->setWorldstate(&writeWorldstate);
 
-    if (broadcast)
-        mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE)->Send(true);
+    if (sendToAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }

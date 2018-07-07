@@ -255,11 +255,13 @@ public:
     * \brief Send a PlayerSpellbook packet with a player's recorded spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param toOthers Whether this packet should be sent only to other players or
-    *                 only to the player it is about.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendSpellbookChanges(unsigned short pid, bool toOthers = false) noexcept;
+    static void SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
 private:
 

@@ -223,29 +223,33 @@ public:
     *                  or to all players on the server.
     * \return void
     */
-    static void SendWorldMap(unsigned short pid, bool broadcast = false) noexcept;
+    static void SendWorldMap(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a WorldTime packet with the current time and time scale in the write-only
     *        worldstate.
     *
     * \param pid The player ID attached to the packet.
-    * \param broadcast Whether this packet should be sent only to the attached player
-    *                  or to all players on the server.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendWorldTime(unsigned short pid, bool broadcast = false) noexcept;
+    static void SendWorldTime(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
     /**
     * \brief Send a WorldCollisionOverride packet with the current collision overrides in
     *        the write-only worldstate.
     *
     * \param pid The player ID attached to the packet.
-    * \param broadcast Whether this packet should be sent only to the attached player
-    *                  or to all players on the server.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
+    *                             to the packet (true by default).
     * \return void
     */
-    static void SendWorldCollisionOverride(unsigned short pid, bool broadcast = false) noexcept;
+    static void SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
 
 };
 
