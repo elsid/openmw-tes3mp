@@ -84,7 +84,16 @@ namespace MWScript
                         End of tes3mp addition
                     */
 
-                    MWBase::Environment::get().getWorld()->scaleObject(ptr,scale);
+                    /*
+                        Start of tes3mp change (major)
+
+                        Disable unilateral scaling on this client and expect the server's reply to our
+                        packet to do it instead
+                    */
+                    //MWBase::Environment::get().getWorld()->scaleObject(ptr,scale);
+                    /*
+                        End of tes3mp change (major)
+                    */
                 }
         };
 
