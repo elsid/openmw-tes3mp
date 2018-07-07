@@ -1,7 +1,3 @@
-//
-// Created by koncord on 24.01.16.
-//
-
 #include "ScriptFunctions.hpp"
 #include "API/PublicFnAPI.hpp"
 #include <cstdarg>
@@ -10,7 +6,6 @@
 #include <apps/openmw-mp/Networking.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <components/openmw-mp/Version.hpp>
-#include "MasterClient.hpp"
 
 template<typename... Types>
 constexpr char TypeString<Types...>::value[];
@@ -94,83 +89,4 @@ boost::any ScriptFunctions::CallPublic(const char *name, va_list args) noexcept
     catch (...) {}
 
     return 0;
-}
-
-void ScriptFunctions::StopServer(int code) noexcept
-{
-    mwmp::Networking::getPtr()->stopServer(code);
-}
-
-void ScriptFunctions::Kick(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player,);
-    mwmp::Networking::getPtr()->kickPlayer(player->guid);
-}
-
-void ScriptFunctions::BanAddress(const char *ipAddress) noexcept
-{
-    mwmp::Networking::getPtr()->banAddress(ipAddress);
-}
-
-void ScriptFunctions::UnbanAddress(const char *ipAddress) noexcept
-{
-    mwmp::Networking::getPtr()->unbanAddress(ipAddress);
-}
-
-const char *ScriptFunctions::GetServerVersion() noexcept
-{
-    return TES3MP_VERSION;
-}
-
-const char *ScriptFunctions::GetProtocolVersion() noexcept
-{
-    static string version = to_string(TES3MP_PROTO_VERSION);
-    return version.c_str();
-}
-
-int ScriptFunctions::GetAvgPing(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, -1);
-    return mwmp::Networking::get().getAvgPing(player->guid);
-}
-
-const char *ScriptFunctions::GetIP(unsigned short pid) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, "");
-    RakNet::SystemAddress addr = mwmp::Networking::getPtr()->getSystemAddress(player->guid);
-    return addr.ToString(false);
-}
-
-void ScriptFunctions::SetGameMode(const char *gameMode) noexcept
-{
-    if (mwmp::Networking::getPtr()->getMasterClient())
-        mwmp::Networking::getPtr()->getMasterClient()->SetModname(gameMode);
-}
-
-void ScriptFunctions::SetHostname(const char *name) noexcept
-{
-    if (mwmp::Networking::getPtr()->getMasterClient())
-        mwmp::Networking::getPtr()->getMasterClient()->SetHostname(name);
-}
-
-void ScriptFunctions::SetServerPassword(const char *password) noexcept
-{
-    mwmp::Networking::getPtr()->setServerPassword(password);
-}
-
-void ScriptFunctions::SetRuleString(const char *key, const char *value) noexcept
-{
-    auto mc = mwmp::Networking::getPtr()->getMasterClient();
-    if (mc)
-        mc->SetRuleString(key, value);
-}
-
-void ScriptFunctions::SetRuleValue(const char *key, double value) noexcept
-{
-    auto mc = mwmp::Networking::getPtr()->getMasterClient();
-    if (mc)
-        mc->SetRuleValue(key, value);
 }

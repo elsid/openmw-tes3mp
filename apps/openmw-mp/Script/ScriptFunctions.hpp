@@ -16,6 +16,7 @@
 #include <Script/Functions/Positions.hpp>
 #include <Script/Functions/Quests.hpp>
 #include <Script/Functions/Shapeshift.hpp>
+#include <Script/Functions/Server.hpp>
 #include <Script/Functions/Settings.hpp>
 #include <Script/Functions/Spells.hpp>
 #include <Script/Functions/Stats.hpp>
@@ -44,14 +45,6 @@ public:
     static void GetArguments(std::vector<boost::any> &params, va_list args, const std::string &def);
     static void MakePublic(ScriptFunc _public, const char *name, char ret_type, const char *def) noexcept;
     static boost::any CallPublic(const char *name, va_list args) noexcept;
-
-    /**
-    * \brief Shut down the server.
-    *
-    * \param code The shutdown code.
-    * \return void
-    */
-    static void StopServer(int code) noexcept;
 
      /**
      * \brief Create a timer that will run a script function after a certain interval.
@@ -119,101 +112,6 @@ public:
     */
     static bool IsTimerElapsed(int timerId) noexcept;
 
-    /**
-    * \brief Kick a certain player from the server.
-    *
-    * \param pid The player ID.
-    * \return void
-    */
-    static void Kick(unsigned short pid) noexcept;
-
-    /**
-    * \brief Ban a certain IP address from the server.
-    *
-    * \param ipAddress The IP address.
-    * \return void
-    */
-    static void BanAddress(const char *ipAddress) noexcept;
-
-    /**
-    * \brief Unban a certain IP address from the server.
-    *
-    * \param ipAddress The IP address.
-    * \return void
-    */
-    static void UnbanAddress(const char *ipAddress) noexcept;
-
-    /**
-    * \brief Get the TES3MP version of the server.
-    *
-    * \return The server version.
-    */
-    static const char *GetServerVersion() noexcept;
-
-    /**
-    * \brief Get the protocol version of the server.
-    *
-    * \return The protocol version.
-    */
-    static const char *GetProtocolVersion() noexcept;
-
-    /**
-    * \brief Get the average ping of a certain player.
-    *
-    * \param pid The player ID.
-    * \return The average ping.
-    */
-    static int GetAvgPing(unsigned short pid) noexcept;
-
-    /**
-    * \brief Get the IP address of a certain player.
-    *
-    * \param pid The player ID.
-    * \return The IP address.
-    */
-    static const char* GetIP(unsigned short pid) noexcept;
-
-    /**
-    * \brief Set the game mode of the server, as displayed in the server browser.
-    *
-    * \param name The new game mode.
-    * \return void
-    */
-    static void SetGameMode(const char* gameMode) noexcept;
-
-    /**
-    * \brief Set the name of the server, as displayed in the server browser.
-    *
-    * \param name The new name.
-    * \return void
-    */
-    static void SetHostname(const char* name) noexcept;
-
-    /**
-    * \brief Set the password required to join the server.
-    *
-    * \param password The password.
-    * \return void
-    */
-    static void SetServerPassword(const char *passw) noexcept;
-
-    /**
-    * \brief Set a rule string for the server details displayed in the server browser.
-    *
-    * \param key The name of the rule.
-    * \param value The string value of the rule.
-    * \return void
-    */
-    static void SetRuleString(const char *key, const char *value) noexcept;
-
-    /**
-    * \brief Set a rule value for the server details displayed in the server browser.
-    *
-    * \param key The name of the rule.
-    * \param value The numerical value of the rule.
-    * \return void
-    */
-    static void SetRuleValue(const char *key, double value) noexcept;
 
     static constexpr ScriptFunctionData functions[]{
             {"CreateTimer",         ScriptFunctions::CreateTimer},
@@ -226,22 +124,6 @@ public:
             {"RestartTimer",        ScriptFunctions::RestartTimer},
             {"FreeTimer",           ScriptFunctions::FreeTimer},
             {"IsTimerElapsed",      ScriptFunctions::IsTimerElapsed},
-
-            {"StopServer",          ScriptFunctions::StopServer},
-
-            {"Kick",                ScriptFunctions::Kick},
-            {"BanAddress",          ScriptFunctions::BanAddress},
-            {"UnbanAddress",        ScriptFunctions::UnbanAddress},
-
-            {"GetServerVersion",    ScriptFunctions::GetServerVersion},
-            {"GetProtocolVersion",  ScriptFunctions::GetProtocolVersion},
-            {"GetAvgPing",          ScriptFunctions::GetAvgPing},
-            {"SetGameMode",         ScriptFunctions::SetGameMode},
-            {"SetHostname",         ScriptFunctions::SetHostname},
-            {"SetServerPassword",   ScriptFunctions::SetServerPassword},
-            {"SetRuleString",       ScriptFunctions::SetRuleString},
-            {"SetRuleValue",        ScriptFunctions::SetRuleValue},
-            {"GetIP",               ScriptFunctions::GetIP},
 
             ACTORAPI,
             BOOKAPI,
@@ -257,6 +139,7 @@ public:
             POSITIONAPI,
             QUESTAPI,
             SHAPESHIFTAPI,
+            SERVERAPI,
             SETTINGSAPI,
             SPELLAPI,
             STATAPI,
