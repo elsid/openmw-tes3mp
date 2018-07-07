@@ -773,7 +773,16 @@ namespace MWScript
                             End of tes3mp addition
                         */
 
-                        MWBase::Environment::get().getWorld()->deleteObject(ptr);
+                        /*
+                            Start of tes3mp change (major)
+
+                            Disable unilateral deletion on this client and expect the server's reply to our
+                            packet to do it instead
+                        */
+                        //MWBase::Environment::get().getWorld()->deleteObject(ptr);
+                        /*
+                            End of tes3mp change (major)
+                        */
                     }
                     else if (parameter == 0)
                         MWBase::Environment::get().getWorld()->undeleteObject(ptr);
