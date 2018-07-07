@@ -67,7 +67,7 @@ public:
     */
     static void SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
-    static void PlayAnimation(unsigned short pid, const char* groupname, int mode = 0, int count = 1, bool persist = false) noexcept;
+    static void PlayAnimation(unsigned short pid, const char* groupname, int mode, int count, bool persist) noexcept;
     static void PlaySpeech(unsigned short pid, const char* sound) noexcept;
 
 private:

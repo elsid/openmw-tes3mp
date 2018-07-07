@@ -240,8 +240,8 @@ public:
     * \param jailEndText The text that should be displayed once the jailing period is over.
     * \return void
     */
-    static void Jail(unsigned short pid, int jailDays, bool ignoreJailTeleportation = false, bool ignoreJailSkillIncreases = false,
-                     const char* jailProgressText = "", const char* jailEndText = "") noexcept;
+    static void Jail(unsigned short pid, int jailDays, bool ignoreJailTeleportation, bool ignoreJailSkillIncreases,
+                     const char* jailProgressText, const char* jailEndText) noexcept;
 
     /**
     * \brief Send a PlayerResurrect packet about a player.
