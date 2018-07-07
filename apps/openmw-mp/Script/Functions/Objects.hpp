@@ -785,7 +785,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectPlace(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectPlace(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectSpawn packet.
@@ -796,7 +796,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectSpawn(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectSpawn(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectDelete packet.
@@ -806,7 +806,7 @@ public:
     *
     * \return void
     */
-    static void SendObjectDelete(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectDelete(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectLock packet.
@@ -817,7 +817,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectLock(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectLock(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectTrap packet.
@@ -827,7 +827,7 @@ public:
     *
     * \return void
     */
-    static void SendObjectTrap(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectTrap(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectScale packet.
@@ -838,7 +838,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectScale(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectScale(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectState packet.
@@ -849,7 +849,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendObjectState(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendObjectState(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a DoorState packet.
@@ -860,7 +860,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendDoorState(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendDoorState(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a DoorDestination packet.
@@ -871,7 +871,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendDoorDestination(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendDoorDestination(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a Container packet.
@@ -882,7 +882,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendContainer(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendContainer(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a VideoPlay packet.
@@ -893,7 +893,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendVideoPlay(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendVideoPlay(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.
@@ -904,7 +904,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendConsoleCommand(bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendConsoleCommand(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
 
     // All methods below are deprecated versions of methods from above

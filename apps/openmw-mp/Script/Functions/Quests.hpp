@@ -181,7 +181,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendJournalChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendJournalChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a PlayerKillCount packet with a player's recorded kill count changes.
@@ -193,7 +193,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendKillChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendKillChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a PlayerReputation packet with a player's recorded reputation.
@@ -205,7 +205,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendReputation(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendReputation(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
 private:
 

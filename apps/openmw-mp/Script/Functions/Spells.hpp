@@ -261,7 +261,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
 private:
 

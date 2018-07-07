@@ -108,7 +108,7 @@ void FactionFunctions::AddFaction(unsigned short pid) noexcept
     tempFaction = emptyFaction;
 }
 
-void FactionFunctions::SendFactionChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void FactionFunctions::SendFactionChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -116,7 +116,7 @@ void FactionFunctions::SendFactionChanges(unsigned short pid, bool sendToOtherPl
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_FACTION);
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);

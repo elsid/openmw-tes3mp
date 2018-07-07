@@ -65,7 +65,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendTopicChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     static void PlayAnimation(unsigned short pid, const char* groupname, int mode = 0, int count = 1, bool persist = false) noexcept;
     static void PlaySpeech(unsigned short pid, const char* sound) noexcept;

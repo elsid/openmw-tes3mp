@@ -223,7 +223,7 @@ public:
     *                  or to all players on the server.
     * \return void
     */
-    static void SendWorldMap(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendWorldMap(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a WorldTime packet with the current time and time scale in the write-only
@@ -236,7 +236,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendWorldTime(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendWorldTime(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a WorldCollisionOverride packet with the current collision overrides in
@@ -249,7 +249,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
 };
 

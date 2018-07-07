@@ -45,7 +45,7 @@ const char *DialogueFunctions::GetTopicId(unsigned short pid, unsigned int i) no
     return player->topicChanges.topics.at(i).topicId.c_str();
 }
 
-void DialogueFunctions::SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void DialogueFunctions::SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -53,7 +53,7 @@ void DialogueFunctions::SendTopicChanges(unsigned short pid, bool sendToOtherPla
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_TOPIC);
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);

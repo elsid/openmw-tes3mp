@@ -217,7 +217,7 @@ public:
     *                             to the packet (true by default).
     * \return void
     */
-    static void SendInventoryChanges(unsigned short pid, bool sendToOtherPlayers = false, bool sendToAttachedPlayer = true) noexcept;
+    static void SendInventoryChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 private:
 
 };

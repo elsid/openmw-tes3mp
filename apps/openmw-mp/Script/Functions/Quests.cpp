@@ -149,7 +149,7 @@ int QuestFunctions::GetReputation(unsigned short pid) noexcept
     return player->npcStats.mReputation;
 }
 
-void QuestFunctions::SendJournalChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void QuestFunctions::SendJournalChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -157,13 +157,13 @@ void QuestFunctions::SendJournalChanges(unsigned short pid, bool sendToOtherPlay
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_JOURNAL);
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void QuestFunctions::SendKillChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void QuestFunctions::SendKillChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -171,13 +171,13 @@ void QuestFunctions::SendKillChanges(unsigned short pid, bool sendToOtherPlayers
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT);
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void QuestFunctions::SendReputation(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void QuestFunctions::SendReputation(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -185,7 +185,7 @@ void QuestFunctions::SendReputation(unsigned short pid, bool sendToOtherPlayers,
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_REPUTATION);
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);

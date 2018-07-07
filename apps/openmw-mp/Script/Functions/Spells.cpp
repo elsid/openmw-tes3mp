@@ -269,7 +269,7 @@ int SpellFunctions::GetSpellEffectMagnMax(unsigned short pid, unsigned int i, un
     return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mMagnMax;
 }
 
-void SpellFunctions::SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void SpellFunctions::SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -277,7 +277,7 @@ void SpellFunctions::SendSpellbookChanges(unsigned short pid, bool sendToOtherPl
     mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_SPELLBOOK);
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);

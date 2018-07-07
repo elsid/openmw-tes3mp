@@ -137,7 +137,7 @@ void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char*
     }
 }
 
-void WorldstateFunctions::SendWorldMap(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void WorldstateFunctions::SendWorldMap(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -147,13 +147,13 @@ void WorldstateFunctions::SendWorldMap(unsigned short pid, bool sendToOtherPlaye
     mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_MAP);
     packet->setWorldstate(&writeWorldstate);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void WorldstateFunctions::SendWorldTime(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void WorldstateFunctions::SendWorldTime(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -163,13 +163,13 @@ void WorldstateFunctions::SendWorldTime(unsigned short pid, bool sendToOtherPlay
     mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_TIME);
     packet->setWorldstate(&writeWorldstate);
     
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
 }
 
-void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -179,7 +179,7 @@ void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool se
     mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_COLLISION_OVERRIDE);
     packet->setWorldstate(&writeWorldstate);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);

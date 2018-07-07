@@ -45,7 +45,7 @@ const char *BookFunctions::GetBookId(unsigned short pid, unsigned int i) noexcep
     return player->bookChanges.books.at(i).bookId.c_str();
 }
 
-void BookFunctions::SendBookChanges(unsigned short pid, bool sendToOtherPlayers, bool sendToAttachedPlayer) noexcept
+void BookFunctions::SendBookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -54,7 +54,7 @@ void BookFunctions::SendBookChanges(unsigned short pid, bool sendToOtherPlayers,
 
     packet->setPlayer(player);
 
-    if (sendToAttachedPlayer)
+    if (!skipAttachedPlayer)
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);

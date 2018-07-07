@@ -5,7 +5,6 @@
 #include <apps/openmw-mp/Player.hpp>
 #include <apps/openmw-mp/Networking.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include <components/openmw-mp/Version.hpp>
 
 template<typename... Types>
 constexpr char TypeString<Types...>::value[];
