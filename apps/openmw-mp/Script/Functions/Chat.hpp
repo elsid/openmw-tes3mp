@@ -19,8 +19,8 @@ public:
     * \param message The contents of the message.
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendMessage(unsigned short pid, const char *message, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;

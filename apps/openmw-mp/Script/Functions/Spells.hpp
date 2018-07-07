@@ -257,8 +257,8 @@ public:
     * \param pid The player ID whose spellbook changes should be used.
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;

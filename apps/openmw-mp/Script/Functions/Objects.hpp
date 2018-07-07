@@ -781,8 +781,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendObjectPlace(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -792,8 +792,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendObjectSpawn(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -813,8 +813,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendObjectLock(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -834,8 +834,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendObjectScale(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -845,8 +845,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendObjectState(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -856,8 +856,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendDoorState(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -867,8 +867,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendDoorDestination(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -878,8 +878,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendContainer(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -889,8 +889,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendVideoPlay(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -900,8 +900,8 @@ public:
     *
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendConsoleCommand(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;

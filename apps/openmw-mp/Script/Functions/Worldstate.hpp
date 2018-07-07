@@ -232,8 +232,8 @@ public:
     * \param pid The player ID attached to the packet.
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendWorldTime(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
@@ -245,8 +245,8 @@ public:
     * \param pid The player ID attached to the packet.
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the
     *                           player attached to the packet (false by default).
-    * \param sendToAttachedPlayer Whether the packet should be sent to the player attached
-    *                             to the packet (true by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
     static void SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
