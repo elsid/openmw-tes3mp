@@ -97,31 +97,33 @@ MWWorld::Ptr MechanicsHelper::getPlayerPtr(const Target& target)
 mwmp::Target MechanicsHelper::getTarget(const MWWorld::Ptr& ptr)
 {
     mwmp::Target target;
+    clearTarget(target);
 
-    if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())
+    if (ptr != nullptr)
     {
-        target.isPlayer = true;
-        target.guid = mwmp::Main::get().getLocalPlayer()->guid;
-    }
-    else if (mwmp::PlayerList::isDedicatedPlayer(ptr))
-    {
-        target.isPlayer = true;
-        target.guid = mwmp::PlayerList::getPlayer(ptr)->guid;
-    }
-    else
-    {
-        MWWorld::CellRef *ptrRef = &ptr.getCellRef();
-        
-        if (ptrRef)
+        if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())
         {
-            target.isPlayer = false;
-            target.refId = ptrRef->getRefId();
-            target.refNumIndex = ptrRef->getRefNum().mIndex;
-            target.mpNum = ptrRef->getMpNum();
-            target.name = ptr.getClass().getName(ptr);
+            target.isPlayer = true;
+            target.guid = mwmp::Main::get().getLocalPlayer()->guid;
+        }
+        else if (mwmp::PlayerList::isDedicatedPlayer(ptr))
+        {
+            target.isPlayer = true;
+            target.guid = mwmp::PlayerList::getPlayer(ptr)->guid;
         }
         else
-            clearTarget(target);
+        {
+            MWWorld::CellRef *ptrRef = &ptr.getCellRef();
+
+            if (ptrRef)
+            {
+                target.isPlayer = false;
+                target.refId = ptrRef->getRefId();
+                target.refNumIndex = ptrRef->getRefNum().mIndex;
+                target.mpNum = ptrRef->getMpNum();
+                target.name = ptr.getClass().getName(ptr);
+            }
+        }
     }
 
     return target;
