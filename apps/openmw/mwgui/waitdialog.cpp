@@ -160,8 +160,18 @@ namespace MWGui
 
     void WaitDialog::startWaiting(int hoursToWait)
     {
+        /*
+            Start of tes3mp change (major)
+
+            It should not be possible to autosave the game in multiplayer, so it has been disabled
+        */
+        /*
         if(Settings::Manager::getBool("autosave","Saves")) //autosaves when enabled
             MWBase::Environment::get().getStateManager()->quickSave("Autosave");
+        */
+        /*
+            End of tes3mp change (major)
+        */
 
         MWBase::World* world = MWBase::Environment::get().getWorld();
         MWBase::Environment::get().getWindowManager()->fadeScreenOut(0.2f);
