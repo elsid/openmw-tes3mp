@@ -608,7 +608,16 @@ namespace MWScript
             End of tes3mp addition
         */
 
-        MWBase::Environment::get().getWorld()->enable (ref);
+        /*
+            Start of tes3mp change (major)
+
+            Disable unilateral state enabling on this client and expect the server's reply to our
+            packet to do it instead
+        */
+        //MWBase::Environment::get().getWorld()->enable (ref);
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     void InterpreterContext::disable (const std::string& id)
@@ -636,7 +645,16 @@ namespace MWScript
             End of tes3mp addition
         */
 
-        MWBase::Environment::get().getWorld()->disable (ref);
+        /*
+            Start of tes3mp change (major)
+
+            Disable unilateral state disabling on this client and expect the server's reply to our
+            packet to do it instead
+        */
+        //MWBase::Environment::get().getWorld()->disable (ref);
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     int InterpreterContext::getMemberShort (const std::string& id, const std::string& name,
