@@ -233,7 +233,8 @@ void DedicatedActor::setAI()
             if (aiAction == mwmp::BaseActorList::FOLLOW)
             {
                 MWMechanics::AiFollow package(targetPtr);
-                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr);
+                package.allowAnyDistance(true);
+                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
             }
         }
     }

@@ -110,6 +110,17 @@ bool AiFollow::execute (const MWWorld::Ptr& actor, CharacterController& characte
         return false;
     }
 
+    /*
+        Start of tes3mp addition
+
+        If this follow package is set to allow for any distance, skip the checks below
+    */
+    if (mIgnoreDistance)
+        mActive = true;
+    /*
+        End of tes3mp addition
+    */
+
     // AiFollow requires the target to be in range and within sight for the initial activation
     if (!mActive)
     {
@@ -274,5 +285,18 @@ void AiFollow::fastForward(const MWWorld::Ptr& actor, AiState &state)
     if (mDuration > 0)
         mRemainingDuration--;
 }
+
+/*
+    Start of tes3mp addition
+
+    Make it possible to allow following from any distance
+*/
+void AiFollow::allowAnyDistance(bool state)
+{
+    mIgnoreDistance = state;
+}
+/*
+    End of tes3mp addition
+*/
 
 }
