@@ -70,7 +70,8 @@ namespace mwmp
 
         enum AI_ACTION
         {
-            FOLLOW = 0
+            FOLLOW = 0,
+            COMBAT = 1
         };
 
         RakNet::RakNetGUID guid;

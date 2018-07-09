@@ -6,6 +6,7 @@
 
 #include "../mwdialogue/dialoguemanagerimp.hpp"
 
+#include "../mwmechanics/aicombat.hpp"
 #include "../mwmechanics/aifollow.hpp"
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
@@ -240,12 +241,15 @@ void DedicatedActor::setAI()
 
         if (targetPtr)
         {
-
-
             if (aiAction == mwmp::BaseActorList::FOLLOW)
             {
                 MWMechanics::AiFollow package(targetPtr);
                 package.allowAnyDistance(true);
+                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+            }
+            else if (aiAction == mwmp::BaseActorList::COMBAT)
+            {
+                MWMechanics::AiCombat package(targetPtr);
                 ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
             }
         }
