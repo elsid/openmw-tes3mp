@@ -211,24 +211,36 @@ void DedicatedActor::setAI()
         MWWorld::Ptr targetPtr;
 
         if (aiTarget.isPlayer)
+        {
             targetPtr = MechanicsHelper::getPlayerPtr(aiTarget);
+
+            LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has player target %s", targetPtr.getClass().getName(targetPtr).c_str());
+        }
         else
         {
             if (mwmp::Main::get().getCellController()->isLocalActor(aiTarget.refNumIndex, aiTarget.mpNum))
                 targetPtr = mwmp::Main::get().getCellController()->getLocalActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
             else if (mwmp::Main::get().getCellController()->isDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum))
                 targetPtr = mwmp::Main::get().getCellController()->getDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
+
+            if (targetPtr)
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has AI target %s %i-%i",
+                    ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
+                    targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNumIndex, aiTarget.mpNum);
+            }
             else
+            {
                 LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has invalid target AI target %i-%i",
                     ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
                     aiTarget.refNumIndex, aiTarget.mpNum);
+            }
+
         }
 
         if (targetPtr)
         {
-            LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has AI target %s %i-%i",
-                ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
-                targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNumIndex, aiTarget.mpNum);
+
 
             if (aiAction == mwmp::BaseActorList::FOLLOW)
             {
