@@ -18,6 +18,20 @@ namespace MWMechanics
     {
     }
 
+    /*
+        Start of tes3mp addition
+
+        Allow AiActivate to be initialized using a Ptr instead of a refId
+    */
+    AiActivate::AiActivate(MWWorld::Ptr object)
+        : mObjectId("")
+    {
+        mObjectPtr = object;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     AiActivate *MWMechanics::AiActivate::clone() const
     {
         return new AiActivate(*this);
@@ -25,7 +39,15 @@ namespace MWMechanics
 
     bool AiActivate::execute(const MWWorld::Ptr& actor, CharacterController& characterController, AiState& state, float duration)
     {
-        const MWWorld::Ptr target = MWBase::Environment::get().getWorld()->searchPtr(mObjectId, false); //The target to follow
+        /*
+            Start of tes3mp change (major)
+
+            Only search for an object based on its refId if we haven't provided a specific object already
+        */
+        const MWWorld::Ptr target = mObjectId.empty() ? mObjectPtr : MWBase::Environment::get().getWorld()->searchPtr(mObjectId, false);
+        /*
+            End of tes3mp change (major)
+        */
 
         actor.getClass().getCreatureStats(actor).setDrawState(DrawState_Nothing);
 
