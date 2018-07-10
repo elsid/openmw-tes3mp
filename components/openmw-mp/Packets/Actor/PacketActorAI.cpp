@@ -16,13 +16,16 @@ void PacketActorAI::Actor(BaseActor &actor, bool send)
     if (actor.aiAction != mwmp::BaseActorList::CANCEL)
     {
         if (actor.aiAction == mwmp::BaseActorList::WANDER)
+        {
             RW(actor.aiDistance, send);
-
-        if (actor.aiAction == mwmp::BaseActorList::ESCORT || actor.aiAction == mwmp::BaseActorList::TRAVEL)
-            RW(actor.aiCoordinates, send);
+            RW(actor.aiShouldRepeat, send);
+        }
 
         if (actor.aiAction == mwmp::BaseActorList::ESCORT || actor.aiAction == mwmp::BaseActorList::WANDER)
             RW(actor.aiDuration, send);
+
+        if (actor.aiAction == mwmp::BaseActorList::ESCORT || actor.aiAction == mwmp::BaseActorList::TRAVEL)
+            RW(actor.aiCoordinates, send);
 
         if (actor.aiAction == mwmp::BaseActorList::ACTIVATE || actor.aiAction == mwmp::BaseActorList::COMBAT ||
             actor.aiAction == mwmp::BaseActorList::ESCORT || actor.aiAction == mwmp::BaseActorList::FOLLOW)

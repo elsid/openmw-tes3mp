@@ -232,12 +232,12 @@ void DedicatedActor::setAI()
     }
     else if (aiAction == mwmp::BaseActorList::WANDER)
     {
-        LOG_APPEND(Log::LOG_VERBOSE, "--- Wandering for distance %i and duration %i",
-            aiDistance, aiDuration);
+        LOG_APPEND(Log::LOG_VERBOSE, "--- Wandering for distance %i and duration %i, repetition is %s",
+            aiDistance, aiDuration, aiShouldRepeat ? "true" : "false");
 
         std::vector<unsigned char> idleList;
 
-        MWMechanics::AiWander package(aiDistance, aiDuration, -1, idleList, true);
+        MWMechanics::AiWander package(aiDistance, aiDuration, -1, idleList, aiShouldRepeat);
         ptrCreatureStats->getAiSequence().stack(package, ptr, true);
     }
     else if (hasAiTarget)

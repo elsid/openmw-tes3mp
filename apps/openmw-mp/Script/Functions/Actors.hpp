@@ -73,6 +73,7 @@
     {"SetActorAICoordinates",                  ActorFunctions::SetActorAICoordinates},\
     {"SetActorAIDistance",                     ActorFunctions::SetActorAIDistance},\
     {"SetActorAIDuration",                     ActorFunctions::SetActorAIDuration},\
+    {"SetActorAIRepetition",                   ActorFunctions::SetActorAIRepetition},\
     \
     {"EquipActorItem",                         ActorFunctions::EquipActorItem},\
     {"UnequipActorItem",                       ActorFunctions::UnequipActorItem},\
@@ -594,6 +595,16 @@ public:
     * \return void
     */
     static void SetActorAIDuration(unsigned int duration) noexcept;
+
+    /**
+    * \brief Set whether the current AI package should be repeated.
+    *
+    * Note: This only has an effect on the WANDER package.
+    *
+    * \param shouldRepeat Whether the package should be repeated.
+    * \return void
+    */
+    static void SetActorAIRepetition(bool shouldRepeat) noexcept;
 
     /**
     * \brief Equip an item in a certain slot of the equipment of the temporary actor stored

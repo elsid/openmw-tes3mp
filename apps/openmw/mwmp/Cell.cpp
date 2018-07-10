@@ -259,6 +259,7 @@ void Cell::readAI(ActorList& actorList)
             actor->aiAction = baseActor.aiAction;
             actor->aiDistance = baseActor.aiDistance;
             actor->aiDuration = baseActor.aiDuration;
+            actor->aiShouldRepeat = baseActor.aiShouldRepeat;
             actor->aiCoordinates = baseActor.aiCoordinates;
             actor->hasAiTarget = baseActor.hasAiTarget;
             actor->aiTarget = baseActor.aiTarget;

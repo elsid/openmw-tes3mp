@@ -46,6 +46,7 @@ namespace mwmp
         unsigned int aiAction;
         unsigned int aiDistance;
         unsigned int aiDuration;
+        bool aiShouldRepeat;
         ESM::Position aiCoordinates;
 
         bool hasPositionData;

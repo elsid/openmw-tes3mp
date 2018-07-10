@@ -344,6 +344,11 @@ void ActorFunctions::SetActorAIDuration(unsigned int duration) noexcept
     tempActor.aiDuration = duration;
 }
 
+void ActorFunctions::SetActorAIRepetition(bool shouldRepeat) noexcept
+{
+    tempActor.aiShouldRepeat = shouldRepeat;
+}
+
 void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, double enchantmentCharge) noexcept
 {
     tempActor.equipmentItems[slot].refId = refId;
