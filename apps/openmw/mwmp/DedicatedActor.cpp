@@ -7,7 +7,11 @@
 #include "../mwdialogue/dialoguemanagerimp.hpp"
 
 #include "../mwmechanics/aicombat.hpp"
+#include "../mwmechanics/aiescort.hpp"
 #include "../mwmechanics/aifollow.hpp"
+#include "../mwmechanics/aitravel.hpp"
+#include "../mwmechanics/aiwander.hpp"
+
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
 #include "../mwmechanics/movement.hpp"
@@ -207,7 +211,31 @@ void DedicatedActor::setEquipment()
 
 void DedicatedActor::setAI()
 {
-    if (hasAiTarget)
+    if (aiAction == mwmp::BaseActorList::CANCEL)
+    {
+        LOG_APPEND(Log::LOG_VERBOSE, "--- Cancelling AI sequence");
+
+        ptr.getClass().getCreatureStats(ptr).getAiSequence().clear();
+    }
+    else if (aiAction == mwmp::BaseActorList::TRAVEL)
+    {
+        LOG_APPEND(Log::LOG_VERBOSE, "--- Travelling to %f, %f, %f",
+            aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
+
+        MWMechanics::AiTravel package(aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
+        ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+    }
+    else if (aiAction == mwmp::BaseActorList::WANDER)
+    {
+        LOG_APPEND(Log::LOG_VERBOSE, "--- Wandering for distance %i and duration %i",
+            aiDistance, aiDuration);
+
+        std::vector<unsigned char> idleList;
+
+        MWMechanics::AiWander package(aiDistance, aiDuration, -1, idleList, true);
+        ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+    }
+    else if (hasAiTarget)
     {
         MWWorld::Ptr targetPtr;
 
@@ -215,7 +243,9 @@ void DedicatedActor::setAI()
         {
             targetPtr = MechanicsHelper::getPlayerPtr(aiTarget);
 
-            LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has player target %s", targetPtr.getClass().getName(targetPtr).c_str());
+            LOG_APPEND(Log::LOG_VERBOSE, "-- DedicatedActor %s %i-%i has player target %s",
+                ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
+                targetPtr.getClass().getName(targetPtr).c_str());
         }
         else
         {
@@ -241,15 +271,28 @@ void DedicatedActor::setAI()
 
         if (targetPtr)
         {
-            if (aiAction == mwmp::BaseActorList::FOLLOW)
+            if (aiAction == mwmp::BaseActorList::COMBAT)
             {
-                MWMechanics::AiFollow package(targetPtr);
-                package.allowAnyDistance(true);
+                LOG_APPEND(Log::LOG_VERBOSE, "--- Starting combat with target");
+
+                MWMechanics::AiCombat package(targetPtr);
                 ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
             }
-            else if (aiAction == mwmp::BaseActorList::COMBAT)
+            else if (aiAction == mwmp::BaseActorList::ESCORT)
             {
-                MWMechanics::AiCombat package(targetPtr);
+                LOG_APPEND(Log::LOG_VERBOSE, "--- Being escorted by target, for duration %i, to coordinates %f, %f, %f",
+                    aiDuration, aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
+
+                MWMechanics::AiEscort package(targetPtr.getCellRef().getRefId(), aiDuration,
+                    aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
+                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+            }
+            else if (aiAction == mwmp::BaseActorList::FOLLOW)
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "--- Following target");
+
+                MWMechanics::AiFollow package(targetPtr);
+                package.allowAnyDistance(true);
                 ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
             }
         }

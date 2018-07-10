@@ -12,21 +12,38 @@ PacketActorAI::PacketActorAI(RakNet::RakPeerInterface *peer) : ActorPacket(peer)
 void PacketActorAI::Actor(BaseActor &actor, bool send)
 {
     RW(actor.aiAction, send);
-    RW(actor.hasAiTarget, send);
 
-    if (actor.hasAiTarget)
+    if (actor.aiAction != mwmp::BaseActorList::CANCEL)
     {
-        RW(actor.aiTarget.isPlayer, send);
+        if (actor.aiAction == mwmp::BaseActorList::WANDER)
+            RW(actor.aiDistance, send);
 
-        if (actor.aiTarget.isPlayer)
+        if (actor.aiAction == mwmp::BaseActorList::ESCORT || actor.aiAction == mwmp::BaseActorList::TRAVEL)
+            RW(actor.aiCoordinates, send);
+
+        if (actor.aiAction == mwmp::BaseActorList::ESCORT || actor.aiAction == mwmp::BaseActorList::WANDER)
+            RW(actor.aiDuration, send);
+
+        if (actor.aiAction == mwmp::BaseActorList::COMBAT || actor.aiAction == mwmp::BaseActorList::ESCORT ||
+            actor.aiAction == mwmp::BaseActorList::FOLLOW)
         {
-            RW(actor.aiTarget.guid, send);
-        }
-        else
-        {
-            RW(actor.aiTarget.refId, send, true);
-            RW(actor.aiTarget.refNumIndex, send);
-            RW(actor.aiTarget.mpNum, send);
+            RW(actor.hasAiTarget, send);
+
+            if (actor.hasAiTarget)
+            {
+                RW(actor.aiTarget.isPlayer, send);
+
+                if (actor.aiTarget.isPlayer)
+                {
+                    RW(actor.aiTarget.guid, send);
+                }
+                else
+                {
+                    RW(actor.aiTarget.refId, send, true);
+                    RW(actor.aiTarget.refNumIndex, send);
+                    RW(actor.aiTarget.mpNum, send);
+                }
+            }
         }
     }
 }

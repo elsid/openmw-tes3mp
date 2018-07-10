@@ -70,6 +70,9 @@
     {"SetActorAIAction",                       ActorFunctions::SetActorAIAction},\
     {"SetActorAITargetToPlayer",               ActorFunctions::SetActorAITargetToPlayer},\
     {"SetActorAITargetToActor",                ActorFunctions::SetActorAITargetToActor},\
+    {"SetActorAICoordinates",                  ActorFunctions::SetActorAICoordinates},\
+    {"SetActorAIDistance",                     ActorFunctions::SetActorAIDistance},\
+    {"SetActorAIDuration",                     ActorFunctions::SetActorAIDuration},\
     \
     {"EquipActorItem",                         ActorFunctions::EquipActorItem},\
     {"UnequipActorItem",                       ActorFunctions::UnequipActorItem},\
@@ -565,6 +568,32 @@ public:
     * \return void
     */
     static void SetActorAITargetToActor(int refNumIndex, int mpNum) noexcept;
+
+    /**
+    * \brief Set the coordinates for the AI package associated with the current AI action.
+    *
+    * \param x The X coordinate.
+    * \param y The Y coordinate.
+    * \param z The Z coordinate.
+    * \return void
+    */
+    static void SetActorAICoordinates(double x, double y, double z) noexcept;
+
+    /**
+    * \brief Set the distance of the AI package associated with the current AI action.
+    *
+    * \param duration The distance of the package.
+    * \return void
+    */
+    static void SetActorAIDistance(unsigned int distance) noexcept;
+
+    /**
+    * \brief Set the duration of the AI package associated with the current AI action.
+    *
+    * \param duration The duration of the package.
+    * \return void
+    */
+    static void SetActorAIDuration(unsigned int duration) noexcept;
 
     /**
     * \brief Equip an item in a certain slot of the equipment of the temporary actor stored

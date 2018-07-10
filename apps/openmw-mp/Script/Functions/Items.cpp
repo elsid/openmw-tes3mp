@@ -1,7 +1,3 @@
-//
-// Created by koncord on 02.03.16.
-//
-
 #include "Items.hpp"
 
 #include <components/misc/stringops.hpp>

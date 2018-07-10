@@ -44,6 +44,9 @@ namespace mwmp
         bool hasAiTarget;
         Target aiTarget;
         unsigned int aiAction;
+        unsigned int aiDistance;
+        unsigned int aiDuration;
+        ESM::Position aiCoordinates;
 
         bool hasPositionData;
         bool hasStatsDynamicData;
@@ -70,8 +73,12 @@ namespace mwmp
 
         enum AI_ACTION
         {
-            FOLLOW = 0,
-            COMBAT = 1
+            CANCEL = 0,
+            COMBAT = 1,
+            ESCORT = 2,
+            FOLLOW = 3,
+            TRAVEL = 4,
+            WANDER = 5
         };
 
         RakNet::RakNetGUID guid;

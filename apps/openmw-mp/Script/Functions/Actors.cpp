@@ -327,6 +327,23 @@ void ActorFunctions::SetActorAITargetToActor(int refNumIndex, int mpNum) noexcep
     tempActor.aiTarget.mpNum = mpNum;
 }
 
+void ActorFunctions::SetActorAICoordinates(double x, double y, double z) noexcept
+{
+    tempActor.aiCoordinates.pos[0] = x;
+    tempActor.aiCoordinates.pos[1] = y;
+    tempActor.aiCoordinates.pos[2] = z;
+}
+
+void ActorFunctions::SetActorAIDistance(unsigned int distance) noexcept
+{
+    tempActor.aiDistance = distance;
+}
+
+void ActorFunctions::SetActorAIDuration(unsigned int duration) noexcept
+{
+    tempActor.aiDuration = duration;
+}
+
 void ActorFunctions::EquipActorItem(unsigned short slot, const char *refId, unsigned int count, int charge, double enchantmentCharge) noexcept
 {
     tempActor.equipmentItems[slot].refId = refId;
