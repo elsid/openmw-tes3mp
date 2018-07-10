@@ -729,6 +729,30 @@ namespace MWWorld
         return mWorldScene->searchPtrViaActorId (actorId);
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to find a Ptr in any active cell based on its refNumIndex and mpNum
+    */
+    Ptr World::searchPtrViaRefIndex(int refNumIndex, int mpNum)
+    {
+        for (Scene::CellStoreCollection::const_iterator iter(mWorldScene->getActiveCells().begin());
+            iter != mWorldScene->getActiveCells().end(); ++iter)
+        {
+            CellStore* cellStore = *iter;
+            
+            MWWorld::Ptr ptrFound = cellStore->searchExact(refNumIndex, mpNum);
+
+            if (ptrFound)
+                return ptrFound;
+        }
+
+        return nullptr;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     struct FindContainerVisitor
     {
         ConstPtr mContainedPtr;

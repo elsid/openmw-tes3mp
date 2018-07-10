@@ -291,6 +291,16 @@ namespace MWWorld
             Ptr searchPtrViaActorId (int actorId) override;
             ///< Search is limited to the active cells.
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to find a Ptr in any active cell based on its refNumIndex and mpNum
+            */
+            Ptr searchPtrViaRefIndex(int refNumIndex, int mpNum) override;
+            /*
+                End of tes3mp addition
+            */
+
             MWWorld::Ptr findContainer (const MWWorld::ConstPtr& ptr) override;
             ///< Return a pointer to a liveCellRef which contains \a ptr.
             /// \note Search is limited to the active cells.
