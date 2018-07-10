@@ -133,14 +133,15 @@ void DedicatedActor::setAnimFlags()
 {
     using namespace MWMechanics;
 
-    if (drawState == 0)
-        ptr.getClass().getCreatureStats(ptr).setDrawState(DrawState_Nothing);
-    else if (drawState == 1)
-        ptr.getClass().getCreatureStats(ptr).setDrawState(DrawState_Weapon);
-    else if (drawState == 2)
-        ptr.getClass().getCreatureStats(ptr).setDrawState(DrawState_Spell);
-
     MWMechanics::CreatureStats *ptrCreatureStats = &ptr.getClass().getCreatureStats(ptr);
+
+    if (drawState == 0)
+        ptrCreatureStats->setDrawState(DrawState_Nothing);
+    else if (drawState == 1)
+        ptrCreatureStats->setDrawState(DrawState_Weapon);
+    else if (drawState == 2)
+        ptrCreatureStats->setDrawState(DrawState_Spell);
+
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_Run, (movementFlags & CreatureStats::Flag_Run) != 0);
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_Sneak, (movementFlags & CreatureStats::Flag_Sneak) != 0);
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_ForceJump, (movementFlags & CreatureStats::Flag_ForceJump) != 0);
@@ -212,11 +213,13 @@ void DedicatedActor::setEquipment()
 
 void DedicatedActor::setAI()
 {
+    MWMechanics::CreatureStats *ptrCreatureStats = &ptr.getClass().getCreatureStats(ptr);
+
     if (aiAction == mwmp::BaseActorList::CANCEL)
     {
         LOG_APPEND(Log::LOG_VERBOSE, "--- Cancelling AI sequence");
 
-        ptr.getClass().getCreatureStats(ptr).getAiSequence().clear();
+        ptrCreatureStats->getAiSequence().clear();
     }
     else if (aiAction == mwmp::BaseActorList::TRAVEL)
     {
@@ -224,7 +227,7 @@ void DedicatedActor::setAI()
             aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
 
         MWMechanics::AiTravel package(aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
-        ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+        ptrCreatureStats->getAiSequence().stack(package, ptr, true);
     }
     else if (aiAction == mwmp::BaseActorList::WANDER)
     {
@@ -234,7 +237,7 @@ void DedicatedActor::setAI()
         std::vector<unsigned char> idleList;
 
         MWMechanics::AiWander package(aiDistance, aiDuration, -1, idleList, true);
-        ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+        ptrCreatureStats->getAiSequence().stack(package, ptr, true);
     }
     else if (hasAiTarget)
     {
@@ -254,6 +257,8 @@ void DedicatedActor::setAI()
                 targetPtr = mwmp::Main::get().getCellController()->getLocalActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
             else if (mwmp::Main::get().getCellController()->isDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum))
                 targetPtr = mwmp::Main::get().getCellController()->getDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
+            else if (aiAction == mwmp::BaseActorList::ACTIVATE)
+                targetPtr = MWBase::Environment::get().getWorld()->searchPtrViaRefIndex(aiTarget.refNumIndex, aiTarget.mpNum);
 
             if (targetPtr)
             {
@@ -276,8 +281,8 @@ void DedicatedActor::setAI()
             {
                 LOG_APPEND(Log::LOG_VERBOSE, "--- Activating target");
 
-                MWMechanics::AiActivate package(targetPtr.getCellRef().getRefId());
-                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+                MWMechanics::AiActivate package(targetPtr);
+                ptrCreatureStats->getAiSequence().stack(package, ptr, true);
             }
 
             if (aiAction == mwmp::BaseActorList::COMBAT)
@@ -285,7 +290,7 @@ void DedicatedActor::setAI()
                 LOG_APPEND(Log::LOG_VERBOSE, "--- Starting combat with target");
 
                 MWMechanics::AiCombat package(targetPtr);
-                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+                ptrCreatureStats->getAiSequence().stack(package, ptr, true);
             }
             else if (aiAction == mwmp::BaseActorList::ESCORT)
             {
@@ -294,7 +299,7 @@ void DedicatedActor::setAI()
 
                 MWMechanics::AiEscort package(targetPtr.getCellRef().getRefId(), aiDuration,
                     aiCoordinates.pos[0], aiCoordinates.pos[1], aiCoordinates.pos[2]);
-                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+                ptrCreatureStats->getAiSequence().stack(package, ptr, true);
             }
             else if (aiAction == mwmp::BaseActorList::FOLLOW)
             {
@@ -302,7 +307,7 @@ void DedicatedActor::setAI()
 
                 MWMechanics::AiFollow package(targetPtr);
                 package.allowAnyDistance(true);
-                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+                ptrCreatureStats->getAiSequence().stack(package, ptr, true);
             }
         }
     }
