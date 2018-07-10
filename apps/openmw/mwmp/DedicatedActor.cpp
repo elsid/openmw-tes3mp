@@ -214,6 +214,7 @@ void DedicatedActor::setEquipment()
 void DedicatedActor::setAI()
 {
     MWMechanics::CreatureStats *ptrCreatureStats = &ptr.getClass().getCreatureStats(ptr);
+    ptrCreatureStats->setAiSetting(MWMechanics::CreatureStats::AI_Fight, 0);
 
     if (aiAction == mwmp::BaseActorList::CANCEL)
     {
