@@ -74,11 +74,12 @@ namespace mwmp
         enum AI_ACTION
         {
             CANCEL = 0,
-            COMBAT = 1,
-            ESCORT = 2,
-            FOLLOW = 3,
-            TRAVEL = 4,
-            WANDER = 5
+            ACTIVATE = 1,
+            COMBAT = 2,
+            ESCORT = 3,
+            FOLLOW = 4,
+            TRAVEL = 5,
+            WANDER = 6
         };
 
         RakNet::RakNetGUID guid;

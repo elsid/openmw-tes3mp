@@ -6,6 +6,7 @@
 
 #include "../mwdialogue/dialoguemanagerimp.hpp"
 
+#include "../mwmechanics/aiactivate.hpp"
 #include "../mwmechanics/aicombat.hpp"
 #include "../mwmechanics/aiescort.hpp"
 #include "../mwmechanics/aifollow.hpp"
@@ -271,6 +272,14 @@ void DedicatedActor::setAI()
 
         if (targetPtr)
         {
+            if (aiAction == mwmp::BaseActorList::ACTIVATE)
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "--- Activating target");
+
+                MWMechanics::AiActivate package(targetPtr.getCellRef().getRefId());
+                ptr.getClass().getCreatureStats(ptr).getAiSequence().stack(package, ptr, true);
+            }
+
             if (aiAction == mwmp::BaseActorList::COMBAT)
             {
                 LOG_APPEND(Log::LOG_VERBOSE, "--- Starting combat with target");

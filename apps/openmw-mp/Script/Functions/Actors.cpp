@@ -318,7 +318,7 @@ void ActorFunctions::SetActorAITargetToPlayer(unsigned short pid) noexcept
     tempActor.aiTarget.guid = player->guid;
 }
 
-void ActorFunctions::SetActorAITargetToActor(int refNumIndex, int mpNum) noexcept
+void ActorFunctions::SetActorAITargetToObject(int refNumIndex, int mpNum) noexcept
 {
     tempActor.hasAiTarget = true;
     tempActor.aiTarget.isPlayer = false;

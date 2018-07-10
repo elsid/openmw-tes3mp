@@ -69,7 +69,7 @@
     \
     {"SetActorAIAction",                       ActorFunctions::SetActorAIAction},\
     {"SetActorAITargetToPlayer",               ActorFunctions::SetActorAITargetToPlayer},\
-    {"SetActorAITargetToActor",                ActorFunctions::SetActorAITargetToActor},\
+    {"SetActorAITargetToObject",               ActorFunctions::SetActorAITargetToObject},\
     {"SetActorAICoordinates",                  ActorFunctions::SetActorAICoordinates},\
     {"SetActorAIDistance",                     ActorFunctions::SetActorAIDistance},\
     {"SetActorAIDuration",                     ActorFunctions::SetActorAIDuration},\
@@ -561,13 +561,13 @@ public:
     static void SetActorAITargetToPlayer(unsigned short pid) noexcept;
 
     /**
-    * \brief Set another actor as the AI target of the temporary actor stored on the server.
+    * \brief Set another object as the AI target of the temporary actor stored on the server.
     *
-    * \param refNumIndex The refNumIndex of the target actor.
-    * \param mpNum The mpNum of the target actor.
+    * \param refNumIndex The refNumIndex of the target object.
+    * \param mpNum The mpNum of the target object.
     * \return void
     */
-    static void SetActorAITargetToActor(int refNumIndex, int mpNum) noexcept;
+    static void SetActorAITargetToObject(int refNumIndex, int mpNum) noexcept;
 
     /**
     * \brief Set the coordinates for the AI package associated with the current AI action.
