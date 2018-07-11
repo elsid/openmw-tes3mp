@@ -252,7 +252,6 @@ void DedicatedActor::setAI()
             targetPtr = MechanicsHelper::getPlayerPtr(aiTarget);
 
             LOG_APPEND(Log::LOG_VERBOSE, "-- Has player target %s",
-                ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
                 targetPtr.getClass().getName(targetPtr).c_str());
         }
         else
@@ -267,13 +266,11 @@ void DedicatedActor::setAI()
             if (targetPtr)
             {
                 LOG_APPEND(Log::LOG_VERBOSE, "-- Has AI target %s %i-%i",
-                    ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
                     targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNumIndex, aiTarget.mpNum);
             }
             else
             {
                 LOG_APPEND(Log::LOG_VERBOSE, "-- Has invalid target AI target %i-%i",
-                    ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum(),
                     aiTarget.refNumIndex, aiTarget.mpNum);
             }
 
