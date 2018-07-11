@@ -689,11 +689,12 @@ public:
     /**
     * \brief Send an ActorAI packet.
     *
-    * It is sent only to the player for whom the current actor list was initialized.
+    * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
+    *                            than the player attached to the packet (false by default).
     *
     * \return void
     */
-    static void SendActorAI() noexcept;
+    static void SendActorAI(bool sendToOtherVisitors) noexcept;
 
     /**
     * \brief Send an ActorCellChange packet.

@@ -371,8 +371,9 @@ void ActorFunctions::AddActor() noexcept
 
 void ActorFunctions::SendActorList() noexcept
 {
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_LIST)->setActorList(&writeActorList);
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_LIST)->Send(writeActorList.guid);
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_LIST);
+    actorPacket->setActorList(&writeActorList);
+    actorPacket->Send(writeActorList.guid);
 }
 
 void ActorFunctions::SendActorAuthority() noexcept
@@ -383,42 +384,58 @@ void ActorFunctions::SendActorAuthority() noexcept
     {
         serverCell->setAuthority(writeActorList.guid);
 
-        mwmp::ActorPacket *authorityPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AUTHORITY);
-        authorityPacket->setActorList(&writeActorList);
-        authorityPacket->Send(writeActorList.guid);
+        mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AUTHORITY);
+        actorPacket->setActorList(&writeActorList);
+        actorPacket->Send(writeActorList.guid);
 
         // Also send this to everyone else who has the cell loaded
-        serverCell->sendToLoaded(authorityPacket, &writeActorList);
+        serverCell->sendToLoaded(actorPacket, &writeActorList);
     }
 }
 
 void ActorFunctions::SendActorPosition() noexcept
 {
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_POSITION)->setActorList(&writeActorList);
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_POSITION)->Send(writeActorList.guid);
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_POSITION);
+    actorPacket->setActorList(&writeActorList);
+    actorPacket->Send(writeActorList.guid);
 }
 
 void ActorFunctions::SendActorStatsDynamic() noexcept
 {
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_STATS_DYNAMIC)->setActorList(&writeActorList);
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_STATS_DYNAMIC)->Send(writeActorList.guid);
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_STATS_DYNAMIC);
+    actorPacket->setActorList(&writeActorList);
+    actorPacket->Send(writeActorList.guid);
 }
 
 void ActorFunctions::SendActorEquipment() noexcept
 {
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT)->setActorList(&writeActorList);
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT)->Send(writeActorList.guid);
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT);
+    actorPacket->setActorList(&writeActorList);
+    actorPacket->Send(writeActorList.guid);
 }
 
-void ActorFunctions::SendActorAI() noexcept
+void ActorFunctions::SendActorAI(bool sendToOtherVisitors) noexcept
 {
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI)->setActorList(&writeActorList);
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI)->Send(writeActorList.guid);
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI);
+    actorPacket->setActorList(&writeActorList);
+    actorPacket->Send(writeActorList.guid);
+
+    if (sendToOtherVisitors)
+    {
+        Cell *serverCell = CellController::get()->getCell(&writeActorList.cell);
+
+        if (serverCell != nullptr)
+        {
+            // Also send this to everyone else who has the cell loaded
+            serverCell->sendToLoaded(actorPacket, &writeActorList);
+        }
+    }
 }
 
 void ActorFunctions::SendActorCellChange() noexcept
 {
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_CELL_CHANGE)->setActorList(&writeActorList);
-    mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_CELL_CHANGE)->Send(writeActorList.guid);
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_CELL_CHANGE);
+    actorPacket->setActorList(&writeActorList);
+    actorPacket->Send(writeActorList.guid);
 }
 
