@@ -44,54 +44,49 @@ void ActorList::addActor(BaseActor baseActor)
     baseActors.push_back(baseActor);
 }
 
-void ActorList::addActor(LocalActor localActor)
+void ActorList::addPositionActor(BaseActor baseActor)
 {
-    baseActors.push_back(localActor);
+    positionActors.push_back(baseActor);
 }
 
-void ActorList::addPositionActor(LocalActor localActor)
+void ActorList::addAnimFlagsActor(BaseActor baseActor)
 {
-    positionActors.push_back(localActor);
+    animFlagsActors.push_back(baseActor);
 }
 
-void ActorList::addAnimFlagsActor(LocalActor localActor)
+void ActorList::addAnimPlayActor(BaseActor baseActor)
 {
-    animFlagsActors.push_back(localActor);
+    animPlayActors.push_back(baseActor);
 }
 
-void ActorList::addAnimPlayActor(LocalActor localActor)
+void ActorList::addSpeechActor(BaseActor baseActor)
 {
-    animPlayActors.push_back(localActor);
+    speechActors.push_back(baseActor);
 }
 
-void ActorList::addSpeechActor(LocalActor localActor)
+void ActorList::addStatsDynamicActor(BaseActor baseActor)
 {
-    speechActors.push_back(localActor);
+    statsDynamicActors.push_back(baseActor);
 }
 
-void ActorList::addStatsDynamicActor(LocalActor localActor)
+void ActorList::addDeathActor(BaseActor baseActor)
 {
-    statsDynamicActors.push_back(localActor);
+    deathActors.push_back(baseActor);
 }
 
-void ActorList::addDeathActor(LocalActor localActor)
+void ActorList::addEquipmentActor(BaseActor baseActor)
 {
-    deathActors.push_back(localActor);
+    equipmentActors.push_back(baseActor);
 }
 
-void ActorList::addEquipmentActor(LocalActor localActor)
+void ActorList::addAttackActor(BaseActor baseActor)
 {
-    equipmentActors.push_back(localActor);
+    attackActors.push_back(baseActor);
 }
 
-void ActorList::addAttackActor(LocalActor localActor)
+void ActorList::addCellChangeActor(BaseActor baseActor)
 {
-    attackActors.push_back(localActor);
-}
-
-void ActorList::addCellChangeActor(LocalActor localActor)
-{
-    cellChangeActors.push_back(localActor);
+    cellChangeActors.push_back(baseActor);
 }
 
 void ActorList::sendPositionActors()

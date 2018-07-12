@@ -19,17 +19,16 @@ namespace mwmp
 
         void reset();
         void addActor(BaseActor baseActor);
-        void addActor(LocalActor localActor);
 
-        void addPositionActor(LocalActor localActor);
-        void addAnimFlagsActor(LocalActor localActor);
-        void addAnimPlayActor(LocalActor localActor);
-        void addSpeechActor(LocalActor localActor);
-        void addStatsDynamicActor(LocalActor localActor);
-        void addDeathActor(LocalActor localActor);
-        void addEquipmentActor(LocalActor localActor);
-        void addAttackActor(LocalActor localActor);
-        void addCellChangeActor(LocalActor localActor);
+        void addPositionActor(BaseActor baseActor);
+        void addAnimFlagsActor(BaseActor baseActor);
+        void addAnimPlayActor(BaseActor baseActor);
+        void addSpeechActor(BaseActor baseActor);
+        void addStatsDynamicActor(BaseActor baseActor);
+        void addDeathActor(BaseActor baseActor);
+        void addEquipmentActor(BaseActor baseActor);
+        void addAttackActor(BaseActor baseActor);
+        void addCellChangeActor(BaseActor baseActor);
 
         void sendPositionActors();
         void sendAnimFlagsActors();
