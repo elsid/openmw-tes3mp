@@ -1596,16 +1596,6 @@ void LocalPlayer::sendBook(const std::string& bookId)
     getNetworking()->getPlayerPacket(ID_PLAYER_BOOK)->Send();
 }
 
-void LocalPlayer::sendScale(float newScale)
-{
-    scale = newScale;
-
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_SHAPESHIFT with scale of %f", scale);
-
-    getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->Send();
-}
-
 void LocalPlayer::sendWerewolfState(bool werewolfState)
 {
     isWerewolf = werewolfState;

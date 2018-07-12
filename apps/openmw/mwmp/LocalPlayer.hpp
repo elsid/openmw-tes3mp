@@ -86,7 +86,6 @@ namespace mwmp
         void sendTopic(const std::string& topic);
         void sendKill(const std::string& refId, int number);
         void sendBook(const std::string& bookId);
-        void sendScale(float newScale);
         void sendWerewolfState(bool isWerewolf);
         void sendMarkLocation(const ESM::Cell& newMarkCell, const ESM::Position& newMarkPosition);
         void sendSelectedSpell(const std::string& newSelectedSpellId);

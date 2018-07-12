@@ -239,7 +239,7 @@ void DedicatedPlayer::setShapeshift()
         if (!isWerewolf)
             setEquipment();
     }
-    
+
     MWBase::Environment::get().getWorld()->scaleObject(ptr, scale);
 }
 

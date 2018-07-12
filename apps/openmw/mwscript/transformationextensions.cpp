@@ -6,6 +6,7 @@
     Include additional headers for multiplayer purposes
 */
 #include <components/openmw-mp/Log.hpp>
+#include "../mwbase/windowmanager.hpp"
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
@@ -59,19 +60,24 @@ namespace MWScript
                     /*
                         Start of tes3mp addition
 
-                        Send an ID_PLAYER_SHAPESHIFT every time a player changes
-                        their own scale
+                        Prevent players from changing their own scale
 
-                        Otherwise, send an ID_OBJECT_SCALE every time an object's
+                        Send an ID_OBJECT_SCALE every time an object's
                         scale is changed through a script
                     */
                     if (ptr == MWMechanics::getPlayer())
-                        mwmp::Main::get().getLocalPlayer()->sendScale(scale);
-                    else if (ptr.isInCell() && (ptr.getCellRef().getScale() != scale))
+                    {
+                        MWBase::Environment::get().getWindowManager()->
+                            messageBox("You can't change your own scale in multiplayer. Only the server can.");
+                    }
+                    else if (ptr.isInCell() && ptr.getCellRef().getScale() != scale)
                     {
                         // Ignore attempts to change another player's scale
                         if (mwmp::PlayerList::isDedicatedPlayer(ptr))
-                            return;
+                        {
+                            MWBase::Environment::get().getWindowManager()->
+                                messageBox("You can't change the scales of other players. Only the server can.");
+                        }
                         else
                         {
                             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
