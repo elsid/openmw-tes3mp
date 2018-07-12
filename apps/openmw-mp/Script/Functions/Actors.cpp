@@ -32,14 +32,23 @@ void ActorFunctions::ReadCellActorList(const char* cellDescription) noexcept
     readActorList = serverCell->getActorList();
 }
 
-void ActorFunctions::InitializeActorList(unsigned short pid) noexcept
+void ActorFunctions::ClearActorList() noexcept
+{
+    writeActorList.cell.blank();
+    writeActorList.baseActors.clear();
+}
+
+void ActorFunctions::SetActorListPid(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    writeActorList.cell.blank();
-    writeActorList.baseActors.clear();
     writeActorList.guid = player->guid;
+}
+
+void ActorFunctions::CopyLastActorListToStore() noexcept
+{
+    writeActorList = *readActorList;
 }
 
 unsigned int ActorFunctions::GetActorListSize() noexcept
@@ -439,3 +448,10 @@ void ActorFunctions::SendActorCellChange() noexcept
     actorPacket->Send(writeActorList.guid);
 }
 
+// All methods below are deprecated versions of methods from above
+
+void ActorFunctions::InitializeActorList(unsigned short pid) noexcept
+{
+    ClearActorList();
+    SetActorListPid(pid);
+}

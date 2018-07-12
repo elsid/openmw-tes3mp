@@ -4,7 +4,11 @@
 #define ACTORAPI \
     {"ReadLastActorList",                      ActorFunctions::ReadLastActorList},\
     {"ReadCellActorList",                      ActorFunctions::ReadCellActorList},\
-    {"InitializeActorList",                    ActorFunctions::InitializeActorList},\
+    \
+    {"ClearActorList",                         ActorFunctions::ClearActorList},\
+    {"SetActorListPid",                        ActorFunctions::SetActorListPid},\
+    \
+    {"CopyLastActorListToStore",               ActorFunctions::CopyLastActorListToStore},\
     \
     {"GetActorListSize",                       ActorFunctions::GetActorListSize},\
     {"GetActorListAction",                     ActorFunctions::GetActorListAction},\
@@ -86,7 +90,9 @@
     {"SendActorStatsDynamic",                  ActorFunctions::SendActorStatsDynamic},\
     {"SendActorEquipment",                     ActorFunctions::SendActorEquipment},\
     {"SendActorAI",                            ActorFunctions::SendActorAI},\
-    {"SendActorCellChange",                    ActorFunctions::SendActorCellChange}
+    {"SendActorCellChange",                    ActorFunctions::SendActorCellChange},\
+    \
+    {"InitializeActorList",                    ActorFunctions::InitializeActorList}
 
 class ActorFunctions
 {
@@ -113,12 +119,26 @@ public:
     /**
     * \brief Clear the data from the last actor list sent by the server.
     *
-    * This is used to initialize the sending of new Actor packets.
+    * \return void
+    */
+    static void ClearActorList() noexcept;
+
+    /**
+    * \brief Set the pid attached to the ActorList.
     *
     * \param pid The player ID to whom the actor list should be attached.
     * \return void
     */
-    static void InitializeActorList(unsigned short pid) noexcept;
+    static void SetActorListPid(unsigned short pid) noexcept;
+
+    /**
+    * \brief Take the contents of the read-only actor list last received by the
+    *        server from a player and move its contents to the stored object list
+    *        that can be sent by the server.
+    *
+    * \return void
+    */
+    static void CopyLastActorListToStore() noexcept;
 
     /**
     * \brief Get the number of indexes in the read actor list.
@@ -704,6 +724,11 @@ public:
     * \return void
     */
     static void SendActorCellChange() noexcept;
+
+
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeActorList(unsigned short pid) noexcept;
 };
 
 
