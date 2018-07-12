@@ -245,7 +245,7 @@ void Cell::readSpeech(ActorList& actorList)
     }
 }
 
-void Cell::readAI(ActorList& actorList)
+void Cell::readAi(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
 
@@ -263,7 +263,7 @@ void Cell::readAI(ActorList& actorList)
             actor->aiCoordinates = baseActor.aiCoordinates;
             actor->hasAiTarget = baseActor.hasAiTarget;
             actor->aiTarget = baseActor.aiTarget;
-            actor->setAI();
+            actor->setAi();
         }
     }
 }

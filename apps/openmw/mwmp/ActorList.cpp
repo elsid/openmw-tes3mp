@@ -79,6 +79,11 @@ void ActorList::addEquipmentActor(BaseActor baseActor)
     equipmentActors.push_back(baseActor);
 }
 
+void ActorList::addAiActor(BaseActor baseActor)
+{
+    aiActors.push_back(baseActor);
+}
+
 void ActorList::addAttackActor(BaseActor baseActor)
 {
     attackActors.push_back(baseActor);
@@ -156,6 +161,16 @@ void ActorList::sendEquipmentActors()
         baseActors = equipmentActors;
         Main::get().getNetworking()->getActorPacket(ID_ACTOR_EQUIPMENT)->setActorList(this);
         Main::get().getNetworking()->getActorPacket(ID_ACTOR_EQUIPMENT)->Send();
+    }
+}
+
+void ActorList::sendAiActors()
+{
+    if (aiActors.size() > 0)
+    {
+        baseActors = aiActors;
+        Main::get().getNetworking()->getActorPacket(ID_ACTOR_AI)->setActorList(this);
+        Main::get().getNetworking()->getActorPacket(ID_ACTOR_AI)->Send();
     }
 }
 

@@ -19,7 +19,7 @@ namespace mwmp
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s about %s", strPacketID.c_str(), actorList.cell.getDescription().c_str());
 
-            Main::get().getCellController()->readAI(actorList);
+            Main::get().getCellController()->readAi(actorList);
         }
     };
 }

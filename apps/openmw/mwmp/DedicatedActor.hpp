@@ -22,7 +22,7 @@ namespace mwmp
         void setAnimFlags();
         void setStatsDynamic();
         void setEquipment();
-        void setAI();
+        void setAi();
         void playAnimation();
         void playSound();
 

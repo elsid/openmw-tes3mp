@@ -24,7 +24,7 @@ namespace mwmp
         void readStatsDynamic(ActorList& actorList);
         void readEquipment(ActorList& actorList);
         void readSpeech(ActorList& actorList);
-        void readAI(ActorList& actorList);
+        void readAi(ActorList& actorList);
         void readAttack(ActorList& actorList);
         void readCellChange(ActorList& actorList);
 

@@ -154,7 +154,7 @@ void CellController::readSpeech(ActorList& actorList)
         cellsInitialized[mapIndex]->readSpeech(actorList);
 }
 
-void CellController::readAI(ActorList& actorList)
+void CellController::readAi(ActorList& actorList)
 {
     std::string mapIndex = actorList.cell.getDescription();
 
@@ -162,7 +162,7 @@ void CellController::readAI(ActorList& actorList)
 
     // If this now exists, send it the data
     if (cellsInitialized.count(mapIndex) > 0)
-        cellsInitialized[mapIndex]->readAI(actorList);
+        cellsInitialized[mapIndex]->readAi(actorList);
 }
 
 void CellController::readAttack(ActorList& actorList)

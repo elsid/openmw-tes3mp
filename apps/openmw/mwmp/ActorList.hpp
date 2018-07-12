@@ -27,6 +27,7 @@ namespace mwmp
         void addStatsDynamicActor(BaseActor baseActor);
         void addDeathActor(BaseActor baseActor);
         void addEquipmentActor(BaseActor baseActor);
+        void addAiActor(BaseActor baseActor);
         void addAttackActor(BaseActor baseActor);
         void addCellChangeActor(BaseActor baseActor);
 
@@ -37,6 +38,7 @@ namespace mwmp
         void sendStatsDynamicActors();
         void sendDeathActors();
         void sendEquipmentActors();
+        void sendAiActors();
         void sendAttackActors();
         void sendCellChangeActors();
 
@@ -52,6 +54,7 @@ namespace mwmp
         std::vector<BaseActor> statsDynamicActors;
         std::vector<BaseActor> deathActors;
         std::vector<BaseActor> equipmentActors;
+        std::vector<BaseActor> aiActors;
         std::vector<BaseActor> attackActors;
         std::vector<BaseActor> cellChangeActors;
     };
