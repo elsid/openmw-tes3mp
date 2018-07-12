@@ -2,14 +2,14 @@
 #define OPENMW_OBJECTAPI_HPP
 
 #define OBJECTAPI \
-    {"ReadLastObjectList",                    ObjectFunctions::ReadLastObjectList},\
+    {"ReadReceivedObjectList",                ObjectFunctions::ReadReceivedObjectList},\
     \
     {"ClearObjectList",                       ObjectFunctions::ClearObjectList},\
     {"SetObjectListPid",                      ObjectFunctions::SetObjectListPid},\
     \
-    {"CopyLastObjectListToStore",             ObjectFunctions::CopyLastObjectListToStore},\
+    {"CopyReceivedObjectListToStore",         ObjectFunctions::CopyReceivedObjectListToStore},\
     \
-    {"GetObjectChangesSize",                  ObjectFunctions::GetObjectChangesSize},\
+    {"GetObjectListSize",                     ObjectFunctions::GetObjectListSize},\
     {"GetObjectListAction",                   ObjectFunctions::GetObjectListAction},\
     {"GetObjectListContainerSubAction",       ObjectFunctions::GetObjectListContainerSubAction},\
     \
@@ -102,9 +102,12 @@
     {"SendVideoPlay",                         ObjectFunctions::SendVideoPlay},\
     {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
     \
+    {"ReadLastObjectList",                    ObjectFunctions::ReadLastObjectList},\
     {"ReadLastEvent",                         ObjectFunctions::ReadLastEvent},\
     {"InitializeObjectList",                  ObjectFunctions::InitializeObjectList},\
     {"InitializeEvent",                       ObjectFunctions::InitializeEvent},\
+    {"CopyLastObjectListToStore",             ObjectFunctions::CopyLastObjectListToStore},\
+    {"GetObjectChangesSize",                  ObjectFunctions::GetObjectChangesSize},\
     {"GetEventAction",                        ObjectFunctions::GetEventAction},\
     {"GetEventContainerSubAction",            ObjectFunctions::GetEventContainerSubAction},\
     {"SetEventCell",                          ObjectFunctions::SetEventCell},\
@@ -121,7 +124,7 @@ public:
     *
     * \return void
     */
-    static void ReadLastObjectList() noexcept;
+    static void ReadReceivedObjectList() noexcept;
 
     /**
     * \brief Clear the data from the last object list sent by the server.
@@ -145,14 +148,14 @@ public:
     *
     * \return void
     */
-    static void CopyLastObjectListToStore() noexcept;
+    static void CopyReceivedObjectListToStore() noexcept;
 
     /**
-    * \brief Get the number of indexes in the read object list's object changes.
+    * \brief Get the number of indexes in the read object list.
     *
     * \return The number of indexes.
     */
-    static unsigned int GetObjectChangesSize() noexcept;
+    static unsigned int GetObjectListSize() noexcept;
 
     /**
     * \brief Get the action type used in the read object list.
@@ -909,9 +912,12 @@ public:
 
     // All methods below are deprecated versions of methods from above
 
+    static void ReadLastObjectList() noexcept;
     static void ReadLastEvent() noexcept;
     static void InitializeObjectList(unsigned short pid) noexcept;
     static void InitializeEvent(unsigned short pid) noexcept;
+    static void CopyLastObjectListToStore() noexcept;
+    static unsigned int GetObjectChangesSize() noexcept;
     static unsigned char GetEventAction() noexcept;
     static unsigned char GetEventContainerSubAction() noexcept;
     static void SetEventCell(const char* cellDescription) noexcept;

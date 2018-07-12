@@ -20,7 +20,7 @@ const BaseActor emptyActor = {};
 
 static std::string tempCellDescription;
 
-void ActorFunctions::ReadLastActorList() noexcept
+void ActorFunctions::ReadReceivedActorList() noexcept
 {
     readActorList = mwmp::Networking::getPtr()->getLastActorList();
 }
@@ -46,7 +46,7 @@ void ActorFunctions::SetActorListPid(unsigned short pid) noexcept
     writeActorList.guid = player->guid;
 }
 
-void ActorFunctions::CopyLastActorListToStore() noexcept
+void ActorFunctions::CopyReceivedActorListToStore() noexcept
 {
     writeActorList = *readActorList;
 }
@@ -497,10 +497,21 @@ void ActorFunctions::SendActorCellChange(bool sendToOtherVisitors, bool skipAtta
     }
 }
 
+
 // All methods below are deprecated versions of methods from above
+
+void ActorFunctions::ReadLastActorList() noexcept
+{
+    ReadReceivedActorList();
+}
 
 void ActorFunctions::InitializeActorList(unsigned short pid) noexcept
 {
     ClearActorList();
     SetActorListPid(pid);
+}
+
+void ActorFunctions::CopyLastActorListToStore() noexcept
+{
+    CopyLastActorListToStore();
 }

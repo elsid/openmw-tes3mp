@@ -4,9 +4,9 @@
 #include "../Types.hpp"
 
 #define WORLDSTATEAPI \
-    {"ReadLastWorldstate",                WorldstateFunctions::ReadLastWorldstate},\
+    {"ReadReceivedWorldstate",            WorldstateFunctions::ReadReceivedWorldstate},\
     \
-    {"CopyLastWorldstateToStore",         WorldstateFunctions::CopyLastWorldstateToStore},\
+    {"CopyReceivedWorldstateToStore",     WorldstateFunctions::CopyReceivedWorldstateToStore},\
     \
     {"ClearMapChanges",                   WorldstateFunctions::ClearMapChanges},\
     \
@@ -35,7 +35,10 @@
     \
     {"SendWorldMap",                      WorldstateFunctions::SendWorldMap},\
     {"SendWorldTime",                     WorldstateFunctions::SendWorldTime},\
-    {"SendWorldCollisionOverride",        WorldstateFunctions::SendWorldCollisionOverride}
+    {"SendWorldCollisionOverride",        WorldstateFunctions::SendWorldCollisionOverride},\
+    \
+    {"ReadLastWorldstate",                WorldstateFunctions::ReadLastWorldstate},\
+    {"CopyLastWorldstateToStore",         WorldstateFunctions::CopyLastWorldstateToStore}
 
 class WorldstateFunctions
 {
@@ -46,7 +49,7 @@ public:
     *
     * \return void
     */
-    static void ReadLastWorldstate() noexcept;
+    static void ReadReceivedWorldstate() noexcept;
 
     /**
     * \brief Take the contents of the read-only worldstate last received by the
@@ -55,7 +58,7 @@ public:
     *
     * \return void
     */
-    static void CopyLastWorldstateToStore() noexcept;
+    static void CopyReceivedWorldstateToStore() noexcept;
 
     /**
     * \brief Clear the map changes for the write-only worldstate.
@@ -250,6 +253,12 @@ public:
     * \return void
     */
     static void SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+
+    // All methods below are deprecated versions of methods from above
+
+    static void ReadLastWorldstate() noexcept;
+    static void CopyLastWorldstateToStore() noexcept;
 
 };
 

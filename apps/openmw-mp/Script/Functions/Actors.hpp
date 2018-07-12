@@ -2,13 +2,13 @@
 #define OPENMW_ACTORAPI_HPP
 
 #define ACTORAPI \
-    {"ReadLastActorList",                      ActorFunctions::ReadLastActorList},\
+    {"ReadReceivedActorList",                  ActorFunctions::ReadReceivedActorList},\
     {"ReadCellActorList",                      ActorFunctions::ReadCellActorList},\
     \
     {"ClearActorList",                         ActorFunctions::ClearActorList},\
     {"SetActorListPid",                        ActorFunctions::SetActorListPid},\
     \
-    {"CopyLastActorListToStore",               ActorFunctions::CopyLastActorListToStore},\
+    {"CopyReceivedActorListToStore",           ActorFunctions::CopyReceivedActorListToStore},\
     \
     {"GetActorListSize",                       ActorFunctions::GetActorListSize},\
     {"GetActorListAction",                     ActorFunctions::GetActorListAction},\
@@ -92,7 +92,9 @@
     {"SendActorAI",                            ActorFunctions::SendActorAI},\
     {"SendActorCellChange",                    ActorFunctions::SendActorCellChange},\
     \
-    {"InitializeActorList",                    ActorFunctions::InitializeActorList}
+    {"ReadLastActorList",                      ActorFunctions::ReadLastActorList},\
+    {"InitializeActorList",                    ActorFunctions::InitializeActorList},\
+    {"CopyLastActorListToStore",               ActorFunctions::CopyLastActorListToStore}
 
 class ActorFunctions
 {
@@ -103,7 +105,7 @@ public:
     *
     * \return void
     */
-    static void ReadLastActorList() noexcept;
+    static void ReadReceivedActorList() noexcept;
 
     /**
     * \brief Use the temporary actor list stored for a cell as the one being read.
@@ -138,7 +140,7 @@ public:
     *
     * \return void
     */
-    static void CopyLastActorListToStore() noexcept;
+    static void CopyReceivedActorListToStore() noexcept;
 
     /**
     * \brief Get the number of indexes in the read actor list.
@@ -741,7 +743,9 @@ public:
 
     // All methods below are deprecated versions of methods from above
 
+    static void ReadLastActorList() noexcept;
     static void InitializeActorList(unsigned short pid) noexcept;
+    static void CopyLastActorListToStore() noexcept;
 };
 
 

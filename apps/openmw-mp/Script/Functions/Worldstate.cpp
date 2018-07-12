@@ -14,12 +14,12 @@ using namespace mwmp;
 BaseWorldstate writeWorldstate;
 BaseWorldstate *readWorldstate;
 
-void WorldstateFunctions::ReadLastWorldstate() noexcept
+void WorldstateFunctions::ReadReceivedWorldstate() noexcept
 {
     readWorldstate = mwmp::Networking::getPtr()->getLastWorldstate();
 }
 
-void WorldstateFunctions::CopyLastWorldstateToStore() noexcept
+void WorldstateFunctions::CopyReceivedWorldstateToStore() noexcept
 {
     writeWorldstate = *readWorldstate;
 }
@@ -183,4 +183,17 @@ void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool se
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+
+// All methods below are deprecated versions of methods from above
+
+void WorldstateFunctions::ReadLastWorldstate() noexcept
+{
+    ReadReceivedWorldstate();
+}
+
+void WorldstateFunctions::CopyLastWorldstateToStore() noexcept
+{
+    CopyReceivedWorldstateToStore();
 }

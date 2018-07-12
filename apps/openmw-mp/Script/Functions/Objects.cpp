@@ -19,7 +19,7 @@ const BaseObject emptyObject = {};
 ContainerItem tempContainerItem;
 const ContainerItem emptyContainerItem = {};
 
-void ObjectFunctions::ReadLastObjectList() noexcept
+void ObjectFunctions::ReadReceivedObjectList() noexcept
 {
     readObjectList = mwmp::Networking::getPtr()->getLastObjectList();
 }
@@ -38,12 +38,12 @@ void ObjectFunctions::SetObjectListPid(unsigned short pid) noexcept
     writeObjectList.guid = player->guid;
 }
 
-void ObjectFunctions::CopyLastObjectListToStore() noexcept
+void ObjectFunctions::CopyReceivedObjectListToStore() noexcept
 {
     writeObjectList = *readObjectList;
 }
 
-unsigned int ObjectFunctions::GetObjectChangesSize() noexcept
+unsigned int ObjectFunctions::GetObjectListSize() noexcept
 {
     return readObjectList->baseObjectCount;
 }
@@ -531,11 +531,17 @@ void ObjectFunctions::SendConsoleCommand(bool sendToOtherPlayers, bool skipAttac
         packet->Send(true);
 }
 
+
 // All methods below are deprecated versions of methods from above
+
+void ObjectFunctions::ReadLastObjectList() noexcept
+{
+    ReadReceivedObjectList();
+}
 
 void ObjectFunctions::ReadLastEvent() noexcept
 {
-    ReadLastObjectList();
+    ReadReceivedObjectList();
 }
 
 void ObjectFunctions::InitializeObjectList(unsigned short pid) noexcept
@@ -547,6 +553,16 @@ void ObjectFunctions::InitializeObjectList(unsigned short pid) noexcept
 void ObjectFunctions::InitializeEvent(unsigned short pid) noexcept
 {
     InitializeObjectList(pid);
+}
+
+void ObjectFunctions::CopyLastObjectListToStore() noexcept
+{
+    CopyReceivedObjectListToStore();
+}
+
+unsigned int ObjectFunctions::GetObjectChangesSize() noexcept
+{
+    return GetObjectListSize();
 }
 
 unsigned char ObjectFunctions::GetEventAction() noexcept
