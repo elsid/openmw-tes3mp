@@ -17,17 +17,17 @@ void PacketWorldMap::Packet(RakNet::BitStream *bs, bool send)
     uint32_t changesCount;
 
     if (send)
-        changesCount = static_cast<uint32_t>(worldstate->mapChanges.mapTiles.size());
+        changesCount = static_cast<uint32_t>(worldstate->mapTiles.size());
 
     RW(changesCount, send);
 
     if (!send)
     {
-        worldstate->mapChanges.mapTiles.clear();
-        worldstate->mapChanges.mapTiles.resize(changesCount);
+        worldstate->mapTiles.clear();
+        worldstate->mapTiles.resize(changesCount);
     }
 
-    for (auto &&mapTile : worldstate->mapChanges.mapTiles)
+    for (auto &&mapTile : worldstate->mapTiles)
     {
         RW(mapTile.x, send);
         RW(mapTile.y, send);

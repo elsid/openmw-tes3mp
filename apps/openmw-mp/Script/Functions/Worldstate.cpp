@@ -26,22 +26,22 @@ void WorldstateFunctions::CopyLastWorldstateToStore() noexcept
 
 void WorldstateFunctions::ClearMapChanges() noexcept
 {
-    writeWorldstate.mapChanges.mapTiles.clear();
+    writeWorldstate.mapTiles.clear();
 }
 
 unsigned int WorldstateFunctions::GetMapChangesSize() noexcept
 {
-    return readWorldstate->mapChanges.mapTiles.size();
+    return readWorldstate->mapTiles.size();
 }
 
 int WorldstateFunctions::GetMapTileCellX(unsigned int index) noexcept
 {
-    return readWorldstate->mapChanges.mapTiles.at(index).x;
+    return readWorldstate->mapTiles.at(index).x;
 }
 
 int WorldstateFunctions::GetMapTileCellY(unsigned int index) noexcept
 {
-    return readWorldstate->mapChanges.mapTiles.at(index).y;
+    return readWorldstate->mapTiles.at(index).y;
 }
 
 void WorldstateFunctions::SetHour(double hour) noexcept
@@ -106,10 +106,10 @@ void WorldstateFunctions::ClearEnforcedCollisionRefIds() noexcept
 
 void WorldstateFunctions::SaveMapTileImageFile(unsigned int index, const char *filePath) noexcept
 {
-    if (index >= readWorldstate->mapChanges.mapTiles.size())
+    if (index >= readWorldstate->mapTiles.size())
         return;
 
-    const std::vector<char>& imageData = readWorldstate->mapChanges.mapTiles.at(index).imageData;
+    const std::vector<char>& imageData = readWorldstate->mapTiles.at(index).imageData;
 
     std::ofstream outputFile(filePath, std::ios::binary);
     std::ostream_iterator<char> outputIterator(outputFile);
@@ -133,7 +133,7 @@ void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char*
     }
     else
     {
-        writeWorldstate.mapChanges.mapTiles.push_back(mapTile);
+        writeWorldstate.mapTiles.push_back(mapTile);
     }
 }
 

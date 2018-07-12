@@ -52,7 +52,7 @@ void Worldstate::markExploredMapTile(int cellX, int cellY)
 
 void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData)
 {
-    mapChanges.mapTiles.clear();
+    mapTiles.clear();
 
     mwmp::MapTile mapTile;
     mapTile.x = cellX;
@@ -61,7 +61,7 @@ void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& 
 
     LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_PLAYER_MAP with x: %i, y: %i", cellX, cellY);
 
-    mapChanges.mapTiles.push_back(mapTile);
+    mapTiles.push_back(mapTile);
 
     getNetworking()->getWorldstatePacket(ID_WORLD_MAP)->setWorldstate(this);
     getNetworking()->getWorldstatePacket(ID_WORLD_MAP)->Send();
@@ -69,7 +69,7 @@ void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& 
 
 void Worldstate::setMapExplored()
 {
-    for (const auto &mapTile : mapChanges.mapTiles)
+    for (const auto &mapTile : mapTiles)
     {
         const MWWorld::CellStore *cellStore = MWBase::Environment::get().getWorld()->getExterior(mapTile.x, mapTile.y);
 

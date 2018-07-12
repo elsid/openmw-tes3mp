@@ -18,11 +18,6 @@ namespace mwmp
         std::vector<char> imageData;
     };
 
-    struct MapChanges
-    {
-        std::vector<MapTile> mapTiles;
-    };
-
     class BaseWorldstate
     {
     public:
@@ -54,7 +49,7 @@ namespace mwmp
 
         std::vector<std::string> enforcedCollisionRefIds;
 
-        MapChanges mapChanges;
+        std::vector<MapTile> mapTiles;
 
         bool isValid;
     };
