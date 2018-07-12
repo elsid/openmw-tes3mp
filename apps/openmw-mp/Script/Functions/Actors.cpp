@@ -22,7 +22,7 @@ static std::string tempCellDescription;
 
 void ActorFunctions::ReadReceivedActorList() noexcept
 {
-    readActorList = mwmp::Networking::getPtr()->getLastActorList();
+    readActorList = mwmp::Networking::getPtr()->getReceivedActorList();
 }
 
 void ActorFunctions::ReadCellActorList(const char* cellDescription) noexcept

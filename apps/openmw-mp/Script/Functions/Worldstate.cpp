@@ -16,7 +16,7 @@ BaseWorldstate *readWorldstate;
 
 void WorldstateFunctions::ReadReceivedWorldstate() noexcept
 {
-    readWorldstate = mwmp::Networking::getPtr()->getLastWorldstate();
+    readWorldstate = mwmp::Networking::getPtr()->getReceivedWorldstate();
 }
 
 void WorldstateFunctions::CopyReceivedWorldstateToStore() noexcept

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 12.01.16.
-//
-
 #include "Player.hpp"
 #include "processors/ProcessorInitializer.hpp"
 #include <RakPeer.h>
@@ -397,17 +393,17 @@ WorldstatePacketController *Networking::getWorldstatePacketController() const
     return worldstatePacketController;
 }
 
-BaseActorList *Networking::getLastActorList()
+BaseActorList *Networking::getReceivedActorList()
 {
     return &baseActorList;
 }
 
-BaseObjectList *Networking::getLastObjectList()
+BaseObjectList *Networking::getReceivedObjectList()
 {
     return &baseObjectList;
 }
 
-BaseWorldstate *Networking::getLastWorldstate()
+BaseWorldstate *Networking::getReceivedWorldstate()
 {
     return &baseWorldstate;
 }

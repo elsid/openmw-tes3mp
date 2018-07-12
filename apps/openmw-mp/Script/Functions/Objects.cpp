@@ -21,7 +21,7 @@ const ContainerItem emptyContainerItem = {};
 
 void ObjectFunctions::ReadReceivedObjectList() noexcept
 {
-    readObjectList = mwmp::Networking::getPtr()->getLastObjectList();
+    readObjectList = mwmp::Networking::getPtr()->getReceivedObjectList();
 }
 
 void ObjectFunctions::ClearObjectList() noexcept

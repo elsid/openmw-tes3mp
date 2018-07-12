@@ -44,9 +44,9 @@ namespace  mwmp
         ObjectPacketController *getObjectPacketController() const;
         WorldstatePacketController *getWorldstatePacketController() const;
 
-        BaseActorList *getLastActorList();
-        BaseObjectList *getLastObjectList();
-        BaseWorldstate *getLastWorldstate();
+        BaseActorList *getReceivedActorList();
+        BaseObjectList *getReceivedObjectList();
+        BaseWorldstate *getReceivedWorldstate();
 
         int getCurrentMpNum();
         void setCurrentMpNum(int value);
