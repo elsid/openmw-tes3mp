@@ -682,48 +682,61 @@ public:
     /**
     * \brief Send an ActorPosition packet.
     *
-    * It is sent only to the player for whom the current actor list was initialized.
+    * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
+    *                            than the player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     *
     * \return void
     */
-    static void SendActorPosition() noexcept;
+    static void SendActorPosition(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ActorStatsDynamic packet.
     *
-    * It is sent only to the player for whom the current actor list was initialized.
+    * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
+    *                            than the player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     *
     * \return void
     */
-    static void SendActorStatsDynamic() noexcept;
+    static void SendActorStatsDynamic(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ActorEquipment packet.
     *
-    * It is sent only to the player for whom the current actor list was initialized.
+    * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
+    *                            than the player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     *
     * \return void
     */
-    static void SendActorEquipment() noexcept;
+    static void SendActorEquipment(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ActorAI packet.
     *
     * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
     *                            than the player attached to the packet (false by default).
-    *
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     * \return void
     */
-    static void SendActorAI(bool sendToOtherVisitors) noexcept;
+    static void SendActorAI(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ActorCellChange packet.
     *
-    * It is sent only to the player for whom the current actor list was initialized.
+    * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
+    *                            than the player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
     *
     * \return void
     */
-    static void SendActorCellChange() noexcept;
+    static void SendActorCellChange(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
 
 
     // All methods below are deprecated versions of methods from above

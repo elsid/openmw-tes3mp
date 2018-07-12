@@ -402,32 +402,13 @@ void ActorFunctions::SendActorAuthority() noexcept
     }
 }
 
-void ActorFunctions::SendActorPosition() noexcept
+void ActorFunctions::SendActorPosition(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
 {
     mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_POSITION);
     actorPacket->setActorList(&writeActorList);
-    actorPacket->Send(writeActorList.guid);
-}
 
-void ActorFunctions::SendActorStatsDynamic() noexcept
-{
-    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_STATS_DYNAMIC);
-    actorPacket->setActorList(&writeActorList);
-    actorPacket->Send(writeActorList.guid);
-}
-
-void ActorFunctions::SendActorEquipment() noexcept
-{
-    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT);
-    actorPacket->setActorList(&writeActorList);
-    actorPacket->Send(writeActorList.guid);
-}
-
-void ActorFunctions::SendActorAI(bool sendToOtherVisitors) noexcept
-{
-    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI);
-    actorPacket->setActorList(&writeActorList);
-    actorPacket->Send(writeActorList.guid);
+    if (!skipAttachedPlayer)
+        actorPacket->Send(writeActorList.guid);
 
     if (sendToOtherVisitors)
     {
@@ -435,17 +416,85 @@ void ActorFunctions::SendActorAI(bool sendToOtherVisitors) noexcept
 
         if (serverCell != nullptr)
         {
-            // Also send this to everyone else who has the cell loaded
             serverCell->sendToLoaded(actorPacket, &writeActorList);
         }
     }
 }
 
-void ActorFunctions::SendActorCellChange() noexcept
+void ActorFunctions::SendActorStatsDynamic(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
+{
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_STATS_DYNAMIC);
+    actorPacket->setActorList(&writeActorList);
+
+    if (!skipAttachedPlayer)
+        actorPacket->Send(writeActorList.guid);
+
+    if (sendToOtherVisitors)
+    {
+        Cell *serverCell = CellController::get()->getCell(&writeActorList.cell);
+
+        if (serverCell != nullptr)
+        {
+            serverCell->sendToLoaded(actorPacket, &writeActorList);
+        }
+    }
+}
+
+void ActorFunctions::SendActorEquipment(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
+{
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT);
+    actorPacket->setActorList(&writeActorList);
+
+    if (!skipAttachedPlayer)
+        actorPacket->Send(writeActorList.guid);
+
+    if (sendToOtherVisitors)
+    {
+        Cell *serverCell = CellController::get()->getCell(&writeActorList.cell);
+
+        if (serverCell != nullptr)
+        {
+            serverCell->sendToLoaded(actorPacket, &writeActorList);
+        }
+    }
+}
+
+void ActorFunctions::SendActorAI(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
+{
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_AI);
+    actorPacket->setActorList(&writeActorList);
+
+    if (!skipAttachedPlayer)
+        actorPacket->Send(writeActorList.guid);
+
+    if (sendToOtherVisitors)
+    {
+        Cell *serverCell = CellController::get()->getCell(&writeActorList.cell);
+
+        if (serverCell != nullptr)
+        {
+            serverCell->sendToLoaded(actorPacket, &writeActorList);
+        }
+    }
+}
+
+void ActorFunctions::SendActorCellChange(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
 {
     mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_CELL_CHANGE);
     actorPacket->setActorList(&writeActorList);
-    actorPacket->Send(writeActorList.guid);
+
+    if (!skipAttachedPlayer)
+        actorPacket->Send(writeActorList.guid);
+
+    if (sendToOtherVisitors)
+    {
+        Cell *serverCell = CellController::get()->getCell(&writeActorList.cell);
+
+        if (serverCell != nullptr)
+        {
+            serverCell->sendToLoaded(actorPacket, &writeActorList);
+        }
+    }
 }
 
 // All methods below are deprecated versions of methods from above
