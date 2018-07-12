@@ -3,6 +3,20 @@
 #include <stdexcept>
 #include <iostream>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include <components/openmw-mp/Log.hpp>
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/ActorList.hpp"
+#include "../mwmp/MechanicsHelper.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include <components/compiler/extensions.hpp>
 #include <components/compiler/opcodes.hpp>
 
@@ -318,6 +332,47 @@ namespace MWScript
 
                     std::cout << "AiFollow: " << actorID << ", " << x << ", " << y << ", " << z << ", " << duration
                         << std::endl;
+
+                    /*
+                        Start of tes3mp addition
+
+                        Send ActorAI packets when an actor follows us, regardless of whether we're the cell
+                        authority or not; the server can decide if it wants to comply with them by forwarding
+                        them to the cell authority
+                    */
+                    MWWorld::Ptr targetPtr = MWBase::Environment::get().getWorld()->searchPtr(actorID, true);
+
+                    if (targetPtr)
+                    {
+                        mwmp::BaseActor baseActor;
+                        baseActor.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+                        baseActor.mpNum = ptr.getCellRef().getMpNum();
+                        baseActor.aiAction = mwmp::BaseActorList::FOLLOW;
+                        baseActor.aiTarget = MechanicsHelper::getTarget(targetPtr);
+
+                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_AI about %s %i-%i to server",
+                            ptr.getCellRef().getRefId(), baseActor.refNumIndex, baseActor.mpNum);
+
+                        if (baseActor.aiTarget.isPlayer)
+                        {
+                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Following player %s",
+                                targetPtr.getClass().getName(targetPtr).c_str());
+                        }
+                        else
+                        {
+                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Following actor %s %i-%i",
+                                targetPtr.getCellRef().getRefId(), baseActor.aiTarget.refNumIndex, baseActor.aiTarget.mpNum);
+                        }
+
+                        mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
+                        actorList->reset();
+                        actorList->cell = *ptr.getCell()->getCell();
+                        actorList->addAiActor(baseActor);
+                        actorList->sendAiActors();
+                    }
+                    /*
+                        End of tes3mp addition
+                    */
                 }
         };
 
