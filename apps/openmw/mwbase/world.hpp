@@ -189,7 +189,7 @@ namespace MWBase
 
                 Make it possible to find a Ptr in any active cell based on its refNum and mpNum
             */
-            virtual MWWorld::Ptr searchPtrViaRefIndex(int refNum, int mpNum) = 0;
+            virtual MWWorld::Ptr searchPtrViaUniqueIndex(int refNum, int mpNum) = 0;
             /*
                 End of tes3mp addition
             */

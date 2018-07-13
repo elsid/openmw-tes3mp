@@ -261,7 +261,7 @@ void DedicatedActor::setAi()
             else if (mwmp::Main::get().getCellController()->isDedicatedActor(aiTarget.refNum, aiTarget.mpNum))
                 targetPtr = mwmp::Main::get().getCellController()->getDedicatedActor(aiTarget.refNum, aiTarget.mpNum)->getPtr();
             else if (aiAction == mwmp::BaseActorList::ACTIVATE)
-                targetPtr = MWBase::Environment::get().getWorld()->searchPtrViaRefIndex(aiTarget.refNum, aiTarget.mpNum);
+                targetPtr = MWBase::Environment::get().getWorld()->searchPtrViaUniqueIndex(aiTarget.refNum, aiTarget.mpNum);
 
             if (targetPtr)
             {

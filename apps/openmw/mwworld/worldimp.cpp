@@ -734,7 +734,7 @@ namespace MWWorld
 
         Make it possible to find a Ptr in any active cell based on its refNum and mpNum
     */
-    Ptr World::searchPtrViaRefIndex(int refNum, int mpNum)
+    Ptr World::searchPtrViaUniqueIndex(int refNum, int mpNum)
     {
         for (Scene::CellStoreCollection::const_iterator iter(mWorldScene->getActiveCells().begin());
             iter != mWorldScene->getActiveCells().end(); ++iter)
