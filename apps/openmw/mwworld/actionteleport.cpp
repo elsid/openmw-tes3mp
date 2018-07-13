@@ -11,6 +11,7 @@
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/ActorList.hpp"
 #include "../mwmp/CellController.hpp"
+#include "../mwmp/MechanicsHelper.hpp"
 /*
     End of tes3mp addition
 */
@@ -112,6 +113,10 @@ namespace MWWorld
                 Send ActorCellChange packets when an actor follows us across cells, regardless of
                 whether we're the cell authority or not; the server can decide if it wants to comply
                 with them
+
+                Afterwards, send an ActorAI packet about this actor being our follower, to ensure
+                they remain our follower even if the destination cell has another player as its
+                cell authority
             */
             mwmp::BaseActor baseActor;
             baseActor.refNum = actor.getCellRef().getRefNum().mIndex;
@@ -132,6 +137,13 @@ namespace MWWorld
 
             actorList->addCellChangeActor(baseActor);
             actorList->sendCellChangeActors();
+
+            // Send ActorAI to bring all players in the new cell up to speed with this follower
+            actorList->cell = baseActor.cell;
+            baseActor.aiAction = mwmp::BaseActorList::FOLLOW;
+            baseActor.aiTarget = MechanicsHelper::getTarget(world->getPlayerPtr());
+            actorList->addAiActor(baseActor);
+            actorList->sendAiActors();
             /*
                 End of tes3mp addition
             */
