@@ -175,15 +175,14 @@ public:
     static unsigned char GetObjectListContainerSubAction() noexcept;
 
     /**
-    * \brief Get the refId of the object at a certain index in the read object list's object changes.
+    * \brief Get the refId of the object at a certain index in the read object list.
     *
     * \return The refId.
     */
     static const char *GetObjectRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNum of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the refNum of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The refNum.
@@ -191,7 +190,7 @@ public:
     static unsigned int GetObjectRefNum(unsigned int i) noexcept;
 
     /**
-    * \brief Get the mpNum of the object at a certain index in the read object list's object changes.
+    * \brief Get the mpNum of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The mpNum.
@@ -199,7 +198,7 @@ public:
     static unsigned int GetObjectMpNum(unsigned int i) noexcept;
 
     /**
-    * \brief Get the count of the object at a certain index in the read object list's object changes.
+    * \brief Get the count of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The object count.
@@ -207,7 +206,7 @@ public:
     static int GetObjectCount(unsigned int i) noexcept;
 
     /**
-    * \brief Get the charge of the object at a certain index in the read object list's object changes.
+    * \brief Get the charge of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The charge.
@@ -215,7 +214,7 @@ public:
     static int GetObjectCharge(unsigned int i) noexcept;
 
     /**
-    * \brief Get the enchantment charge of the object at a certain index in the read object list's object changes.
+    * \brief Get the enchantment charge of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The enchantment charge.
@@ -223,8 +222,7 @@ public:
     static double GetObjectEnchantmentCharge(unsigned int i) noexcept;
 
     /**
-    * \brief Get the gold value of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the gold value of the object at a certain index in the read object list.
     *
     * This is used solely to get the gold value of gold. It is not used for other objects.
     *
@@ -234,8 +232,7 @@ public:
     static int GetObjectGoldValue(unsigned int i) noexcept;
 
     /**
-    * \brief Get the object scale of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the object scale of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The object scale.
@@ -243,8 +240,7 @@ public:
     static double GetObjectScale(unsigned int i) noexcept;
 
     /**
-    * \brief Get the object state of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the object state of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The object state.
@@ -252,8 +248,7 @@ public:
     static bool GetObjectState(unsigned int i) noexcept;
 
     /**
-    * \brief Get the door state of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the door state of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The door state.
@@ -261,8 +256,7 @@ public:
     static int GetObjectDoorState(unsigned int i) noexcept;
 
     /**
-    * \brief Get the lock level of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the lock level of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The lock level.
@@ -270,8 +264,8 @@ public:
     static int GetObjectLockLevel(unsigned int i) noexcept;
 
     /**
-    * \brief Check whether the object at a certain index in the read object list's object changes
-    * is a summon.
+    * \brief Check whether the object at a certain index in the read object list is a
+    * summon.
     *
     * Only living actors can be summoned.
     *
@@ -280,8 +274,7 @@ public:
     static bool GetObjectSummonState(unsigned int i) noexcept;
 
     /**
-    * \brief Get the summon duration of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the summon duration of the object at a certain index in the read object list.
     *
     * Note: Returns -1 if indefinite.
     *
@@ -291,8 +284,8 @@ public:
     static double GetObjectSummonDuration(unsigned int i) noexcept;
 
     /**
-    * \brief Check whether the object at a certain index in the read object list's object changes
-    * has a player as its summoner.
+    * \brief Check whether the object at a certain index in the read object list has a player
+    * as its summoner.
     *
     * Only living actors can be summoned.
     *
@@ -303,7 +296,7 @@ public:
 
     /**
     * \brief Get the player ID of the summoner of the object at a certain index in the read object
-    * list's object changes.
+    * list.
     *
     * \param i The index of the object.
     * \return The player ID of the summoner.
@@ -312,7 +305,7 @@ public:
 
     /**
     * \brief Get the refId of the actor summoner of the object at a certain index in the read object
-    * list's object changes.
+    * list.
     *
     * \param i The index of the object.
     * \return The refId of the summoner.
@@ -321,7 +314,7 @@ public:
 
     /**
     * \brief Get the refNum of the actor summoner of the object at a certain index in the read object
-    * list's object changes.
+    * list.
     *
     * \param i The index of the object.
     * \return The refNum of the summoner.
@@ -329,8 +322,7 @@ public:
     static unsigned int GetObjectSummonerRefNum(unsigned int i) noexcept;
 
     /**
-    * \brief Get the mpNum of the actor summoner of the object at a certain index in the read object list's
-    * object changes.
+    * \brief Get the mpNum of the actor summoner of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The mpNum of the summoner.
@@ -338,8 +330,7 @@ public:
     static unsigned int GetObjectSummonerMpNum(unsigned int i) noexcept;
 
     /**
-    * \brief Get the X position of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the X position of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The X position.
@@ -347,8 +338,7 @@ public:
     static double GetObjectPosX(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Y position of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the Y position of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The Y position.
@@ -356,7 +346,7 @@ public:
     static double GetObjectPosY(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Z position at a certain index in the read object list's object changes.
+    * \brief Get the Z position at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The Z position.
@@ -364,8 +354,7 @@ public:
     static double GetObjectPosZ(unsigned int i) noexcept;
 
     /**
-    * \brief Get the X rotation of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the X rotation of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The X rotation.
@@ -373,8 +362,7 @@ public:
     static double GetObjectRotX(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Y rotation of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the Y rotation of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The Y rotation.
@@ -382,8 +370,7 @@ public:
     static double GetObjectRotY(unsigned int i) noexcept;
 
     /**
-    * \brief Get the Z rotation of the object at a certain index in the read object list's object
-    * changes.
+    * \brief Get the Z rotation of the object at a certain index in the read object list.
     *
     * \param i The index of the object.
     * \return The Z rotation.
@@ -391,8 +378,7 @@ public:
     static double GetObjectRotZ(unsigned int i) noexcept;
 
     /**
-    * \brief Get the videoFilename of the object at a certain index in the read object list's object 
-    * changes.
+    * \brief Get the videoFilename of the object at a certain index in the read object list.
     *
     * \return The videoFilename.
     */
@@ -400,7 +386,7 @@ public:
 
     /**
     * \brief Get the number of container item indexes of the object at a certain index in the
-    * read object list's object changes.
+    * read object list.
     *
     * \param i The index of the object.
     * \return The number of container item indexes.
@@ -409,7 +395,7 @@ public:
 
     /**
     * \brief Get the refId of the container item at a certain itemIndex in the container changes
-    * of the object at a certain objectIndex in the read object list's object changes.
+    * of the object at a certain objectIndex in the read object list.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -419,7 +405,7 @@ public:
 
     /**
     * \brief Get the item count of the container item at a certain itemIndex in the container
-    * changes of the object at a certain objectIndex in the read object list's object changes.
+    * changes of the object at a certain objectIndex in the read object list.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -429,7 +415,7 @@ public:
 
     /**
     * \brief Get the charge of the container item at a certain itemIndex in the container changes
-    * of the object at a certain objectIndex in the read object list's object changes.
+    * of the object at a certain objectIndex in the read object list.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -439,7 +425,7 @@ public:
 
     /**
     * \brief Get the enchantment charge of the container item at a certain itemIndex in the container changes
-    * of the object at a certain objectIndex in the read object list's object changes.
+    * of the object at a certain objectIndex in the read object list.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -449,7 +435,7 @@ public:
 
     /**
     * \brief Get the action count of the container item at a certain itemIndex in the container
-    * changes of the object at a certain objectIndex in the read object list's object changes.
+    * changes of the object at a certain objectIndex in the read object list.
     *
     * \param objectIndex The index of the object.
     * \param itemIndex The index of the container item.
@@ -458,8 +444,7 @@ public:
     static int GetContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex) noexcept;
 
     /**
-    * \brief Check whether the object at a certain index in the read object list's object
-    * changes has a container.
+    * \brief Check whether the object at a certain index in the read object list has a container.
     * 
     * Note: Only ObjectLists from ObjectPlace packets contain this information. Objects from
     *       received ObjectSpawn packets can always be assumed to have a container.
