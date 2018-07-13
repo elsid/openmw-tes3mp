@@ -28,6 +28,7 @@ namespace mwmp
         void addDeathActor(BaseActor baseActor);
         void addEquipmentActor(BaseActor baseActor);
         void addAiActor(BaseActor baseActor);
+        void addAiActor(const MWWorld::Ptr& actorPtr, const MWWorld::Ptr& targetPtr, unsigned int aiAction);
         void addAttackActor(BaseActor baseActor);
         void addCellChangeActor(BaseActor baseActor);
 

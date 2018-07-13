@@ -2,6 +2,9 @@
 #include "Main.hpp"
 #include "Networking.hpp"
 #include "LocalPlayer.hpp"
+#include "MechanicsHelper.hpp"
+
+#include "../mwworld/class.hpp"
 
 #include <components/openmw-mp/Log.hpp>
 
@@ -82,6 +85,31 @@ void ActorList::addEquipmentActor(BaseActor baseActor)
 void ActorList::addAiActor(BaseActor baseActor)
 {
     aiActors.push_back(baseActor);
+}
+
+void ActorList::addAiActor(const MWWorld::Ptr& actorPtr, const MWWorld::Ptr& targetPtr, unsigned int aiAction)
+{
+    mwmp::BaseActor baseActor;
+    baseActor.refNum = actorPtr.getCellRef().getRefNum().mIndex;
+    baseActor.mpNum = actorPtr.getCellRef().getMpNum();
+    baseActor.aiAction = aiAction;
+    baseActor.aiTarget = MechanicsHelper::getTarget(targetPtr);
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Preparing to send ID_ACTOR_AI about %s %i-%i\n- action: %i",
+        actorPtr.getCellRef().getRefId().c_str(), baseActor.refNum, baseActor.mpNum, aiAction);
+
+    if (baseActor.aiTarget.isPlayer)
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Has player target %s",
+            targetPtr.getClass().getName(targetPtr).c_str());
+    }
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Has actor target %s %i-%i",
+            targetPtr.getCellRef().getRefId().c_str(), baseActor.aiTarget.refNum, baseActor.aiTarget.mpNum);
+    }
+
+    addAiActor(baseActor);
 }
 
 void ActorList::addAttackActor(BaseActor baseActor)

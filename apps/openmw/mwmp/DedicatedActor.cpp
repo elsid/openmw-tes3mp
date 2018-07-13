@@ -265,12 +265,12 @@ void DedicatedActor::setAi()
 
             if (targetPtr)
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- Has AI target %s %i-%i",
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Has actor target %s %i-%i",
                     targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNum, aiTarget.mpNum);
             }
             else
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- Has invalid target AI target %i-%i",
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Has invalid actor target %i-%i",
                     aiTarget.refNum, aiTarget.mpNum);
             }
 

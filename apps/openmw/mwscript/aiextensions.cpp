@@ -344,30 +344,10 @@ namespace MWScript
 
                     if (targetPtr)
                     {
-                        mwmp::BaseActor baseActor;
-                        baseActor.refNum = ptr.getCellRef().getRefNum().mIndex;
-                        baseActor.mpNum = ptr.getCellRef().getMpNum();
-                        baseActor.aiAction = mwmp::BaseActorList::FOLLOW;
-                        baseActor.aiTarget = MechanicsHelper::getTarget(targetPtr);
-
-                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_AI about %s %i-%i to server",
-                            ptr.getCellRef().getRefId().c_str(), baseActor.refNum, baseActor.mpNum);
-
-                        if (baseActor.aiTarget.isPlayer)
-                        {
-                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Following player %s",
-                                targetPtr.getClass().getName(targetPtr).c_str());
-                        }
-                        else
-                        {
-                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Following actor %s %i-%i",
-                                targetPtr.getCellRef().getRefId().c_str(), baseActor.aiTarget.refNum, baseActor.aiTarget.mpNum);
-                        }
-
                         mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
                         actorList->reset();
                         actorList->cell = *ptr.getCell()->getCell();
-                        actorList->addAiActor(baseActor);
+                        actorList->addAiActor(ptr, targetPtr, mwmp::BaseActorList::FOLLOW);
                         actorList->sendAiActors();
                     }
                     /*
@@ -517,30 +497,10 @@ namespace MWScript
                     */
                     if (target)
                     {
-                        mwmp::BaseActor baseActor;
-                        baseActor.refNum = actor.getCellRef().getRefNum().mIndex;
-                        baseActor.mpNum = actor.getCellRef().getMpNum();
-                        baseActor.aiAction = mwmp::BaseActorList::COMBAT;
-                        baseActor.aiTarget = MechanicsHelper::getTarget(target);
-
-                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_AI about %s %i-%i to server",
-                            actor.getCellRef().getRefId().c_str(), baseActor.refNum, baseActor.mpNum);
-
-                        if (baseActor.aiTarget.isPlayer)
-                        {
-                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Starting combat with player %s",
-                                target.getClass().getName(target).c_str());
-                        }
-                        else
-                        {
-                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Starting combat with actor %s %i-%i",
-                                target.getCellRef().getRefId().c_str(), baseActor.aiTarget.refNum, baseActor.aiTarget.mpNum);
-                        }
-
                         mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
                         actorList->reset();
                         actorList->cell = *actor.getCell()->getCell();
-                        actorList->addAiActor(baseActor);
+                        actorList->addAiActor(actor, target, mwmp::BaseActorList::COMBAT);
                         actorList->sendAiActors();
                     }
                     /*
