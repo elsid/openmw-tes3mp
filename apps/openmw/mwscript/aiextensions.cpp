@@ -336,9 +336,9 @@ namespace MWScript
                     /*
                         Start of tes3mp addition
 
-                        Send ActorAI packets when an actor follows us, regardless of whether we're the cell
-                        authority or not; the server can decide if it wants to comply with them by forwarding
-                        them to the cell authority
+                        Send ActorAI packets when an actor becomes a follower, regardless of whether we're
+                        the cell authority or not; the server can decide if it wants to comply with them by
+                        forwarding them to the cell authority
                     */
                     MWWorld::Ptr targetPtr = MWBase::Environment::get().getWorld()->searchPtr(actorID, true);
 
@@ -507,6 +507,45 @@ namespace MWScript
 
                     MWWorld::Ptr target = MWBase::Environment::get().getWorld()->getPtr(targetID, true);
                     MWBase::Environment::get().getMechanicsManager()->startCombat(actor, target);
+
+                    /*
+                        Start of tes3mp addition
+
+                        Send ActorAI packets when an actor starts combat, regardless of whether we're the
+                        cell authority or not; the server can decide if it wants to comply with them by
+                        forwarding them to the cell authority
+                    */
+                    if (target)
+                    {
+                        mwmp::BaseActor baseActor;
+                        baseActor.refNum = actor.getCellRef().getRefNum().mIndex;
+                        baseActor.mpNum = actor.getCellRef().getMpNum();
+                        baseActor.aiAction = mwmp::BaseActorList::COMBAT;
+                        baseActor.aiTarget = MechanicsHelper::getTarget(target);
+
+                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_AI about %s %i-%i to server",
+                            actor.getCellRef().getRefId().c_str(), baseActor.refNum, baseActor.mpNum);
+
+                        if (baseActor.aiTarget.isPlayer)
+                        {
+                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Starting combat with player %s",
+                                target.getClass().getName(target).c_str());
+                        }
+                        else
+                        {
+                            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Starting combat with actor %s %i-%i",
+                                target.getCellRef().getRefId().c_str(), baseActor.aiTarget.refNum, baseActor.aiTarget.mpNum);
+                        }
+
+                        mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
+                        actorList->reset();
+                        actorList->cell = *actor.getCell()->getCell();
+                        actorList->addAiActor(baseActor);
+                        actorList->sendAiActors();
+                    }
+                    /*
+                        End of tes3mp addition
+                    */
                 }
         };
 
