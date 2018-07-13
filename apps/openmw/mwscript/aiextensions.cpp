@@ -297,6 +297,25 @@ namespace MWScript
                     MWMechanics::Stat<int> stat = ptr.getClass().getCreatureStats(ptr).getAiSetting(setting);
                     stat.setModified(value, 0);
                     ptr.getClass().getCreatureStats(ptr).setAiSetting(setting, stat);
+
+                    /*
+                        Start of tes3mp addition
+
+                        Setting an actor's AI_Fight to 100 is equivalent to starting combat with the local player,
+                        so send a combat packet regardless of whether we're the cell authority or not; the server
+                        can decide if it wants to comply with them by forwarding them to the cell authority
+                    */
+                    if (setting == MWMechanics::CreatureStats::AI_Fight && value == 100)
+                    {
+                        mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
+                        actorList->reset();
+                        actorList->cell = *ptr.getCell()->getCell();
+                        actorList->addAiActor(ptr, MWBase::Environment::get().getWorld()->getPlayerPtr(), mwmp::BaseActorList::COMBAT);
+                        actorList->sendAiActors();
+                    }
+                    /*
+                        End of tes3mp addition
+                    */
                 }
         };
 
