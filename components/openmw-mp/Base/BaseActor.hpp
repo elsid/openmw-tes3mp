@@ -20,7 +20,7 @@ namespace mwmp
         }
 
         std::string refId;
-        int refNumIndex;
+        int refNum;
         int mpNum;
 
         ESM::Position position;

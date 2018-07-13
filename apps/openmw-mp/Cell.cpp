@@ -84,9 +84,9 @@ void Cell::readActorList(unsigned char packetID, const mwmp::BaseActorList *newA
         mwmp::BaseActor newActor = newActorList->baseActors.at(i);
         mwmp::BaseActor *cellActor;
 
-        if (containsActor(newActor.refNumIndex, newActor.mpNum))
+        if (containsActor(newActor.refNum, newActor.mpNum))
         {
-            cellActor = getActor(newActor.refNumIndex, newActor.mpNum);
+            cellActor = getActor(newActor.refNum, newActor.mpNum);
 
             switch (packetID)
             {
@@ -112,25 +112,25 @@ void Cell::readActorList(unsigned char packetID, const mwmp::BaseActorList *newA
     cellActorList.count = cellActorList.baseActors.size();
 }
 
-bool Cell::containsActor(int refNumIndex, int mpNum)
+bool Cell::containsActor(int refNum, int mpNum)
 {
     for (unsigned int i = 0; i < cellActorList.baseActors.size(); i++)
     {
         mwmp::BaseActor actor = cellActorList.baseActors.at(i);
 
-        if (actor.refNumIndex == refNumIndex && actor.mpNum == mpNum)
+        if (actor.refNum == refNum && actor.mpNum == mpNum)
             return true;
     }
     return false;
 }
 
-mwmp::BaseActor *Cell::getActor(int refNumIndex, int mpNum)
+mwmp::BaseActor *Cell::getActor(int refNum, int mpNum)
 {
     for (unsigned int i = 0; i < cellActorList.baseActors.size(); i++)
     {
         mwmp::BaseActor *actor = &cellActorList.baseActors.at(i);
 
-        if (actor->refNumIndex == refNumIndex && actor->mpNum == mpNum)
+        if (actor->refNum == refNum && actor->mpNum == mpNum)
             return actor;
     }
     return 0;
@@ -140,7 +140,7 @@ void Cell::removeActors(const mwmp::BaseActorList *newActorList)
 {
     for (std::vector<mwmp::BaseActor>::iterator it = cellActorList.baseActors.begin(); it != cellActorList.baseActors.end();)
     {
-        int refNumIndex = (*it).refNumIndex;
+        int refNum = (*it).refNum;
         int mpNum = (*it).mpNum;
 
         bool foundActor = false;
@@ -149,7 +149,7 @@ void Cell::removeActors(const mwmp::BaseActorList *newActorList)
         {
             mwmp::BaseActor newActor = newActorList->baseActors.at(i);
 
-            if (newActor.refNumIndex == refNumIndex && newActor.mpNum == mpNum)
+            if (newActor.refNum == refNum && newActor.mpNum == mpNum)
             {
                 it = cellActorList.baseActors.erase(it);
                 foundActor = true;

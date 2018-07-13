@@ -127,7 +127,7 @@ namespace MWGui
         mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
-            baseObject.refId.c_str(), baseObject.refNumIndex, objectList->cell.getDescription().c_str(),
+            baseObject.refId.c_str(), baseObject.refNum, objectList->cell.getDescription().c_str(),
             itemPtr.getCellRef().getRefId().c_str(), itemPtr.getRefData().getCount());
         /*
             End of tes3mp addition
@@ -182,7 +182,7 @@ namespace MWGui
             mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
 
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s %i-%i\n- cell: %s\n- item: %s %i, %i",
-                baseObject.refId.c_str(), baseObject.refNumIndex, baseObject.mpNum, objectList->cell.getDescription().c_str(),
+                baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum, objectList->cell.getDescription().c_str(),
                 containerItem.refId.c_str(), containerItem.count, containerItem.charge);
         }
         /*

@@ -256,22 +256,22 @@ void DedicatedActor::setAi()
         }
         else
         {
-            if (mwmp::Main::get().getCellController()->isLocalActor(aiTarget.refNumIndex, aiTarget.mpNum))
-                targetPtr = mwmp::Main::get().getCellController()->getLocalActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
-            else if (mwmp::Main::get().getCellController()->isDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum))
-                targetPtr = mwmp::Main::get().getCellController()->getDedicatedActor(aiTarget.refNumIndex, aiTarget.mpNum)->getPtr();
+            if (mwmp::Main::get().getCellController()->isLocalActor(aiTarget.refNum, aiTarget.mpNum))
+                targetPtr = mwmp::Main::get().getCellController()->getLocalActor(aiTarget.refNum, aiTarget.mpNum)->getPtr();
+            else if (mwmp::Main::get().getCellController()->isDedicatedActor(aiTarget.refNum, aiTarget.mpNum))
+                targetPtr = mwmp::Main::get().getCellController()->getDedicatedActor(aiTarget.refNum, aiTarget.mpNum)->getPtr();
             else if (aiAction == mwmp::BaseActorList::ACTIVATE)
-                targetPtr = MWBase::Environment::get().getWorld()->searchPtrViaRefIndex(aiTarget.refNumIndex, aiTarget.mpNum);
+                targetPtr = MWBase::Environment::get().getWorld()->searchPtrViaRefIndex(aiTarget.refNum, aiTarget.mpNum);
 
             if (targetPtr)
             {
                 LOG_APPEND(Log::LOG_VERBOSE, "-- Has AI target %s %i-%i",
-                    targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNumIndex, aiTarget.mpNum);
+                    targetPtr.getCellRef().getRefId().c_str(), aiTarget.refNum, aiTarget.mpNum);
             }
             else
             {
                 LOG_APPEND(Log::LOG_VERBOSE, "-- Has invalid target AI target %i-%i",
-                    aiTarget.refNumIndex, aiTarget.mpNum);
+                    aiTarget.refNum, aiTarget.mpNum);
             }
 
         }
@@ -373,7 +373,7 @@ void DedicatedActor::setPtr(const MWWorld::Ptr& newPtr)
     ptr = newPtr;
 
     refId = ptr.getCellRef().getRefId();
-    refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+    refNum = ptr.getCellRef().getRefNum().mIndex;
     mpNum = ptr.getCellRef().getMpNum();
 
     position = ptr.getRefData().getPosition();

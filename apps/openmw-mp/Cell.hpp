@@ -31,8 +31,8 @@ public:
     void removePlayer(Player *player);
 
     void readActorList(unsigned char packetID, const mwmp::BaseActorList *newActorList);
-    bool containsActor(int refNumIndex, int mpNum);
-    mwmp::BaseActor *getActor(int refNumIndex, int mpNum);
+    bool containsActor(int refNum, int mpNum);
+    mwmp::BaseActor *getActor(int refNum, int mpNum);
     void removeActors(const mwmp::BaseActorList *newActorList);
 
     RakNet::RakNetGUID *getAuthority();

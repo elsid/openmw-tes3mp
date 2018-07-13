@@ -234,7 +234,7 @@ namespace MWWorld
 
                 Allow the searching of objects by their reference numbers
             */
-            Ptr searchExact (unsigned int refNumIndex, unsigned int mpNum);
+            Ptr searchExact (unsigned int refNum, unsigned int mpNum);
             /*
                 End of tes3mp addition
             */

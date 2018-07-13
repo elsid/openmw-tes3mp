@@ -35,17 +35,17 @@ namespace mwmp
         void removeLocalActorRecord(std::string actorIndex);
         
         bool isLocalActor(MWWorld::Ptr ptr);
-        bool isLocalActor(int refNumIndex, int mpNum);
+        bool isLocalActor(int refNum, int mpNum);
         virtual LocalActor *getLocalActor(MWWorld::Ptr ptr);
-        virtual LocalActor *getLocalActor(int refNumIndex, int mpNum);
+        virtual LocalActor *getLocalActor(int refNum, int mpNum);
 
         void setDedicatedActorRecord(std::string actorIndex, std::string cellIndex);
         void removeDedicatedActorRecord(std::string actorIndex);
         
         bool isDedicatedActor(MWWorld::Ptr ptr);
-        bool isDedicatedActor(int refNumIndex, int mpNum);
+        bool isDedicatedActor(int refNum, int mpNum);
         virtual DedicatedActor *getDedicatedActor(MWWorld::Ptr ptr);
-        virtual DedicatedActor *getDedicatedActor(int refNumIndex, int mpNum);
+        virtual DedicatedActor *getDedicatedActor(int refNum, int mpNum);
 
         std::string generateMapIndex(int refNumindex, int mpNum);
         std::string generateMapIndex(MWWorld::Ptr ptr);

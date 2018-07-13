@@ -294,9 +294,9 @@ namespace MWWorld
             /*
                 Start of tes3mp addition
 
-                Make it possible to find a Ptr in any active cell based on its refNumIndex and mpNum
+                Make it possible to find a Ptr in any active cell based on its refNum and mpNum
             */
-            Ptr searchPtrViaRefIndex(int refNumIndex, int mpNum) override;
+            Ptr searchPtrViaRefIndex(int refNum, int mpNum) override;
             /*
                 End of tes3mp addition
             */

@@ -20,7 +20,7 @@ void PacketActorDeath::Actor(BaseActor &actor, bool send)
     else
     {
         RW(actor.killer.refId, send, true);
-        RW(actor.killer.refNumIndex, send);
+        RW(actor.killer.refNum, send);
         RW(actor.killer.mpNum, send);
 
         RW(actor.killer.name, send, true);

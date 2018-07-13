@@ -21,7 +21,7 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
     else
     {
         RW(player->attack.target.refId, send, true);
-        RW(player->attack.target.refNumIndex, send);
+        RW(player->attack.target.refNum, send);
         RW(player->attack.target.mpNum, send);
     }
 

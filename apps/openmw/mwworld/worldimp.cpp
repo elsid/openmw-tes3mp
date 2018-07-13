@@ -732,16 +732,16 @@ namespace MWWorld
     /*
         Start of tes3mp addition
 
-        Make it possible to find a Ptr in any active cell based on its refNumIndex and mpNum
+        Make it possible to find a Ptr in any active cell based on its refNum and mpNum
     */
-    Ptr World::searchPtrViaRefIndex(int refNumIndex, int mpNum)
+    Ptr World::searchPtrViaRefIndex(int refNum, int mpNum)
     {
         for (Scene::CellStoreCollection::const_iterator iter(mWorldScene->getActiveCells().begin());
             iter != mWorldScene->getActiveCells().end(); ++iter)
         {
             CellStore* cellStore = *iter;
             
-            MWWorld::Ptr ptrFound = cellStore->searchExact(refNumIndex, mpNum);
+            MWWorld::Ptr ptrFound = cellStore->searchExact(refNum, mpNum);
 
             if (ptrFound)
                 return ptrFound;

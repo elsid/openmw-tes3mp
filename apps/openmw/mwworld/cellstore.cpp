@@ -502,12 +502,12 @@ namespace MWWorld
     struct SearchExactVisitor
     {
         PtrType mFound;
-        unsigned int mRefNumIndexToFind;
+        unsigned int mRefNumToFind;
         unsigned int mMpNumToFind;
 
         bool operator()(const PtrType& ptr)
         {
-            if (ptr.getCellRef().getRefNum().mIndex == mRefNumIndexToFind && ptr.getCellRef().getMpNum() == mMpNumToFind)
+            if (ptr.getCellRef().getRefNum().mIndex == mRefNumToFind && ptr.getCellRef().getMpNum() == mMpNumToFind)
             {
                 mFound = ptr;
                 return false;
@@ -524,14 +524,14 @@ namespace MWWorld
 
         Allow the searching of objects by their reference numbers
     */
-    Ptr CellStore::searchExact (unsigned int refNumIndex, unsigned int mpNum)
+    Ptr CellStore::searchExact (unsigned int refNum, unsigned int mpNum)
     {
         // Ensure that all objects searched for have a valid reference number
-        if (refNumIndex == 0 && mpNum == 0)
+        if (refNum == 0 && mpNum == 0)
             return 0;
 
         SearchExactVisitor<MWWorld::Ptr> searchVisitor;
-        searchVisitor.mRefNumIndexToFind = refNumIndex;
+        searchVisitor.mRefNumToFind = refNum;
         searchVisitor.mMpNumToFind = mpNum;
         forEach(searchVisitor);
         return searchVisitor.mFound;

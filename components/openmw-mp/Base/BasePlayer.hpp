@@ -18,7 +18,7 @@ namespace mwmp
     struct CurrentContainer
     {
         std::string refId;
-        unsigned int refNumIndex;
+        unsigned int refNum;
         unsigned int mpNum;
         bool loot;
     };

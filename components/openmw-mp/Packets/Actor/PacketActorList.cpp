@@ -23,10 +23,10 @@ void PacketActorList::Packet(RakNet::BitStream *bs, bool send)
             actor = actorList->baseActors.at(i);
 
         RW(actor.refId, send);
-        RW(actor.refNumIndex, send);
+        RW(actor.refNum, send);
         RW(actor.mpNum, send);
 
-        if (actor.refId.empty() || (actor.refNumIndex != 0 && actor.mpNum != 0))
+        if (actor.refId.empty() || (actor.refNum != 0 && actor.mpNum != 0))
         {
             actorList->isValid = false;
             return;

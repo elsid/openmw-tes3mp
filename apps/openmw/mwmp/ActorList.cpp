@@ -209,7 +209,7 @@ void ActorList::sendActorsInCell(MWWorld::CellStore* cellStore)
 
         BaseActor actor;
         actor.refId = ptr.getCellRef().getRefId();
-        actor.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+        actor.refNum = ptr.getCellRef().getRefNum().mIndex;
         actor.mpNum = ptr.getCellRef().getMpNum();
 
         addActor(actor);
@@ -224,7 +224,7 @@ void ActorList::sendActorsInCell(MWWorld::CellStore* cellStore)
 
         BaseActor actor;
         actor.refId = ptr.getCellRef().getRefId();
-        actor.refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+        actor.refNum = ptr.getCellRef().getRefNum().mIndex;
         actor.mpNum = ptr.getCellRef().getMpNum();
 
         addActor(actor);

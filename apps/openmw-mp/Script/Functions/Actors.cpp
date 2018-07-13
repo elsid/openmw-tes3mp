@@ -72,9 +72,9 @@ const char *ActorFunctions::GetActorRefId(unsigned int i) noexcept
     return readActorList->baseActors.at(i).refId.c_str();
 }
 
-unsigned int ActorFunctions::GetActorRefNumIndex(unsigned int i) noexcept
+unsigned int ActorFunctions::GetActorRefNum(unsigned int i) noexcept
 {
-    return readActorList->baseActors.at(i).refNumIndex;
+    return readActorList->baseActors.at(i).refNum;
 }
 
 unsigned int ActorFunctions::GetActorMpNum(unsigned int i) noexcept
@@ -197,9 +197,9 @@ const char *ActorFunctions::GetActorKillerRefId(unsigned int i) noexcept
     return readActorList->baseActors.at(i).killer.refId.c_str();
 }
 
-unsigned int ActorFunctions::GetActorKillerRefNumIndex(unsigned int i) noexcept
+unsigned int ActorFunctions::GetActorKillerRefNum(unsigned int i) noexcept
 {
-    return readActorList->baseActors.at(i).killer.refNumIndex;
+    return readActorList->baseActors.at(i).killer.refNum;
 }
 
 unsigned int ActorFunctions::GetActorKillerMpNum(unsigned int i) noexcept
@@ -242,9 +242,9 @@ void ActorFunctions::SetActorRefId(const char* refId) noexcept
     tempActor.refId = refId;
 }
 
-void ActorFunctions::SetActorRefNumIndex(int refNumIndex) noexcept
+void ActorFunctions::SetActorRefNum(int refNum) noexcept
 {
-    tempActor.refNumIndex = refNumIndex;
+    tempActor.refNum = refNum;
 }
 
 void ActorFunctions::SetActorMpNum(int mpNum) noexcept
@@ -327,12 +327,12 @@ void ActorFunctions::SetActorAITargetToPlayer(unsigned short pid) noexcept
     tempActor.aiTarget.guid = player->guid;
 }
 
-void ActorFunctions::SetActorAITargetToObject(int refNumIndex, int mpNum) noexcept
+void ActorFunctions::SetActorAITargetToObject(int refNum, int mpNum) noexcept
 {
     tempActor.hasAiTarget = true;
     tempActor.aiTarget.isPlayer = false;
 
-    tempActor.aiTarget.refNumIndex = refNumIndex;
+    tempActor.aiTarget.refNum = refNum;
     tempActor.aiTarget.mpNum = mpNum;
 }
 
@@ -514,4 +514,19 @@ void ActorFunctions::InitializeActorList(unsigned short pid) noexcept
 void ActorFunctions::CopyLastActorListToStore() noexcept
 {
     CopyLastActorListToStore();
+}
+
+unsigned int ActorFunctions::GetActorRefNumIndex(unsigned int i) noexcept
+{
+    return GetActorRefNum(i);
+}
+
+unsigned int ActorFunctions::GetActorKillerRefNumIndex(unsigned int i) noexcept
+{
+    return GetActorKillerRefNum(i);
+}
+
+void ActorFunctions::SetActorRefNumIndex(int refNum) noexcept
+{
+    tempActor.refNum = refNum;
 }

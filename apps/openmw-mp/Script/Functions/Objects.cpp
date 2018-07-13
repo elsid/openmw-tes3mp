@@ -63,9 +63,9 @@ const char *ObjectFunctions::GetObjectRefId(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).refId.c_str();
 }
 
-unsigned int ObjectFunctions::GetObjectRefNumIndex(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectRefNum(unsigned int i) noexcept
 {
-    return readObjectList->baseObjects.at(i).refNumIndex;
+    return readObjectList->baseObjects.at(i).refNum;
 }
 
 unsigned int ObjectFunctions::GetObjectMpNum(unsigned int i) noexcept
@@ -143,9 +143,9 @@ const char *ObjectFunctions::GetObjectSummonerRefId(unsigned int i) noexcept
     return readObjectList->baseObjects.at(i).master.refId.c_str();
 }
 
-unsigned int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectSummonerRefNum(unsigned int i) noexcept
 {
-    return readObjectList->baseObjects.at(i).master.refNumIndex;
+    return readObjectList->baseObjects.at(i).master.refNum;
 }
 
 unsigned int ObjectFunctions::GetObjectSummonerMpNum(unsigned int i) noexcept
@@ -248,9 +248,9 @@ void ObjectFunctions::SetObjectRefId(const char* refId) noexcept
     tempObject.refId = refId;
 }
 
-void ObjectFunctions::SetObjectRefNumIndex(int refNumIndex) noexcept
+void ObjectFunctions::SetObjectRefNum(int refNum) noexcept
 {
-    tempObject.refNumIndex = refNumIndex;
+    tempObject.refNum = refNum;
 }
 
 void ObjectFunctions::SetObjectMpNum(int mpNum) noexcept
@@ -575,6 +575,16 @@ unsigned char ObjectFunctions::GetEventContainerSubAction() noexcept
     return GetObjectListContainerSubAction();
 }
 
+unsigned int ObjectFunctions::GetObjectRefNumIndex(unsigned int i) noexcept
+{
+    return GetObjectRefNum(i);
+}
+
+unsigned int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int i) noexcept
+{
+    return GetObjectSummonerRefNum(i);
+}
+
 void ObjectFunctions::SetEventCell(const char* cellDescription) noexcept
 {
     SetObjectListCell(cellDescription);
@@ -588,6 +598,11 @@ void ObjectFunctions::SetEventAction(unsigned char action) noexcept
 void ObjectFunctions::SetEventConsoleCommand(const char* consoleCommand) noexcept
 {
     SetObjectListConsoleCommand(consoleCommand);
+}
+
+void ObjectFunctions::SetObjectRefNumIndex(int refNum) noexcept
+{
+    SetObjectRefNum(refNum);
 }
 
 void ObjectFunctions::AddWorldObject() noexcept

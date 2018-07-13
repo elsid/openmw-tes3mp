@@ -66,7 +66,7 @@ void LocalActor::update(bool forceUpdate)
 void LocalActor::updateCell()
 {
     LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_CELL_CHANGE about %s %i-%i to server",
-                       refId.c_str(), refNumIndex, mpNum);
+                       refId.c_str(), refNum, mpNum);
 
     LOG_APPEND(Log::LOG_INFO, "- Moved from %s to %s", cell.getDescription().c_str(), ptr.getCell()->getCell()->getDescription().c_str());
 
@@ -191,7 +191,7 @@ void LocalActor::updateStatsDynamic(bool forceUpdate)
                 killer = MechanicsHelper::getTarget(ptr);
 
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_DEATH about %s %i-%i to server",
-                refId.c_str(), refNumIndex, mpNum);
+                refId.c_str(), refNum, mpNum);
 
             mwmp::Main::get().getNetworking()->getActorList()->addDeathActor(*this);
 
@@ -274,7 +274,7 @@ void LocalActor::setPtr(const MWWorld::Ptr& newPtr)
     ptr = newPtr;
 
     refId = ptr.getCellRef().getRefId();
-    refNumIndex = ptr.getCellRef().getRefNum().mIndex;
+    refNum = ptr.getCellRef().getRefNum().mIndex;
     mpNum = ptr.getCellRef().getMpNum();
 
     lastDrawState = ptr.getClass().getCreatureStats(ptr).getDrawState();

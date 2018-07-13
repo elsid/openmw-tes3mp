@@ -21,7 +21,7 @@ void PacketPlayerDeath::Packet(RakNet::BitStream *bs, bool send)
     else
     {
         RW(player->killer.refId, send, true);
-        RW(player->killer.refNumIndex, send);
+        RW(player->killer.refNum, send);
         RW(player->killer.mpNum, send);
 
         RW(player->killer.name, send, true);

@@ -14,7 +14,7 @@
     {"GetObjectListContainerSubAction",       ObjectFunctions::GetObjectListContainerSubAction},\
     \
     {"GetObjectRefId",                        ObjectFunctions::GetObjectRefId},\
-    {"GetObjectRefNumIndex",                  ObjectFunctions::GetObjectRefNumIndex},\
+    {"GetObjectRefNum",                       ObjectFunctions::GetObjectRefNum},\
     {"GetObjectMpNum",                        ObjectFunctions::GetObjectMpNum},\
     {"GetObjectCount",                        ObjectFunctions::GetObjectCount},\
     {"GetObjectCharge",                       ObjectFunctions::GetObjectCharge},\
@@ -30,7 +30,7 @@
     {"DoesObjectHavePlayerSummoner",          ObjectFunctions::DoesObjectHavePlayerSummoner},\
     {"GetObjectSummonerPid",                  ObjectFunctions::GetObjectSummonerPid},\
     {"GetObjectSummonerRefId",                ObjectFunctions::GetObjectSummonerRefId},\
-    {"GetObjectSummonerRefNumIndex",          ObjectFunctions::GetObjectSummonerRefNumIndex},\
+    {"GetObjectSummonerRefNum",               ObjectFunctions::GetObjectSummonerRefNum},\
     {"GetObjectSummonerMpNum",                ObjectFunctions::GetObjectSummonerMpNum},\
     \
     {"GetObjectPosX",                         ObjectFunctions::GetObjectPosX},\
@@ -56,7 +56,7 @@
     {"SetObjectListConsoleCommand",           ObjectFunctions::SetObjectListConsoleCommand},\
     \
     {"SetObjectRefId",                        ObjectFunctions::SetObjectRefId},\
-    {"SetObjectRefNumIndex",                  ObjectFunctions::SetObjectRefNumIndex},\
+    {"SetObjectRefNum",                       ObjectFunctions::SetObjectRefNum},\
     {"SetObjectMpNum",                        ObjectFunctions::SetObjectMpNum},\
     {"SetObjectCount",                        ObjectFunctions::SetObjectCount},\
     {"SetObjectCharge",                       ObjectFunctions::SetObjectCharge},\
@@ -110,9 +110,12 @@
     {"GetObjectChangesSize",                  ObjectFunctions::GetObjectChangesSize},\
     {"GetEventAction",                        ObjectFunctions::GetEventAction},\
     {"GetEventContainerSubAction",            ObjectFunctions::GetEventContainerSubAction},\
+    {"GetObjectRefNumIndex",                  ObjectFunctions::GetObjectRefNumIndex},\
+    {"GetObjectSummonerRefNumIndex",          ObjectFunctions::GetObjectSummonerRefNumIndex},\
     {"SetEventCell",                          ObjectFunctions::SetEventCell},\
     {"SetEventAction",                        ObjectFunctions::SetEventAction},\
     {"SetEventConsoleCommand",                ObjectFunctions::SetEventConsoleCommand},\
+    {"SetObjectRefNumIndex",                  ObjectFunctions::SetObjectRefNumIndex},\
     {"AddWorldObject",                        ObjectFunctions::AddWorldObject}
 
 class ObjectFunctions
@@ -179,13 +182,13 @@ public:
     static const char *GetObjectRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the object at a certain index in the read object list's object
+    * \brief Get the refNum of the object at a certain index in the read object list's object
     * changes.
     *
     * \param i The index of the object.
-    * \return The refNumIndex.
+    * \return The refNum.
     */
-    static unsigned int GetObjectRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetObjectRefNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the object at a certain index in the read object list's object changes.
@@ -317,13 +320,13 @@ public:
     static const char *GetObjectSummonerRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the actor summoner of the object at a certain index in the read object
+    * \brief Get the refNum of the actor summoner of the object at a certain index in the read object
     * list's object changes.
     *
     * \param i The index of the object.
-    * \return The refNumIndex of the summoner.
+    * \return The refNum of the summoner.
     */
-    static unsigned int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetObjectSummonerRefNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the actor summoner of the object at a certain index in the read object list's
@@ -505,18 +508,18 @@ public:
     static void SetObjectRefId(const char* refId) noexcept;
 
     /**
-    * \brief Set the refNumIndex of the temporary object stored on the server.
+    * \brief Set the refNum of the temporary object stored on the server.
     *
-    * Every object loaded from .ESM and .ESP data files has a unique refNumIndex which needs to be
+    * Every object loaded from .ESM and .ESP data files has a unique refNum which needs to be
     * retained to refer to it in packets.
     * 
-    * On the other hand, objects placed or spawned via the server should always have a refNumIndex
+    * On the other hand, objects placed or spawned via the server should always have a refNum
     * of 0.
     *
-    * \param refNumIndex The refNumIndex.
+    * \param refNum The refNum.
     * \return void
     */
-    static void SetObjectRefNumIndex(int refNumIndex) noexcept;
+    static void SetObjectRefNum(int refNum) noexcept;
 
     /**
     * \brief Set the mpNum of the temporary object stored on the server.
@@ -526,7 +529,7 @@ public:
     * for these objects.
     * 
     * Objects loaded from .ESM and .ESP data files should always have an mpNum of 0, because they
-    * have unique refNumIndexes instead.
+    * have unique refNumes instead.
     *
     * \param mpNum The mpNum.
     * \return void
@@ -920,9 +923,12 @@ public:
     static unsigned int GetObjectChangesSize() noexcept;
     static unsigned char GetEventAction() noexcept;
     static unsigned char GetEventContainerSubAction() noexcept;
+    static unsigned int GetObjectRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
     static void SetEventCell(const char* cellDescription) noexcept;
     static void SetEventAction(unsigned char action) noexcept;
     static void SetEventConsoleCommand(const char* consoleCommand) noexcept;
+    static void SetObjectRefNumIndex(int refNum) noexcept;
     static void AddWorldObject() noexcept;
 
 };

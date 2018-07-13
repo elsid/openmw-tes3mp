@@ -119,7 +119,7 @@ mwmp::Target MechanicsHelper::getTarget(const MWWorld::Ptr& ptr)
             {
                 target.isPlayer = false;
                 target.refId = ptrRef->getRefId();
-                target.refNumIndex = ptrRef->getRefNum().mIndex;
+                target.refNum = ptrRef->getRefNum().mIndex;
                 target.mpNum = ptrRef->getMpNum();
                 target.name = ptr.getClass().getName(ptr);
             }
@@ -133,7 +133,7 @@ void MechanicsHelper::clearTarget(mwmp::Target& target)
 {
     target.isPlayer = false;
     target.refId.clear();
-    target.refNumIndex = -1;
+    target.refNum = -1;
     target.mpNum = -1;
 
     target.name.clear();
@@ -165,7 +165,7 @@ void MechanicsHelper::assignAttackTarget(Attack* attack, const MWWorld::Ptr& tar
 
         attack->target.isPlayer = false;
         attack->target.refId = targetRef->getRefId();
-        attack->target.refNumIndex = targetRef->getRefNum().mIndex;
+        attack->target.refNum = targetRef->getRefNum().mIndex;
         attack->target.mpNum = targetRef->getMpNum();
     }
 }
@@ -179,7 +179,7 @@ void MechanicsHelper::resetAttack(Attack* attack)
     attack->applyProjectileEnchantment = false;
     attack->target.guid = RakNet::RakNetGUID();
     attack->target.refId.clear();
-    attack->target.refNumIndex = 0;
+    attack->target.refNum = 0;
     attack->target.mpNum = 0;
 }
 
@@ -215,10 +215,10 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
     else
     {
         auto controller = mwmp::Main::get().getCellController();
-        if (controller->isLocalActor(attack.target.refNumIndex, attack.target.mpNum))
-            victim = controller->getLocalActor(attack.target.refNumIndex, attack.target.mpNum)->getPtr();
-        else if (controller->isDedicatedActor(attack.target.refNumIndex, attack.target.mpNum))
-            victim = controller->getDedicatedActor(attack.target.refNumIndex, attack.target.mpNum)->getPtr();
+        if (controller->isLocalActor(attack.target.refNum, attack.target.mpNum))
+            victim = controller->getLocalActor(attack.target.refNum, attack.target.mpNum)->getPtr();
+        else if (controller->isDedicatedActor(attack.target.refNum, attack.target.mpNum))
+            victim = controller->getDedicatedActor(attack.target.refNum, attack.target.mpNum)->getPtr();
     }
 
     // Get the weapon used (if hand-to-hand, weapon = inv.end())

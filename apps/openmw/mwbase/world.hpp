@@ -187,9 +187,9 @@ namespace MWBase
             /*
                 Start of tes3mp addition
 
-                Make it possible to find a Ptr in any active cell based on its refNumIndex and mpNum
+                Make it possible to find a Ptr in any active cell based on its refNum and mpNum
             */
-            virtual MWWorld::Ptr searchPtrViaRefIndex(int refNumIndex, int mpNum) = 0;
+            virtual MWWorld::Ptr searchPtrViaRefIndex(int refNum, int mpNum) = 0;
             /*
                 End of tes3mp addition
             */

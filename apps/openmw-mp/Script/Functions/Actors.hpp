@@ -15,7 +15,7 @@
     \
     {"GetActorCell",                           ActorFunctions::GetActorCell},\
     {"GetActorRefId",                          ActorFunctions::GetActorRefId},\
-    {"GetActorRefNumIndex",                    ActorFunctions::GetActorRefNumIndex},\
+    {"GetActorRefNum",                         ActorFunctions::GetActorRefNum},\
     {"GetActorMpNum",                          ActorFunctions::GetActorMpNum},\
     \
     {"GetActorPosX",                           ActorFunctions::GetActorPosX},\
@@ -43,7 +43,7 @@
     {"DoesActorHavePlayerKiller",              ActorFunctions::DoesActorHavePlayerKiller},\
     {"GetActorKillerPid",                      ActorFunctions::GetActorKillerPid},\
     {"GetActorKillerRefId",                    ActorFunctions::GetActorKillerRefId},\
-    {"GetActorKillerRefNumIndex",              ActorFunctions::GetActorKillerRefNumIndex},\
+    {"GetActorKillerRefNum",                   ActorFunctions::GetActorKillerRefNum},\
     {"GetActorKillerMpNum",                    ActorFunctions::GetActorKillerMpNum},\
     {"GetActorKillerName",                     ActorFunctions::GetActorKillerName},\
     \
@@ -55,7 +55,7 @@
     \
     {"SetActorCell",                           ActorFunctions::SetActorCell},\
     {"SetActorRefId",                          ActorFunctions::SetActorRefId},\
-    {"SetActorRefNumIndex",                    ActorFunctions::SetActorRefNumIndex},\
+    {"SetActorRefNum",                         ActorFunctions::SetActorRefNum},\
     {"SetActorMpNum",                          ActorFunctions::SetActorMpNum},\
     \
     {"SetActorPosition",                       ActorFunctions::SetActorPosition},\
@@ -94,7 +94,10 @@
     \
     {"ReadLastActorList",                      ActorFunctions::ReadLastActorList},\
     {"InitializeActorList",                    ActorFunctions::InitializeActorList},\
-    {"CopyLastActorListToStore",               ActorFunctions::CopyLastActorListToStore}
+    {"CopyLastActorListToStore",               ActorFunctions::CopyLastActorListToStore},\
+    {"GetActorRefNumIndex",                    ActorFunctions::GetActorRefNumIndex},\
+    {"GetActorKillerRefNumIndex",              ActorFunctions::GetActorKillerRefNumIndex},\
+    {"SetActorRefNumIndex",                    ActorFunctions::SetActorRefNumIndex}
 
 class ActorFunctions
 {
@@ -173,12 +176,12 @@ public:
     static const char *GetActorRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the actor at a certain index in the read actor list.
+    * \brief Get the refNum of the actor at a certain index in the read actor list.
     *
     * \param i The index of the actor.
-    * \return The refNumIndex.
+    * \return The refNum.
     */
-    static unsigned int GetActorRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetActorRefNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the actor at a certain index in the read actor list.
@@ -373,12 +376,12 @@ public:
     static const char *GetActorKillerRefId(unsigned int i) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the actor killer of the actor at a certain index in the read actor list.
+    * \brief Get the refNum of the actor killer of the actor at a certain index in the read actor list.
     *
     * \param i The index of the actor.
-    * \return The refNumIndex of the killer.
+    * \return The refNum of the killer.
     */
-    static unsigned int GetActorKillerRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetActorKillerRefNum(unsigned int i) noexcept;
 
     /**
     * \brief Get the mpNum of the actor killer of the actor at a certain index in the read actor list.
@@ -460,12 +463,12 @@ public:
     static void SetActorRefId(const char* refId) noexcept;
 
     /**
-    * \brief Set the refNumIndex of the temporary actor stored on the server.
+    * \brief Set the refNum of the temporary actor stored on the server.
     *
-    * \param refNumIndex The refNumIndex.
+    * \param refNum The refNum.
     * \return void
     */
-    static void SetActorRefNumIndex(int refNumIndex) noexcept;
+    static void SetActorRefNum(int refNum) noexcept;
 
     /**
     * \brief Set the mpNum of the temporary actor stored on the server.
@@ -586,11 +589,11 @@ public:
     /**
     * \brief Set another object as the AI target of the temporary actor stored on the server.
     *
-    * \param refNumIndex The refNumIndex of the target object.
+    * \param refNum The refNum of the target object.
     * \param mpNum The mpNum of the target object.
     * \return void
     */
-    static void SetActorAITargetToObject(int refNumIndex, int mpNum) noexcept;
+    static void SetActorAITargetToObject(int refNum, int mpNum) noexcept;
 
     /**
     * \brief Set the coordinates for the AI package associated with the current AI action.
@@ -746,6 +749,9 @@ public:
     static void ReadLastActorList() noexcept;
     static void InitializeActorList(unsigned short pid) noexcept;
     static void CopyLastActorListToStore() noexcept;
+    static unsigned int GetActorRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetActorKillerRefNumIndex(unsigned int i) noexcept;
+    static void SetActorRefNumIndex(int refNum) noexcept;
 };
 
 

@@ -20,7 +20,7 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
     else
     {
         RW(actor.attack.target.refId, send, true);
-        RW(actor.attack.target.refNumIndex, send);
+        RW(actor.attack.target.refNum, send);
         RW(actor.attack.target.mpNum, send);
     }
 

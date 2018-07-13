@@ -17,7 +17,7 @@
     {"DoesPlayerHavePlayerKiller",  MechanicsFunctions::DoesPlayerHavePlayerKiller},\
     {"GetPlayerKillerPid",          MechanicsFunctions::GetPlayerKillerPid},\
     {"GetPlayerKillerRefId",        MechanicsFunctions::GetPlayerKillerRefId},\
-    {"GetPlayerKillerRefNumIndex",  MechanicsFunctions::GetPlayerKillerRefNumIndex},\
+    {"GetPlayerKillerRefNum",       MechanicsFunctions::GetPlayerKillerRefNum},\
     {"GetPlayerKillerMpNum",        MechanicsFunctions::GetPlayerKillerMpNum},\
     {"GetPlayerKillerName",         MechanicsFunctions::GetPlayerKillerName},\
     \
@@ -32,7 +32,8 @@
     {"Jail",                        MechanicsFunctions::Jail},\
     {"Resurrect",                   MechanicsFunctions::Resurrect},\
     \
-    {"GetDeathReason",              MechanicsFunctions::GetDeathReason}
+    {"GetDeathReason",              MechanicsFunctions::GetDeathReason},\
+    {"GetPlayerKillerRefNumIndex",  MechanicsFunctions::GetPlayerKillerRefNumIndex}
 
 class MechanicsFunctions
 {
@@ -127,12 +128,12 @@ public:
     static const char *GetPlayerKillerRefId(unsigned short pid) noexcept;
 
     /**
-    * \brief Get the refNumIndex of the actor killer of a certain player.
+    * \brief Get the refNum of the actor killer of a certain player.
     *
     * \param pid The player ID of the killed player.
-    * \return The refNumIndex of the killer.
+    * \return The refNum of the killer.
     */
-    static unsigned int GetPlayerKillerRefNumIndex(unsigned short pid) noexcept;
+    static unsigned int GetPlayerKillerRefNum(unsigned short pid) noexcept;
 
     /**
     * \brief Get the mpNum of the actor killer of a certain player.
@@ -258,6 +259,8 @@ public:
     // All methods below are deprecated versions of methods from above
 
     static const char *GetDeathReason(unsigned short pid) noexcept;
+    static unsigned int GetPlayerKillerRefNumIndex(unsigned short pid) noexcept;
+
 };
 
 #endif //OPENMW_MECHANICSAPI_HPP

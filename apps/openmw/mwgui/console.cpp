@@ -429,7 +429,7 @@ namespace MWGui
                 /*
                     Start of tes3mp change (major)
 
-                    Display the selected object's refNumIndex and mpNum alongside its refId in the
+                    Display the selected object's refNum and mpNum alongside its refId in the
                     title of the console window, for easier debugging of almost everything
                 */
                 setTitle("#{sConsoleTitle} (" + object.getCellRef().getRefId() + ", " +

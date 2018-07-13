@@ -97,12 +97,12 @@ const char *MechanicsFunctions::GetPlayerKillerRefId(unsigned short pid) noexcep
     return player->killer.refId.c_str();
 }
 
-unsigned int MechanicsFunctions::GetPlayerKillerRefNumIndex(unsigned short pid) noexcept
+unsigned int MechanicsFunctions::GetPlayerKillerRefNum(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->killer.refNumIndex;
+    return player->killer.refNum;
 }
 
 unsigned int MechanicsFunctions::GetPlayerKillerMpNum(unsigned short pid) noexcept
@@ -240,4 +240,9 @@ const char *MechanicsFunctions::GetDeathReason(unsigned short pid) noexcept
         return player->killer.name.c_str();
 
     return "suicide";
+}
+
+unsigned int MechanicsFunctions::GetPlayerKillerRefNumIndex(unsigned short pid) noexcept
+{
+    return GetPlayerKillerRefNum(pid);
 }

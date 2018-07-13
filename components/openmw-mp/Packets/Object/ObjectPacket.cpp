@@ -73,6 +73,6 @@ bool ObjectPacket::PacketHeader(RakNet::BitStream *bs, bool send)
 void ObjectPacket::Object(BaseObject &baseObject, bool send)
 {
     RW(baseObject.refId, send);
-    RW(baseObject.refNumIndex, send);
+    RW(baseObject.refNum, send);
     RW(baseObject.mpNum, send);
 }

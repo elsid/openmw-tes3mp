@@ -33,7 +33,7 @@ void PacketContainer::Packet(RakNet::BitStream *bs, bool send)
 
         RW(baseObject.containerItemCount, send);
 
-        if (baseObject.containerItemCount > maxObjects || baseObject.refId.empty() || (baseObject.refNumIndex != 0 && baseObject.mpNum != 0))
+        if (baseObject.containerItemCount > maxObjects || baseObject.refId.empty() || (baseObject.refNum != 0 && baseObject.mpNum != 0))
         {
             objectList->isValid = false;
             return;
