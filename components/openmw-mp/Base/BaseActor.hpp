@@ -41,6 +41,8 @@ namespace mwmp
 
         Target killer;
 
+        bool isFollowerCellChange;
+
         bool hasAiTarget;
         Target aiTarget;
         unsigned int aiAction;

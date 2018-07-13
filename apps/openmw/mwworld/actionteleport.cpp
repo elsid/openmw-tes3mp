@@ -8,6 +8,8 @@
 #include <components/openmw-mp/Log.hpp>
 #include "../mwbase/windowmanager.hpp"
 #include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/ActorList.hpp"
 #include "../mwmp/CellController.hpp"
 /*
     End of tes3mp addition
@@ -41,17 +43,6 @@ namespace MWWorld
 
             for (std::set<MWWorld::Ptr>::iterator it = followers.begin(); it != followers.end(); ++it)
                 teleport(*it);
-
-            /*
-                Start of tes3mp addition
-
-                Update LocalActors before we unload their cells, so packets with their cell changes
-                can be sent
-            */
-            mwmp::Main::get().getCellController()->updateLocal(true);
-            /*
-                End of tes3mp addition
-            */
         }
 
         teleport(actor);
@@ -72,34 +63,78 @@ namespace MWWorld
         else
         {
             /*
-                Start of tes3mp change (major)
+                Start of tes3mp addition
 
-                Only allow LocalActors to teleport across cells
+                Track the original cell of this actor so we can use it when sending a packet
             */
-            if (!mwmp::Main::get().getCellController()->isLocalActor(actor))
-            {
-                MWBase::Environment::get().getWindowManager()->messageBox("That NPC can't follow you because their AI is running on another player's client.");
-                return;
-            }
-            else
-            {
-                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Teleporting actor %s-%i-%i to new cell", actor.getCellRef().getRefId().c_str(),
-                    actor.getCellRef().getRefNum().mIndex, actor.getCellRef().getMpNum());
-            }
+            ESM::Cell originalCell = *actor.getCell()->getCell();
             /*
-                End of tes3mp change (major)
+                End of tes3mp addition
             */
+
+            /*
+                Start of tes3mp change (minor)
+
+                If this is a DedicatedActor, get their new cell and override their stored cell with it
+                so their cell change is approved in World::moveObject()
+            */
+            MWWorld::CellStore *newCellStore;
+            mwmp::CellController *cellController = mwmp::Main::get().getCellController();
 
             if (mCellName.empty())
             {
                 int cellX;
                 int cellY;
                 world->positionToIndex(mPosition.pos[0],mPosition.pos[1],cellX,cellY);
+
+                newCellStore = world->getExterior(cellX, cellY);
+                if (cellController->isDedicatedActor(actor))
+                    cellController->getDedicatedActor(actor)->cell = *newCellStore->getCell();
+
                 world->moveObject(actor,world->getExterior(cellX,cellY),
                     mPosition.pos[0],mPosition.pos[1],mPosition.pos[2]);
             }
             else
+            {
+                newCellStore = world->getInterior(mCellName);
+                if (cellController->isDedicatedActor(actor))
+                    cellController->getDedicatedActor(actor)->cell = *newCellStore->getCell();
+
                 world->moveObject(actor,world->getInterior(mCellName),mPosition.pos[0],mPosition.pos[1],mPosition.pos[2]);
+            }
+            /*
+                Start of tes3mp change (minor)
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Send ActorCellChange packets when an actor follows us across cells, regardless of
+                whether we're the cell authority or not; the server can decide if it wants to comply
+                with them
+            */
+            mwmp::BaseActor baseActor;
+            baseActor.refNum = actor.getCellRef().getRefNum().mIndex;
+            baseActor.mpNum = actor.getCellRef().getMpNum();
+            baseActor.cell = *newCellStore->getCell();
+            baseActor.position = actor.getRefData().getPosition();
+            baseActor.isFollowerCellChange = true;
+
+            mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
+            actorList->reset();
+            actorList->cell = originalCell;
+
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_CELL_CHANGE about %s %i-%i to server",
+                actor.getCellRef().getRefId().c_str(), baseActor.refNum, baseActor.mpNum);
+
+            LOG_APPEND(Log::LOG_INFO, "- Moved from %s to %s", actorList->cell.getDescription().c_str(),
+                baseActor.cell.getDescription().c_str());
+
+            actorList->addCellChangeActor(baseActor);
+            actorList->sendCellChangeActors();
+            /*
+                End of tes3mp addition
+            */
         }
     }
 

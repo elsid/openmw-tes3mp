@@ -351,7 +351,7 @@ namespace MWScript
                         baseActor.aiTarget = MechanicsHelper::getTarget(targetPtr);
 
                         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_ACTOR_AI about %s %i-%i to server",
-                            ptr.getCellRef().getRefId(), baseActor.refNum, baseActor.mpNum);
+                            ptr.getCellRef().getRefId().c_str(), baseActor.refNum, baseActor.mpNum);
 
                         if (baseActor.aiTarget.isPlayer)
                         {
@@ -361,7 +361,7 @@ namespace MWScript
                         else
                         {
                             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Following actor %s %i-%i",
-                                targetPtr.getCellRef().getRefId(), baseActor.aiTarget.refNum, baseActor.aiTarget.mpNum);
+                                targetPtr.getCellRef().getRefId().c_str(), baseActor.aiTarget.refNum, baseActor.aiTarget.mpNum);
                         }
 
                         mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();

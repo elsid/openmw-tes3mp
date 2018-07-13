@@ -16,4 +16,6 @@ void PacketActorCellChange::Actor(BaseActor &actor, bool send)
 
     RW(actor.position, send, true);
     RW(actor.direction, send, true);
+
+    RW(actor.isFollowerCellChange, send);
 }

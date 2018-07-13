@@ -72,6 +72,7 @@ void LocalActor::updateCell()
 
     cell = *ptr.getCell()->getCell();
     position = ptr.getRefData().getPosition();
+    isFollowerCellChange = false;
 
     mwmp::Main::get().getNetworking()->getActorList()->addCellChangeActor(*this);
 }

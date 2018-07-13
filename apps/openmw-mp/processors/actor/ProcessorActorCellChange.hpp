@@ -17,14 +17,31 @@ namespace mwmp
         {
             Cell *serverCell = CellController::get()->getCell(&actorList.cell);
 
-            if (serverCell != nullptr && *serverCell->getAuthority() == actorList.guid)
+            if (serverCell != nullptr)
             {
-                serverCell->removeActors(&actorList);
+                bool isFollowerCellChange = false;
 
-                Script::Call<Script::CallbackIdentity("OnActorCellChange")>(player.getId(), actorList.cell.getDescription().c_str());
+                // TODO: Move this check on the Lua side
+                for (unsigned int i = 0; i < actorList.count; i++)
+                {
+                    if (actorList.baseActors.at(i).isFollowerCellChange)
+                    {
+                        isFollowerCellChange = true;
+                        break;
+                    }
+                }
 
-                // Send this to everyone
-                packet.Send(true);
+                // Only accept regular cell changes from a cell's authority, but accept follower
+                // cell changes from other players
+                if (*serverCell->getAuthority() == actorList.guid || isFollowerCellChange)
+                {
+                    serverCell->removeActors(&actorList);
+
+                    Script::Call<Script::CallbackIdentity("OnActorCellChange")>(player.getId(), actorList.cell.getDescription().c_str());
+
+                    // Send this to everyone
+                    packet.Send(true);
+                }
             }
         }
     };
