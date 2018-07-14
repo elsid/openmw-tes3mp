@@ -1,3 +1,4 @@
+#include "../Packets/Object/PacketObjectActivate.hpp"
 #include "../Packets/Object/PacketObjectAnimPlay.hpp"
 #include "../Packets/Object/PacketObjectAttach.hpp"
 #include "../Packets/Object/PacketObjectCollision.hpp"
@@ -38,6 +39,7 @@ inline void AddPacket(mwmp::ObjectPacketController::packets_t *packets, RakNet::
 
 mwmp::ObjectPacketController::ObjectPacketController(RakNet::RakPeerInterface *peer)
 {
+    AddPacket<PacketObjectActivate>(&packets, peer);
     AddPacket<PacketObjectAnimPlay>(&packets, peer);
     AddPacket<PacketObjectAttach>(&packets, peer);
     AddPacket<PacketObjectCollision>(&packets, peer);

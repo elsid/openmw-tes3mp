@@ -56,6 +56,7 @@
 #include "object/ProcessorContainer.hpp"
 #include "object/ProcessorDoorState.hpp"
 #include "object/ProcessorMusicPlay.hpp"
+#include "object/ProcessorObjectActivate.hpp"
 #include "object/ProcessorObjectAnimPlay.hpp"
 #include "object/ProcessorObjectDelete.hpp"
 #include "object/ProcessorObjectPlace.hpp"
@@ -133,6 +134,7 @@ void ProcessorInitializer()
     ObjectProcessor::AddProcessor(new ProcessorContainer());
     ObjectProcessor::AddProcessor(new ProcessorDoorState());
     ObjectProcessor::AddProcessor(new ProcessorMusicPlay());
+    ObjectProcessor::AddProcessor(new ProcessorObjectActivate());
     ObjectProcessor::AddProcessor(new ProcessorObjectAnimPlay());
     ObjectProcessor::AddProcessor(new ProcessorObjectDelete());
     ObjectProcessor::AddProcessor(new ProcessorObjectLock());

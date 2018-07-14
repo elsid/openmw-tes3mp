@@ -50,6 +50,7 @@
 #include "object/ProcessorDoorDestination.hpp"
 #include "object/ProcessorDoorState.hpp"
 #include "object/ProcessorMusicPlay.hpp"
+#include "object/ProcessorObjectActivate.hpp"
 #include "object/ProcessorObjectAnimPlay.hpp"
 #include "object/ProcessorObjectAttach.hpp"
 #include "object/ProcessorObjectCollision.hpp"
@@ -147,6 +148,7 @@ void ProcessorInitializer()
     ObjectProcessor::AddProcessor(new ProcessorDoorDestination());
     ObjectProcessor::AddProcessor(new ProcessorDoorState());
     ObjectProcessor::AddProcessor(new ProcessorMusicPlay());
+    ObjectProcessor::AddProcessor(new ProcessorObjectActivate());
     ObjectProcessor::AddProcessor(new ProcessorObjectAnimPlay());
     ObjectProcessor::AddProcessor(new ProcessorObjectAttach());
     ObjectProcessor::AddProcessor(new ProcessorObjectCollision());

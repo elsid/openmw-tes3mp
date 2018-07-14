@@ -191,11 +191,12 @@ add_component_dir (openmw-mp/Packets/Player
 add_component_dir (openmw-mp/Packets/Object
         ObjectPacket
 
-        PacketConsoleCommand PacketContainer PacketObjectAnimPlay PacketObjectAttach PacketObjectCollision
-        PacketObjectDelete PacketDoorDestination PacketDoorState PacketObjectLock PacketObjectMove PacketObjectPlace
-        PacketObjectReset PacketObjectRotate PacketObjectScale PacketObjectSpawn PacketObjectState PacketObjectTrap
-        PacketMusicPlay PacketVideoPlay PacketScriptLocalShort PacketScriptLocalFloat PacketScriptMemberShort
-        PacketScriptMemberFloat PacketScriptGlobalShort PacketScriptGlobalFloat
+        PacketConsoleCommand PacketContainer PacketObjectActivate PacketObjectAnimPlay PacketObjectAttach
+        PacketObjectCollision PacketObjectDelete PacketDoorDestination PacketDoorState PacketObjectLock
+        PacketObjectMove PacketObjectPlace PacketObjectReset PacketObjectRotate PacketObjectScale
+        PacketObjectSpawn PacketObjectState PacketObjectTrap PacketMusicPlay PacketVideoPlay PacketScriptLocalShort
+        PacketScriptLocalFloat PacketScriptMemberShort PacketScriptMemberFloat PacketScriptGlobalShort
+        PacketScriptGlobalFloat
         )
 
 add_component_dir (openmw-mp/Packets/Worldstate

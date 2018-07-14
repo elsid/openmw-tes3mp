@@ -182,6 +182,7 @@ public:
             {"OnCellDeletion",           Function<void, const char*>()},
             {"OnContainer",              Function<void, unsigned short, const char*>()},
             {"OnDoorState",              Function<void, unsigned short, const char*>()},
+            {"OnObjectActivate",         Function<void, unsigned short, const char*>()},
             {"OnObjectPlace",            Function<void, unsigned short, const char*>()},
             {"OnObjectState",            Function<void, unsigned short, const char*>()},
             {"OnObjectSpawn",            Function<void, unsigned short, const char*>()},
