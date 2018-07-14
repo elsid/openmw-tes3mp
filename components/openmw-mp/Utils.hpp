@@ -26,6 +26,7 @@ namespace Utils
 
     int progressFunc(double TotalToDownload, double NowDownloaded);
 
+    unsigned int getNumberOfDigits(int integer);
     bool compareDoubles(double a, double b, double epsilon);
 
     template <class Type, class Type2>

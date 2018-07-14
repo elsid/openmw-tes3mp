@@ -54,7 +54,7 @@ void Utils::timestamp()
     printf("%s", t);
 }
 
-// http://stackoverflow.com/questions/1637587/c-libcurl-console-progress-bar
+// Based on http://stackoverflow.com/questions/1637587/c-libcurl-console-progress-bar
 int Utils::progressFunc(double TotalToDownload, double NowDownloaded)
 {
     // how wide you want the progress meter to be
@@ -83,6 +83,18 @@ int Utils::progressFunc(double TotalToDownload, double NowDownloaded)
 bool Utils::compareDoubles(double a, double b, double epsilon)
 {
     return fabs(a - b) < epsilon;
+}
+
+// Based on https://stackoverflow.com/a/1489873
+unsigned int Utils::getNumberOfDigits(int integer)
+{
+    int digits = 0;
+    if (integer < 0) digits = 1;
+    while (integer) {
+        integer /= 10;
+        digits++;
+    }
+    return digits;
 }
 
 std::string Utils::toString(int num)
