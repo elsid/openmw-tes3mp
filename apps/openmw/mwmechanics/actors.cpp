@@ -1253,6 +1253,13 @@ namespace MWMechanics
         }
     }
 
+    void Actors::castSpell(const MWWorld::Ptr& ptr, const std::string spellId, bool manualSpell)
+    {
+        PtrActorMap::iterator iter = mActors.find(ptr);
+        if(iter != mActors.end())
+            iter->second->getCharacterController()->castSpell(spellId, manualSpell);
+    }
+
     bool Actors::isActorDetected(const MWWorld::Ptr& actor, const MWWorld::Ptr& observer)
     {
         if (!actor.getClass().isActor())
@@ -1523,7 +1530,7 @@ namespace MWMechanics
                         {
                             CreatureStats &stats = iter->first.getClass().getCreatureStats(iter->first);
                             if (isConscious(iter->first))
-                                stats.getAiSequence().execute(iter->first, *iter->second->getCharacterController(), iter->second->getAiState(), duration);
+                                stats.getAiSequence().execute(iter->first, *iter->second->getCharacterController(), duration);
                         }
                     }
                     /*
@@ -2195,6 +2202,15 @@ namespace MWMechanics
         return it->second->getCharacterController()->isReadyToBlock();
     }
 
+    bool Actors::isCastingSpell(const MWWorld::Ptr &ptr) const
+    {
+        PtrActorMap::const_iterator it = mActors.find(ptr);
+        if (it == mActors.end())
+            return false;
+
+        return it->second->getCharacterController()->isCastingSpell();
+    }
+
     bool Actors::isAttackingOrSpell(const MWWorld::Ptr& ptr) const
     {
         PtrActorMap::const_iterator it = mActors.find(ptr);
@@ -2220,7 +2236,7 @@ namespace MWMechanics
                     || ptr.getClass().getCreatureStats(ptr).isParalyzed())
                 continue;
             MWMechanics::AiSequence& seq = ptr.getClass().getCreatureStats(ptr).getAiSequence();
-            seq.fastForward(ptr, it->second->getAiState());
+            seq.fastForward(ptr);
         }
     }
 }

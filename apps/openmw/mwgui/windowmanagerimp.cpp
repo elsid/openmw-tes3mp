@@ -1423,10 +1423,10 @@ namespace MWGui
         End of tes3mp addition
     */
 
-    void WindowManager::useItem(const MWWorld::Ptr &item)
+    void WindowManager::useItem(const MWWorld::Ptr &item, bool bypassBeastRestrictions)
     {
         if (mInventoryWindow)
-            mInventoryWindow->useItem(item);
+            mInventoryWindow->useItem(item, bypassBeastRestrictions);
     }
 
     bool WindowManager::isAllowed (GuiWindow wnd) const

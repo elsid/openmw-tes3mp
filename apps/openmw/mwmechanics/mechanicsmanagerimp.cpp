@@ -266,6 +266,12 @@ namespace MWMechanics
             mObjects.addObject(ptr);
     }
 
+    void MechanicsManager::castSpell(const MWWorld::Ptr& ptr, const std::string spellId, bool manualSpell)
+    {
+        if(ptr.getClass().isActor())
+            mActors.castSpell(ptr, spellId, manualSpell);
+    }
+
     void MechanicsManager::remove(const MWWorld::Ptr& ptr)
     {
         if(ptr == mWatched)
@@ -1822,6 +1828,11 @@ namespace MWMechanics
         CreatureStats& stats = player.getClass().getCreatureStats(player);
         if (stats.isDead())
             stats.resurrect();
+    }
+
+    bool MechanicsManager::isCastingSpell(const MWWorld::Ptr &ptr) const
+    {
+        return mActors.isCastingSpell(ptr);
     }
 
     bool MechanicsManager::isReadyToBlock(const MWWorld::Ptr &ptr) const

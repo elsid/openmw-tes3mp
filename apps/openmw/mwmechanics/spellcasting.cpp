@@ -332,13 +332,14 @@ namespace MWMechanics
         return true;
     }
 
-    CastSpell::CastSpell(const MWWorld::Ptr &caster, const MWWorld::Ptr &target, const bool fromProjectile)
+    CastSpell::CastSpell(const MWWorld::Ptr &caster, const MWWorld::Ptr &target, const bool fromProjectile, const bool isScripted)
         : mCaster(caster)
         , mTarget(target)
         , mStack(false)
         , mHitPosition(0,0,0)
         , mAlwaysSucceed(false)
         , mFromProjectile(fromProjectile)
+        , mIsScripted(isScripted)
     {
     }
 
@@ -961,7 +962,7 @@ namespace MWMechanics
 
         bool godmode = mCaster == MWMechanics::getPlayer() && MWBase::Environment::get().getWorld()->getGodModeState();
 
-        if (mCaster.getClass().isActor() && !mAlwaysSucceed)
+        if (mCaster.getClass().isActor() && !mAlwaysSucceed && !mIsScripted)
         {
             school = getSpellSchool(spell, mCaster);
 
@@ -1025,7 +1026,7 @@ namespace MWMechanics
                 stats.getSpells().usePower(spell);
         }
 
-        if (mCaster == getPlayer() && spellIncreasesSkill(spell))
+        if (mCaster == getPlayer() && spellIncreasesSkill())
             mCaster.getClass().skillUsageSucceeded(mCaster,
                 spellSchoolToSkill(school), 0);
     
@@ -1147,6 +1148,14 @@ namespace MWMechanics
             else
                 sndMgr->playSound3D(mCaster, schools[effect->mData.mSchool]+" cast", 1.0f, 1.0f);
         }
+    }
+
+    bool CastSpell::spellIncreasesSkill()
+    {
+        if (mIsScripted)
+            return false;
+
+        return MWMechanics::spellIncreasesSkill(mId);
     }
 
     int getEffectiveEnchantmentCastCost(float castCost, const MWWorld::Ptr &actor)

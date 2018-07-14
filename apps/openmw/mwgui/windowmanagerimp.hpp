@@ -196,7 +196,7 @@ namespace MWGui
     */
 
     /// Make the player use an item, while updating GUI state accordingly
-    virtual void useItem(const MWWorld::Ptr& item);
+    virtual void useItem(const MWWorld::Ptr& item, bool bypassBeastRestrictions=false);
 
     virtual void updateSpellWindow();
 
