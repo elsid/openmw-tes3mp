@@ -38,7 +38,7 @@ addons:
       # The other ones from OpenMW ppa
       libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev,
       # tes3mp stuff
-      libboost1.61-dev, libqt5opengl5-dev
+      libboost1.61-dev, libqt5opengl5-dev, libluajit-5.1-dev
     ]
 
   coverity_scan:
