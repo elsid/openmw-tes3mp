@@ -24,7 +24,7 @@
 #include "player/ProcessorPlayerInventory.hpp"
 #include "player/ProcessorPlayerJournal.hpp"
 #include "player/ProcessorPlayerKillCount.hpp"
-#include "player/ProcessorPlayerInteraction.hpp"
+#include "player/ProcessorPlayerInput.hpp"
 #include "player/ProcessorPlayerLevel.hpp"
 #include "player/ProcessorPlayerMiscellaneous.hpp"
 #include "player/ProcessorPlayerPosition.hpp"
@@ -101,7 +101,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerInventory());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJournal());
     PlayerProcessor::AddProcessor(new ProcessorPlayerKillCount());
-    PlayerProcessor::AddProcessor(new ProcessorPlayerInteraction());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerInput());
     PlayerProcessor::AddProcessor(new ProcessorPlayerLevel());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMiscellaneous());
     PlayerProcessor::AddProcessor(new ProcessorPlayerPosition());

@@ -174,7 +174,7 @@ public:
             {"OnPlayerDisposition",      Function<void, unsigned short>()},
             {"OnPlayerBook",             Function<void, unsigned short>()},
             {"OnPlayerMiscellaneous",    Function<void, unsigned short>()},
-            {"OnPlayerInteraction",      Function<void, unsigned short>()},
+            {"OnPlayerInput",            Function<void, unsigned short>()},
             {"OnPlayerRest",             Function<void, unsigned short>()},
             {"OnRecordDynamic",          Function<void, unsigned short>()},
             {"OnCellLoad",               Function<void, unsigned short, const char*>()},

@@ -23,7 +23,7 @@
 #include "player/ProcessorPlayerDisposition.hpp"
 #include "player/ProcessorPlayerEquipment.hpp"
 #include "player/ProcessorPlayerFaction.hpp"
-#include "player/ProcessorPlayerInteraction.hpp"
+#include "player/ProcessorPlayerInput.hpp"
 #include "player/ProcessorPlayerInventory.hpp"
 #include "player/ProcessorPlayerJail.hpp"
 #include "player/ProcessorPlayerJournal.hpp"
@@ -121,7 +121,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerDisposition());
     PlayerProcessor::AddProcessor(new ProcessorPlayerEquipment());
     PlayerProcessor::AddProcessor(new ProcessorPlayerFaction());
-    PlayerProcessor::AddProcessor(new ProcessorPlayerInteraction());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerInput());
     PlayerProcessor::AddProcessor(new ProcessorPlayerInventory());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJail());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJournal());

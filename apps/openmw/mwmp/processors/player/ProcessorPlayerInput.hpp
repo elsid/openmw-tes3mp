@@ -1,5 +1,5 @@
-#ifndef OPENMW_PROCESSORPLAYERINTERACTION_HPP
-#define OPENMW_PROCESSORPLAYERINTERACTION_HPP
+#ifndef OPENMW_PROCESSORPLAYERINPUT_HPP
+#define OPENMW_PROCESSORPLAYERINPUT_HPP
 
 #include "apps/openmw/mwmp/Main.hpp"
 #include "../PlayerProcessor.hpp"
@@ -7,12 +7,12 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerInteraction : public PlayerProcessor
+    class ProcessorPlayerInput : public PlayerProcessor
     {
     public:
-        ProcessorPlayerInteraction()
+        ProcessorPlayerInput()
         {
-            BPP_INIT(ID_PLAYER_INTERACTION)
+            BPP_INIT(ID_PLAYER_INPUT)
         }
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
@@ -24,4 +24,4 @@ namespace mwmp
 }
 
 
-#endif //OPENMW_PROCESSORPLAYERINTERACTION_HPP
+#endif //OPENMW_PROCESSORPLAYERINPUT_HPP
