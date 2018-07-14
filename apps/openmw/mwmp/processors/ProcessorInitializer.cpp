@@ -5,7 +5,6 @@
 #include "player/ProcessorGUIMessageBox.hpp"
 #include "player/ProcessorHandshake.hpp"
 #include "player/ProcessorUserDisconnected.hpp"
-#include "player/ProcessorCellCreate.hpp"
 #include "player/ProcessorGameSettings.hpp"
 #include "player/ProcessorGameWeather.hpp"
 #include "player/ProcessorPlayerAnimFlags.hpp"
@@ -89,6 +88,7 @@
 #include "actor/ProcessorActorTest.hpp"
 
 #include "WorldstateProcessor.hpp"
+#include "worldstate/ProcessorCellCreate.hpp"
 #include "worldstate/ProcessorRecordDynamic.hpp"
 #include "worldstate/ProcessorWorldCollisionOverride.hpp"
 #include "worldstate/ProcessorWorldMap.hpp"
@@ -102,7 +102,6 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorGUIMessageBox());
     PlayerProcessor::AddProcessor(new ProcessorHandshake());
     PlayerProcessor::AddProcessor(new ProcessorUserDisconnected());
-    PlayerProcessor::AddProcessor(new ProcessorCellCreate());
     PlayerProcessor::AddProcessor(new ProcessorGameSettings());
     PlayerProcessor::AddProcessor(new ProcessorGameWeather());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimFlags());
@@ -183,6 +182,7 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorStatsDynamic());
     ActorProcessor::AddProcessor(new ProcessorActorTest());
 
+    WorldstateProcessor::AddProcessor(new ProcessorCellCreate());
     WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());
     WorldstateProcessor::AddProcessor(new ProcessorWorldCollisionOverride());
     WorldstateProcessor::AddProcessor(new ProcessorWorldMap());

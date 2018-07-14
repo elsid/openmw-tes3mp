@@ -178,8 +178,6 @@ add_component_dir (openmw-mp/Packets/Player
 
         PacketHandshake PacketChatMessage PacketGUIBoxes PacketGameSettings PacketGameWeather
 
-        PacketCellCreate
-
         PacketPlayerBaseInfo PacketPlayerCharGen PacketPlayerActiveSkills PacketPlayerAnimFlags PacketPlayerAnimPlay
         PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty
         PacketPlayerCellChange PacketPlayerCellState PacketPlayerClass PacketPlayerDeath PacketPlayerEquipment
@@ -203,7 +201,7 @@ add_component_dir (openmw-mp/Packets/Object
 add_component_dir (openmw-mp/Packets/Worldstate
         WorldstatePacket
 
-        PacketRecordDynamic PacketWorldCollisionOverride PacketWorldMap PacketWorldTime
+        PacketCellCreate PacketRecordDynamic PacketWorldCollisionOverride PacketWorldMap PacketWorldTime
         )
 
 add_component_dir (fallback

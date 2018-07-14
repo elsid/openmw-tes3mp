@@ -3,7 +3,7 @@
 
 using namespace mwmp;
 
-PacketCellCreate::PacketCellCreate(RakNet::RakPeerInterface *peer) : PlayerPacket(peer)
+PacketCellCreate::PacketCellCreate(RakNet::RakPeerInterface *peer) : WorldstatePacket(peer)
 {
     packetID = ID_CELL_CREATE;
     orderChannel = CHANNEL_SYSTEM;
@@ -11,7 +11,7 @@ PacketCellCreate::PacketCellCreate(RakNet::RakPeerInterface *peer) : PlayerPacke
 
 void PacketCellCreate::Packet(RakNet::BitStream *bs, bool send)
 {
-    PlayerPacket::Packet(bs, send);
+    WorldstatePacket::Packet(bs, send);
 
     // Placeholder
 }

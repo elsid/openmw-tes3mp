@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORCELLCREATE_HPP
 #define OPENMW_PROCESSORCELLCREATE_HPP
 
-#include "../PlayerProcessor.hpp"
+#include "../WorldstateProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorCellCreate : public PlayerProcessor
+    class ProcessorCellCreate : public WorldstateProcessor
     {
     public:
         ProcessorCellCreate()
@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_CELL_CREATE)
         }
 
-        virtual void Do(PlayerPacket &packet, BasePlayer *player)
+        virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)
         {
             // Placeholder
         }
