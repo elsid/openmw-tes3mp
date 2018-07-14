@@ -89,6 +89,7 @@
 
 #include "WorldstateProcessor.hpp"
 #include "worldstate/ProcessorCellCreate.hpp"
+#include "worldstate/ProcessorCellReplace.hpp"
 #include "worldstate/ProcessorRecordDynamic.hpp"
 #include "worldstate/ProcessorWorldCollisionOverride.hpp"
 #include "worldstate/ProcessorWorldMap.hpp"
@@ -183,6 +184,7 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorTest());
 
     WorldstateProcessor::AddProcessor(new ProcessorCellCreate());
+    WorldstateProcessor::AddProcessor(new ProcessorCellReplace());
     WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());
     WorldstateProcessor::AddProcessor(new ProcessorWorldCollisionOverride());
     WorldstateProcessor::AddProcessor(new ProcessorWorldMap());

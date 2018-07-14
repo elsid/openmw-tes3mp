@@ -130,8 +130,8 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor ProcessorConsoleComma
     ProcessorScriptMemberShort ProcessorScriptMemberFloat ProcessorScriptGlobalShort ProcessorScriptGlobalFloat
     )
 
-add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorRecordDynamic ProcessorWorldCollisionOverride
-    ProcessorWorldMap ProcessorWorldTime
+add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorCellReplace ProcessorRecordDynamic
+    ProcessorWorldCollisionOverride ProcessorWorldMap ProcessorWorldTime
     )
 
 # Main executable
