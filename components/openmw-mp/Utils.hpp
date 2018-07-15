@@ -21,6 +21,7 @@ int setenv(const char *name, const char *value, int overwrite);
 namespace Utils
 {
     std::string convertPath(std::string str);
+    bool doesFileHaveChecksum(std::string filePath, unsigned int requiredChecksum);
 
     void timestamp();
 
@@ -48,6 +49,8 @@ namespace Utils
     void printVersion(std::string appName, std::string version, std::string commitHash, int protocol);
 
     void printWithWidth(std::ostringstream &sstr, std::string str, size_t width);
+
     std::string intToHexStr(unsigned val);
+    unsigned int hexStrToInt(std::string hexString);
 }
 #endif //UTILS_HPP

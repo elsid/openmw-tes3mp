@@ -1,7 +1,3 @@
-//
-// Created by koncord on 24.01.16.
-//
-
 #include "Utils.hpp"
 
 #include <cstdio>
@@ -40,6 +36,16 @@ std::string Utils::convertPath(std::string str)
     return str;
 
 #undef _SEP_
+}
+
+bool Utils::doesFileHaveChecksum(std::string filePath, unsigned int requiredChecksum)
+{
+    unsigned int fileChecksum = crc32Checksum(filePath);
+
+    if (fileChecksum == requiredChecksum)
+        return true;
+
+    return false;
 }
 
 void Utils::timestamp()
@@ -96,6 +102,8 @@ unsigned int Utils::getNumberOfDigits(int integer)
     }
     return digits;
 }
+
+
 
 std::string Utils::toString(int num)
 {
@@ -207,4 +215,11 @@ string Utils::intToHexStr(unsigned val)
     ostringstream sstr;
     sstr << "0x" << setfill('0') << setw(8) << uppercase << hex << val;
     return sstr.str();
+}
+
+unsigned int Utils::hexStrToInt(std::string hexString)
+{
+    unsigned int intValue;
+    sscanf(hexString.c_str(), "%x", &intValue);
+    return intValue;
 }
