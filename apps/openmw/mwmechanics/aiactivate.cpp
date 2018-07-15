@@ -2,6 +2,18 @@
 
 #include <components/esm/aisequence.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/ObjectList.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/world.hpp"
 #include "../mwbase/environment.hpp"
 
@@ -63,7 +75,31 @@ namespace MWMechanics
         if (pathTo(actor, dest, duration, MWBase::Environment::get().getWorld()->getMaxActivationDistance())) //Stop when you get in activation range
         {
             // activate when reached
-            MWBase::Environment::get().getWorld()->activate(target, actor);
+
+            /*
+                Start of tes3mp change (major)
+
+                Disable unilateral activation on this client and expect the server's reply to our
+                packet to do it instead
+            */
+            //MWBase::Environment::get().getWorld()->activate(target, actor);
+            /*
+                End of tes3mp change (major)
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Send an ID_OBJECT_ACTIVATE packet every time an object is activated here
+            */
+            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+            objectList->reset();
+            objectList->addObjectActivate(target, actor);
+            objectList->sendObjectActivate();
+            /*
+                End of tes3mp addition
+            */
+
             return true;
         }
 

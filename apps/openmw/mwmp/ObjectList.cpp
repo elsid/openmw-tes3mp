@@ -262,6 +262,58 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
     }
 }
 
+void ObjectList::activateObjects(MWWorld::CellStore* cellStore)
+{
+    for (const auto &baseObject : baseObjects)
+    {
+        MWWorld::Ptr ptrFound;
+
+        if (baseObject.isPlayer)
+        {
+            if (baseObject.guid == Main::get().getLocalPlayer()->guid)
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Running on local player");
+                ptrFound = Main::get().getLocalPlayer()->getPlayerPtr();
+            }
+            else
+            {
+                DedicatedPlayer *player = PlayerList::getPlayer(baseObject.guid);
+
+                if (player != 0)
+                {
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Running on player %s", player->npc.mName.c_str());
+                    ptrFound = player->getPtr();
+                }
+                else
+                {
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Could not find target player!");
+                }
+            }
+        }
+        else
+        {
+            LOG_APPEND(Log::LOG_VERBOSE, "-- Running on cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
+            ptrFound = cellStore->searchExact(baseObject.refNum, baseObject.mpNum);
+        }
+
+        if (ptrFound)
+        {
+            MWWorld::Ptr activatingActorPtr;
+
+            if (baseObject.activatingActor.isPlayer)
+                activatingActorPtr = MechanicsHelper::getPlayerPtr(baseObject.activatingActor);
+            else
+                activatingActorPtr = cellStore->searchExact(baseObject.activatingActor.refNum, baseObject.activatingActor.mpNum);
+
+            if (activatingActorPtr)
+            {
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Object has activating actor: %s", activatingActorPtr.getCellRef().getRefId().c_str());
+                MWBase::Environment::get().getWorld()->activate(ptrFound, activatingActorPtr);
+            }
+        }
+    }
+}
+
 void ObjectList::placeObjects(MWWorld::CellStore* cellStore)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -621,7 +673,7 @@ void ObjectList::runConsoleCommands(MWWorld::CellStore* cellStore)
             {
                 if (baseObject.guid == Main::get().getLocalPlayer()->guid)
                 {
-                    LOG_APPEND(Log::LOG_VERBOSE, "-- running on local player");
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Running on local player");
                     windowManager->setConsolePtr(Main::get().getLocalPlayer()->getPlayerPtr());
                     windowManager->executeCommandInConsole(consoleCommand);
                 }
@@ -631,7 +683,7 @@ void ObjectList::runConsoleCommands(MWWorld::CellStore* cellStore)
 
                     if (player != 0)
                     {
-                        LOG_APPEND(Log::LOG_VERBOSE, "-- running on player %s", player->npc.mName.c_str());
+                        LOG_APPEND(Log::LOG_VERBOSE, "-- Running on player %s", player->npc.mName.c_str());
                         windowManager->setConsolePtr(player->getPtr());
                         windowManager->executeCommandInConsole(consoleCommand);
                     }
@@ -639,7 +691,7 @@ void ObjectList::runConsoleCommands(MWWorld::CellStore* cellStore)
             }
             else
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- running on cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Running on cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
 
                 MWWorld::Ptr ptrFound = cellStore->searchExact(baseObject.refNum, baseObject.mpNum);
 
@@ -790,6 +842,35 @@ void ObjectList::addRequestedContainers(MWWorld::CellStore* cellStore, const std
                 LOG_APPEND(Log::LOG_VERBOSE, "-- Object lacks container store", ptrFound.getCellRef().getRefId().c_str());
         }
     }
+}
+
+void ObjectList::addObjectActivate(const MWWorld::Ptr& ptr, const MWWorld::Ptr& activatingActor)
+{
+    cell = *ptr.getCell()->getCell();
+
+    mwmp::BaseObject baseObject;
+
+    if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())
+    {
+        baseObject.isPlayer = true;
+        baseObject.guid = mwmp::Main::get().getLocalPlayer()->guid;
+    }
+    else if (mwmp::PlayerList::isDedicatedPlayer(ptr))
+    {
+        baseObject.isPlayer = true;
+        baseObject.guid = mwmp::PlayerList::getPlayer(ptr)->guid;
+    }
+    else
+    {
+        baseObject.isPlayer = false;
+        baseObject.refId = ptr.getCellRef().getRefId();
+        baseObject.refNum = ptr.getCellRef().getRefNum().mIndex;
+        baseObject.mpNum = ptr.getCellRef().getMpNum();
+    }
+
+    baseObject.activatingActor = MechanicsHelper::getTarget(activatingActor);
+
+    addObject(baseObject);
 }
 
 void ObjectList::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
@@ -1009,6 +1090,12 @@ void ObjectList::addScriptGlobalShort(std::string varName, int shortVal)
     baseObject.varName = varName;
     baseObject.shortVal = shortVal;
     addObject(baseObject);
+}
+
+void ObjectList::sendObjectActivate()
+{
+    mwmp::Main::get().getNetworking()->getObjectPacket(ID_OBJECT_ACTIVATE)->setObjectList(this);
+    mwmp::Main::get().getNetworking()->getObjectPacket(ID_OBJECT_ACTIVATE)->Send();
 }
 
 void ObjectList::sendObjectPlace()

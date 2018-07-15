@@ -122,12 +122,16 @@ add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageB
     ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic ProcessorPlayerTopic
     )
 
-add_openmw_dir (mwmp/processors/object BaseObjectProcessor ProcessorConsoleCommand ProcessorContainer
-    ProcessorDoorDestination ProcessorDoorState ProcessorMusicPlay ProcessorVideoPlay ProcessorObjectAnimPlay
-    ProcessorObjectAttach  ProcessorObjectCollision ProcessorObjectDelete ProcessorObjectLock ProcessorObjectMove
-    ProcessorObjectPlace ProcessorObjectReset ProcessorObjectRotate ProcessorObjectScale ProcessorObjectSpawn
-    ProcessorObjectState ProcessorObjectTrap ProcessorScriptLocalShort ProcessorScriptLocalFloat
-    ProcessorScriptMemberShort ProcessorScriptMemberFloat ProcessorScriptGlobalShort ProcessorScriptGlobalFloat
+add_openmw_dir (mwmp/processors/object BaseObjectProcessor
+
+    ProcessorConsoleCommand ProcessorContainer ProcessorDoorDestination ProcessorDoorState ProcessorMusicPlay
+    ProcessorVideoPlay
+
+    ProcessorObjectActivate ProcessorObjectAnimPlay ProcessorObjectAttach  ProcessorObjectCollision ProcessorObjectDelete
+    ProcessorObjectLock ProcessorObjectMove ProcessorObjectPlace ProcessorObjectReset ProcessorObjectRotate
+    ProcessorObjectScale ProcessorObjectSpawn ProcessorObjectState ProcessorObjectTrap ProcessorScriptLocalShort
+    ProcessorScriptLocalFloat ProcessorScriptMemberShort ProcessorScriptMemberFloat ProcessorScriptGlobalShort
+    ProcessorScriptGlobalFloat
     )
 
 add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorCellReplace ProcessorRecordDynamic

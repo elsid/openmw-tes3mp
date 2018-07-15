@@ -13,6 +13,8 @@
     {"GetObjectListAction",                   ObjectFunctions::GetObjectListAction},\
     {"GetObjectListContainerSubAction",       ObjectFunctions::GetObjectListContainerSubAction},\
     \
+    {"IsObjectPlayer",                        ObjectFunctions::IsObjectPlayer},\
+    {"GetObjectPid",                          ObjectFunctions::GetObjectPid},\
     {"GetObjectRefId",                        ObjectFunctions::GetObjectRefId},\
     {"GetObjectRefNum",                       ObjectFunctions::GetObjectRefNum},\
     {"GetObjectMpNum",                        ObjectFunctions::GetObjectMpNum},\
@@ -24,6 +26,13 @@
     {"GetObjectState",                        ObjectFunctions::GetObjectState},\
     {"GetObjectDoorState",                    ObjectFunctions::GetObjectDoorState},\
     {"GetObjectLockLevel",                    ObjectFunctions::GetObjectLockLevel},\
+    \
+    {"DoesObjectHavePlayerActivating",        ObjectFunctions::DoesObjectHavePlayerActivating},\
+    {"GetObjectActivatingPid",                ObjectFunctions::GetObjectActivatingPid},\
+    {"GetObjectActivatingRefId",              ObjectFunctions::GetObjectActivatingRefId},\
+    {"GetObjectActivatingRefNum",             ObjectFunctions::GetObjectActivatingRefNum},\
+    {"GetObjectActivatingMpNum",              ObjectFunctions::GetObjectActivatingMpNum},\
+    {"GetObjectActivatingName",               ObjectFunctions::GetObjectActivatingName},\
     \
     {"GetObjectSummonState",                  ObjectFunctions::GetObjectSummonState},\
     {"GetObjectSummonDuration",               ObjectFunctions::GetObjectSummonDuration},\
@@ -89,6 +98,7 @@
     {"AddObject",                             ObjectFunctions::AddObject},\
     {"AddContainerItem",                      ObjectFunctions::AddContainerItem},\
     \
+    {"SendObjectActivate",                    ObjectFunctions::SendObjectActivate},\
     {"SendObjectPlace",                       ObjectFunctions::SendObjectPlace},\
     {"SendObjectSpawn",                       ObjectFunctions::SendObjectSpawn},\
     {"SendObjectDelete",                      ObjectFunctions::SendObjectDelete},\
@@ -175,8 +185,34 @@ public:
     static unsigned char GetObjectListContainerSubAction() noexcept;
 
     /**
+    * \brief Check whether the object at a certain index in the read object list is a
+    * player.
+    *
+    * Note: Although most player data and events are dealt with in Player packets,
+    *       object activation is general enough for players themselves to be included
+    *       as objects in ObjectActivate packets.
+    *
+    * \param i The index of the object.
+    * \return Whether the object is a player.
+    */
+    static bool IsObjectPlayer(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the player ID of the object at a certain index in the read object list,
+    * only valid if the object is a player.
+    *
+    * Note: Currently, players can only be objects in ObjectActivate and ConsoleCommand
+    *       packets.
+    *
+    * \param i The index of the object.
+    * \return The player ID of the object.
+    */
+    static int GetObjectPid(unsigned int i) noexcept;
+
+    /**
     * \brief Get the refId of the object at a certain index in the read object list.
     *
+    * \param i The index of the object.
     * \return The refId.
     */
     static const char *GetObjectRefId(unsigned int i) noexcept;
@@ -262,6 +298,60 @@ public:
     * \return The lock level.
     */
     static int GetObjectLockLevel(unsigned int i) noexcept;
+
+    /**
+    * \brief Check whether the object at a certain index in the read object list has been
+    * activated by a player.
+    *
+    * \param i The index of the object.
+    * \return Whether the object has been activated by a player.
+    */
+    static bool DoesObjectHavePlayerActivating(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the player ID of the player activating the object at a certain index in the
+    * read object list.
+    *
+    * \param i The index of the object.
+    * \return The player ID of the activating player.
+    */
+    static int GetObjectActivatingPid(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the refId of the actor activating the object at a certain index in the read
+    * object list.
+    *
+    * \param i The index of the object.
+    * \return The refId of the activating actor.
+    */
+    static const char *GetObjectActivatingRefId(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the refNum of the actor activating the object at a certain index in the read
+    * object list.
+    *
+    * \param i The index of the object.
+    * \return The refNum of the activating actor.
+    */
+    static unsigned int GetObjectActivatingRefNum(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the mpNum of the actor activating the object at a certain index in the read
+    * object list.
+    *
+    * \param i The index of the object.
+    * \return The mpNum of the activating actor.
+    */
+    static unsigned int GetObjectActivatingMpNum(unsigned int i) noexcept;
+
+    /**
+    * \brief Get the name of the actor activating the object at a certain index in the read
+    * object list.
+    *
+    * \param i The index of the object.
+    * \return The name of the activating actor.
+    */
+    static const char *GetObjectActivatingName(unsigned int i) noexcept;
 
     /**
     * \brief Check whether the object at a certain index in the read object list is a
@@ -766,6 +856,17 @@ public:
     * \return void
     */
     static void AddContainerItem() noexcept;
+
+    /**
+    * \brief Send an ObjectActivate packet.
+    *
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
+    * \return void
+    */
+    static void SendObjectActivate(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ObjectPlace packet.

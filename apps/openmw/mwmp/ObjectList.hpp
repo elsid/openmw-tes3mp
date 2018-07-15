@@ -24,6 +24,7 @@ namespace mwmp
 
         void editContainers(MWWorld::CellStore* cellStore);
 
+        void activateObjects(MWWorld::CellStore* cellStore);
         void placeObjects(MWWorld::CellStore* cellStore);
         void spawnObjects(MWWorld::CellStore* cellStore);
         void deleteObjects(MWWorld::CellStore* cellStore);
@@ -49,6 +50,7 @@ namespace mwmp
         void addAllContainers(MWWorld::CellStore* cellStore);
         void addRequestedContainers(MWWorld::CellStore* cellStore, const std::vector<BaseObject>& requestObjects);
 
+        void addObjectActivate(const MWWorld::Ptr& ptr, const MWWorld::Ptr& activatingActor);
         void addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer = false);
         void addObjectSpawn(const MWWorld::Ptr& ptr);
         void addObjectSpawn(const MWWorld::Ptr& ptr, const MWWorld::Ptr& master, float spawnDuration);
@@ -67,6 +69,7 @@ namespace mwmp
         void addScriptMemberShort(std::string refId, int index, int shortVal);
         void addScriptGlobalShort(std::string varName, int shortVal);
 
+        void sendObjectActivate();
         void sendObjectPlace();
         void sendObjectSpawn();
         void sendObjectDelete();

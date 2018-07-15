@@ -58,6 +58,21 @@ unsigned char ObjectFunctions::GetObjectListContainerSubAction() noexcept
     return readObjectList->containerSubAction;
 }
 
+bool ObjectFunctions::IsObjectPlayer(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).isPlayer;
+}
+
+int ObjectFunctions::GetObjectPid(unsigned int i) noexcept
+{
+    Player *player = Players::getPlayer(readObjectList->baseObjects.at(i).guid);
+
+    if (player != nullptr)
+        return player->getId();
+
+    return -1;
+}
+
 const char *ObjectFunctions::GetObjectRefId(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).refId.c_str();
@@ -111,6 +126,41 @@ int ObjectFunctions::GetObjectDoorState(unsigned int i) noexcept
 int ObjectFunctions::GetObjectLockLevel(unsigned int i) noexcept
 {
     return readObjectList->baseObjects.at(i).lockLevel;
+}
+
+bool ObjectFunctions::DoesObjectHavePlayerActivating(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).activatingActor.isPlayer;
+}
+
+int ObjectFunctions::GetObjectActivatingPid(unsigned int i) noexcept
+{
+    Player *player = Players::getPlayer(readObjectList->baseObjects.at(i).activatingActor.guid);
+
+    if (player != nullptr)
+        return player->getId();
+
+    return -1;
+}
+
+const char *ObjectFunctions::GetObjectActivatingRefId(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).activatingActor.refId.c_str();
+}
+
+unsigned int ObjectFunctions::GetObjectActivatingRefNum(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).activatingActor.refNum;
+}
+
+unsigned int ObjectFunctions::GetObjectActivatingMpNum(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).activatingActor.mpNum;
+}
+
+const char *ObjectFunctions::GetObjectActivatingName(unsigned int i) noexcept
+{
+    return readObjectList->baseObjects.at(i).activatingActor.name.c_str();
 }
 
 bool ObjectFunctions::GetObjectSummonState(unsigned int i) noexcept
@@ -397,6 +447,17 @@ void ObjectFunctions::AddContainerItem() noexcept
     tempObject.containerItems.push_back(tempContainerItem);
 
     tempContainerItem = emptyContainerItem;
+}
+
+void ObjectFunctions::SendObjectActivate(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
+{
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_OBJECT_ACTIVATE);
+    packet->setObjectList(&writeObjectList);
+
+    if (!skipAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
 void ObjectFunctions::SendObjectPlace(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
