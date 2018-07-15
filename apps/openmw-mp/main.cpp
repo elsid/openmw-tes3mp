@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
     folderPath = boost::filesystem::system_complete(boost::filesystem::path(argv[0])).remove_filename();
     std::string creditsPath = folderPath.string() + "/tes3mp-credits";
 
-    unsigned int expectedChecksumInt = Utils::hexStrToInt("E9CF9D8B");
+    unsigned int expectedChecksumInt = Utils::hexStrToInt(TES3MP_CREDITS_CHECKSUM);
     bool hasValidCredits = Utils::doesFileHaveChecksum(creditsPath + ".md", expectedChecksumInt);
 
     if (!hasValidCredits)
