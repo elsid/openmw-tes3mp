@@ -1010,6 +1010,19 @@ namespace MWClass
             End of tes3mp addition
         */
 
+        /*
+            Start of tes3mp addition
+
+            Avoid returning an ActionTalk when a non-player NPC activates another
+            non-player NPC, because it will always pop up a dialogue screen for
+            the local player
+        */
+        if (ptr != MWMechanics::getPlayer() && actor != MWMechanics::getPlayer())
+            return std::shared_ptr<MWWorld::Action>(new MWWorld::FailedAction(""));
+        /*
+            End of tes3mp addition
+        */
+
         // player got activated by another NPC
         if(ptr == MWMechanics::getPlayer())
             return std::shared_ptr<MWWorld::Action>(new MWWorld::ActionTalk(actor));
