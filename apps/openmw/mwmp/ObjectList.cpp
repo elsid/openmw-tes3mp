@@ -272,8 +272,8 @@ void ObjectList::activateObjects(MWWorld::CellStore* cellStore)
         {
             if (baseObject.guid == Main::get().getLocalPlayer()->guid)
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- Running on local player");
                 ptrFound = Main::get().getLocalPlayer()->getPlayerPtr();
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Activated object is local player");
             }
             else
             {
@@ -281,18 +281,18 @@ void ObjectList::activateObjects(MWWorld::CellStore* cellStore)
 
                 if (player != 0)
                 {
-                    LOG_APPEND(Log::LOG_VERBOSE, "-- Running on player %s", player->npc.mName.c_str());
                     ptrFound = player->getPtr();
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Activated object is player %s", player->npc.mName.c_str());
                 }
                 else
                 {
-                    LOG_APPEND(Log::LOG_VERBOSE, "-- Could not find target player!");
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Could not find player to activatee!");
                 }
             }
         }
         else
         {
-            LOG_APPEND(Log::LOG_VERBOSE, "-- Running on cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
+            LOG_APPEND(Log::LOG_VERBOSE, "-- Activated object is %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
             ptrFound = cellStore->searchExact(baseObject.refNum, baseObject.mpNum);
         }
 
@@ -301,13 +301,20 @@ void ObjectList::activateObjects(MWWorld::CellStore* cellStore)
             MWWorld::Ptr activatingActorPtr;
 
             if (baseObject.activatingActor.isPlayer)
+            {
                 activatingActorPtr = MechanicsHelper::getPlayerPtr(baseObject.activatingActor);
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Object has been activated by player %s",
+                    activatingActorPtr.getClass().getName(activatingActorPtr).c_str());
+            }
             else
+            {
                 activatingActorPtr = cellStore->searchExact(baseObject.activatingActor.refNum, baseObject.activatingActor.mpNum);
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Object has been activated by actor %s %i-%i", activatingActorPtr.getCellRef().getRefId().c_str(),
+                    activatingActorPtr.getCellRef().getRefNum().mIndex, activatingActorPtr.getCellRef().getMpNum());
+            }
 
             if (activatingActorPtr)
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- Object has activating actor: %s", activatingActorPtr.getCellRef().getRefId().c_str());
                 MWBase::Environment::get().getWorld()->activate(ptrFound, activatingActorPtr);
             }
         }
@@ -654,13 +661,13 @@ void ObjectList::runConsoleCommands(MWWorld::CellStore* cellStore)
 {
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
 
-    LOG_APPEND(Log::LOG_VERBOSE, "- console command: %s", consoleCommand.c_str());
+    LOG_APPEND(Log::LOG_VERBOSE, "- Console command: %s", consoleCommand.c_str());
 
     if (baseObjects.empty())
     {
         windowManager->clearConsolePtr();
 
-        LOG_APPEND(Log::LOG_VERBOSE, "-- running with no object reference");
+        LOG_APPEND(Log::LOG_VERBOSE, "-- Running with no object reference");
         windowManager->executeCommandInConsole(consoleCommand);
     }
     else
@@ -691,7 +698,7 @@ void ObjectList::runConsoleCommands(MWWorld::CellStore* cellStore)
             }
             else
             {
-                LOG_APPEND(Log::LOG_VERBOSE, "-- Running on cellRef: %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Running on object %s %i-%i", baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum);
 
                 MWWorld::Ptr ptrFound = cellStore->searchExact(baseObject.refNum, baseObject.mpNum);
 
