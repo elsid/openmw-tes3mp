@@ -1005,7 +1005,7 @@ namespace MWClass
             Don't display a dialogue screen for two players interacting with each other
         */
         if (actor == MWMechanics::getPlayer() && mwmp::PlayerList::isDedicatedPlayer(ptr))
-            return std::shared_ptr<MWWorld::Action>(new MWWorld::FailedAction("Not implemented."));
+            return std::shared_ptr<MWWorld::Action>(new MWWorld::FailedAction(""));
         /*
             End of tes3mp addition
         */
