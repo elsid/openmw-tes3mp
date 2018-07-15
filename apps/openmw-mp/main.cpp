@@ -11,6 +11,7 @@
 
 #include <components/openmw-mp/Log.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
+#include <components/openmw-mp/Utils.hpp>
 #include <components/openmw-mp/Version.hpp>
 
 #include <BitStream.h>
@@ -199,6 +200,28 @@ int main(int argc, char *argv[])
     vector<string> plugins (Utils::split(mgr.getString("plugins", "Plugins"), ','));
 
     Utils::printVersion("TES3MP dedicated server", TES3MP_VERSION, version.mCommitHash, TES3MP_PROTO_VERSION);
+
+    // Check for unmodified tes3mp-credits file; this makes it so people can't repackage official releases with
+    // their own made-up credits, though it obviously has no bearing on unofficial releases that change
+    // the checksum below
+    boost::filesystem::path folderPath(boost::filesystem::initial_path<boost::filesystem::path>());
+    folderPath = boost::filesystem::system_complete(boost::filesystem::path(argv[0])).remove_filename();
+    std::string creditsPath = folderPath.string() + "/tes3mp-credits";
+
+    unsigned int expectedChecksumInt = Utils::hexStrToInt("E9CF9D8B");
+    bool hasValidCredits = Utils::doesFileHaveChecksum(creditsPath + ".md", expectedChecksumInt);
+
+    if (!hasValidCredits)
+        hasValidCredits = Utils::doesFileHaveChecksum(creditsPath + ".txt", expectedChecksumInt);
+
+    if (!hasValidCredits)
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "To respect the hard work that has gone into\n"
+            "creating TES3MP, you are required to keep an unmodified tes3mp-credits file\n"
+            "corresponding to this version of the code in the same folder as this\n"
+            "executable. It can have either an .md or a .txt extension.");
+        return 1;
+    }
 
     setenv("MOD_DIR", moddir.c_str(), 1); // hack for lua
 
