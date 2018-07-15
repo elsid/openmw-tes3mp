@@ -19,7 +19,6 @@ Community administrators
 ------------------------
 
     Volk Milit (Ja'Virr-Dar)
-    Texafornian
     Testman
 
 
@@ -39,7 +38,10 @@ Art
 Super special thanks
 --------------------
 
+    Bret Curtis (psi29a)
+    Marc Zinnschlag (Zini)
     Mitch (Zaberius)
+    scrawl
 
 
 Special thanks (in alphabetical order)
@@ -64,11 +66,11 @@ Special thanks (in alphabetical order)
     NicholasAH (Jónas Hafthorsson)
     Olaxan
     ppsychrite
-    psi29a
     Rhiyo
     Scorcio
     Shnatsel
     Simon Nemes
+    Texafornian
     Zaphida
     Zaric Zhakaron
     All the developers of OpenMW for creating an amazing open source project
