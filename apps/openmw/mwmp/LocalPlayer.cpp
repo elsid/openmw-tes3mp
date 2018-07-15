@@ -1573,12 +1573,12 @@ void LocalPlayer::sendKill(const std::string& refId, int number)
     kill.refId = refId;
     kill.number = number;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_KILL_COUNT with refId %s, number %i", refId.c_str(), number);
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_WORLD_KILL_COUNT with refId %s, number %i", refId.c_str(), number);
 
     killChanges.kills.push_back(kill);
 
-    getNetworking()->getPlayerPacket(ID_PLAYER_KILL_COUNT)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_KILL_COUNT)->Send();
+    getNetworking()->getPlayerPacket(ID_WORLD_KILL_COUNT)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_WORLD_KILL_COUNT)->Send();
 }
 
 void LocalPlayer::sendBook(const std::string& bookId)

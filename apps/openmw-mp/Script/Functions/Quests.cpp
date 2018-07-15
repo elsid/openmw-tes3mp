@@ -168,7 +168,7 @@ void QuestFunctions::SendKillChanges(unsigned short pid, bool sendToOtherPlayers
     Player *player;
     GET_PLAYER(pid, player, );
 
-    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_KILL_COUNT);
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_WORLD_KILL_COUNT);
     packet->setPlayer(player);
 
     if (!skipAttachedPlayer)

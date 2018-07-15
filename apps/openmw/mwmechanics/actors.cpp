@@ -1744,7 +1744,7 @@ namespace MWMechanics
 
                     Only increment death count for an actor if we are its authority, to avoid
                     situations where we increment it locally after having already received an
-                    ID_PLAYER_KILL_COUNT packet about it
+                    ID_WORLD_KILL_COUNT packet about it
                 */
                 bool isLocalActor = mwmp::Main::get().getCellController()->isLocalActor(iter->first);
 
@@ -1757,7 +1757,7 @@ namespace MWMechanics
                 /*
                     Start of tes3mp addition
 
-                    Send an ID_PLAYER_KILL_COUNT packet every time the kill count changes,
+                    Send an ID_WORLD_KILL_COUNT packet every time the kill count changes,
                     as long as we are the authority over the actor's cell
                 */
                 if (isLocalActor)

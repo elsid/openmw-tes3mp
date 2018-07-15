@@ -1,16 +1,16 @@
-#ifndef OPENMW_PROCESSORPLAYERKILLCOUNT_HPP
-#define OPENMW_PROCESSORPLAYERKILLCOUNT_HPP
+#ifndef OPENMW_PROCESSORWORLDKILLCOUNT_HPP
+#define OPENMW_PROCESSORWORLDKILLCOUNT_HPP
 
 #include "../PlayerProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorPlayerKillCount : public PlayerProcessor
+    class ProcessorWorldKillCount : public PlayerProcessor
     {
     public:
-        ProcessorPlayerKillCount()
+        ProcessorWorldKillCount()
         {
-            BPP_INIT(ID_PLAYER_KILL_COUNT)
+            BPP_INIT(ID_WORLD_KILL_COUNT)
         }
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
@@ -27,4 +27,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_PROCESSORPLAYERKILLCOUNT_HPP
+#endif //OPENMW_PROCESSORWORLDKILLCOUNT_HPP

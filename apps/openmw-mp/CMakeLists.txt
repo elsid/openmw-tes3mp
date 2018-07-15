@@ -107,7 +107,7 @@ set(PROCESSORS_PLAYER
         processors/player/ProcessorPlayerDisposition.hpp processors/player/ProcessorPlayerEquipment.hpp
         processors/player/ProcessorPlayerFaction.hpp processors/player/ProcessorPlayerInput.hpp
         processors/player/ProcessorPlayerInventory.hpp processors/player/ProcessorPlayerJournal.hpp
-        processors/player/ProcessorPlayerKillCount.hpp processors/player/ProcessorPlayerLevel.hpp
+        processors/player/ProcessorWorldKillCount.hpp processors/player/ProcessorPlayerLevel.hpp
         processors/player/ProcessorPlayerMiscellaneous.hpp processors/player/ProcessorPlayerPosition.hpp
         processors/player/ProcessorPlayerQuickKeys.hpp processors/player/ProcessorPlayerRest.hpp
         processors/player/ProcessorPlayerResurrect.hpp processors/player/ProcessorPlayerShapeshift.hpp

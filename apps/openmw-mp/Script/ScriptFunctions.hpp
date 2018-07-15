@@ -157,7 +157,6 @@ public:
             {"OnPlayerDeath",            Function<void, unsigned short>()},
             {"OnPlayerResurrect",        Function<void, unsigned short>()},
             {"OnPlayerCellChange",       Function<void, unsigned short>()},
-            {"OnPlayerKillCount",        Function<void, unsigned short>()},
             {"OnPlayerAttribute",        Function<void, unsigned short>()},
             {"OnPlayerSkill",            Function<void, unsigned short>()},
             {"OnPlayerLevel",            Function<void, unsigned short>()},
@@ -200,6 +199,7 @@ public:
             {"OnPlayerSendMessage",      Function<bool, unsigned short, const char*>()},
             {"OnPlayerEndCharGen",       Function<void, unsigned short>()},
             {"OnGUIAction",              Function<void, unsigned short, int, const char*>()},
+            {"OnWorldKillCount",         Function<void, unsigned short>()},
             {"OnWorldMap",               Function<void, unsigned short>()},
             {"OnMpNumIncrement",         Function<void, int>()},
             {"OnRequestPluginList",      Function<const char *, unsigned int, unsigned int>()}

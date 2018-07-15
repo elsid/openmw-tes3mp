@@ -44,7 +44,7 @@ public:
     /**
     * \brief Clear the last recorded kill count changes for a player.
     *
-    * This is used to initialize the sending of new PlayerKillCount packets.
+    * This is used to initialize the sending of new WorldKillCount packets.
     *
     * \param pid The player ID whose kill count changes should be used.
     * \return void
@@ -184,7 +184,7 @@ public:
     static void SendJournalChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
-    * \brief Send a PlayerKillCount packet with a player's recorded kill count changes.
+    * \brief Send a WorldKillCount packet with a player's recorded kill count changes.
     *
     * \param pid The player ID whose kill count changes should be used.
     * \param sendToOtherPlayers Whether this packet should be sent to players other than the

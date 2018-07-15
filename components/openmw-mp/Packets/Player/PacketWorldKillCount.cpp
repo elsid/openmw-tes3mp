@@ -1,12 +1,12 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include "PacketPlayerKillCount.hpp"
+#include "PacketWorldKillCount.hpp"
 
-mwmp::PacketPlayerKillCount::PacketPlayerKillCount(RakNet::RakPeerInterface *peer) : PlayerPacket(peer)
+mwmp::PacketWorldKillCount::PacketWorldKillCount(RakNet::RakPeerInterface *peer) : PlayerPacket(peer)
 {
-    packetID = ID_PLAYER_KILL_COUNT;
+    packetID = ID_WORLD_KILL_COUNT;
 }
 
-void mwmp::PacketPlayerKillCount::Packet(RakNet::BitStream *bs, bool send)
+void mwmp::PacketWorldKillCount::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
