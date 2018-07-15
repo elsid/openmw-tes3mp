@@ -112,12 +112,12 @@ add_openmw_dir (mwmp/processors/actor ProcessorActorAI ProcessorActorAnimFlags P
     )
 
 add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageBox ProcessorHandshake
-    ProcessorUserDisconnected ProcessorUserMyID ProcessorGameSettings ProcessorGameWeather ProcessorPlayerAnimFlags
-    ProcessorPlayerAnimPlay ProcessorPlayerAttack ProcessorPlayerAttribute ProcessorPlayerBaseInfo ProcessorPlayerBehavior
-    ProcessorPlayerBook ProcessorPlayerBounty ProcessorPlayerCellChange ProcessorPlayerCellState ProcessorPlayerCharClass
-    ProcessorPlayerCharGen ProcessorPlayerDeath ProcessorPlayerDisposition ProcessorPlayerEquipment ProcessorPlayerFaction
-    ProcessorPlayerInput ProcessorPlayerInventory ProcessorPlayerJail ProcessorPlayerJournal ProcessorWorldKillCount
-    ProcessorPlayerLevel ProcessorPlayerMiscellaneous ProcessorPlayerMomentum ProcessorPlayerPosition ProcessorPlayerQuickKeys
+    ProcessorUserDisconnected ProcessorUserMyID ProcessorGameSettings ProcessorPlayerAnimFlags ProcessorPlayerAnimPlay
+    ProcessorPlayerAttack ProcessorPlayerAttribute ProcessorPlayerBaseInfo ProcessorPlayerBehavior ProcessorPlayerBook
+    ProcessorPlayerBounty ProcessorPlayerCellChange ProcessorPlayerCellState ProcessorPlayerCharClass ProcessorPlayerCharGen
+    ProcessorPlayerDeath ProcessorPlayerDisposition ProcessorPlayerEquipment ProcessorPlayerFaction ProcessorPlayerInput
+    ProcessorPlayerInventory ProcessorPlayerJail ProcessorPlayerJournal ProcessorWorldKillCount ProcessorPlayerLevel
+    ProcessorPlayerMiscellaneous ProcessorPlayerMomentum ProcessorPlayerPosition ProcessorPlayerQuickKeys
     ProcessorPlayerReputation ProcessorPlayerResurrect ProcessorPlayerShapeshift ProcessorPlayerSkill ProcessorPlayerSpeech
     ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic ProcessorPlayerTopic
     )
@@ -135,7 +135,7 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor
     )
 
 add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorCellReplace ProcessorRecordDynamic
-    ProcessorWorldCollisionOverride ProcessorWorldMap ProcessorWorldTime
+    ProcessorWorldCollisionOverride ProcessorWorldMap ProcessorWorldTime ProcessorWorldWeather
     )
 
 # Main executable

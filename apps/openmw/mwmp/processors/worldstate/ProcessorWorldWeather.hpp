@@ -5,15 +5,15 @@
 
 namespace mwmp
 {
-    class ProcessorGameWeather : public PlayerProcessor
+    class ProcessorWorldWeather : public WorldstateProcessor
     {
     public:
-        ProcessorGameWeather()
+        ProcessorWorldWeather()
         {
-            BPP_INIT(ID_GAME_WEATHER)
+            BPP_INIT(ID_WORLD_WEATHER)
         }
 
-        virtual void Do(PlayerPacket &packet, BasePlayer *player)
+        virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)
         {
             // Placeholder to be filled in later
         }

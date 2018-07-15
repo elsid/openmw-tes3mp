@@ -17,8 +17,6 @@ enum GameMessages
     ID_HANDSHAKE,
     ID_LOADED,
     ID_GUI_MESSAGEBOX,
-
-    ID_GAME_WEATHER,
     
     ID_PLAYER_BASEINFO,
     ID_PLAYER_BEHAVIOR,
@@ -111,6 +109,7 @@ enum GameMessages
     ID_WORLD_COLLISION_OVERRIDE,
     ID_WORLD_MAP,
     ID_WORLD_TIME,
+    ID_WORLD_WEATHER
 };
 
 enum OrderingChannel

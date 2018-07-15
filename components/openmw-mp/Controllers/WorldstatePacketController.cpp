@@ -4,6 +4,7 @@
 #include "../Packets/Worldstate/PacketWorldCollisionOverride.hpp"
 #include "../Packets/Worldstate/PacketWorldMap.hpp"
 #include "../Packets/Worldstate/PacketWorldTime.hpp"
+#include "../Packets/Worldstate/PacketWorldWeather.hpp"
 
 #include "WorldstatePacketController.hpp"
 
@@ -23,6 +24,7 @@ mwmp::WorldstatePacketController::WorldstatePacketController(RakNet::RakPeerInte
     AddPacket<PacketWorldCollisionOverride>(&packets, peer);
     AddPacket<PacketWorldMap>(&packets, peer);
     AddPacket<PacketWorldTime>(&packets, peer);
+    AddPacket<PacketWorldWeather>(&packets, peer);
 }
 
 
