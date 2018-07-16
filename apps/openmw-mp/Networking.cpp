@@ -229,7 +229,7 @@ bool Networking::preInit(RakNet::Packet *packet, RakNet::BitStream &bsIn)
     packetPreInit.setChecksums(&plugins);
     packetPreInit.Read();
 
-    if (!packetPreInit.isPacketValid())
+    if (!packetPreInit.isPacketValid() || plugins.empty())
     {
         LOG_APPEND(Log::LOG_ERROR, "Invalid packetPreInit");
         peer->CloseConnection(packet->systemAddress, false); // close connection without notification
