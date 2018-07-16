@@ -9,6 +9,7 @@
 #include <components/settings/settings.hpp>
 #include <components/version/version.hpp>
 
+#include <components/openmw-mp/ErrorMessages.hpp>
 #include <components/openmw-mp/Log.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <components/openmw-mp/Utils.hpp>
@@ -216,10 +217,8 @@ int main(int argc, char *argv[])
 
     if (!hasValidCredits)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "To respect the hard work that has gone into\n"
-            "creating TES3MP, you are required to keep an unmodified tes3mp-credits file\n"
-            "corresponding to this version of the code in the same folder as this\n"
-            "executable. It can have either an .md or a .txt extension.");
+        LOG_MESSAGE_SIMPLE(Log::LOG_FATAL, "The server is shutting down");
+        LOG_APPEND(Log::LOG_FATAL, "- %s", TES3MP_CREDITS_ERROR);
         return 1;
     }
 
