@@ -29,7 +29,7 @@ namespace  mwmp
         void processActorPacket(RakNet::Packet *packet);
         void processObjectPacket(RakNet::Packet *packet);
         void processWorldstatePacket(RakNet::Packet *packet);
-        void update(RakNet::Packet *packet);
+        void update(RakNet::Packet *packet, RakNet::BitStream &bsIn);
 
         unsigned short numberOfConnections() const;
         unsigned int maxConnections() const;
@@ -65,6 +65,7 @@ namespace  mwmp
 
         void postInit();
     private:
+        bool preInit(RakNet::Packet *packet, RakNet::BitStream &bsIn);
         PacketPreInit::PluginContainer getPluginListSample();
         std::string serverPassword;
         static Networking *sThis;

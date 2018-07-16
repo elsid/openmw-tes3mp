@@ -212,88 +212,84 @@ void Networking::processWorldstatePacket(RakNet::Packet *packet)
 
 }
 
-void Networking::update(RakNet::Packet *packet)
+bool Networking::preInit(RakNet::Packet *packet, RakNet::BitStream &bsIn)
 {
-    Player *player = Players::getPlayer(packet->guid);
-
-    RakNet::BitStream bsIn(&packet->data[1], packet->length, false);
-
-    bsIn.IgnoreBytes((unsigned int) RakNet::RakNetGUID::size()); // Ignore GUID from received packet
-
-    if (player == nullptr)
+    if (packet->data[0] != ID_GAME_PREINIT)
     {
-        if (packet->data[0] == ID_GAME_PREINIT)
-        {
-            DEBUG_PRINTF("ID_GAME_PREINIT");
-            PacketPreInit::PluginContainer plugins;
-
-            PacketPreInit packetPreInit(peer);
-            packetPreInit.SetReadStream(&bsIn);
-            packetPreInit.setChecksums(&plugins);
-            packetPreInit.Read();
-
-            if (!packetPreInit.isPacketValid())
-            {
-                LOG_APPEND(Log::LOG_ERROR, "Invalid packetPreInit");
-                peer->CloseConnection(packet->systemAddress, false); // close connection without notification
-                return;
-            }
-
-            auto plugin = plugins.begin();
-            if (samples.size() == plugins.size())
-            {
-                for (int i = 0; plugin != plugins.end(); plugin++, i++)
-                {
-                    LOG_APPEND(Log::LOG_VERBOSE, "- %X\t%s", plugin->second[0], plugin->first.c_str());
-                    // Check if the filenames match, ignoring case
-                    if (Misc::StringUtils::ciEqual(samples[i].first, plugin->first))
-                    {
-                        auto &hashList = samples[i].second;
-                        // Proceed if no checksums have been listed for this plugin on the server
-                        if (hashList.empty())
-                            continue;
-                        auto it = find(hashList.begin(), hashList.end(), plugin->second[0]);
-                        // Break the loop if the client's checksum isn't among those accepted by
-                        // the server
-                        if (it == hashList.end())
-                            break;
-
-                    }
-                    else // name is incorrect
-                        break;
-                }
-            }
-            RakNet::BitStream bs;
-            packetPreInit.SetSendStream(&bs);
-
-            // If the loop above was broken, then the client's plugins do not match the server's
-            if (pluginEnforcementState && plugin != plugins.end())
-            {
-                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "%s was not allowed to connect due to incompatible plugins", packet->systemAddress.ToString());
-                packetPreInit.setChecksums(&samples);
-                packetPreInit.Send(packet->systemAddress);
-                peer->CloseConnection(packet->systemAddress, true);
-            }
-            else
-            {
-                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "%s was allowed to connect", packet->systemAddress.ToString());
-                PacketPreInit::PluginContainer tmp;
-                packetPreInit.setChecksums(&tmp);
-                packetPreInit.Send(packet->systemAddress);
-            }
-            return;
-        }
-
-        playerPacketController->SetStream(&bsIn, 0);
-
-        playerPacketController->GetPacket(ID_HANDSHAKE)->RequestData(packet->guid);
-        Players::newPlayer(packet->guid);
-        player = Players::getPlayer(packet->guid);
-        return;
+        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "%s sent wrong first packet (ID_GAME_PREINIT was expected)",
+                           packet->systemAddress.ToString());
+        peer->CloseConnection(packet->systemAddress, true);
     }
-    else if (playerPacketController->ContainsPacket(packet->data[0]))
+
+    DEBUG_PRINTF("ID_GAME_PREINIT");
+    PacketPreInit::PluginContainer plugins;
+
+    PacketPreInit packetPreInit(peer);
+    packetPreInit.SetReadStream(&bsIn);
+    packetPreInit.setChecksums(&plugins);
+    packetPreInit.Read();
+
+    if (!packetPreInit.isPacketValid())
     {
-        playerPacketController->SetStream(&bsIn, 0);
+        LOG_APPEND(Log::LOG_ERROR, "Invalid packetPreInit");
+        peer->CloseConnection(packet->systemAddress, false); // close connection without notification
+        return false;
+    }
+
+    auto plugin = plugins.begin();
+    if (samples.size() == plugins.size())
+    {
+        for (int i = 0; plugin != plugins.end(); plugin++, i++)
+        {
+            LOG_APPEND(Log::LOG_VERBOSE, "- %X\t%s", plugin->second[0], plugin->first.c_str());
+            // Check if the filenames match, ignoring case
+            if (Misc::StringUtils::ciEqual(samples[i].first, plugin->first))
+            {
+                auto &hashList = samples[i].second;
+                // Proceed if no checksums have been listed for this plugin on the server
+                if (hashList.empty())
+                    continue;
+                auto it = find(hashList.begin(), hashList.end(), plugin->second[0]);
+                // Break the loop if the client's checksum isn't among those accepted by
+                // the server
+                if (it == hashList.end())
+                    break;
+            }
+            else // name is incorrect
+                break;
+        }
+    }
+    RakNet::BitStream bs;
+    packetPreInit.SetSendStream(&bs);
+
+    // If the loop above was broken, then the client's plugins do not match the server's
+    if (pluginEnforcementState && plugin != plugins.end())
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "%s was not allowed to connect due to incompatible plugins", packet->systemAddress.ToString());
+        packetPreInit.setChecksums(&samples);
+        packetPreInit.Send(packet->systemAddress);
+        peer->CloseConnection(packet->systemAddress, true);
+    }
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "%s was allowed to connect", packet->systemAddress.ToString());
+        PacketPreInit::PluginContainer tmp;
+        packetPreInit.setChecksums(&tmp);
+        packetPreInit.Send(packet->systemAddress);
+        Players::newPlayer(packet->guid); // create player if connection allowed
+        playerPacketController->SetStream(&bsIn, nullptr); // and request handshake
+        playerPacketController->GetPacket(ID_HANDSHAKE)->RequestData(packet->guid);
+        return true;
+    }
+
+    return false;
+}
+
+void Networking::update(RakNet::Packet *packet, RakNet::BitStream &bsIn)
+{
+    if (playerPacketController->ContainsPacket(packet->data[0]))
+    {
+        playerPacketController->SetStream(&bsIn, nullptr);
         processPlayerPacket(packet);
     }
     else if (actorPacketController->ContainsPacket(packet->data[0]))
@@ -531,8 +527,17 @@ int Networking::mainLoop()
                 case ID_UNCONNECTED_PING:
                     break;
                 default:
-                    update(packet);
+                {
+                    RakNet::BitStream bsIn(&packet->data[1], packet->length, false);
+                    bsIn.IgnoreBytes((unsigned int) RakNet::RakNetGUID::size()); // Ignore GUID from received packet
+
+
+                    if (Players::isPlayerExists(packet->guid))
+                        update(packet, bsIn);
+                    else
+                        preInit(packet, bsIn);
                     break;
+                }
             }
         }
         TimerAPI::Tick();
