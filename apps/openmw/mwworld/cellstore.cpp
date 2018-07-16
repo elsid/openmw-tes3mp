@@ -325,7 +325,7 @@ namespace MWWorld
 
                     Add extra debug for multiplayer purposes
                 */
-                LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Storage: %s's original cell %s gives it from %s to %s\n",
+                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Storage: %s's original cell %s gives it from %s to %s\n",
                     object.getBase()->mRef.getRefId().c_str(),
                     originalCell->getCell()->getDescription().c_str(),
                     this->getCell()->getDescription().c_str(),
