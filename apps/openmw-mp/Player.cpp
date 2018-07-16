@@ -54,9 +54,10 @@ void Players::newPlayer(RakNet::RakNetGUID guid)
 
 Player *Players::getPlayer(RakNet::RakNetGUID guid)
 {
-    if (players.count(guid) == 0)
+    auto it = players.find(guid);
+    if (it == players.end())
         return nullptr;
-    return players[guid];
+    return it->second;
 }
 
 TPlayers *Players::getPlayers()
@@ -123,9 +124,10 @@ int Player::getLoadState()
 
 Player *Players::getPlayer(unsigned short id)
 {
-    if (slots.find(id) == slots.end())
+    auto it = slots.find(id);
+    if (it == slots.end())
         return nullptr;
-    return slots[id];
+    return it->second;
 }
 
 CellController::TContainer *Player::getCells()
@@ -173,4 +175,9 @@ void Player::forEachLoaded(std::function<void(Player *pl, Player *other)> func)
         if (pl == this) continue;
         func(this, pl);
     }
+}
+
+bool Players::isPlayerExists(RakNet::RakNetGUID guid)
+{
+    return players.find(guid) != players.end();
 }

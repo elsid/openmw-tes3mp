@@ -34,6 +34,7 @@ public:
     static Player *getPlayer(unsigned short id);
     static TPlayers *getPlayers();
     static unsigned short getLastPlayerId();
+    static bool isPlayerExists(RakNet::RakNetGUID guid);
 
 private:
     static TPlayers players;
