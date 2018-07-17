@@ -32,7 +32,6 @@
 #include "player/ProcessorPlayerMomentum.hpp"
 #include "player/ProcessorPlayerPosition.hpp"
 #include "player/ProcessorPlayerQuickKeys.hpp"
-#include "player/ProcessorPlayerRegionAuthority.hpp"
 #include "player/ProcessorPlayerReputation.hpp"
 #include "player/ProcessorPlayerRest.hpp"
 #include "player/ProcessorPlayerResurrect.hpp"
@@ -93,6 +92,7 @@
 #include "worldstate/ProcessorRecordDynamic.hpp"
 #include "worldstate/ProcessorWorldCollisionOverride.hpp"
 #include "worldstate/ProcessorWorldMap.hpp"
+#include "worldstate/ProcessorWorldRegionAuthority.hpp"
 #include "worldstate/ProcessorWorldTime.hpp"
 #include "worldstate/ProcessorWorldWeather.hpp"
 
@@ -131,7 +131,6 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerMomentum());
     PlayerProcessor::AddProcessor(new ProcessorPlayerPosition());
     PlayerProcessor::AddProcessor(new ProcessorPlayerQuickKeys());
-    PlayerProcessor::AddProcessor(new ProcessorPlayerRegionAuthority());
     PlayerProcessor::AddProcessor(new ProcessorPlayerReputation());
     PlayerProcessor::AddProcessor(new ProcessorPlayerRest());
     PlayerProcessor::AddProcessor(new ProcessorPlayerResurrect());
@@ -189,6 +188,7 @@ void ProcessorInitializer()
     WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());
     WorldstateProcessor::AddProcessor(new ProcessorWorldCollisionOverride());
     WorldstateProcessor::AddProcessor(new ProcessorWorldMap());
+    WorldstateProcessor::AddProcessor(new ProcessorWorldRegionAuthority());
     WorldstateProcessor::AddProcessor(new ProcessorWorldTime());
     WorldstateProcessor::AddProcessor(new ProcessorWorldWeather());
 }

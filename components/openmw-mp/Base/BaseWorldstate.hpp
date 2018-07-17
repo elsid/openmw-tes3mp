@@ -47,6 +47,8 @@ namespace mwmp
         bool hasPlacedObjectCollision;
         bool useActorCollisionForPlacedObjects;
 
+        std::string authorityRegion;
+
         std::vector<std::string> enforcedCollisionRefIds;
 
         std::vector<MapTile> mapTiles;
