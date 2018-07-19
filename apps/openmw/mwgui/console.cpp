@@ -433,7 +433,7 @@ namespace MWGui
                     title of the console window, for easier debugging of almost everything
                 */
                 setTitle("#{sConsoleTitle} (" + object.getCellRef().getRefId() + ", " +
-                    std::to_string(object.getCellRef().getRefNum().mIndex) + ", " +
+                    std::to_string(object.getCellRef().getRefNum().mIndex) + "-" +
                     std::to_string(object.getCellRef().getMpNum()) + ")");
                 /*
                     End of tes3mp change (major)
