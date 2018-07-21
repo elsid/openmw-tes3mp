@@ -133,14 +133,20 @@ void DedicatedPlayer::move(float dt)
     else
         world->moveObject(ptr, position.pos[0], position.pos[1], position.pos[2]);
 
-    float oldZ = ptr.getRefData().getPosition().rot[2];
-    world->rotateObject(ptr, position.rot[0], 0, oldZ);
+    world->rotateObject(ptr, position.rot[0], 0, position.rot[2]);
 
     MWMechanics::Movement *move = &ptr.getClass().getMovementSettings(ptr);
     move->mPosition[0] = direction.pos[0];
     move->mPosition[1] = direction.pos[1];
+    move->mPosition[2] = direction.pos[2];
 
-    MWMechanics::zTurn(ptr, position.rot[2], osg::DegreesToRadians(1.0));
+    // Make sure the values are valid, or we'll get an infinite error loop	
+    if (!isnan(direction.rot[0]) && !isnan(direction.rot[1]) && !isnan(direction.rot[2]))
+    {
+        move->mRotation[0] = direction.rot[0];
+        move->mRotation[1] = direction.rot[1];
+        move->mRotation[2] = direction.rot[2];
+    }
 }
 
 void DedicatedPlayer::setBaseInfo()
