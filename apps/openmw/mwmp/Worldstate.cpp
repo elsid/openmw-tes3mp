@@ -76,7 +76,7 @@ void Worldstate::setWeather()
     // doesn't have the correct new region set for us, so make sure we update it
     world->updateWeather(0);
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Setting weather for region: %s, currentWeather: %i, "
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Setting weather for region: %s, currentWeather: %i, "
         "nextWeather: %i, queuedWeather: %i, transitionFactor: %f, forceWeather is %s",
         weather.region.c_str(), weather.currentWeather, weather.nextWeather,
         weather.queuedWeather, weather.transitionFactor, forceWeather ? "true" : "false");
@@ -111,7 +111,7 @@ void Worldstate::sendWeather(std::string region, int currentWeather, int nextWea
     weather.queuedWeather = queuedWeather;
     weather.transitionFactor = transitionFactor;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Sending ID_PLAYER_WEATHER with region: %s, currentWeather: %i, "
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_WEATHER with region: %s, currentWeather: %i, "
         "nextWeather: %i, queuedWeather, %i, transitionFactor: %f",
         region.c_str(), currentWeather, nextWeather, queuedWeather, transitionFactor);
 

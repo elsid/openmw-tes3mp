@@ -667,7 +667,7 @@ namespace MWRender
 
                     if (MWBase::Environment::get().getWorld()->getExterior(cellX, cellY)->getCell()->mContextList.empty() == false)
                     {
-                        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "New global map tile corresponds to cell %i, %i", originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY));
+                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "New global map tile corresponds to cell %i, %i", originToCellX.at(imageDest.mX), originToCellY.at(imageDest.mY));
 
                         osgDB::ReaderWriter* readerwriter = osgDB::Registry::instance()->getReaderWriterForExtension("png");
                         if (!readerwriter)
