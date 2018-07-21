@@ -341,9 +341,9 @@ void DedicatedActor::playSound()
 
 bool DedicatedActor::hasItem(std::string refId, int charge)
 {
-    for (const auto &ptr : ptr.getClass().getInventoryStore(ptr))
+    for (const auto &itemPtr : ptr.getClass().getInventoryStore(ptr))
     {
-        if (::Misc::StringUtils::ciEqual(ptr.getCellRef().getRefId(), refId) && ptr.getCellRef().getCharge() == charge)
+        if (::Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), refId) && itemPtr.getCellRef().getCharge() == charge)
             return true;
     }
 
@@ -352,12 +352,12 @@ bool DedicatedActor::hasItem(std::string refId, int charge)
 
 void DedicatedActor::equipItem(std::string refId, int charge)
 {
-    for (const auto &ptr : ptr.getClass().getInventoryStore(ptr))
+    for (const auto &itemPtr : ptr.getClass().getInventoryStore(ptr))
     {
-        if (::Misc::StringUtils::ciEqual(ptr.getCellRef().getRefId(), refId) && ptr.getCellRef().getCharge() == charge)
+        if (::Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), refId) && itemPtr.getCellRef().getCharge() == charge)
         {
-            std::shared_ptr<MWWorld::Action> action = ptr.getClass().use(ptr);
-            action->execute(this->ptr);
+            std::shared_ptr<MWWorld::Action> action = itemPtr.getClass().use(itemPtr);
+            action->execute(ptr);
             break;
         }
     }
