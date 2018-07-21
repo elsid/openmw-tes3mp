@@ -19,7 +19,8 @@ namespace mwmp
         {
             MWBase::World *world = MWBase::Environment::get().getWorld();
 
-            if (Misc::StringUtils::ciEqual(worldstate.authorityRegion, world->getPlayerPtr().getCell()->getCell()->mRegion))
+            if (!worldstate.authorityRegion.empty() && Misc::StringUtils::ciEqual(worldstate.authorityRegion,
+                world->getPlayerPtr().getCell()->getCell()->mRegion))
             {
                 LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s about %s", strPacketID.c_str(), worldstate.authorityRegion.c_str());
 
