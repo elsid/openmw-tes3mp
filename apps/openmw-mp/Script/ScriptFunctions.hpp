@@ -201,6 +201,7 @@ public:
             {"OnGUIAction",              Function<void, unsigned short, int, const char*>()},
             {"OnWorldKillCount",         Function<void, unsigned short>()},
             {"OnWorldMap",               Function<void, unsigned short>()},
+            {"OnWorldWeather",           Function<void, unsigned short>() },
             {"OnMpNumIncrement",         Function<void, int>()},
             {"OnRequestPluginList",      Function<const char *, unsigned int, unsigned int>()}
     };

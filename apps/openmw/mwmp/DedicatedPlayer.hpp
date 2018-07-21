@@ -78,6 +78,8 @@ namespace mwmp
         bool previousDisplayCreatureName;
 
         std::string creatureRecordId;
+
+        bool hasFinishedInitialTeleportation;
     };
 }
 #endif //OPENMW_DEDICATEDPLAYER_HPP

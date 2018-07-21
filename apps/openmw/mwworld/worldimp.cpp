@@ -2031,6 +2031,63 @@ namespace MWWorld
         mWeatherManager->changeWeather(region, id);
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to set a specific weather state for a region from elsewhere
+        in the code
+    */
+    void World::setRegionWeather(const std::string& region, const unsigned int currentWeather, const unsigned int nextWeather,
+        const unsigned int queuedWeather, const float transitionFactor, bool force)
+    {
+        mWeatherManager->setRegionWeather(region, currentWeather, nextWeather, queuedWeather, transitionFactor, force);
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to check whether the local WeatherManager has the
+        ability to create weather changes
+    */
+    bool World::getWeatherCreationState()
+    {
+        return mWeatherManager->getWeatherCreationState();
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to enable and disable the local WeatherManager's ability
+        to create weather changes
+    */
+    void World::setWeatherCreationState(bool state)
+    {
+        mWeatherManager->setWeatherCreationState(state);
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to send the current weather in a WorldWeather packet
+        when requested from elsewhere in the code
+    */
+    void World::sendWeather()
+    {
+        mWeatherManager->sendWeather();
+    }
+    /*
+        End of tes3mp addition
+    */
+
     void World::modRegion(const std::string &regionid, const std::vector<char> &chances)
     {
         mWeatherManager->modRegion(regionid, chances);

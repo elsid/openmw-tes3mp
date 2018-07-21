@@ -259,6 +259,51 @@ namespace MWBase
 
             virtual void changeWeather(const std::string& region, const unsigned int id) = 0;
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set a specific weather state for a region from elsewhere
+                in the code
+            */
+            virtual void setRegionWeather(const std::string& region, const unsigned int currentWeather, const unsigned int nextWeather,
+                const unsigned int queuedWeather, const float transitionFactor, bool force) = 0;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to check whether the local WeatherManager has the
+                ability to create weather changes
+            */
+            virtual bool getWeatherCreationState() = 0;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to enable and disable the local WeatherManager's ability
+                to create weather changes
+            */
+            virtual void setWeatherCreationState(bool state) = 0;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to send the current weather in a WorldWeather packet
+                when requested from elsewhere in the code
+            */
+            virtual void sendWeather() = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual int getCurrentWeather() const = 0;
 
             virtual int getMasserPhase() const = 0;
@@ -289,6 +334,17 @@ namespace MWBase
 
             virtual MWWorld::Ptr  getFacedObject() = 0;
             ///< Return pointer to the object the player is looking at, if it is within activation range
+
+            /*
+                Start of tes3mp addition
+
+                This has been declared here so it can be accessed from places
+                other than MWWorld::World
+            */
+            virtual void updateWeather(float duration, bool paused = false) = 0;
+            /*
+                End of tes3mp addition
+            */
 
             /*
                 Start of tes3mp addition

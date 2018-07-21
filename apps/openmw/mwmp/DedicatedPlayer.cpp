@@ -61,6 +61,8 @@ DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
     npc = *world->getPlayerPtr().get<ESM::NPC>()->mBase;
     npc.mId = "Dedicated Player";
     previousRace = npc.mRace;
+
+    hasFinishedInitialTeleportation = false;
 }
 DedicatedPlayer::~DedicatedPlayer()
 {
@@ -381,6 +383,19 @@ void DedicatedPlayer::setCell()
     // NPC data in that cell
     if (Main::get().getCellController()->hasLocalAuthority(cell))
         Main::get().getCellController()->getCell(cell)->updateLocal(true);
+
+    // If this player is a new player or is now in a region that we are the weather authority over,
+    // or is a new player, we should send our latest weather data to the server
+    if (world->getWeatherCreationState())
+    {
+        if (!hasFinishedInitialTeleportation || Misc::StringUtils::ciEqual(getPtr().getCell()->getCell()->mRegion,
+            world->getPlayerPtr().getCell()->getCell()->mRegion))
+        {
+            world->sendWeather();
+        }
+    }
+
+    hasFinishedInitialTeleportation = true;
 }
 
 void DedicatedPlayer::updateMarker()

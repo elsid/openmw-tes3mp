@@ -12,8 +12,23 @@
     \
     {"GetMapChangesSize",                 WorldstateFunctions::GetMapChangesSize},\
     \
+    {"GetWeatherRegion",                  WorldstateFunctions::GetWeatherRegion},\
+    {"GetWeatherCurrent",                 WorldstateFunctions::GetWeatherCurrent},\
+    {"GetWeatherNext",                    WorldstateFunctions::GetWeatherNext},\
+    {"GetWeatherQueued",                  WorldstateFunctions::GetWeatherQueued},\
+    {"GetWeatherTransitionFactor",        WorldstateFunctions::GetWeatherTransitionFactor},\
+    \
     {"GetMapTileCellX",                   WorldstateFunctions::GetMapTileCellX},\
     {"GetMapTileCellY",                   WorldstateFunctions::GetMapTileCellY},\
+    \
+    {"SetAuthorityRegion",                WorldstateFunctions::SetAuthorityRegion},\
+    \
+    {"SetWeatherRegion",                  WorldstateFunctions::SetWeatherRegion},\
+    {"SetWeatherForceState",              WorldstateFunctions::SetWeatherForceState},\
+    {"SetWeatherCurrent",                 WorldstateFunctions::SetWeatherCurrent},\
+    {"SetWeatherNext",                    WorldstateFunctions::SetWeatherNext},\
+    {"SetWeatherQueued",                  WorldstateFunctions::SetWeatherQueued},\
+    {"SetWeatherTransitionFactor",        WorldstateFunctions::SetWeatherTransitionFactor},\
     \
     {"SetHour",                           WorldstateFunctions::SetHour},\
     {"SetDay",                            WorldstateFunctions::SetDay},\
@@ -35,7 +50,9 @@
     \
     {"SendWorldMap",                      WorldstateFunctions::SendWorldMap},\
     {"SendWorldTime",                     WorldstateFunctions::SendWorldTime},\
+    {"SendWorldWeather",                  WorldstateFunctions::SendWorldWeather},\
     {"SendWorldCollisionOverride",        WorldstateFunctions::SendWorldCollisionOverride},\
+    {"SendWorldRegionAuthority",          WorldstateFunctions::SendWorldRegionAuthority},\
     \
     {"ReadLastWorldstate",                WorldstateFunctions::ReadLastWorldstate},\
     {"CopyLastWorldstateToStore",         WorldstateFunctions::CopyLastWorldstateToStore}
@@ -77,8 +94,43 @@ public:
     static unsigned int GetMapChangesSize() noexcept;
 
     /**
+    * \brief Get the weather region in the read worldstate.
+    *
+    * \return The weather region.
+    */
+    static const char *GetWeatherRegion() noexcept;
+
+    /**
+    * \brief Get the current weather in the read worldstate.
+    *
+    * \return The current weather.
+    */
+    static int GetWeatherCurrent() noexcept;
+
+    /**
+    * \brief Get the next weather in the read worldstate.
+    *
+    * \return The next weather.
+    */
+    static int GetWeatherNext() noexcept;
+
+    /**
+    * \brief Get the queued weather in the read worldstate.
+    *
+    * \return The queued weather.
+    */
+    static int GetWeatherQueued() noexcept;
+
+    /**
+    * \brief Get the transition factor of the weather in the read worldstate.
+    *
+    * \return The transition factor of the weather.
+    */
+    static double GetWeatherTransitionFactor() noexcept;
+
+    /**
     * \brief Get the X coordinate of the cell corresponding to the map tile at a certain index in
-    *        the read worldstate's map changes.
+    *        the read worldstate's map tiles.
     *
     * \param i The index of the map tile.
     * \return The X coordinate of the cell.
@@ -87,12 +139,70 @@ public:
 
     /**
     * \brief Get the Y coordinate of the cell corresponding to the map tile at a certain index in
-    *        the read worldstate's map changes.
+    *        the read worldstate's map tiles.
     *
     * \param i The index of the map tile.
     * \return The Y coordinate of the cell.
     */
     static int GetMapTileCellY(unsigned int index) noexcept;
+
+    /**
+    * \brief Set the region affected by the next WorldRegionAuthority packet sent.
+    *
+    * \param region The region.
+    * \return void
+    */
+    static void SetAuthorityRegion(const char* authorityRegion) noexcept;
+
+    /**
+    * \brief Set the weather region in the write-only worldstate stored on the server.
+    *
+    * \param region The region.
+    * \return void
+    */
+    static void SetWeatherRegion(const char* region) noexcept;
+
+    /**
+    * \brief Set the weather forcing state in the write-only worldstate stored on the server.
+    *
+    * Players who receive a packet with forced weather will switch to that weather immediately.
+    *
+    * \param forceState The weather forcing state.
+    * \return void
+    */
+    static void SetWeatherForceState(bool forceState) noexcept;
+
+    /**
+    * \brief Set the current weather in the write-only worldstate stored on the server.
+    *
+    * \param currentWeather The current weather.
+    * \return void
+    */
+    static void SetWeatherCurrent(int currentWeather) noexcept;
+
+    /**
+    * \brief Set the next weather in the write-only worldstate stored on the server.
+    *
+    * \param nextWeather The next weather.
+    * \return void
+    */
+    static void SetWeatherNext(int nextWeather) noexcept;
+
+    /**
+    * \brief Set the queued weather in the write-only worldstate stored on the server.
+    *
+    * \param queuedWeather The queued weather.
+    * \return void
+    */
+    static void SetWeatherQueued(int queuedWeather) noexcept;
+
+    /**
+    * \brief Set the transition factor for the weather in the write-only worldstate stored on the server.
+    *
+    * \param transitionFactor The transition factor.
+    * \return void
+    */
+    static void SetWeatherTransitionFactor(double transitionFactor) noexcept;
 
     /**
     * \brief Set the world's hour in the write-only worldstate stored on the server.
@@ -218,6 +328,17 @@ public:
     static void LoadMapTileImageFile(int cellX, int cellY, const char* filePath) noexcept;
 
     /**
+    * \brief Send a WorldRegionAuthority packet establishing a certain player as the only one who
+    *        should process certain region-specific events (such as weather changes).
+    *
+    * It is always sent to all players.
+    *
+    * \param pid The player ID attached to the packet.
+    * \return void
+    */
+    static void SendWorldRegionAuthority(unsigned short pid) noexcept;
+
+    /**
     * \brief Send a WorldMap packet with the current set of map changes in the write-only
     *        worldstate.
     *
@@ -240,6 +361,18 @@ public:
     * \return void
     */
     static void SendWorldTime(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+    /**
+    * \brief Send a WorldWeather packet with the current weather in the write-only worldstate.
+    *
+    * \param pid The player ID attached to the packet.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
+    * \return void
+    */
+    static void SendWorldWeather(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a WorldCollisionOverride packet with the current collision overrides in

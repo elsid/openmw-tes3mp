@@ -18,8 +18,12 @@ namespace mwmp
         void markExploredMapTile(int cellX, int cellY);
 
         void setMapExplored();
+        void setWeather();
 
         void sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData);
+        void sendWeather(std::string region, int currentWeather, int nextWeather, int queuedWeather, float transitionFactor);
+
+        mwmp::Weather localWeather;
 
     private:
 

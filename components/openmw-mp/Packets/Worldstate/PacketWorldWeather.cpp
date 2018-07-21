@@ -13,5 +13,10 @@ void PacketWorldWeather::Packet(RakNet::BitStream *bs, bool send)
 {
     WorldstatePacket::Packet(bs, send);
 
-    // Placeholder to be filled in later
+    RW(worldstate->forceWeather, send);
+    RW(worldstate->weather.region, send, true);
+    RW(worldstate->weather.currentWeather, send);
+    RW(worldstate->weather.nextWeather, send);
+    RW(worldstate->weather.queuedWeather, send);
+    RW(worldstate->weather.transitionFactor, send);
 }

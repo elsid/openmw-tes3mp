@@ -1,7 +1,7 @@
 #ifndef OPENMW_PROCESSORWORLDWEATHER_HPP
 #define OPENMW_PROCESSORWORLDWEATHER_HPP
 
-#include "../PlayerProcessor.hpp"
+#include "../WorldstateProcessor.hpp"
 
 namespace mwmp
 {
@@ -15,7 +15,9 @@ namespace mwmp
 
         void Do(WorldstatePacket &packet, Player &player, BaseWorldstate &worldstate) override
         {
-            // Placeholder to be filled in later
+            DEBUG_PRINTF(strPacketID.c_str());
+
+            Script::Call<Script::CallbackIdentity("OnWorldWeather")>(player.getId());
         }
     };
 }

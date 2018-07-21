@@ -1,5 +1,5 @@
-#ifndef OPENMW_PROCESSORGAMEWEATHER_HPP
-#define OPENMW_PROCESSORGAMEWEATHER_HPP
+#ifndef OPENMW_PROCESSORWORLDWEATHER_HPP
+#define OPENMW_PROCESSORWORLDWEATHER_HPP
 
 #include "../PlayerProcessor.hpp"
 
@@ -15,9 +15,9 @@ namespace mwmp
 
         virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)
         {
-            // Placeholder to be filled in later
+            worldstate.setWeather();
         }
     };
 }
 
-#endif //OPENMW_PROCESSORGAMEWEATHER_HPP
+#endif //OPENMW_PROCESSORWORLDWEATHER_HPP

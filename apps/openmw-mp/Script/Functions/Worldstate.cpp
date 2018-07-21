@@ -34,6 +34,31 @@ unsigned int WorldstateFunctions::GetMapChangesSize() noexcept
     return readWorldstate->mapTiles.size();
 }
 
+const char *WorldstateFunctions::GetWeatherRegion() noexcept
+{
+    return readWorldstate->weather.region.c_str();
+}
+
+int WorldstateFunctions::GetWeatherCurrent() noexcept
+{
+    return readWorldstate->weather.currentWeather;
+}
+
+int WorldstateFunctions::GetWeatherNext() noexcept
+{
+    return readWorldstate->weather.nextWeather;
+}
+
+int WorldstateFunctions::GetWeatherQueued() noexcept
+{
+    return readWorldstate->weather.queuedWeather;
+}
+
+double WorldstateFunctions::GetWeatherTransitionFactor() noexcept
+{
+    return readWorldstate->weather.transitionFactor;
+}
+
 int WorldstateFunctions::GetMapTileCellX(unsigned int index) noexcept
 {
     return readWorldstate->mapTiles.at(index).x;
@@ -42,6 +67,41 @@ int WorldstateFunctions::GetMapTileCellX(unsigned int index) noexcept
 int WorldstateFunctions::GetMapTileCellY(unsigned int index) noexcept
 {
     return readWorldstate->mapTiles.at(index).y;
+}
+
+void WorldstateFunctions::SetAuthorityRegion(const char* authorityRegion) noexcept
+{
+    writeWorldstate.authorityRegion = authorityRegion;
+}
+
+void WorldstateFunctions::SetWeatherRegion(const char* region) noexcept
+{
+    writeWorldstate.weather.region = region;
+}
+
+void WorldstateFunctions::SetWeatherForceState(bool forceState) noexcept
+{
+    writeWorldstate.forceWeather = forceState;
+}
+
+void WorldstateFunctions::SetWeatherCurrent(int currentWeather) noexcept
+{
+    writeWorldstate.weather.currentWeather = currentWeather;
+}
+
+void WorldstateFunctions::SetWeatherNext(int nextWeather) noexcept
+{
+    writeWorldstate.weather.nextWeather = nextWeather;
+}
+
+void WorldstateFunctions::SetWeatherQueued(int queuedWeather) noexcept
+{
+    writeWorldstate.weather.queuedWeather = queuedWeather;
+}
+
+void WorldstateFunctions::SetWeatherTransitionFactor(double transitionFactor) noexcept
+{
+    writeWorldstate.weather.transitionFactor = transitionFactor;
 }
 
 void WorldstateFunctions::SetHour(double hour) noexcept
@@ -169,6 +229,22 @@ void WorldstateFunctions::SendWorldTime(unsigned short pid, bool sendToOtherPlay
         packet->Send(true);
 }
 
+void WorldstateFunctions::SendWorldWeather(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    writeWorldstate.guid = player->guid;
+
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_WEATHER);
+    packet->setWorldstate(&writeWorldstate);
+
+    if (!skipAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
+}
+
 void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     Player *player;
@@ -183,6 +259,22 @@ void WorldstateFunctions::SendWorldCollisionOverride(unsigned short pid, bool se
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+void WorldstateFunctions::SendWorldRegionAuthority(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    writeWorldstate.guid = player->guid;
+
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_REGION_AUTHORITY);
+    packet->setWorldstate(&writeWorldstate);
+
+    packet->Send(false);
+
+    // This packet should always be sent to all other players
+    packet->Send(true);
 }
 
 

@@ -373,6 +373,51 @@ namespace MWWorld
 
             void changeWeather (const std::string& region, const unsigned int id) override;
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to set a specific weather state for a region from elsewhere
+                in the code
+            */
+            void setRegionWeather(const std::string& region, const unsigned int currentWeather, const unsigned int nextWeather,
+                const unsigned int queuedWeather, const float transitionFactor, bool force) override;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to check whether the local WeatherManager has the
+                ability to create weather changes
+            */
+            bool getWeatherCreationState() override;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to enable and disable the local WeatherManager's ability
+                to create weather changes
+            */
+            void setWeatherCreationState(bool state) override;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to send the current weather in a WorldWeather packet
+                when requested from elsewhere in the code
+            */
+            void sendWeather() override;
+            /*
+                End of tes3mp addition
+            */
+
             int getCurrentWeather() const override;
 
             int getMasserPhase() const override;
