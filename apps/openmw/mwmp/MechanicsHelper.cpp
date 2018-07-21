@@ -288,8 +288,7 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             attack.instant = false;
         }
 
-        LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "SpellId: %s", attack.spellId.c_str());
-        LOG_APPEND(Log::LOG_VERBOSE, " - success: %d", attack.success);
+        LOG_APPEND(Log::LOG_VERBOSE, "- spellId: %s, success: %s", attack.spellId.c_str(), attack.success ? "true" : "false");
     }
 }
 
