@@ -104,6 +104,7 @@ void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& 
 
 void Worldstate::sendWeather(std::string region, int currentWeather, int nextWeather, int queuedWeather, float transitionFactor)
 {
+    forceWeather = false;
     weather.region = region;
     weather.currentWeather = currentWeather;
     weather.nextWeather = nextWeather;
