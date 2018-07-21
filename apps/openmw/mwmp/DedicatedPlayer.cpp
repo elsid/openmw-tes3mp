@@ -335,12 +335,12 @@ void DedicatedPlayer::setEquipment()
         const int count = equipmentItems[slot].count;
         ptr.getClass().getContainerStore(ptr).add(dedicItem, count, ptr);
 
-        for (const auto &ptr : invStore)
+        for (const auto &itemPtr : invStore)
         {
-            if (::Misc::StringUtils::ciEqual(ptr.getCellRef().getRefId(), dedicItem)) // equip item
+            if (::Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), dedicItem)) // equip item
             {
-                std::shared_ptr<MWWorld::Action> action = ptr.getClass().use(ptr);
-                action->execute(this->ptr);
+                std::shared_ptr<MWWorld::Action> action = itemPtr.getClass().use(itemPtr);
+                action->execute(ptr);
                 break;
             }
         }
