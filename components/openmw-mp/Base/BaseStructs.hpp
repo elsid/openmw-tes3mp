@@ -41,15 +41,17 @@ namespace mwmp
 
         Target target;
 
-        char type; // 0 - melee, 1 - magic, 2 - throwable
+        char type; // 0 - melee, 1 - magic, 2 - item magic, 3 - throwable
         enum TYPE
         {
             MELEE = 0,
             MAGIC,
+            ITEM_MAGIC,
             THROWABLE
         };
 
         std::string spellId; // id of spell (e.g. "fireball")
+        std::string itemId;
 
         float damage;
 

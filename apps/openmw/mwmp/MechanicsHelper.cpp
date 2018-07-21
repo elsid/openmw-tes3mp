@@ -201,8 +201,6 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
     }
 
     MWMechanics::CreatureStats &attackerStats = attacker.getClass().getCreatureStats(attacker);
-    attackerStats.getSpells().setSelectedSpell(attack.spellId);
-
     MWWorld::Ptr victim;
 
     if (attack.target.isPlayer)
@@ -282,6 +280,8 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
     }
     else if (attack.type == attack.MAGIC)
     {
+        attackerStats.getSpells().setSelectedSpell(attack.spellId);
+
         if (attack.instant)
         {
             MWBase::Environment::get().getWorld()->castSpell(attacker);
@@ -289,6 +289,32 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
         }
 
         LOG_APPEND(Log::LOG_VERBOSE, "- spellId: %s, success: %s", attack.spellId.c_str(), attack.success ? "true" : "false");
+    }
+    else if (attack.type == attack.ITEM_MAGIC)
+    {
+        attackerStats.getSpells().setSelectedSpell("");
+
+        MWWorld::InventoryStore& inventoryStore = attacker.getClass().getInventoryStore(attacker);
+
+        MWWorld::ContainerStoreIterator it = inventoryStore.begin();
+        for (; it != inventoryStore.end(); ++it)
+        {
+            if (Misc::StringUtils::ciEqual(it->getCellRef().getRefId(), attack.itemId))
+                break;
+        }
+
+        if (it != inventoryStore.end())
+        {
+            inventoryStore.setSelectedEnchantItem(it);
+            LOG_APPEND(Log::LOG_VERBOSE, "- itemId: %s", attack.itemId.c_str());
+            MWBase::Environment::get().getWorld()->castSpell(attacker);
+            inventoryStore.setSelectedEnchantItem(inventoryStore.end());
+        }
+        else
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Could not find item %s used by %s to cast item spell!",
+                attack.itemId.c_str(), attacker.getCellRef().getRefId().c_str());
+        }
     }
 }
 

@@ -25,15 +25,28 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
         RW(player->attack.target.mpNum, send);
     }
 
-    RW(player->attack.spellId, send, true);
     RW(player->attack.type, send);
-    RW(player->attack.success, send);
-    RW(player->attack.damage, send, false); // never compress damage
 
-    RW(player->attack.pressed, send);
-    RW(player->attack.knockdown, send);
-    RW(player->attack.block, send);
+    if (player->attack.type == mwmp::Attack::MELEE || player->attack.type == mwmp::Attack::MAGIC)
+    {
+        RW(player->attack.pressed, send);
+        RW(player->attack.success, send);
 
-    RW(player->attack.applyWeaponEnchantment, send);
-    RW(player->attack.applyProjectileEnchantment, send);
+        if (player->attack.type == mwmp::Attack::MELEE)
+        {
+            RW(player->attack.damage, send);
+            RW(player->attack.block, send);
+            RW(player->attack.knockdown, send);
+
+            RW(player->attack.applyWeaponEnchantment, send);
+            RW(player->attack.applyProjectileEnchantment, send);
+        }
+        else if (player->attack.type == mwmp::Attack::MAGIC)
+        {
+            RW(player->attack.instant, send);
+            RW(player->attack.spellId, send, true);
+        }
+    }
+    else if (player->attack.type == mwmp::Attack::ITEM_MAGIC)
+        RW(player->attack.itemId, send), true;
 }

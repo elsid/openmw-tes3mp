@@ -24,16 +24,22 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
         RW(actor.attack.target.mpNum, send);
     }
 
-    RW(actor.attack.spellId, send);
-    RW(actor.attack.type, send);
-    RW(actor.attack.success, send);
-    RW(actor.attack.damage, send);
-
     RW(actor.attack.pressed, send);
-    RW(actor.attack.knockdown, send);
-    RW(actor.attack.block, send);
-
     RW(actor.attack.instant, send);
-    RW(actor.attack.applyWeaponEnchantment, send);
-    RW(actor.attack.applyProjectileEnchantment, send);
+    RW(actor.attack.success, send);
+    RW(actor.attack.type, send);
+
+    if (actor.attack.type == mwmp::Attack::MELEE)
+    {
+        RW(actor.attack.damage, send);
+        RW(actor.attack.block, send);
+        RW(actor.attack.knockdown, send);
+
+        RW(actor.attack.applyWeaponEnchantment, send);
+        RW(actor.attack.applyProjectileEnchantment, send);
+    }
+    else if (actor.attack.type == mwmp::Attack::MAGIC)
+        RW(actor.attack.spellId, send, true);
+    else if (actor.attack.type == mwmp::Attack::ITEM_MAGIC)
+        RW(actor.attack.itemId, send, true);
 }

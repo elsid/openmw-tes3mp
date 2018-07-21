@@ -936,6 +936,25 @@ namespace MWMechanics
         else if (isProjectile || !mTarget.isEmpty())
             inflict(mTarget, mCaster, enchantment->mEffects, ESM::RT_Target);
 
+        /*
+            Start of tes3mp addition
+
+            If this mPtr belongs to a LocalPlayer or LocalActor, get their Attack and prepare
+            it for sending
+        */
+        mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(mCaster);
+
+        if (localAttack)
+        {
+            MechanicsHelper::resetAttack(localAttack);
+            localAttack->type = mwmp::Attack::ITEM_MAGIC;
+            localAttack->itemId = item.getCellRef().getRefId();
+            localAttack->shouldSend = true;
+        }
+        /*
+            End of tes3mp addition
+        */
+
         return true;
     }
 
