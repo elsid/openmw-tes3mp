@@ -67,6 +67,8 @@
     Bug #4496: SpellTurnLeft and SpellTurnRight animation groups are unused
     Bug #4497: File names starting with x or X are not classified as animation
     Bug #4503: Cast and ExplodeSpell commands increase alteration skill
+    Bug #4510: Division by zero in MWMechanics::CreatureStats::setAttribute
+    Bug #4519: Knockdown does not discard movement in the 1st-person mode
     Feature #2606: Editor: Implemented (optional) case sensitive global search
     Feature #3083: Play animation when NPC is casting spell via script
     Feature #3276: Editor: Search- Show number of (remaining) search results and indicate a search without any results
@@ -78,7 +80,10 @@
     Feature #4404: Editor: All EnumDelegate fields should have their items sorted alphabetically
     Feature #4444: Per-group KF-animation files support
     Feature #4466: Editor: Add option to ignore "Base" records when running verifier
+    Feature #4488: Make water shader rougher during rain
     Feature #4012: Editor: Write a log file if OpenCS crashes
+    Feature #4509: Show count of enchanted items in stack in the spells list
+    Feature #4512: Editor: Use markers for lights and creatures levelled lists
     Task #2490: Don't open command prompt window on Release-mode builds automatically
 
 0.44.0
