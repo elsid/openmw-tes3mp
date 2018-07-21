@@ -532,7 +532,7 @@ int Networking::mainLoop()
                     bsIn.IgnoreBytes((unsigned int) RakNet::RakNetGUID::size()); // Ignore GUID from received packet
 
 
-                    if (Players::isPlayerExists(packet->guid))
+                    if (Players::doesPlayerExist(packet->guid))
                         update(packet, bsIn);
                     else
                         preInit(packet, bsIn);

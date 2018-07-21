@@ -177,7 +177,7 @@ void Player::forEachLoaded(std::function<void(Player *pl, Player *other)> func)
     }
 }
 
-bool Players::isPlayerExists(RakNet::RakNetGUID guid)
+bool Players::doesPlayerExist(RakNet::RakNetGUID guid)
 {
     return players.find(guid) != players.end();
 }
