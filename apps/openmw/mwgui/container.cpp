@@ -122,9 +122,7 @@ namespace MWGui
         MWWorld::Ptr itemPtr = mModel->getItem(mSelectedItem).mBase;
         objectList->addContainerItem(baseObject, itemPtr, count);
         objectList->addObject(baseObject);
-
-        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setObjectList(objectList);
-        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
+        objectList->sendContainer();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i\n- cell: %s\n- item: %s, %i",
             baseObject.refId.c_str(), baseObject.refNum, objectList->cell.getDescription().c_str(),
@@ -177,9 +175,7 @@ namespace MWGui
 
             baseObject.containerItems.push_back(containerItem);
             objectList->addObject(baseObject);
-
-            mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setObjectList(objectList);
-            mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
+            objectList->sendContainer();
 
             LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s %i-%i\n- cell: %s\n- item: %s %i, %i",
                 baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum, objectList->cell.getDescription().c_str(),
@@ -304,9 +300,7 @@ namespace MWGui
         objectList->action = mwmp::BaseObjectList::REMOVE;
         objectList->containerSubAction = mwmp::BaseObjectList::TAKE_ALL;
         objectList->addEntireContainer(mPtr);
-
-        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->setObjectList(objectList);
-        mwmp::Main::get().getNetworking()->getObjectPacket(ID_CONTAINER)->Send();
+        objectList->sendContainer();
 
         LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_CONTAINER about\n- Ptr cellRef: %s, %i-%i\n- cell: %s",
             mPtr.getCellRef().getRefId().c_str(), mPtr.getCellRef().getRefNum().mIndex, mPtr.getCellRef().getMpNum(),
