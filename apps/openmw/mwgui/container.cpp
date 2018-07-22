@@ -114,6 +114,7 @@ namespace MWGui
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->cell = *mPtr.getCell()->getCell();
         objectList->action = mwmp::BaseObjectList::REMOVE;
         objectList->containerSubAction = mwmp::BaseObjectList::DRAG;
@@ -158,6 +159,7 @@ namespace MWGui
         {
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
             objectList->cell = *mPtr.getCell()->getCell();
             objectList->action = mwmp::BaseObjectList::ADD;
             objectList->containerSubAction = mwmp::BaseObjectList::DROP;
@@ -296,6 +298,7 @@ namespace MWGui
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->cell = *mPtr.getCell()->getCell();
         objectList->action = mwmp::BaseObjectList::REMOVE;
         objectList->containerSubAction = mwmp::BaseObjectList::TAKE_ALL;
@@ -379,6 +382,7 @@ namespace MWGui
             {
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                 objectList->addObjectDelete(mPtr);
                 objectList->sendObjectDelete();
             }

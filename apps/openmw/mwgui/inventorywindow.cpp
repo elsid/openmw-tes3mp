@@ -709,6 +709,7 @@ namespace MWGui
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addObjectDelete(object);
         objectList->sendObjectDelete();
         mwmp::Main::get().getLocalPlayer()->sendInventory();

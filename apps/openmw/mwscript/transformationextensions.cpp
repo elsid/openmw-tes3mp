@@ -12,6 +12,7 @@
 #include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/PlayerList.hpp"
 #include "../mwmp/ObjectList.hpp"
+#include "../mwmp/ScriptController.hpp"
 /*
     End of tes3mp addition
 */
@@ -82,6 +83,7 @@ namespace MWScript
                         {
                             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                             objectList->reset();
+                            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                             objectList->addObjectScale(ptr, scale);
                             objectList->sendObjectScale();
                         }
@@ -599,6 +601,7 @@ namespace MWScript
                         */
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();
+                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
 
                         if (ptr.getClass().isActor())
                         {

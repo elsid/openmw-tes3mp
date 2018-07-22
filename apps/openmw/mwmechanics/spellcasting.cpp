@@ -712,6 +712,7 @@ namespace MWMechanics
                     */
                     mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                     objectList->reset();
+                    objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                     objectList->addObjectLock(target, static_cast<int>(magnitude));
                     objectList->sendObjectLock();
                     /*
@@ -758,6 +759,7 @@ namespace MWMechanics
                     */
                     mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                     objectList->reset();
+                    objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                     objectList->addObjectLock(target, 0);
                     objectList->sendObjectLock();
                     /*
@@ -939,7 +941,7 @@ namespace MWMechanics
         /*
             Start of tes3mp addition
 
-            If this mPtr belongs to a LocalPlayer or LocalActor, get their Attack and prepare
+            If this mCaster belongs to a LocalPlayer or LocalActor, get their Attack and prepare
             it for sending
         */
         mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(mCaster);

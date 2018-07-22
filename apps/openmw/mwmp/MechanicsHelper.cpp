@@ -37,6 +37,7 @@ void MechanicsHelper::spawnLeveledCreatures(MWWorld::CellStore* cellStore)
     MWWorld::CellRefList<ESM::CreatureLevList> *creatureLevList = cellStore->getCreatureLists();
     mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
     objectList->reset();
+    objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
 
     int spawnCount = 0;
 

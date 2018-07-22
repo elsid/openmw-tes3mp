@@ -20,6 +20,7 @@
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/ObjectList.hpp"
+#include "../mwmp/ScriptController.hpp"
 /*
     End of tes3mp addition
 */
@@ -231,6 +232,7 @@ namespace MWScript
         {
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
             objectList->addScriptLocalShort(mReference, index, value);
             objectList->sendScriptLocalShort();
         }
@@ -265,6 +267,7 @@ namespace MWScript
         {
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
             objectList->addScriptLocalFloat(mReference, index, value);
             objectList->sendScriptLocalFloat();
         }
@@ -328,6 +331,7 @@ namespace MWScript
         {
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
             objectList->addScriptGlobalShort(name, value);
             objectList->sendScriptGlobalShort();
         }
@@ -618,6 +622,7 @@ namespace MWScript
             {
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
                 objectList->addObjectState(ref, true);
                 objectList->sendObjectState();
             }
@@ -655,6 +660,7 @@ namespace MWScript
             {
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
                 objectList->addObjectState(ref, false);
                 objectList->sendObjectState();
             }
@@ -734,6 +740,7 @@ namespace MWScript
         {
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
             objectList->addScriptMemberShort(id, index, value);
             objectList->sendScriptMemberShort();
         }

@@ -108,6 +108,7 @@ namespace MWMechanics
                         {
                             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                             objectList->reset();
+                            objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
 
                             MWMechanics::CreatureStats *actorCreatureStats = &mActor.getClass().getCreatureStats(mActor);
 
@@ -168,6 +169,7 @@ namespace MWMechanics
                 */
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                 objectList->addObjectDelete(ptr);
                 objectList->sendObjectDelete();
                 /*

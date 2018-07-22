@@ -2579,6 +2579,7 @@ namespace MWWorld
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addDoorState(door, state);
         objectList->sendDoorState();
         /*
@@ -2598,6 +2599,7 @@ namespace MWWorld
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addDoorState(door, state);
         objectList->sendDoorState();
         /*
@@ -3676,6 +3678,7 @@ namespace MWWorld
 
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
             objectList->addObjectSpawn(ptr);
             objectList->sendObjectSpawn();
 

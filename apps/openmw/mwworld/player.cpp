@@ -261,6 +261,7 @@ namespace MWWorld
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addObjectActivate(toActivate, player);
         objectList->sendObjectActivate();
         /*

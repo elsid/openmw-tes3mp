@@ -60,6 +60,7 @@ namespace MWWorld
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
+        objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         
         ESM::Position pos;
 

@@ -10,6 +10,7 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/ObjectList.hpp"
+#include "../mwmp/ScriptController.hpp"
 /*
     End of tes3mp addition
 */
@@ -106,6 +107,7 @@ namespace MWScript
                 */
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                 objectList->addVideoPlay(name, allowSkipping);
                 objectList->sendVideoPlay();
                 /*
@@ -216,6 +218,7 @@ namespace MWScript
                     */
                     mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                     objectList->reset();
+                    objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                     objectList->addObjectLock(ptr, lockLevel);
                     objectList->sendObjectLock();
                     /*
@@ -265,6 +268,7 @@ namespace MWScript
                     */
                     mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                     objectList->reset();
+                    objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                     objectList->addObjectLock(ptr, 0);
                     objectList->sendObjectLock();
                     /*
@@ -768,6 +772,7 @@ namespace MWScript
                         */
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();
+                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                         objectList->addObjectDelete(ptr);
                         objectList->sendObjectDelete();
                         /*

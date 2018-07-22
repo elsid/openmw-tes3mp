@@ -74,6 +74,7 @@ namespace MWGui
             */
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
+            objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
             objectList->addObjectPlace(dropped, true);
             objectList->sendObjectPlace();
             /*

@@ -86,6 +86,7 @@ namespace MWMechanics
                 */
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                 objectList->addObjectLock(lock, 0);
                 objectList->sendObjectLock();
                 /*
@@ -154,6 +155,7 @@ namespace MWMechanics
                 */
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
+                objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                 objectList->addObjectTrap(trap, trap.getRefData().getPosition(), true);
                 objectList->sendObjectTrap();
                 /*
