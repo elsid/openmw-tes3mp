@@ -9,6 +9,14 @@
 
 namespace mwmp
 {
+    enum PACKET_ORIGIN
+    {
+        GAMEPLAY = 0,
+        CONSOLE = 1,
+        CLIENT_SCRIPT = 2,
+        SERVER_SCRIPT = 3
+    };
+
     struct Item
     {
         std::string refId;

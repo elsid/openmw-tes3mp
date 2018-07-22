@@ -28,6 +28,7 @@ void ObjectFunctions::ClearObjectList() noexcept
 {
     writeObjectList.cell.blank();
     writeObjectList.baseObjects.clear();
+    writeObjectList.packetOrigin = mwmp::PACKET_ORIGIN::SERVER_SCRIPT;
 }
 
 void ObjectFunctions::SetObjectListPid(unsigned short pid) noexcept
@@ -46,6 +47,16 @@ void ObjectFunctions::CopyReceivedObjectListToStore() noexcept
 unsigned int ObjectFunctions::GetObjectListSize() noexcept
 {
     return readObjectList->baseObjectCount;
+}
+
+unsigned char ObjectFunctions::GetObjectListOrigin() noexcept
+{
+    return readObjectList->packetOrigin;
+}
+
+const char *ObjectFunctions::GetObjectListClientScript() noexcept
+{
+    return readObjectList->originClientScript.c_str();
 }
 
 unsigned char ObjectFunctions::GetObjectListAction() noexcept

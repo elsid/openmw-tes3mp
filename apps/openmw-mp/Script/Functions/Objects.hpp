@@ -10,6 +10,8 @@
     {"CopyReceivedObjectListToStore",         ObjectFunctions::CopyReceivedObjectListToStore},\
     \
     {"GetObjectListSize",                     ObjectFunctions::GetObjectListSize},\
+    {"GetObjectListOrigin",                   ObjectFunctions::GetObjectListOrigin},\
+    {"GetObjectListClientScript",             ObjectFunctions::GetObjectListClientScript},\
     {"GetObjectListAction",                   ObjectFunctions::GetObjectListAction},\
     {"GetObjectListContainerSubAction",       ObjectFunctions::GetObjectListContainerSubAction},\
     \
@@ -169,6 +171,20 @@ public:
     * \return The number of indexes.
     */
     static unsigned int GetObjectListSize() noexcept;
+
+    /**
+    * \brief Get the origin of the read object list.
+    *
+    * \return The origin (0 for GAMEPLAY, 1 for CONSOLE, 2 for CLIENT_SCRIPT).
+    */
+    static unsigned char GetObjectListOrigin() noexcept;
+
+    /**
+    * \brief Get the client script that the read object list originated from.
+    *
+    * \return The ID of the client script.
+    */
+    static const char *GetObjectListClientScript() noexcept;
 
     /**
     * \brief Get the action type used in the read object list.

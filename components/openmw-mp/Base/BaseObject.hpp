@@ -113,6 +113,9 @@ namespace mwmp
         ESM::Cell cell;
         std::string consoleCommand;
 
+        unsigned char packetOrigin; // 0 - Gameplay, 1 - Console, 2 - Client script, 3 - Server script
+        std::string originClientScript;
+
         unsigned char action; // 0 - Clear and set in entirety, 1 - Add item, 2 - Remove item, 3 - Request items
         unsigned char containerSubAction; // 0 - None, 1 - Drag, 2 - Drop, 3 - Take all, 4 - Reply to request
 
