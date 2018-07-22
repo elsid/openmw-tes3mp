@@ -50,8 +50,10 @@ bool ObjectPacket::PacketHeader(RakNet::BitStream *bs, bool send)
 
     RW(objectList->packetOrigin, send);
 
-    if (objectList->packetOrigin == mwmp::CLIENT_SCRIPT)
+    /* Comment this out until it's implemented properly
+    if (objectList->packetOrigin == mwmp::CLIENT_SCRIPT_LOCAL)
         RW(objectList->originClientScript, send, true);
+    */
 
     if (send)
         objectList->baseObjectCount = (unsigned int)(objectList->baseObjects.size());

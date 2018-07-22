@@ -11,10 +11,12 @@ namespace mwmp
 {
     enum PACKET_ORIGIN
     {
-        GAMEPLAY = 0,
-        CONSOLE = 1,
-        CLIENT_SCRIPT = 2,
-        SERVER_SCRIPT = 3
+        CLIENT_GAMEPLAY = 0,
+        CLIENT_CONSOLE = 1,
+        CLIENT_DIALOGUE = 2,
+        CLIENT_SCRIPT_LOCAL = 3,
+        CLIENT_SCRIPT_GLOBAL = 4,
+        SERVER_SCRIPT = 5
     };
 
     struct Item
