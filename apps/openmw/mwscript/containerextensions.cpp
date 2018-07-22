@@ -12,7 +12,10 @@
     Include additional headers for multiplayer purposes
 */
 #include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/PlayerList.hpp"
+#include "../mwmp/ObjectList.hpp"
 /*
     End of tes3mp addition
 */
@@ -73,11 +76,21 @@ namespace MWScript
                             || ::Misc::StringUtils::ciEqual(item, "gold_100"))
                         item = "gold_001";
 
-                    MWWorld::Ptr itemPtr = *ptr.getClass().getContainerStore (ptr).add (item, count, ptr);
+                    /*
+                        Start of tes3mp change (major)
 
+                        Disable unilateral item addition on this client and expect the server's reply to our
+                        packet to do it instead, except for changes to player inventories which still require
+                        the PlayerInventory to be reworked
+                    */
                     // Spawn a messagebox (only for items added to player's inventory and if player is talking to someone)
                     if (ptr == MWBase::Environment::get().getWorld ()->getPlayerPtr() )
                     {
+                        MWWorld::Ptr itemPtr = *ptr.getClass().getContainerStore(ptr).add(item, count, ptr);
+                    /*
+                        End of tes3mp change (major)
+                    */
+
                         /*
                             Start of tes3mp addition
 
@@ -104,6 +117,34 @@ namespace MWScript
                         }
                         MWBase::Environment::get().getWindowManager()->messageBox(msgBox, MWGui::ShowInDialogueMode_Only);
                     }
+                    /*
+                        Start of tes3mp addition
+
+                        Send an ID_CONTAINER packet every time an item is added to a Ptr
+                        that doesn't belong to a DedicatedPlayer
+                    */
+                    else if (!ptr.getClass().isActor() || !mwmp::PlayerList::isDedicatedPlayer(ptr))
+                    {
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->cell = *ptr.getCell()->getCell();
+                        objectList->action = mwmp::BaseObjectList::ADD;
+                        objectList->containerSubAction = mwmp::BaseObjectList::NONE;
+
+                        mwmp::BaseObject baseObject = objectList->getBaseObject(ptr);
+                        mwmp::ContainerItem containerItem;
+                        containerItem.refId = item;
+                        containerItem.count = count;
+                        containerItem.charge = -1;
+                        containerItem.enchantmentCharge = -1;
+
+                        baseObject.containerItems.push_back(containerItem);
+                        objectList->addObject(baseObject);
+                        objectList->sendContainer();
+                    }
+                    /*
+                        End of tes3mp addition
+                    */
                 }
         };
 
@@ -166,12 +207,27 @@ namespace MWScript
                         if (::Misc::StringUtils::ciEqual(iter->getCellRef().getRefId(), item))
                             itemName = iter->getClass().getName(*iter);
 
-                    int numRemoved = store.remove(item, count, ptr);
+                    /*
+                        Start of tes3mp change (major)
+
+                        Disable unilateral item removal on this client and expect the server's reply to our
+                        packet to do it instead, except for changes to player inventories which still require
+                        the PlayerInventory to be reworked
+                    */
+                    int numRemoved = 0;
+                    
+                    if (ptr == MWMechanics::getPlayer())
+                        numRemoved = store.remove(item, count, ptr);
 
                     // Spawn a messagebox (only for items removed from player's inventory)
                     if ((numRemoved > 0)
                         && (ptr == MWMechanics::getPlayer()))
                     {
+                        mwmp::Main::get().getLocalPlayer()->sendInventory();
+                    /*
+                        End of tes3mp change (major)
+                    */
+
                         // The two GMST entries below expand to strings informing the player of what, and how many of it has been removed from their inventory
                         std::string msgBox;
 
@@ -187,6 +243,35 @@ namespace MWScript
                         }
                         MWBase::Environment::get().getWindowManager()->messageBox(msgBox, MWGui::ShowInDialogueMode_Only);
                     }
+                    /*
+                        Start of tes3mp addition
+
+                        Send an ID_CONTAINER packet every time an item is removed from a Ptr
+                        that doesn't belong to a DedicatedPlayer
+                    */
+                    else if (!ptr.getClass().isActor() || !mwmp::PlayerList::isDedicatedPlayer(ptr))
+                    {
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->cell = *ptr.getCell()->getCell();
+                        objectList->action = mwmp::BaseObjectList::REMOVE;
+                        objectList->containerSubAction = mwmp::BaseObjectList::NONE;
+
+                        mwmp::BaseObject baseObject = objectList->getBaseObject(ptr);
+                        mwmp::ContainerItem containerItem;
+                        containerItem.refId = item;
+                        containerItem.count = 0;
+                        containerItem.actionCount = count;
+                        containerItem.charge = -1;
+                        containerItem.enchantmentCharge = -1;
+
+                        baseObject.containerItems.push_back(containerItem);
+                        objectList->addObject(baseObject);
+                        objectList->sendContainer();
+                    }
+                    /*
+                        End of tes3mp addition
+                    */
                 }
         };
 
