@@ -262,6 +262,19 @@ namespace MWDialogue
             try
             {
                 MWScript::InterpreterContext interpreterContext(&actor.getRefData().getLocals(), actor);
+
+                /*
+                    Start of tes3mp addition
+
+                    Mark this InterpreterContext as having a CONSOLE context,
+                    so that packets sent by the Interpreter can have their
+                    origin determined by serverside scripts
+                */
+                interpreterContext.setContextType(Interpreter::Context::DIALOGUE);
+                /*
+                    End of tes3mp addition
+                */
+
                 Interpreter::Interpreter interpreter;
                 MWScript::installOpcodes (interpreter);
                 interpreter.run (&code[0], code.size(), interpreterContext);

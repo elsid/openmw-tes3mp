@@ -63,6 +63,24 @@ namespace MWScript
         }
     }
 
+    /*
+        Start of tes3mp addition
+
+        Used for setting and checking the type of this InterpreterContext
+    */
+    unsigned short InterpreterContext::getContextType() const
+    {
+        return mContextType;
+    }
+
+    void InterpreterContext::setContextType(unsigned short contextType)
+    {
+        mContextType = contextType;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     const MWWorld::Ptr InterpreterContext::getReferenceImp (
         const std::string& id, bool activeOnly, bool doThrow) const
     {

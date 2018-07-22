@@ -79,6 +79,18 @@ namespace MWScript
                 MWScript::InterpreterContext interpreterContext (
                     &iter->second.mLocals, MWWorld::Ptr(), iter->second.mId);
 
+                /*
+                    Start of tes3mp addition
+
+                    Mark this InterpreterContext as having a GLOBAL_SCRIPT context,
+                    so that packets sent by the Interpreter can have their
+                    origin determined by serverside scripts
+                */
+                interpreterContext.setContextType(Interpreter::Context::SCRIPT_GLOBAL);
+                /*
+                    End of tes3mp addition
+                */
+
                 MWBase::Environment::get().getScriptManager()->run (iter->first, interpreterContext);
             }
         }

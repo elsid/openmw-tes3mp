@@ -186,6 +186,19 @@ namespace MWGui
             try
             {
                 ConsoleInterpreterContext interpreterContext (*this, mPtr);
+
+                /*
+                    Start of tes3mp addition
+
+                    Mark this InterpreterContext as having a CONSOLE context,
+                    so that packets sent by the Interpreter can have their
+                    origin determined by serverside scripts
+                */
+                interpreterContext.setContextType(Interpreter::Context::CONSOLE);
+                /*
+                    End of tes3mp addition
+                */
+
                 Interpreter::Interpreter interpreter;
                 MWScript::installOpcodes (interpreter, mConsoleOnlyScripts);
                 std::vector<Interpreter::Type_Code> code;

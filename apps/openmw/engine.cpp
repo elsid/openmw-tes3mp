@@ -104,6 +104,18 @@ void OMW::Engine::executeLocalScripts()
             End of tes3mp addition
         */
 
+        /*
+            Start of tes3mp addition
+
+            Mark this InterpreterContext as having a CONSOLE context,
+            so that packets sent by the Interpreter can have their
+            origin determined by serverside scripts
+        */
+        interpreterContext.setContextType(Interpreter::Context::SCRIPT_LOCAL);
+        /*
+            End of tes3mp addition
+        */
+
         mEnvironment.getScriptManager()->run (script.first, interpreterContext);
     }
 }

@@ -63,6 +63,20 @@ namespace MWScript
                 End of tes3mp addition
             */
 
+            /*
+                Start of tes3mp addition
+
+                Used for setting and checking the type of this InterpreterContext
+            */
+            unsigned short mContextType;
+
+            virtual unsigned short getContextType() const;
+
+            virtual void setContextType(unsigned short contextType);
+            /*
+                End of tes3mp addition
+            */
+
             virtual int getLocalShort (int index) const;
 
             virtual int getLocalLong (int index) const;

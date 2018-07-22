@@ -10,6 +10,22 @@ namespace Interpreter
     {
         public:
 
+            /*
+                Start of tes3mp addition
+
+                Keep an enumeration of the possible context types
+            */
+            enum CONTEXT_TYPE
+            {
+                CONSOLE = 0,
+                DIALOGUE = 1,
+                SCRIPT_LOCAL = 2,
+                SCRIPT_GLOBAL = 3
+            };
+            /*
+                End of tes3mp addition
+            */
+
             virtual ~Context() {}
 
             virtual int getLocalShort (int index) const = 0;
@@ -110,6 +126,17 @@ namespace Interpreter
                 = 0;
 
             virtual std::string getTargetId() const = 0;
+
+            /*
+                Start of tes3mp addition
+
+                Used for setting and checking the type of this Context
+            */
+            virtual unsigned short getContextType() const = 0;
+            virtual void setContextType(unsigned short interpreterType) = 0;
+            /*
+                End of tes3mp addition
+            */
     };
 }
 
