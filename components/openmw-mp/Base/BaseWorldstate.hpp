@@ -43,7 +43,7 @@ namespace mwmp
 
         RakNet::RakNetGUID guid;
 
-        double hour;
+        float hour;
         int day;
         int month;
         int year;

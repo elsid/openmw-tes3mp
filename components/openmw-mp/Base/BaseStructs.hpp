@@ -14,7 +14,7 @@ namespace mwmp
         std::string refId;
         int count;
         int charge;
-        double enchantmentCharge;
+        float enchantmentCharge;
 
         inline bool operator==(const Item& rhs)
         {
