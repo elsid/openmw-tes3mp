@@ -175,12 +175,16 @@ public:
     /**
     * \brief Get the origin of the read object list.
     *
-    * \return The origin (0 for GAMEPLAY, 1 for CONSOLE, 2 for CLIENT_SCRIPT).
+    * \return The origin (0 for CLIENT_GAMEPLAY, 1 for CLIENT_CONSOLE, 2 for
+    * CLIENT_DIALOGUE, 3 for CLIENT_SCRIPT_LOCAL, 4 for CLIENT_SCRIPT_GLOBAL,
+    * 5 for SERVER_SCRIPT).
     */
     static unsigned char GetObjectListOrigin() noexcept;
 
     /**
     * \brief Get the client script that the read object list originated from.
+    *
+    * Note: This is not yet implemented.
     *
     * \return The ID of the client script.
     */
