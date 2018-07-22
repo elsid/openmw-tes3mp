@@ -91,6 +91,11 @@ bool Utils::compareDoubles(double a, double b, double epsilon)
     return fabs(a - b) < epsilon;
 }
 
+bool Utils::compareFloats(float a, float b, float epsilon)
+{
+    return fabs(a - b) < epsilon;
+}
+
 // Based on https://stackoverflow.com/a/1489873
 unsigned int Utils::getNumberOfDigits(int integer)
 {

@@ -28,7 +28,8 @@ namespace Utils
     int progressFunc(double TotalToDownload, double NowDownloaded);
 
     unsigned int getNumberOfDigits(int integer);
-    bool compareDoubles(double a, double b, double epsilon);
+    bool compareDoubles(double a, double b, double epsilon = 0.005);
+    bool compareFloats(float a, float b, float epsilon = 0.005f);
 
     template <class Type, class Type2>
     bool vectorContains(const std::vector<Type> &vectorChecked, const Type2 &value)
