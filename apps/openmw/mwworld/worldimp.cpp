@@ -1604,7 +1604,9 @@ namespace MWWorld
     */
     void World::setInertialForce(const Ptr& ptr, const osg::Vec3f &force)
     {
-        mPhysics->getActor(ptr)->setInertialForce(force);
+        MWPhysics::Actor *actor = mPhysics->getActor(ptr);
+        actor->setOnGround(false);
+        actor->setInertialForce(force);
     }
     /*
         End of tes3mp addition
