@@ -68,7 +68,7 @@ void LocalActor::updateCell()
     LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Sending ID_ACTOR_CELL_CHANGE about %s %i-%i to server",
                        refId.c_str(), refNum, mpNum);
 
-    LOG_APPEND(Log::LOG_INFO, "- Moved from %s to %s", cell.getDescription().c_str(), ptr.getCell()->getCell()->getDescription().c_str());
+    LOG_APPEND(Log::LOG_VERBOSE, "- Moved from %s to %s", cell.getDescription().c_str(), ptr.getCell()->getCell()->getDescription().c_str());
 
     cell = *ptr.getCell()->getCell();
     position = ptr.getRefData().getPosition();
