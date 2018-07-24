@@ -56,37 +56,37 @@ public:
     * \brief Get the factionId at a certain index in a player's latest faction changes.
     *
     * \param pid The player ID whose faction changes should be used.
-    * \param i The index of the faction.
+    * \param index The index of the faction.
     * \return The factionId.
     */
-    static const char *GetFactionId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetFactionId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the rank at a certain index in a player's latest faction changes.
     *
     * \param pid The player ID whose faction changes should be used.
-    * \param i The index of the faction.
+    * \param index The index of the faction.
     * \return The rank.
     */
-    static int GetFactionRank(unsigned short pid, unsigned int i) noexcept;
+    static int GetFactionRank(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the expulsion state at a certain index in a player's latest faction changes.
     *
     * \param pid The player ID whose faction changes should be used.
-    * \param i The index of the faction.
+    * \param index The index of the faction.
     * \return The expulsion state.
     */
-    static bool GetFactionExpulsionState(unsigned short pid, unsigned int i) noexcept;
+    static bool GetFactionExpulsionState(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the reputation at a certain index in a player's latest faction changes.
     *
     * \param pid The player ID whose faction changes should be used.
-    * \param i The index of the faction.
+    * \param index The index of the faction.
     * \return The reputation.
     */
-    static int GetFactionReputation(unsigned short pid, unsigned int i) noexcept;
+    static int GetFactionReputation(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Set the action type in a player's faction changes.

@@ -132,7 +132,7 @@ public:
     * \brief Get the X coordinate of the cell corresponding to the map tile at a certain index in
     *        the read worldstate's map tiles.
     *
-    * \param i The index of the map tile.
+    * \param index The index of the map tile.
     * \return The X coordinate of the cell.
     */
     static int GetMapTileCellX(unsigned int index) noexcept;
@@ -141,7 +141,7 @@ public:
     * \brief Get the Y coordinate of the cell corresponding to the map tile at a certain index in
     *        the read worldstate's map tiles.
     *
-    * \param i The index of the map tile.
+    * \param index The index of the map tile.
     * \return The Y coordinate of the cell.
     */
     static int GetMapTileCellY(unsigned int index) noexcept;
@@ -310,7 +310,7 @@ public:
     * \brief Save the .png image data of the map tile at a certain index in the read worldstate's
     *        map changes.
     *
-    * \param i The index of the map tile.
+    * \param index The index of the map tile.
     * \param filePath The file path of the resulting file.
     * \return void
     */

@@ -212,10 +212,10 @@ public:
     *       object activation is general enough for players themselves to be included
     *       as objects in ObjectActivate packets.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return Whether the object is a player.
     */
-    static bool IsObjectPlayer(unsigned int i) noexcept;
+    static bool IsObjectPlayer(unsigned int index) noexcept;
 
     /**
     * \brief Get the player ID of the object at a certain index in the read object list,
@@ -224,154 +224,154 @@ public:
     * Note: Currently, players can only be objects in ObjectActivate and ConsoleCommand
     *       packets.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The player ID of the object.
     */
-    static int GetObjectPid(unsigned int i) noexcept;
+    static int GetObjectPid(unsigned int index) noexcept;
 
     /**
     * \brief Get the refId of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The refId.
     */
-    static const char *GetObjectRefId(unsigned int i) noexcept;
+    static const char *GetObjectRefId(unsigned int index) noexcept;
 
     /**
     * \brief Get the refNum of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The refNum.
     */
-    static unsigned int GetObjectRefNum(unsigned int i) noexcept;
+    static unsigned int GetObjectRefNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the mpNum of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The mpNum.
     */
-    static unsigned int GetObjectMpNum(unsigned int i) noexcept;
+    static unsigned int GetObjectMpNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the count of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The object count.
     */
-    static int GetObjectCount(unsigned int i) noexcept;
+    static int GetObjectCount(unsigned int index) noexcept;
 
     /**
     * \brief Get the charge of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The charge.
     */
-    static int GetObjectCharge(unsigned int i) noexcept;
+    static int GetObjectCharge(unsigned int index) noexcept;
 
     /**
     * \brief Get the enchantment charge of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The enchantment charge.
     */
-    static double GetObjectEnchantmentCharge(unsigned int i) noexcept;
+    static double GetObjectEnchantmentCharge(unsigned int index) noexcept;
 
     /**
     * \brief Get the gold value of the object at a certain index in the read object list.
     *
     * This is used solely to get the gold value of gold. It is not used for other objects.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The gold value.
     */
-    static int GetObjectGoldValue(unsigned int i) noexcept;
+    static int GetObjectGoldValue(unsigned int index) noexcept;
 
     /**
     * \brief Get the object scale of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The object scale.
     */
-    static double GetObjectScale(unsigned int i) noexcept;
+    static double GetObjectScale(unsigned int index) noexcept;
 
     /**
     * \brief Get the object state of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The object state.
     */
-    static bool GetObjectState(unsigned int i) noexcept;
+    static bool GetObjectState(unsigned int index) noexcept;
 
     /**
     * \brief Get the door state of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The door state.
     */
-    static int GetObjectDoorState(unsigned int i) noexcept;
+    static int GetObjectDoorState(unsigned int index) noexcept;
 
     /**
     * \brief Get the lock level of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The lock level.
     */
-    static int GetObjectLockLevel(unsigned int i) noexcept;
+    static int GetObjectLockLevel(unsigned int index) noexcept;
 
     /**
     * \brief Check whether the object at a certain index in the read object list has been
     * activated by a player.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return Whether the object has been activated by a player.
     */
-    static bool DoesObjectHavePlayerActivating(unsigned int i) noexcept;
+    static bool DoesObjectHavePlayerActivating(unsigned int index) noexcept;
 
     /**
     * \brief Get the player ID of the player activating the object at a certain index in the
     * read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The player ID of the activating player.
     */
-    static int GetObjectActivatingPid(unsigned int i) noexcept;
+    static int GetObjectActivatingPid(unsigned int index) noexcept;
 
     /**
     * \brief Get the refId of the actor activating the object at a certain index in the read
     * object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The refId of the activating actor.
     */
-    static const char *GetObjectActivatingRefId(unsigned int i) noexcept;
+    static const char *GetObjectActivatingRefId(unsigned int index) noexcept;
 
     /**
     * \brief Get the refNum of the actor activating the object at a certain index in the read
     * object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The refNum of the activating actor.
     */
-    static unsigned int GetObjectActivatingRefNum(unsigned int i) noexcept;
+    static unsigned int GetObjectActivatingRefNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the mpNum of the actor activating the object at a certain index in the read
     * object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The mpNum of the activating actor.
     */
-    static unsigned int GetObjectActivatingMpNum(unsigned int i) noexcept;
+    static unsigned int GetObjectActivatingMpNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the name of the actor activating the object at a certain index in the read
     * object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The name of the activating actor.
     */
-    static const char *GetObjectActivatingName(unsigned int i) noexcept;
+    static const char *GetObjectActivatingName(unsigned int index) noexcept;
 
     /**
     * \brief Check whether the object at a certain index in the read object list is a
@@ -381,17 +381,17 @@ public:
     *
     * \return The summon state.
     */
-    static bool GetObjectSummonState(unsigned int i) noexcept;
+    static bool GetObjectSummonState(unsigned int index) noexcept;
 
     /**
     * \brief Get the summon duration of the object at a certain index in the read object list.
     *
     * Note: Returns -1 if indefinite.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The summon duration.
     */
-    static double GetObjectSummonDuration(unsigned int i) noexcept;
+    static double GetObjectSummonDuration(unsigned int index) noexcept;
 
     /**
     * \brief Check whether the object at a certain index in the read object list has a player
@@ -399,106 +399,106 @@ public:
     *
     * Only living actors can be summoned.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return Whether a player is the summoner of the object.
     */
-    static bool DoesObjectHavePlayerSummoner(unsigned int i) noexcept;
+    static bool DoesObjectHavePlayerSummoner(unsigned int index) noexcept;
 
     /**
     * \brief Get the player ID of the summoner of the object at a certain index in the read object
     * list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The player ID of the summoner.
     */
-    static int GetObjectSummonerPid(unsigned int i) noexcept;
+    static int GetObjectSummonerPid(unsigned int index) noexcept;
 
     /**
     * \brief Get the refId of the actor summoner of the object at a certain index in the read object
     * list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The refId of the summoner.
     */
-    static const char *GetObjectSummonerRefId(unsigned int i) noexcept;
+    static const char *GetObjectSummonerRefId(unsigned int index) noexcept;
 
     /**
     * \brief Get the refNum of the actor summoner of the object at a certain index in the read object
     * list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The refNum of the summoner.
     */
-    static unsigned int GetObjectSummonerRefNum(unsigned int i) noexcept;
+    static unsigned int GetObjectSummonerRefNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the mpNum of the actor summoner of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The mpNum of the summoner.
     */
-    static unsigned int GetObjectSummonerMpNum(unsigned int i) noexcept;
+    static unsigned int GetObjectSummonerMpNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the X position of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The X position.
     */
-    static double GetObjectPosX(unsigned int i) noexcept;
+    static double GetObjectPosX(unsigned int index) noexcept;
 
     /**
     * \brief Get the Y position of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The Y position.
     */
-    static double GetObjectPosY(unsigned int i) noexcept;
+    static double GetObjectPosY(unsigned int index) noexcept;
 
     /**
     * \brief Get the Z position at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The Z position.
     */
-    static double GetObjectPosZ(unsigned int i) noexcept;
+    static double GetObjectPosZ(unsigned int index) noexcept;
 
     /**
     * \brief Get the X rotation of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The X rotation.
     */
-    static double GetObjectRotX(unsigned int i) noexcept;
+    static double GetObjectRotX(unsigned int index) noexcept;
 
     /**
     * \brief Get the Y rotation of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The Y rotation.
     */
-    static double GetObjectRotY(unsigned int i) noexcept;
+    static double GetObjectRotY(unsigned int index) noexcept;
 
     /**
     * \brief Get the Z rotation of the object at a certain index in the read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The Z rotation.
     */
-    static double GetObjectRotZ(unsigned int i) noexcept;
+    static double GetObjectRotZ(unsigned int index) noexcept;
 
     /**
     * \brief Get the videoFilename of the object at a certain index in the read object list.
     *
     * \return The videoFilename.
     */
-    static const char *GetVideoFilename(unsigned int i) noexcept;
+    static const char *GetVideoFilename(unsigned int index) noexcept;
 
     /**
     * \brief Get the number of container item indexes of the object at a certain index in the
     * read object list.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return The number of container item indexes.
     */
     static unsigned int GetContainerChangesSize(unsigned int objectIndex) noexcept;
@@ -559,10 +559,10 @@ public:
     * Note: Only ObjectLists from ObjectPlace packets contain this information. Objects from
     *       received ObjectSpawn packets can always be assumed to have a container.
     *
-    * \param i The index of the object.
+    * \param index The index of the object.
     * \return Whether the object has a container.
     */
-    static bool DoesObjectHaveContainer(unsigned int i) noexcept;
+    static bool DoesObjectHaveContainer(unsigned int index) noexcept;
 
     /**
     * \brief Set the cell of the temporary object list stored on the server.
@@ -1029,8 +1029,8 @@ public:
     static unsigned int GetObjectChangesSize() noexcept;
     static unsigned char GetEventAction() noexcept;
     static unsigned char GetEventContainerSubAction() noexcept;
-    static unsigned int GetObjectRefNumIndex(unsigned int i) noexcept;
-    static unsigned int GetObjectSummonerRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetObjectRefNumIndex(unsigned int index) noexcept;
+    static unsigned int GetObjectSummonerRefNumIndex(unsigned int index) noexcept;
     static void SetEventCell(const char* cellDescription) noexcept;
     static void SetEventAction(unsigned char action) noexcept;
     static void SetEventConsoleCommand(const char* consoleCommand) noexcept;

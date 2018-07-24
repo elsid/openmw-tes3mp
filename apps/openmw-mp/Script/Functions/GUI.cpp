@@ -104,37 +104,37 @@ unsigned int GUIFunctions::GetQuickKeyChangesSize(unsigned short pid) noexcept
     return player->quickKeyChanges.count;
 }
 
-int GUIFunctions::GetQuickKeySlot(unsigned short pid, unsigned int i) noexcept
+int GUIFunctions::GetQuickKeySlot(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->quickKeyChanges.count)
+    if (index >= player->quickKeyChanges.count)
         return 0;
 
-    return player->quickKeyChanges.quickKeys.at(i).slot;
+    return player->quickKeyChanges.quickKeys.at(index).slot;
 }
 
-int GUIFunctions::GetQuickKeyType(unsigned short pid, unsigned int i) noexcept
+int GUIFunctions::GetQuickKeyType(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->quickKeyChanges.count)
+    if (index >= player->quickKeyChanges.count)
         return 0;
 
-    return player->quickKeyChanges.quickKeys.at(i).type;
+    return player->quickKeyChanges.quickKeys.at(index).type;
 }
 
-const char *GUIFunctions::GetQuickKeyItemId(unsigned short pid, unsigned int i) noexcept
+const char *GUIFunctions::GetQuickKeyItemId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->quickKeyChanges.count)
+    if (index >= player->quickKeyChanges.count)
         return "invalid";
 
-    return player->quickKeyChanges.quickKeys.at(i).itemId.c_str();
+    return player->quickKeyChanges.quickKeys.at(index).itemId.c_str();
 }
 
 void GUIFunctions::AddQuickKey(unsigned short pid, unsigned short slot, int type, const char* itemId) noexcept

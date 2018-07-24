@@ -124,39 +124,39 @@ double ItemFunctions::GetEquipmentItemEnchantmentCharge(unsigned short pid, unsi
     return player->equipmentItems[slot].enchantmentCharge;
 }
 
-const char *ItemFunctions::GetInventoryItemRefId(unsigned short pid, unsigned int i) noexcept
+const char *ItemFunctions::GetInventoryItemRefId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->inventoryChanges.count)
+    if (index >= player->inventoryChanges.count)
         return "invalid";
 
-    return player->inventoryChanges.items.at(i).refId.c_str();
+    return player->inventoryChanges.items.at(index).refId.c_str();
 }
 
-int ItemFunctions::GetInventoryItemCount(unsigned short pid, unsigned int i) noexcept
+int ItemFunctions::GetInventoryItemCount(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->inventoryChanges.items.at(i).count;
+    return player->inventoryChanges.items.at(index).count;
 }
 
-int ItemFunctions::GetInventoryItemCharge(unsigned short pid, unsigned int i) noexcept
+int ItemFunctions::GetInventoryItemCharge(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->inventoryChanges.items.at(i).charge;
+    return player->inventoryChanges.items.at(index).charge;
 }
 
-double ItemFunctions::GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int i) noexcept
+double ItemFunctions::GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->inventoryChanges.items.at(i).enchantmentCharge;
+    return player->inventoryChanges.items.at(index).enchantmentCharge;
 }
 
 void ItemFunctions::SendEquipment(unsigned short pid) noexcept

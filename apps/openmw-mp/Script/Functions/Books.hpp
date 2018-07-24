@@ -47,10 +47,10 @@ public:
     * \brief Get the bookId at a certain index in a player's latest book changes.
     *
     * \param pid The player ID whose book changes should be used.
-    * \param i The index of the book.
+    * \param index The index of the book.
     * \return The bookId.
     */
-    static const char *GetBookId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetBookId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Send a PlayerBook packet with a player's recorded book changes.

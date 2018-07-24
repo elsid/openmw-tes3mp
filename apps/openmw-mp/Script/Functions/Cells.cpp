@@ -20,23 +20,23 @@ unsigned int CellFunctions::GetCellStateChangesSize(unsigned short pid) noexcept
     return player->cellStateChanges.count;
 }
 
-unsigned int CellFunctions::GetCellStateType(unsigned short pid, unsigned int i) noexcept
+unsigned int CellFunctions::GetCellStateType(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->cellStateChanges.cellStates.at(i).type;
+    return player->cellStateChanges.cellStates.at(index).type;
 }
 
-const char *CellFunctions::GetCellStateDescription(unsigned short pid, unsigned int i) noexcept
+const char *CellFunctions::GetCellStateDescription(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->cellStateChanges.count)
+    if (index >= player->cellStateChanges.count)
         return "invalid";
 
-    tempCellDescription = player->cellStateChanges.cellStates.at(i).cell.getDescription();
+    tempCellDescription = player->cellStateChanges.cellStates.at(index).cell.getDescription();
     return tempCellDescription.c_str();
 }
 

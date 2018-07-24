@@ -111,28 +111,28 @@ public:
     * \brief Get the quest at a certain index in a player's latest journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
-    * \param i The index of the journalItem.
+    * \param index The index of the journalItem.
     * \return The quest.
     */
-    static const char *GetJournalItemQuest(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetJournalItemQuest(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the quest index at a certain index in a player's latest journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
-    * \param i The index of the journalItem.
+    * \param index The index of the journalItem.
     * \return The quest index.
     */
-    static int GetJournalItemIndex(unsigned short pid, unsigned int i) noexcept;
+    static int GetJournalItemIndex(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the journal item type at a certain index in a player's latest journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
-    * \param i The index of the journalItem.
+    * \param index The index of the journalItem.
     * \return The type (0 for ENTRY, 1 for INDEX).
     */
-    static int GetJournalItemType(unsigned short pid, unsigned int i) noexcept;
+    static int GetJournalItemType(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the actor refId at a certain index in a player's latest journal changes.
@@ -140,28 +140,28 @@ public:
     * Every journal change has an associated actor, which is usually the quest giver.
     *
     * \param pid The player ID whose journal changes should be used.
-    * \param i The index of the journalItem.
+    * \param index The index of the journalItem.
     * \return The actor refId.
     */
-    static const char *GetJournalItemActorRefId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetJournalItemActorRefId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the refId at a certain index in a player's latest kill count changes.
     *
     * \param pid The player ID whose kill count changes should be used.
-    * \param i The index of the kill count.
+    * \param index The index of the kill count.
     * \return The refId.
     */
-    static const char *GetKillRefId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetKillRefId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the number of kills at a certain index in a player's latest kill count changes.
     *
     * \param pid The player ID whose kill count changes should be used.
-    * \param i The index of the kill count.
+    * \param index The index of the kill count.
     * \return The number of kills.
     */
-    static int GetKillNumber(unsigned short pid, unsigned int i) noexcept;
+    static int GetKillNumber(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the a certain player's reputation.

@@ -34,15 +34,15 @@ void DialogueFunctions::AddTopic(unsigned short pid, const char* topicId) noexce
     player->topicChanges.topics.push_back(topic);
 }
 
-const char *DialogueFunctions::GetTopicId(unsigned short pid, unsigned int i) noexcept
+const char *DialogueFunctions::GetTopicId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->topicChanges.count)
+    if (index >= player->topicChanges.count)
         return "invalid";
 
-    return player->topicChanges.topics.at(i).topicId.c_str();
+    return player->topicChanges.topics.at(index).topicId.c_str();
 }
 
 void DialogueFunctions::SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept

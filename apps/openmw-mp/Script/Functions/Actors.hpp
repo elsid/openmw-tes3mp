@@ -162,242 +162,242 @@ public:
     /**
     * \brief Get the cell description of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The cell description.
     */
-    static const char *GetActorCell(unsigned int i) noexcept;
+    static const char *GetActorCell(unsigned int index) noexcept;
     
     /**
     * \brief Get the refId of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The refId.
     */
-    static const char *GetActorRefId(unsigned int i) noexcept;
+    static const char *GetActorRefId(unsigned int index) noexcept;
 
     /**
     * \brief Get the refNum of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The refNum.
     */
-    static unsigned int GetActorRefNum(unsigned int i) noexcept;
+    static unsigned int GetActorRefNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the mpNum of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The mpNum.
     */
-    static unsigned int GetActorMpNum(unsigned int i) noexcept;
+    static unsigned int GetActorMpNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the X position of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The X position.
     */
-    static double GetActorPosX(unsigned int i) noexcept;
+    static double GetActorPosX(unsigned int index) noexcept;
 
     /**
     * \brief Get the Y position of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The Y position.
     */
-    static double GetActorPosY(unsigned int i) noexcept;
+    static double GetActorPosY(unsigned int index) noexcept;
 
     /**
     * \brief Get the Z position of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The Z position.
     */
-    static double GetActorPosZ(unsigned int i) noexcept;
+    static double GetActorPosZ(unsigned int index) noexcept;
 
     /**
     * \brief Get the X rotation of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The X rotation.
     */
-    static double GetActorRotX(unsigned int i) noexcept;
+    static double GetActorRotX(unsigned int index) noexcept;
 
     /**
     * \brief Get the Y rotation of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The Y rotation.
     */
-    static double GetActorRotY(unsigned int i) noexcept;
+    static double GetActorRotY(unsigned int index) noexcept;
 
     /**
     * \brief Get the Z rotation of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The Z rotation.
     */
-    static double GetActorRotZ(unsigned int i) noexcept;
+    static double GetActorRotZ(unsigned int index) noexcept;
 
     /**
     * \brief Get the base health of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The base health.
     */
-    static double GetActorHealthBase(unsigned int i) noexcept;
+    static double GetActorHealthBase(unsigned int index) noexcept;
 
     /**
     * \brief Get the current health of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The current health.
     */
-    static double GetActorHealthCurrent(unsigned int i) noexcept;
+    static double GetActorHealthCurrent(unsigned int index) noexcept;
 
     /**
     * \brief Get the modified health of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The modified health.
     */
-    static double GetActorHealthModified(unsigned int i) noexcept;
+    static double GetActorHealthModified(unsigned int index) noexcept;
 
     /**
     * \brief Get the base magicka of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The base magicka.
     */
-    static double GetActorMagickaBase(unsigned int i) noexcept;
+    static double GetActorMagickaBase(unsigned int index) noexcept;
 
     /**
     * \brief Get the current magicka of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The current magicka.
     */
-    static double GetActorMagickaCurrent(unsigned int i) noexcept;
+    static double GetActorMagickaCurrent(unsigned int index) noexcept;
 
     /**
     * \brief Get the modified magicka of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The modified magicka.
     */
-    static double GetActorMagickaModified(unsigned int i) noexcept;
+    static double GetActorMagickaModified(unsigned int index) noexcept;
 
     /**
     * \brief Get the base fatigue of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The base fatigue.
     */
-    static double GetActorFatigueBase(unsigned int i) noexcept;
+    static double GetActorFatigueBase(unsigned int index) noexcept;
 
     /**
     * \brief Get the current fatigue of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The current fatigue.
     */
-    static double GetActorFatigueCurrent(unsigned int i) noexcept;
+    static double GetActorFatigueCurrent(unsigned int index) noexcept;
 
     /**
     * \brief Get the modified fatigue of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The modified fatigue.
     */
-    static double GetActorFatigueModified(unsigned int i) noexcept;
+    static double GetActorFatigueModified(unsigned int index) noexcept;
 
     /**
     * \brief Get the refId of the item in a certain slot of the equipment of the actor at a
     * certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \param slot The slot of the equipment item.
     * \return The refId.
     */
-    static const char *GetActorEquipmentItemRefId(unsigned int i, unsigned short slot) noexcept;
+    static const char *GetActorEquipmentItemRefId(unsigned int index, unsigned short slot) noexcept;
 
     /**
     * \brief Get the count of the item in a certain slot of the equipment of the actor at a
     * certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \param slot The slot of the equipment item.
     * \return The item count.
     */
-    static int GetActorEquipmentItemCount(unsigned int i, unsigned short slot) noexcept;
+    static int GetActorEquipmentItemCount(unsigned int index, unsigned short slot) noexcept;
 
     /**
     * \brief Get the charge of the item in a certain slot of the equipment of the actor at a
     * certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \param slot The slot of the equipment item.
     * \return The charge.
     */
-    static int GetActorEquipmentItemCharge(unsigned int i, unsigned short slot) noexcept;
+    static int GetActorEquipmentItemCharge(unsigned int index, unsigned short slot) noexcept;
 
     /**
     * \brief Get the enchantment charge of the item in a certain slot of the equipment of the actor at a
     * certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \param slot The slot of the equipment item.
     * \return The enchantment charge.
     */
-    static double GetActorEquipmentItemEnchantmentCharge(unsigned int i, unsigned short slot) noexcept;
+    static double GetActorEquipmentItemEnchantmentCharge(unsigned int index, unsigned short slot) noexcept;
 
     /**
     * \brief Check whether the killer of the actor at a certain index in the read actor list is a player.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return Whether the actor was killed by a player.
     */
-    static bool DoesActorHavePlayerKiller(unsigned int i) noexcept;
+    static bool DoesActorHavePlayerKiller(unsigned int index) noexcept;
 
     /**
     * \brief Get the player ID of the killer of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The player ID of the killer.
     */
-    static int GetActorKillerPid(unsigned int i) noexcept;
+    static int GetActorKillerPid(unsigned int index) noexcept;
 
     /**
     * \brief Get the refId of the actor killer of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The refId of the killer.
     */
-    static const char *GetActorKillerRefId(unsigned int i) noexcept;
+    static const char *GetActorKillerRefId(unsigned int index) noexcept;
 
     /**
     * \brief Get the refNum of the actor killer of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The refNum of the killer.
     */
-    static unsigned int GetActorKillerRefNum(unsigned int i) noexcept;
+    static unsigned int GetActorKillerRefNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the mpNum of the actor killer of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The mpNum of the killer.
     */
-    static unsigned int GetActorKillerMpNum(unsigned int i) noexcept;
+    static unsigned int GetActorKillerMpNum(unsigned int index) noexcept;
 
     /**
     * \brief Get the name of the actor killer of the actor at a certain index in the read actor list.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return The name of the killer.
     */
-    static const char *GetActorKillerName(unsigned int i) noexcept;
+    static const char *GetActorKillerName(unsigned int index) noexcept;
 
     /**
     * \brief Check whether there is any positional data for the actor at a certain index in
@@ -405,10 +405,10 @@ public:
     *
     * This is only useful when reading the actor list data recorded for a particular cell.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return Whether the read actor list contains positional data.
     */
-    static bool DoesActorHavePosition(unsigned int i) noexcept;
+    static bool DoesActorHavePosition(unsigned int index) noexcept;
 
     /**
     * \brief Check whether there is any dynamic stats data for the actor at a certain index in
@@ -416,10 +416,10 @@ public:
     *
     * This is only useful when reading the actor list data recorded for a particular cell.
     *
-    * \param i The index of the actor.
+    * \param index The index of the actor.
     * \return Whether the read actor list contains dynamic stats data.
     */
-    static bool DoesActorHaveStatsDynamic(unsigned int i) noexcept;
+    static bool DoesActorHaveStatsDynamic(unsigned int index) noexcept;
 
     /**
     * \brief Set the cell of the temporary actor list stored on the server.
@@ -749,8 +749,8 @@ public:
     static void ReadLastActorList() noexcept;
     static void InitializeActorList(unsigned short pid) noexcept;
     static void CopyLastActorListToStore() noexcept;
-    static unsigned int GetActorRefNumIndex(unsigned int i) noexcept;
-    static unsigned int GetActorKillerRefNumIndex(unsigned int i) noexcept;
+    static unsigned int GetActorRefNumIndex(unsigned int index) noexcept;
+    static unsigned int GetActorKillerRefNumIndex(unsigned int index) noexcept;
     static void SetActorRefNumIndex(int refNum) noexcept;
 };
 

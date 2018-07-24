@@ -39,19 +39,19 @@ public:
     * \brief Get the cell state type at a certain index in a player's latest cell state changes.
     *
     * \param pid The player ID whose cell state changes should be used.
-    * \param i The index of the cell state.
+    * \param index The index of the cell state.
     * \return The cell state type (0 for LOAD, 1 for UNLOAD).
     */
-    static unsigned int GetCellStateType(unsigned short pid, unsigned int i) noexcept;
+    static unsigned int GetCellStateType(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the cell description at a certain index in a player's latest cell state changes.
     *
     * \param pid The player ID whose cell state changes should be used.
-    * \param i The index of the cell state.
+    * \param index The index of the cell state.
     * \return The cell description.
     */
-    static const char *GetCellStateDescription(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetCellStateDescription(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the cell description of a player's cell.

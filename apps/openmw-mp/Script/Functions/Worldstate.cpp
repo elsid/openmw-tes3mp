@@ -11,8 +11,8 @@
 using namespace std;
 using namespace mwmp;
 
-BaseWorldstate writeWorldstate;
 BaseWorldstate *readWorldstate;
+BaseWorldstate writeWorldstate;
 
 void WorldstateFunctions::ReadReceivedWorldstate() noexcept
 {

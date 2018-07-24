@@ -146,43 +146,43 @@ boost::any LangLua::Call(const char *name, const char *argl, const std::vector<b
 
     lua_getglobal (lua, name);
 
-    for (intptr_t i = 0; i < n_args; i++)
+    for (intptr_t index = 0; index < n_args; index++)
     {
-        switch (argl[i])
+        switch (argl[index])
         {
             case 'i':
-                luabridge::Stack<unsigned int>::push(lua, boost::any_cast<unsigned int>(args.at(i)));
+                luabridge::Stack<unsigned int>::push(lua, boost::any_cast<unsigned int>(args.at(index)));
                 break;
 
             case 'q':
-                luabridge::Stack<signed int>::push(lua, boost::any_cast<signed int>(args.at(i)));
+                luabridge::Stack<signed int>::push(lua, boost::any_cast<signed int>(args.at(index)));
                 break;
 
             case 'l':
-                luabridge::Stack<unsigned long long>::push(lua, boost::any_cast<unsigned long long>(args.at(i)));
+                luabridge::Stack<unsigned long long>::push(lua, boost::any_cast<unsigned long long>(args.at(index)));
                 break;
 
             case 'w':
-                luabridge::Stack<signed long long>::push(lua, boost::any_cast<signed long long>(args.at(i)));
+                luabridge::Stack<signed long long>::push(lua, boost::any_cast<signed long long>(args.at(index)));
                 break;
 
             case 'f':
-                luabridge::Stack<double>::push(lua, boost::any_cast<double>(args.at(i)));
+                luabridge::Stack<double>::push(lua, boost::any_cast<double>(args.at(index)));
                 break;
 
             case 'p':
-                luabridge::Stack<void *>::push(lua, boost::any_cast<void *>(args.at(i)));
+                luabridge::Stack<void *>::push(lua, boost::any_cast<void *>(args.at(index)));
                 break;
 
             case 's':
-                luabridge::Stack<const char *>::push(lua, boost::any_cast<const char *>(args.at(i)));
+                luabridge::Stack<const char *>::push(lua, boost::any_cast<const char *>(args.at(index)));
                 break;
 
             case 'b':
-                luabridge::Stack<bool>::push(lua, boost::any_cast<int>(args.at(i)));
+                luabridge::Stack<bool>::push(lua, boost::any_cast<int>(args.at(index)));
                 break;
             default:
-                throw runtime_error("Lua call: Unknown argument identifier " + argl[i]);
+                throw runtime_error("Lua call: Unknown argument identifier " + argl[index]);
         }
     }
 

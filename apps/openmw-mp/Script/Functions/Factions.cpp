@@ -35,39 +35,39 @@ unsigned char FactionFunctions::GetFactionChangesAction(unsigned short pid) noex
     return player->factionChanges.action;
 }
 
-const char *FactionFunctions::GetFactionId(unsigned short pid, unsigned int i) noexcept
+const char *FactionFunctions::GetFactionId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->factionChanges.count)
+    if (index >= player->factionChanges.count)
         return "invalid";
 
-    return player->factionChanges.factions.at(i).factionId.c_str();
+    return player->factionChanges.factions.at(index).factionId.c_str();
 }
 
-int FactionFunctions::GetFactionRank(unsigned short pid, unsigned int i) noexcept
+int FactionFunctions::GetFactionRank(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->factionChanges.factions.at(i).rank;
+    return player->factionChanges.factions.at(index).rank;
 }
 
-bool FactionFunctions::GetFactionExpulsionState(unsigned short pid, unsigned int i) noexcept
+bool FactionFunctions::GetFactionExpulsionState(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, false);
 
-    return player->factionChanges.factions.at(i).isExpelled;
+    return player->factionChanges.factions.at(index).isExpelled;
 }
 
-int FactionFunctions::GetFactionReputation(unsigned short pid, unsigned int i) noexcept
+int FactionFunctions::GetFactionReputation(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->factionChanges.factions.at(i).reputation;
+    return player->factionChanges.factions.at(index).reputation;
 }
 
 void FactionFunctions::SetFactionChangesAction(unsigned short pid, unsigned char action) noexcept

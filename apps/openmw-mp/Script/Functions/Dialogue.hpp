@@ -50,10 +50,10 @@ public:
     * \brief Get the topicId at a certain index in a player's latest topic changes.
     *
     * \param pid The player ID whose topic changes should be used.
-    * \param i The index of the topic.
+    * \param index The index of the topic.
     * \return The topicId.
     */
-    static const char *GetTopicId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetTopicId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Send a PlayerTopic packet with a player's recorded topic changes.

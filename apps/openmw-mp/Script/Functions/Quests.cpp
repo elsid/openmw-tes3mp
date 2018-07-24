@@ -87,58 +87,58 @@ void QuestFunctions::SetReputation(unsigned short pid, int value) noexcept
     player->npcStats.mReputation = value;
 }
 
-const char *QuestFunctions::GetJournalItemQuest(unsigned short pid, unsigned int i) noexcept
+const char *QuestFunctions::GetJournalItemQuest(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->journalChanges.count)
+    if (index >= player->journalChanges.count)
         return "invalid";
 
-    return player->journalChanges.journalItems.at(i).quest.c_str();
+    return player->journalChanges.journalItems.at(index).quest.c_str();
 }
 
-int QuestFunctions::GetJournalItemIndex(unsigned short pid, unsigned int i) noexcept
+int QuestFunctions::GetJournalItemIndex(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.journalItems.at(i).index;
+    return player->journalChanges.journalItems.at(index).index;
 }
 
-int QuestFunctions::GetJournalItemType(unsigned short pid, unsigned int i) noexcept
+int QuestFunctions::GetJournalItemType(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.journalItems.at(i).type;
+    return player->journalChanges.journalItems.at(index).type;
 }
 
-const char *QuestFunctions::GetJournalItemActorRefId(unsigned short pid, unsigned int i) noexcept
+const char *QuestFunctions::GetJournalItemActorRefId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.journalItems.at(i).actorRefId.c_str();
+    return player->journalChanges.journalItems.at(index).actorRefId.c_str();
 }
 
-const char *QuestFunctions::GetKillRefId(unsigned short pid, unsigned int i) noexcept
+const char *QuestFunctions::GetKillRefId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->killChanges.count)
+    if (index >= player->killChanges.count)
         return "invalid";
 
-    return player->killChanges.kills.at(i).refId.c_str();
+    return player->killChanges.kills.at(index).refId.c_str();
 }
 
-int QuestFunctions::GetKillNumber(unsigned short pid, unsigned int i) noexcept
+int QuestFunctions::GetKillNumber(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->killChanges.kills.at(i).number;
+    return player->killChanges.kills.at(index).number;
 }
 
 int QuestFunctions::GetReputation(unsigned short pid) noexcept

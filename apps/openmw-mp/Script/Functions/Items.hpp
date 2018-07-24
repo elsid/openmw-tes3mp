@@ -162,40 +162,40 @@ public:
     *        changes.
     *
     * \param pid The player ID whose inventory changes should be used.
-    * \param i The index of the inventory item.
+    * \param index The index of the inventory item.
     * \return The refId.
     */
-    static const char *GetInventoryItemRefId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetInventoryItemRefId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the count of the item at a certain index in a player's latest inventory
     *        changes.
     *
     * \param pid The player ID whose inventory changes should be used.
-    * \param i The index of the inventory item.
+    * \param index The index of the inventory item.
     * \return The item count.
     */
-    static int GetInventoryItemCount(unsigned short pid, unsigned int i) noexcept;
+    static int GetInventoryItemCount(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the charge of the item at a certain index in a player's latest inventory
     *        changes.
     *
     * \param pid The player ID whose inventory changes should be used.
-    * \param i The index of the inventory item.
+    * \param index The index of the inventory item.
     * \return The charge.
     */
-    static int GetInventoryItemCharge(unsigned short pid, unsigned int i) noexcept;
+    static int GetInventoryItemCharge(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the enchantment charge of the item at a certain index in a player's
     *        latest inventory changes.
     *
     * \param pid The player ID whose inventory changes should be used.
-    * \param i The index of the inventory item.
+    * \param index The index of the inventory item.
     * \return The enchantment charge.
     */
-    static double GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int i) noexcept;
+    static double GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Send a PlayerEquipment packet with a player's equipment.

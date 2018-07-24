@@ -69,14 +69,14 @@ unsigned char ObjectFunctions::GetObjectListContainerSubAction() noexcept
     return readObjectList->containerSubAction;
 }
 
-bool ObjectFunctions::IsObjectPlayer(unsigned int i) noexcept
+bool ObjectFunctions::IsObjectPlayer(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).isPlayer;
+    return readObjectList->baseObjects.at(index).isPlayer;
 }
 
-int ObjectFunctions::GetObjectPid(unsigned int i) noexcept
+int ObjectFunctions::GetObjectPid(unsigned int index) noexcept
 {
-    Player *player = Players::getPlayer(readObjectList->baseObjects.at(i).guid);
+    Player *player = Players::getPlayer(readObjectList->baseObjects.at(index).guid);
 
     if (player != nullptr)
         return player->getId();
@@ -84,69 +84,69 @@ int ObjectFunctions::GetObjectPid(unsigned int i) noexcept
     return -1;
 }
 
-const char *ObjectFunctions::GetObjectRefId(unsigned int i) noexcept
+const char *ObjectFunctions::GetObjectRefId(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).refId.c_str();
+    return readObjectList->baseObjects.at(index).refId.c_str();
 }
 
-unsigned int ObjectFunctions::GetObjectRefNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectRefNum(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).refNum;
+    return readObjectList->baseObjects.at(index).refNum;
 }
 
-unsigned int ObjectFunctions::GetObjectMpNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectMpNum(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).mpNum;
+    return readObjectList->baseObjects.at(index).mpNum;
 }
 
-int ObjectFunctions::GetObjectCount(unsigned int i) noexcept
+int ObjectFunctions::GetObjectCount(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).count;
+    return readObjectList->baseObjects.at(index).count;
 }
 
-int ObjectFunctions::GetObjectCharge(unsigned int i) noexcept
+int ObjectFunctions::GetObjectCharge(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).charge;
+    return readObjectList->baseObjects.at(index).charge;
 }
 
-double ObjectFunctions::GetObjectEnchantmentCharge(unsigned int i) noexcept
+double ObjectFunctions::GetObjectEnchantmentCharge(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).enchantmentCharge;
+    return readObjectList->baseObjects.at(index).enchantmentCharge;
 }
 
-int ObjectFunctions::GetObjectGoldValue(unsigned int i) noexcept
+int ObjectFunctions::GetObjectGoldValue(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).goldValue;
+    return readObjectList->baseObjects.at(index).goldValue;
 }
 
-double ObjectFunctions::GetObjectScale(unsigned int i) noexcept
+double ObjectFunctions::GetObjectScale(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).scale;
+    return readObjectList->baseObjects.at(index).scale;
 }
 
-bool ObjectFunctions::GetObjectState(unsigned int i) noexcept
+bool ObjectFunctions::GetObjectState(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).objectState;
+    return readObjectList->baseObjects.at(index).objectState;
 }
 
-int ObjectFunctions::GetObjectDoorState(unsigned int i) noexcept
+int ObjectFunctions::GetObjectDoorState(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).doorState;
+    return readObjectList->baseObjects.at(index).doorState;
 }
 
-int ObjectFunctions::GetObjectLockLevel(unsigned int i) noexcept
+int ObjectFunctions::GetObjectLockLevel(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).lockLevel;
+    return readObjectList->baseObjects.at(index).lockLevel;
 }
 
-bool ObjectFunctions::DoesObjectHavePlayerActivating(unsigned int i) noexcept
+bool ObjectFunctions::DoesObjectHavePlayerActivating(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).activatingActor.isPlayer;
+    return readObjectList->baseObjects.at(index).activatingActor.isPlayer;
 }
 
-int ObjectFunctions::GetObjectActivatingPid(unsigned int i) noexcept
+int ObjectFunctions::GetObjectActivatingPid(unsigned int index) noexcept
 {
-    Player *player = Players::getPlayer(readObjectList->baseObjects.at(i).activatingActor.guid);
+    Player *player = Players::getPlayer(readObjectList->baseObjects.at(index).activatingActor.guid);
 
     if (player != nullptr)
         return player->getId();
@@ -154,44 +154,44 @@ int ObjectFunctions::GetObjectActivatingPid(unsigned int i) noexcept
     return -1;
 }
 
-const char *ObjectFunctions::GetObjectActivatingRefId(unsigned int i) noexcept
+const char *ObjectFunctions::GetObjectActivatingRefId(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).activatingActor.refId.c_str();
+    return readObjectList->baseObjects.at(index).activatingActor.refId.c_str();
 }
 
-unsigned int ObjectFunctions::GetObjectActivatingRefNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectActivatingRefNum(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).activatingActor.refNum;
+    return readObjectList->baseObjects.at(index).activatingActor.refNum;
 }
 
-unsigned int ObjectFunctions::GetObjectActivatingMpNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectActivatingMpNum(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).activatingActor.mpNum;
+    return readObjectList->baseObjects.at(index).activatingActor.mpNum;
 }
 
-const char *ObjectFunctions::GetObjectActivatingName(unsigned int i) noexcept
+const char *ObjectFunctions::GetObjectActivatingName(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).activatingActor.name.c_str();
+    return readObjectList->baseObjects.at(index).activatingActor.name.c_str();
 }
 
-bool ObjectFunctions::GetObjectSummonState(unsigned int i) noexcept
+bool ObjectFunctions::GetObjectSummonState(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).isSummon;
+    return readObjectList->baseObjects.at(index).isSummon;
 }
 
-double ObjectFunctions::GetObjectSummonDuration(unsigned int i) noexcept
+double ObjectFunctions::GetObjectSummonDuration(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).summonDuration;
+    return readObjectList->baseObjects.at(index).summonDuration;
 }
 
-bool ObjectFunctions::DoesObjectHavePlayerSummoner(unsigned int i) noexcept
+bool ObjectFunctions::DoesObjectHavePlayerSummoner(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).master.isPlayer;
+    return readObjectList->baseObjects.at(index).master.isPlayer;
 }
 
-int ObjectFunctions::GetObjectSummonerPid(unsigned int i) noexcept
+int ObjectFunctions::GetObjectSummonerPid(unsigned int index) noexcept
 {
-    Player *player = Players::getPlayer(readObjectList->baseObjects.at(i).master.guid);
+    Player *player = Players::getPlayer(readObjectList->baseObjects.at(index).master.guid);
     
     if (player != nullptr)
         return player->getId();
@@ -199,54 +199,54 @@ int ObjectFunctions::GetObjectSummonerPid(unsigned int i) noexcept
     return -1;
 }
 
-const char *ObjectFunctions::GetObjectSummonerRefId(unsigned int i) noexcept
+const char *ObjectFunctions::GetObjectSummonerRefId(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).master.refId.c_str();
+    return readObjectList->baseObjects.at(index).master.refId.c_str();
 }
 
-unsigned int ObjectFunctions::GetObjectSummonerRefNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectSummonerRefNum(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).master.refNum;
+    return readObjectList->baseObjects.at(index).master.refNum;
 }
 
-unsigned int ObjectFunctions::GetObjectSummonerMpNum(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectSummonerMpNum(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).master.mpNum;
+    return readObjectList->baseObjects.at(index).master.mpNum;
 }
 
-double ObjectFunctions::GetObjectPosX(unsigned int i) noexcept
+double ObjectFunctions::GetObjectPosX(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).position.pos[0];
+    return readObjectList->baseObjects.at(index).position.pos[0];
 }
 
-double ObjectFunctions::GetObjectPosY(unsigned int i) noexcept
+double ObjectFunctions::GetObjectPosY(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).position.pos[1];
+    return readObjectList->baseObjects.at(index).position.pos[1];
 }
 
-double ObjectFunctions::GetObjectPosZ(unsigned int i) noexcept
+double ObjectFunctions::GetObjectPosZ(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).position.pos[2];
+    return readObjectList->baseObjects.at(index).position.pos[2];
 }
 
-double ObjectFunctions::GetObjectRotX(unsigned int i) noexcept
+double ObjectFunctions::GetObjectRotX(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).position.rot[0];
+    return readObjectList->baseObjects.at(index).position.rot[0];
 }
 
-double ObjectFunctions::GetObjectRotY(unsigned int i) noexcept
+double ObjectFunctions::GetObjectRotY(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).position.rot[1];
+    return readObjectList->baseObjects.at(index).position.rot[1];
 }
 
-double ObjectFunctions::GetObjectRotZ(unsigned int i) noexcept
+double ObjectFunctions::GetObjectRotZ(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).position.rot[2];
+    return readObjectList->baseObjects.at(index).position.rot[2];
 }
 
-const char *ObjectFunctions::GetVideoFilename(unsigned int i) noexcept
+const char *ObjectFunctions::GetVideoFilename(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).videoFilename.c_str();
+    return readObjectList->baseObjects.at(index).videoFilename.c_str();
 }
 
 unsigned int ObjectFunctions::GetContainerChangesSize(unsigned int objectIndex) noexcept
@@ -284,9 +284,9 @@ int ObjectFunctions::GetContainerItemActionCount(unsigned int objectIndex, unsig
         .containerItems.at(itemIndex).actionCount;
 }
 
-bool ObjectFunctions::DoesObjectHaveContainer(unsigned int i) noexcept
+bool ObjectFunctions::DoesObjectHaveContainer(unsigned int index) noexcept
 {
-    return readObjectList->baseObjects.at(i).hasContainer;
+    return readObjectList->baseObjects.at(index).hasContainer;
 }
 
 void ObjectFunctions::SetObjectListCell(const char* cellDescription) noexcept
@@ -647,14 +647,14 @@ unsigned char ObjectFunctions::GetEventContainerSubAction() noexcept
     return GetObjectListContainerSubAction();
 }
 
-unsigned int ObjectFunctions::GetObjectRefNumIndex(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectRefNumIndex(unsigned int index) noexcept
 {
-    return GetObjectRefNum(i);
+    return GetObjectRefNum(index);
 }
 
-unsigned int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int i) noexcept
+unsigned int ObjectFunctions::GetObjectSummonerRefNumIndex(unsigned int index) noexcept
 {
-    return GetObjectSummonerRefNum(i);
+    return GetObjectSummonerRefNum(index);
 }
 
 void ObjectFunctions::SetEventCell(const char* cellDescription) noexcept

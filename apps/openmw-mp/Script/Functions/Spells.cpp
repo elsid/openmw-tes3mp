@@ -71,7 +71,7 @@ void SpellFunctions::AddCustomSpellData(unsigned short pid, const char* spellId,
     int index = -1;
     for(int i = 0; i < player->spellbookChanges.spells.size(); i++)
     {
-        if( strcmp(player->spellbookChanges.spells.at(i).mId.c_str(), spellId) == 0)
+        if( strcmp(player->spellbookChanges.spells.at(index).mId.c_str(), spellId) == 0)
         {
             index = i;
         }
@@ -93,7 +93,7 @@ void SpellFunctions::AddCustomSpellEffect(unsigned short pid, const char* spellI
     int index = -1;
     for(int i = 0; i < player->spellbookChanges.spells.size(); i++)
     {
-        if( strcmp(player->spellbookChanges.spells.at(i).mId.c_str(), spellId) == 0)
+        if( strcmp(player->spellbookChanges.spells.at(index).mId.c_str(), spellId) == 0)
         {
             index = i;
         }
@@ -115,158 +115,158 @@ void SpellFunctions::AddCustomSpellEffect(unsigned short pid, const char* spellI
     player->spellbookChanges.spells.at(index).mEffects.mList.push_back(effect);
 }
 
-const char *SpellFunctions::GetSpellId(unsigned short pid, unsigned int i) noexcept
+const char *SpellFunctions::GetSpellId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return "invalid";
 
-    return player->spellbookChanges.spells.at(i).mId.c_str();
+    return player->spellbookChanges.spells.at(index).mId.c_str();
 }
 
-const char *SpellFunctions::GetSpellName(unsigned short pid, unsigned int i) noexcept
+const char *SpellFunctions::GetSpellName(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return "invalid";
 
-    return player->spellbookChanges.spells.at(i).mName.c_str();
+    return player->spellbookChanges.spells.at(index).mName.c_str();
 }
 
-int SpellFunctions::GetSpellType(unsigned short pid, unsigned int i) noexcept
+int SpellFunctions::GetSpellType(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mData.mType;
+    return player->spellbookChanges.spells.at(index).mData.mType;
 }
 
-int SpellFunctions::GetSpellCost(unsigned short pid, unsigned int i) noexcept
+int SpellFunctions::GetSpellCost(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mData.mCost;
+    return player->spellbookChanges.spells.at(index).mData.mCost;
 }
 
-int SpellFunctions::GetSpellFlags(unsigned short pid, unsigned int i) noexcept
+int SpellFunctions::GetSpellFlags(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mData.mFlags;
+    return player->spellbookChanges.spells.at(index).mData.mFlags;
 }
 
-unsigned int SpellFunctions::GetSpellEffectCount(unsigned short pid, unsigned int i) noexcept
+unsigned int SpellFunctions::GetSpellEffectCount(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.size();
+    return player->spellbookChanges.spells.at(index).mEffects.mList.size();
 }
 
-short SpellFunctions::GetSpellEffectId(unsigned short pid, unsigned int i, unsigned int j) noexcept
+short SpellFunctions::GetSpellEffectId(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mEffectID;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mEffectID;
 }
 
-signed char SpellFunctions::GetSpellEffectSkill(unsigned short pid, unsigned int i, unsigned int j) noexcept
+signed char SpellFunctions::GetSpellEffectSkill(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mSkill;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mSkill;
 }
 
-signed char SpellFunctions::GetSpellEffectAttribute(unsigned short pid, unsigned int i, unsigned int j) noexcept
+signed char SpellFunctions::GetSpellEffectAttribute(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mAttribute;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mAttribute;
 }
 
-int SpellFunctions::GetSpellEffectRange(unsigned short pid, unsigned int i, unsigned int j) noexcept
+int SpellFunctions::GetSpellEffectRange(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mRange;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mRange;
 }
 
-int SpellFunctions::GetSpellEffectArea(unsigned short pid, unsigned int i, unsigned int j) noexcept
+int SpellFunctions::GetSpellEffectArea(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mArea;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mArea;
 }
 
-int SpellFunctions::GetSpellEffectDuration(unsigned short pid, unsigned int i, unsigned int j) noexcept
+int SpellFunctions::GetSpellEffectDuration(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mDuration;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mDuration;
 }
 
-int SpellFunctions::GetSpellEffectMagnMin(unsigned short pid, unsigned int i, unsigned int j) noexcept
+int SpellFunctions::GetSpellEffectMagnMin(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mMagnMin;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mMagnMin;
 }
 
-int SpellFunctions::GetSpellEffectMagnMax(unsigned short pid, unsigned int i, unsigned int j) noexcept
+int SpellFunctions::GetSpellEffectMagnMax(unsigned short pid, unsigned int index, unsigned int j) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (i >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.count)
         return 0;
 
-    return player->spellbookChanges.spells.at(i).mEffects.mList.at(j).mMagnMax;
+    return player->spellbookChanges.spells.at(index).mEffects.mList.at(j).mMagnMax;
 }
 
 void SpellFunctions::SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept

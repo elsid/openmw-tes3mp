@@ -128,28 +128,28 @@ public:
     * \brief Get the slot of the quick key at a certain index in a player's latest quick key changes.
     *
     * \param pid The player ID whose quick key changes should be used.
-    * \param i The index of the quick key in the quick key changes vector.
+    * \param index The index of the quick key in the quick key changes vector.
     * \return The slot.
     */
-    static int GetQuickKeySlot(unsigned short pid, unsigned int i) noexcept;
+    static int GetQuickKeySlot(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the type of the quick key at a certain index in a player's latest quick key changes.
     *
     * \param pid The player ID whose quick key changes should be used.
-    * \param i The index of the quick key in the quick key changes vector.
+    * \param index The index of the quick key in the quick key changes vector.
     * \return The quick key type.
     */
-    static int GetQuickKeyType(unsigned short pid, unsigned int i) noexcept;
+    static int GetQuickKeyType(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the itemId at a certain index in a player's latest quick key changes.
     *
     * \param pid The player ID whose quick key changes should be used.
-    * \param i The index of the quick key in the quick key changes vector.
+    * \param index The index of the quick key in the quick key changes vector.
     * \return The itemId.
     */
-    static const char *GetQuickKeyItemId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetQuickKeyItemId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Send a PlayerQuickKeys packet with a player's recorded quick key changes.

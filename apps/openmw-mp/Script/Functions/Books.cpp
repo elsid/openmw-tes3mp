@@ -34,15 +34,15 @@ void BookFunctions::AddBook(unsigned short pid, const char* bookId) noexcept
     player->bookChanges.books.push_back(book);
 }
 
-const char *BookFunctions::GetBookId(unsigned short pid, unsigned int i) noexcept
+const char *BookFunctions::GetBookId(unsigned short pid, unsigned int index) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (i >= player->bookChanges.count)
+    if (index >= player->bookChanges.count)
         return "invalid";
 
-    return player->bookChanges.books.at(i).bookId.c_str();
+    return player->bookChanges.books.at(index).bookId.c_str();
 }
 
 void BookFunctions::SendBookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept

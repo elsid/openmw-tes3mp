@@ -121,135 +121,135 @@ public:
     * \brief Get the spellId at a certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \return The spellId.
     */
-    static const char *GetSpellId(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetSpellId(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the name of the spell at a certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \return The spell name.
     */
-    static const char *GetSpellName(unsigned short pid, unsigned int i) noexcept;
+    static const char *GetSpellName(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the type of the spell at a certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \return The spell type.
     */
-    static int GetSpellType(unsigned short pid, unsigned int i) noexcept;
+    static int GetSpellType(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the cost of the spell at a certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \return The spell cost.
     */
-    static int GetSpellCost(unsigned short pid, unsigned int i) noexcept;
+    static int GetSpellCost(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the flags of the spell at a certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \return The spell flags.
     */
-    static int GetSpellFlags(unsigned short pid, unsigned int i) noexcept;
+    static int GetSpellFlags(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the number of effects on the spell at a certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \return The spell effect count.
     */
-    static unsigned int GetSpellEffectCount(unsigned short pid, unsigned int i) noexcept;
+    static unsigned int GetSpellEffectCount(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Get the effectId of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The effectId.
     */
-    static short GetSpellEffectId(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static short GetSpellEffectId(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the affected skill of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The affected skill.
     */
-    static signed char GetSpellEffectSkill(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static signed char GetSpellEffectSkill(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the affected attribute of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The affected attribute.
     */
-    static signed char GetSpellEffectAttribute(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static signed char GetSpellEffectAttribute(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the range of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The range.
     */
-    static int GetSpellEffectRange(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static int GetSpellEffectRange(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the area of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The area.
     */
-    static int GetSpellEffectArea(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static int GetSpellEffectArea(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the duration of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The duration.
     */
-    static int GetSpellEffectDuration(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static int GetSpellEffectDuration(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the minimum magnitude of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The minimum magnitude.
     */
-    static int GetSpellEffectMagnMin(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static int GetSpellEffectMagnMin(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Get the maximum magnitude of the effect at a certain index in the spell at another certain index in a player's latest spellbook changes.
     *
     * \param pid The player ID whose spellbook changes should be used.
-    * \param i The index of the spell.
+    * \param index The index of the spell.
     * \param j The index of the effect.
     * \return The maximum magnitude.
     */
-    static int GetSpellEffectMagnMax(unsigned short pid, unsigned int i, unsigned int j) noexcept;
+    static int GetSpellEffectMagnMax(unsigned short pid, unsigned int index, unsigned int j) noexcept;
 
     /**
     * \brief Send a PlayerSpellbook packet with a player's recorded spellbook changes.
