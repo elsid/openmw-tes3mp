@@ -1428,32 +1428,6 @@ void LocalPlayer::sendSpellRemoval(std::string id)
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
 }
 
-void LocalPlayer::sendSpellAddition(const ESM::Spell &spell)
-{
-    /*
-    spellbookChanges.spells.clear();
-
-    spellbookChanges.spells.push_back(spell);
-
-    spellbookChanges.action = SpellbookChanges::ADD;
-    getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
-    */
-}
-
-void LocalPlayer::sendSpellRemoval(const ESM::Spell &spell)
-{
-    /*
-    spellbookChanges.spells.clear();
-
-    spellbookChanges.spells.push_back(spell);
-
-    spellbookChanges.action = SpellbookChanges::REMOVE;
-    getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
-    */
-}
-
 void LocalPlayer::sendQuickKey(unsigned short slot, int type, const std::string& itemId)
 {
     quickKeyChanges.quickKeys.clear();
