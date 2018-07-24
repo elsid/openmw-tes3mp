@@ -48,5 +48,5 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
         }
     }
     else if (player->attack.type == mwmp::Attack::ITEM_MAGIC)
-        RW(player->attack.itemId, send), true;
+        RW(player->attack.itemId, send, true);
 }
