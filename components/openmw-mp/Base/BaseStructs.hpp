@@ -19,6 +19,17 @@ namespace mwmp
         SERVER_SCRIPT = 5
     };
 
+    struct Time
+    {
+        float hour;
+        int day;
+        int month;
+        int year;
+
+        int daysPassed;
+        float timeScale;
+    };
+
     struct Item
     {
         std::string refId;

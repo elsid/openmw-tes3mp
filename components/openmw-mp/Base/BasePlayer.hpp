@@ -35,6 +35,9 @@ namespace mwmp
 
         std::string actorRefId;
 
+        bool hasTimestamp;
+        mwmp::Time timestamp;
+
         int type; // 0 - An entire entry, 1 - An index
     };
 

@@ -723,7 +723,17 @@ void LocalPlayer::addJournalItems()
         try
         {
             if (journalItem.type == JournalItem::ENTRY)
-                MWBase::Environment::get().getJournal()->addEntry(journalItem.quest, journalItem.index, ptrFound);
+            {
+                if (journalItem.hasTimestamp)
+                {
+                    MWBase::Environment::get().getJournal()->addEntry(journalItem.quest, journalItem.index, ptrFound,
+                        journalItem.timestamp.daysPassed, journalItem.timestamp.month, journalItem.timestamp.day);
+                }
+                else
+                {
+                    MWBase::Environment::get().getJournal()->addEntry(journalItem.quest, journalItem.index, ptrFound);
+                }
+            }
             else
                 MWBase::Environment::get().getJournal()->setJournalIndex(journalItem.quest, journalItem.index);
         }
@@ -1455,6 +1465,7 @@ void LocalPlayer::sendJournalEntry(const std::string& quest, int index, const MW
     journalItem.quest = quest;
     journalItem.index = index;
     journalItem.actorRefId = actor.getCellRef().getRefId();
+    journalItem.hasTimestamp = false;
 
     journalChanges.journalItems.push_back(journalItem);
 

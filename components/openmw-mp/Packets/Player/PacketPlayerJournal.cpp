@@ -34,6 +34,15 @@ void PacketPlayerJournal::Packet(RakNet::BitStream *bs, bool send)
         if (journalItem.type == JournalItem::ENTRY)
         {
             RW(journalItem.actorRefId, send, true);
+
+            RW(journalItem.hasTimestamp, send);
+
+            if (journalItem.hasTimestamp)
+            {
+                RW(journalItem.timestamp.daysPassed, send);
+                RW(journalItem.timestamp.month, send);
+                RW(journalItem.timestamp.day, send);
+            }
         }
 
         if (!send)

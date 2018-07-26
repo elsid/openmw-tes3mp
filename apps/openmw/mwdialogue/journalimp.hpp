@@ -39,9 +39,18 @@ namespace MWDialogue
                 End of tes3mp addition
             */
 
-            virtual void addEntry (const std::string& id, int index, const MWWorld::Ptr& actor);
+            /*
+                Start of tes3mp change (minor)
+
+                Make it possible to override current time when adding journal entries, by adding
+                optional timestamp override arguments
+            */
+            virtual void addEntry (const std::string& id, int index, const MWWorld::Ptr& actor, int daysPassed = -1, int month = -1, int day = -1);
             ///< Add a journal entry.
             /// @param actor Used as context for replacing of escape sequences (%name, etc).
+            /*
+                End of tes3mp change (major)
+            */
 
             virtual void setJournalIndex (const std::string& id, int index);
             ///< Set the journal index without adding an entry.

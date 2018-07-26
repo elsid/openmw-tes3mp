@@ -50,6 +50,27 @@ void QuestFunctions::AddJournalEntry(unsigned short pid, const char* quest, unsi
     journalItem.quest = quest;
     journalItem.index = index;
     journalItem.actorRefId = actorRefId;
+    journalItem.hasTimestamp = false;
+
+    player->journalChanges.journalItems.push_back(journalItem);
+}
+
+void QuestFunctions::AddJournalEntryWithTimestamp(unsigned short pid, const char* quest, unsigned int index, const char* actorRefId,
+    unsigned int daysPassed, unsigned int month, unsigned int day) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    mwmp::JournalItem journalItem;
+    journalItem.type = JournalItem::ENTRY;
+    journalItem.quest = quest;
+    journalItem.index = index;
+    journalItem.actorRefId = actorRefId;
+    journalItem.hasTimestamp = true;
+
+    journalItem.timestamp.daysPassed = daysPassed;
+    journalItem.timestamp.month = month;
+    journalItem.timestamp.day = day;
 
     player->journalChanges.journalItems.push_back(journalItem);
 }
