@@ -595,6 +595,19 @@ namespace MWWorld
         return mStore;
     }
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to get the World's ESMStore as a non-const
+    */
+    MWWorld::ESMStore& World::getModifiableStore()
+    {
+        return mStore;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     std::vector<ESM::ESMReader>& World::getEsmReader()
     {
         return mEsm;

@@ -239,6 +239,16 @@ namespace MWWorld
 
             const MWWorld::ESMStore& getStore() const override;
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to get the World's ESMStore as a non-const
+            */
+            MWWorld::ESMStore& getModifiableStore() override;
+            /*
+                End of tes3mp addition
+            */
+
             std::vector<ESM::ESMReader>& getEsmReader() override;
 
             LocalScripts& getLocalScripts() override;

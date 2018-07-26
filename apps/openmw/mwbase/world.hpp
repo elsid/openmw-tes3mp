@@ -132,6 +132,16 @@ namespace MWBase
 
             virtual const MWWorld::ESMStore& getStore() const = 0;
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to get the World's ESMStore as a non-const
+            */
+            virtual MWWorld::ESMStore& getModifiableStore() = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual std::vector<ESM::ESMReader>& getEsmReader() = 0;
 
             virtual MWWorld::LocalScripts& getLocalScripts() = 0;
