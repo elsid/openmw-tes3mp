@@ -402,41 +402,45 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
             MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), baseObject.refId, 1);
             MWWorld::Ptr newPtr = ref.getPtr();
 
-            newPtr.getCellRef().setMpNum(baseObject.mpNum);
-
-            newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, baseObject.position);
-
-            if (baseObject.isSummon)
+            if (newPtr.getClass().isActor())
             {
-                MWWorld::Ptr masterPtr;
+                newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, baseObject.position);
+                MWMechanics::CreatureStats& creatureStats = newPtr.getClass().getCreatureStats(newPtr);
 
-                if (baseObject.master.isPlayer)
-                    masterPtr = MechanicsHelper::getPlayerPtr(baseObject.master);
-                else
-                    masterPtr = cellStore->searchExact(baseObject.master.refNum, baseObject.master.mpNum);
-
-                if (masterPtr)
+                if (baseObject.isSummon)
                 {
-                    LOG_APPEND(Log::LOG_VERBOSE, "-- Actor has master: %s", masterPtr.getCellRef().getRefId().c_str());
+                    MWWorld::Ptr masterPtr;
 
-                    MWMechanics::AiFollow package(masterPtr);
-                    newPtr.getClass().getCreatureStats(newPtr).getAiSequence().stack(package, newPtr);
+                    if (baseObject.master.isPlayer)
+                        masterPtr = MechanicsHelper::getPlayerPtr(baseObject.master);
+                    else
+                        masterPtr = cellStore->searchExact(baseObject.master.refNum, baseObject.master.mpNum);
 
-                    MWRender::Animation* anim = MWBase::Environment::get().getWorld()->getAnimation(newPtr);
-                    if (anim)
+                    if (masterPtr)
                     {
-                        const ESM::Static* fx = MWBase::Environment::get().getWorld()->getStore().get<ESM::Static>()
-                            .search("VFX_Summon_Start");
-                        if (fx)
-                            anim->addEffect("meshes\\" + fx->mModel, -1, false);
+                        LOG_APPEND(Log::LOG_VERBOSE, "-- Actor has master: %s", masterPtr.getCellRef().getRefId().c_str());
+
+                        MWMechanics::AiFollow package(masterPtr);
+                        creatureStats.getAiSequence().stack(package, newPtr);
+
+                        MWRender::Animation* anim = MWBase::Environment::get().getWorld()->getAnimation(newPtr);
+                        if (anim)
+                        {
+                            const ESM::Static* fx = MWBase::Environment::get().getWorld()->getStore().get<ESM::Static>()
+                                .search("VFX_Summon_Start");
+                            if (fx)
+                                anim->addEffect("meshes\\" + fx->mModel, -1, false);
+                        }
+
+                        int creatureActorId = newPtr.getClass().getCreatureStats(newPtr).getActorId();
+
+                        MWMechanics::CreatureStats& masterCreatureStats = masterPtr.getClass().getCreatureStats(masterPtr);
+                        masterCreatureStats.setSummonedCreatureActorId(baseObject.refId, creatureActorId);
                     }
-
-                    int creatureActorId = newPtr.getClass().getCreatureStats(newPtr).getActorId();
-
-                    MWMechanics::CreatureStats& masterCreatureStats = masterPtr.getClass().getCreatureStats(masterPtr);
-                    masterCreatureStats.setSummonedCreatureActorId(baseObject.refId, creatureActorId);
                 }
             }
+            else
+                LOG_APPEND(Log::LOG_VERBOSE, "-- Cannot spawn non-actor object!");
         }
         else
             LOG_APPEND(Log::LOG_VERBOSE, "-- Actor already existed!");
