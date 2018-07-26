@@ -106,32 +106,32 @@ void WorldstateFunctions::SetWeatherTransitionFactor(double transitionFactor) no
 
 void WorldstateFunctions::SetHour(double hour) noexcept
 {
-    writeWorldstate.hour = hour;
+    writeWorldstate.time.hour = hour;
 }
 
 void WorldstateFunctions::SetDay(int day) noexcept
 {
-    writeWorldstate.day = day;
+    writeWorldstate.time.day = day;
 }
 
 void WorldstateFunctions::SetMonth(int month) noexcept
 {
-    writeWorldstate.month = month;
+    writeWorldstate.time.month = month;
 }
 
 void WorldstateFunctions::SetYear(int year) noexcept
 {
-    writeWorldstate.year = year;
+    writeWorldstate.time.year = year;
 }
 
 void WorldstateFunctions::SetDaysPassed(int daysPassed) noexcept
 {
-    writeWorldstate.daysPassed = daysPassed;
+    writeWorldstate.time.daysPassed = daysPassed;
 }
 
 void WorldstateFunctions::SetTimeScale(double timeScale) noexcept
 {
-    writeWorldstate.timeScale = timeScale;
+    writeWorldstate.time.timeScale = timeScale;
 }
 
 void WorldstateFunctions::SetPlayerCollisionState(bool state) noexcept

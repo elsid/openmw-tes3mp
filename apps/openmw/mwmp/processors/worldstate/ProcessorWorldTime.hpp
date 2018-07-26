@@ -20,23 +20,23 @@ namespace mwmp
         {
             MWBase::World *world = MWBase::Environment::get().getWorld();
 
-            if (worldstate.hour != -1)
-                world->setHour(worldstate.hour);
+            if (worldstate.time.hour != -1)
+                world->setHour(worldstate.time.hour);
             
-            if (worldstate.day != -1)
-                world->setDay(worldstate.day);
+            if (worldstate.time.day != -1)
+                world->setDay(worldstate.time.day);
             
-            if (worldstate.month != -1)
-                world->setMonth(worldstate.month);
+            if (worldstate.time.month != -1)
+                world->setMonth(worldstate.time.month);
 
-            if (worldstate.year != -1)
-                world->setYear(worldstate.year);
+            if (worldstate.time.year != -1)
+                world->setYear(worldstate.time.year);
 
-            if (worldstate.daysPassed != -1)
-                world->setDaysPassed(worldstate.daysPassed);
+            if (worldstate.time.daysPassed != -1)
+                world->setDaysPassed(worldstate.time.daysPassed);
 
-            if (worldstate.timeScale != -1)
-                world->setTimeScale(worldstate.timeScale);
+            if (worldstate.time.timeScale != -1)
+                world->setTimeScale(worldstate.time.timeScale);
         }
     };
 }

@@ -13,11 +13,11 @@ void PacketWorldTime::Packet(RakNet::BitStream *bs, bool send)
 {
     WorldstatePacket::Packet(bs, send);
 
-    RW(worldstate->hour, send);
-    RW(worldstate->day, send);
-    RW(worldstate->month, send);
-    RW(worldstate->year, send);
+    RW(worldstate->time.hour, send);
+    RW(worldstate->time.day, send);
+    RW(worldstate->time.month, send);
+    RW(worldstate->time.year, send);
 
-    RW(worldstate->daysPassed, send);
-    RW(worldstate->timeScale, send);
+    RW(worldstate->time.daysPassed, send);
+    RW(worldstate->time.timeScale, send);
 }

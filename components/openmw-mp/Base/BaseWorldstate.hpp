@@ -33,23 +33,18 @@ namespace mwmp
 
         BaseWorldstate()
         {
-            month = -1;
-            day = -1;
-            hour = -1;
+            time.year = -1;
+            time.month = -1;
+            time.day = -1;
+            time.hour = -1;
 
-            daysPassed = -1;
-            timeScale = -1;
+            time.daysPassed = -1;
+            time.timeScale = -1;
         }
 
         RakNet::RakNetGUID guid;
 
-        float hour;
-        int day;
-        int month;
-        int year;
-
-        int daysPassed;
-        float timeScale;
+        mwmp::Time time;
 
         bool hasPlayerCollision;
         bool hasActorCollision;
