@@ -37,6 +37,19 @@ namespace Utils
         return std::find(vectorChecked.begin(), vectorChecked.end(), value) != vectorChecked.end();
     }
 
+    template <class Type>
+    uint32_t getVectorSize(const std::vector<Type> &vectorChecked)
+    {
+        return static_cast<uint32_t>(vectorChecked.size());
+    }
+
+    template <class Type>
+    void resetVector(std::vector<Type> &vectorInput, uint32_t newSize)
+    {
+        vectorInput.clear();
+        vectorInput.resize(newSize);
+    }
+
     std::string replaceString(const std::string &source, const char *find, const char *replace);
 
     std::string toString(int num);
