@@ -186,10 +186,7 @@ void DedicatedPlayer::setShapeshift()
     {
         if (!creatureRefId.empty() && RecordHelper::doesCreatureExist(creatureRefId))
         {
-            if (isNpc)
-            {
-                deleteReference();
-            }
+            deleteReference();
 
             const ESM::Creature *tmpCreature = world->getStore().get<ESM::Creature>().search(creatureRefId);
             creature = *tmpCreature;
@@ -211,15 +208,8 @@ void DedicatedPlayer::setShapeshift()
                 RecordHelper::overrideCreatureRecord(creature);
             }
 
-            if (!reference)
-            {
-                LOG_APPEND(Log::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
-                createReference(creature.mId);
-            }
-            else
-            {
-                reloadPtr();
-            }
+            LOG_APPEND(Log::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
+            createReference(creature.mId);
         }
         // This player was already a creature, but the new creature refId was empty or
         // invalid, so we'll turn this player into their NPC self again as a result
