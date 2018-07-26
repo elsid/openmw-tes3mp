@@ -897,7 +897,7 @@ void ObjectList::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
 {
     if (ptr.getCellRef().getRefId().find("$dynamic") != string::npos)
     {
-        MWBase::Environment::get().getWindowManager()->messageBox("You're trying to place a custom item, but those are not synchronized in multiplayer yet.");
+        MWBase::Environment::get().getWindowManager()->messageBox("You cannot place unsynchronized custom items in multiplayer.");
         return;
     }
 
@@ -931,7 +931,8 @@ void ObjectList::addObjectSpawn(const MWWorld::Ptr& ptr)
 {
     if (ptr.getCellRef().getRefId().find("$dynamic") != string::npos)
     {
-        MWBase::Environment::get().getWindowManager()->messageBox("You're trying to spawn a custom object, but those are not synchronized in multiplayer yet.");
+        MWBase::Environment::get().getWindowManager()->messageBox("You're trying to spawn a custom object lacking a server-given refId, "
+            "and those cannot be synchronized in multiplayer.");
         return;
     }
 
