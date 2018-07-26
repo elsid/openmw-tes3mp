@@ -1,6 +1,7 @@
 #ifndef OPENMW_WORLDSTATEAPI_HPP
 #define OPENMW_WORLDSTATEAPI_HPP
 
+#include <components/openmw-mp/Base/BaseWorldstate.hpp>
 #include "../Types.hpp"
 
 #define WORLDSTATEAPI \
@@ -60,6 +61,9 @@
 class WorldstateFunctions
 {
 public:
+
+    static mwmp::BaseWorldstate *readWorldstate;
+    static mwmp::BaseWorldstate writeWorldstate;
 
     /**
     * \brief Use the last worldstate received by the server as the one being read.

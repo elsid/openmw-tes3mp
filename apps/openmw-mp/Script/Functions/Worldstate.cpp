@@ -1,5 +1,4 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include <components/openmw-mp/Base/BaseWorldstate.hpp>
 
 #include <apps/openmw-mp/Networking.hpp>
 #include <apps/openmw-mp/Player.hpp>
@@ -11,8 +10,8 @@
 using namespace std;
 using namespace mwmp;
 
-BaseWorldstate *readWorldstate;
-BaseWorldstate writeWorldstate;
+BaseWorldstate *WorldstateFunctions::readWorldstate;
+BaseWorldstate WorldstateFunctions::writeWorldstate;
 
 void WorldstateFunctions::ReadReceivedWorldstate() noexcept
 {
