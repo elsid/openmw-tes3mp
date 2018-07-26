@@ -114,6 +114,11 @@ double ObjectFunctions::GetObjectEnchantmentCharge(unsigned int index) noexcept
     return readObjectList->baseObjects.at(index).enchantmentCharge;
 }
 
+const char *ObjectFunctions::GetObjectSoul(unsigned int index) noexcept
+{
+    return readObjectList->baseObjects.at(index).soul.c_str();
+}
+
 int ObjectFunctions::GetObjectGoldValue(unsigned int index) noexcept
 {
     return readObjectList->baseObjects.at(index).goldValue;
@@ -278,6 +283,12 @@ double ObjectFunctions::GetContainerItemEnchantmentCharge(unsigned int objectInd
         .containerItems.at(itemIndex).enchantmentCharge;
 }
 
+const char *ObjectFunctions::GetContainerItemSoul(unsigned int objectIndex, unsigned int itemIndex) noexcept
+{
+    return readObjectList->baseObjects.at(objectIndex)
+        .containerItems.at(itemIndex).soul.c_str();
+}
+
 int ObjectFunctions::GetContainerItemActionCount(unsigned int objectIndex, unsigned int itemIndex) noexcept
 {
     return readObjectList->baseObjects.at(objectIndex)
@@ -332,6 +343,11 @@ void ObjectFunctions::SetObjectCharge(int charge) noexcept
 void ObjectFunctions::SetObjectEnchantmentCharge(double enchantmentCharge) noexcept
 {
     tempObject.enchantmentCharge = enchantmentCharge;
+}
+
+void ObjectFunctions::SetObjectSoul(const char* soul) noexcept
+{
+    tempObject.soul = soul;
 }
 
 void ObjectFunctions::SetObjectGoldValue(int goldValue) noexcept
@@ -438,6 +454,11 @@ void ObjectFunctions::SetContainerItemCharge(int charge) noexcept
 void ObjectFunctions::SetContainerItemEnchantmentCharge(double enchantmentCharge) noexcept
 {
     tempContainerItem.enchantmentCharge = enchantmentCharge;
+}
+
+void ObjectFunctions::SetContainerItemSoul(const char* soul) noexcept
+{
+    tempContainerItem.soul = soul;
 }
 
 void ObjectFunctions::SetContainerItemActionCountByIndex(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept

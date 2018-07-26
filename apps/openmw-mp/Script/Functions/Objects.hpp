@@ -23,6 +23,7 @@
     {"GetObjectCount",                        ObjectFunctions::GetObjectCount},\
     {"GetObjectCharge",                       ObjectFunctions::GetObjectCharge},\
     {"GetObjectEnchantmentCharge",            ObjectFunctions::GetObjectEnchantmentCharge},\
+    {"GetObjectSoul" ,                        ObjectFunctions::GetObjectSoul},\
     {"GetObjectGoldValue",                    ObjectFunctions::GetObjectGoldValue},\
     {"GetObjectScale",                        ObjectFunctions::GetObjectScale},\
     {"GetObjectState",                        ObjectFunctions::GetObjectState},\
@@ -58,6 +59,7 @@
     {"GetContainerItemCount",                 ObjectFunctions::GetContainerItemCount},\
     {"GetContainerItemCharge",                ObjectFunctions::GetContainerItemCharge},\
     {"GetContainerItemEnchantmentCharge",     ObjectFunctions::GetContainerItemEnchantmentCharge},\
+    {"GetContainerItemSoul",                  ObjectFunctions::GetContainerItemSoul},\
     {"GetContainerItemActionCount",           ObjectFunctions::GetContainerItemActionCount},\
     \
     {"DoesObjectHaveContainer",               ObjectFunctions::DoesObjectHaveContainer},\
@@ -72,6 +74,7 @@
     {"SetObjectCount",                        ObjectFunctions::SetObjectCount},\
     {"SetObjectCharge",                       ObjectFunctions::SetObjectCharge},\
     {"SetObjectEnchantmentCharge",            ObjectFunctions::SetObjectEnchantmentCharge},\
+    {"SetObjectSoul",                         ObjectFunctions::SetObjectSoul},\
     {"SetObjectGoldValue",                    ObjectFunctions::SetObjectGoldValue},\
     {"SetObjectScale",                        ObjectFunctions::SetObjectScale},\
     {"SetObjectState",                        ObjectFunctions::SetObjectState},\
@@ -94,6 +97,7 @@
     {"SetContainerItemCount",                 ObjectFunctions::SetContainerItemCount},\
     {"SetContainerItemCharge",                ObjectFunctions::SetContainerItemCharge},\
     {"SetContainerItemEnchantmentCharge",     ObjectFunctions::SetContainerItemEnchantmentCharge},\
+    {"SetContainerItemSoul",                  ObjectFunctions::SetContainerItemSoul},\
     \
     {"SetContainerItemActionCountByIndex",    ObjectFunctions::SetContainerItemActionCountByIndex},\
     \
@@ -142,7 +146,7 @@ public:
     static void ReadReceivedObjectList() noexcept;
 
     /**
-    * \brief Clear the data from the last object list sent by the server.
+    * \brief Clear the data from the object list stored on the server.
     *
     * \return void
     */
@@ -276,6 +280,14 @@ public:
     * \return The enchantment charge.
     */
     static double GetObjectEnchantmentCharge(unsigned int index) noexcept;
+
+    /**
+    * \brief Get the soul of the object at a certain index in the read object list.
+    *
+    * \param index The index of the object.
+    * \return The soul.
+    */
+    static const char *GetObjectSoul(unsigned int index) noexcept;
 
     /**
     * \brief Get the gold value of the object at a certain index in the read object list.
@@ -544,6 +556,16 @@ public:
     static double GetContainerItemEnchantmentCharge(unsigned int objectIndex, unsigned int itemIndex) noexcept;
 
     /**
+    * \brief Get the soul of the container item at a certain itemIndex in the container changes
+    * of the object at a certain objectIndex in the read object list.
+    *
+    * \param objectIndex The index of the object.
+    * \param itemIndex The index of the container item.
+    * \return The soul.
+    */
+    static const char *GetContainerItemSoul(unsigned int objectIndex, unsigned int itemIndex) noexcept;
+
+    /**
     * \brief Get the action count of the container item at a certain itemIndex in the container
     * changes of the object at a certain objectIndex in the read object list.
     *
@@ -660,6 +682,14 @@ public:
     * \return void
     */
     static void SetObjectEnchantmentCharge(double enchantmentCharge) noexcept;
+
+    /**
+    * \brief Set the soul of the temporary object stored on the server.
+    *
+    * \param refId The soul.
+    * \return void
+    */
+    static void SetObjectSoul(const char* soul) noexcept;
 
     /**
     * \brief Set the gold value of the temporary object stored on the server.
@@ -842,6 +872,14 @@ public:
     static void SetContainerItemEnchantmentCharge(double enchantmentCharge) noexcept;
 
     /**
+    * \brief Set the soul of the temporary container item stored on the server.
+    *
+    * \param refId The soul.
+    * \return void
+    */
+    static void SetContainerItemSoul(const char* soul) noexcept;
+
+    /**
     * \brief Set the action count of the container item at a certain itemIndex in the container
     * changes of the object at a certain objectIndex in the object list stored on the server.
     *
@@ -857,7 +895,8 @@ public:
     static void SetContainerItemActionCountByIndex(unsigned int objectIndex, unsigned int itemIndex, int actionCount) noexcept;
 
     /**
-    * \brief Add a copy of the server's temporary object to the server's temporary object list.
+    * \brief Add a copy of the server's temporary object to the server's currently stored object
+    * list.
     *
     * In the process, the server's temporary object will automatically be cleared so a new
     * one can be set up.

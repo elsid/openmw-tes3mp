@@ -488,9 +488,9 @@ void LocalPlayer::updateEquipment(bool forceUpdate)
                 equipmentIndexChanges.push_back(slot);
 
                 item.refId = it->getCellRef().getRefId();
+                item.count = it->getRefData().getCount();
                 item.charge = it->getCellRef().getCharge();
                 item.enchantmentCharge = it->getCellRef().getEnchantmentCharge();
-                item.count = it->getRefData().getCount();
             }
         }
         else if (!item.refId.empty())
@@ -524,11 +524,12 @@ void LocalPlayer::updateInventory(bool forceUpdate)
 
     auto setItem = [](Item &item, const MWWorld::Ptr &iter) {
         item.refId = iter.getCellRef().getRefId();
-        if (item.refId.find("$dynamic") != string::npos) // skip generated items (self enchanted for e.g.)
+        if (item.refId.find("$dynamic") != string::npos)
             return true;
         item.count = iter.getRefData().getCount();
         item.charge = iter.getCellRef().getCharge();
         item.enchantmentCharge = iter.getCellRef().getEnchantmentCharge();
+        item.soul = iter.getCellRef().getSoul();
         return false;
     };
 
@@ -683,6 +684,9 @@ void LocalPlayer::addItems()
 
             if (item.enchantmentCharge != -1)
                 itemPtr.getCellRef().setEnchantmentCharge(item.enchantmentCharge);
+
+            if (!item.soul.empty())
+                itemPtr.getCellRef().setSoul(item.soul);
         }
         catch (std::exception&)
         {
@@ -1370,6 +1374,7 @@ void LocalPlayer::sendInventory()
         item.count = iter.getRefData().getCount();
         item.charge = iter.getCellRef().getCharge();
         item.enchantmentCharge = iter.getCellRef().getEnchantmentCharge();
+        item.soul = iter.getCellRef().getSoul();
 
         inventoryChanges.items.push_back(item);
     }

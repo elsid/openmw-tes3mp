@@ -15,6 +15,7 @@ void PacketObjectPlace::Object(BaseObject &baseObject, bool send)
     RW(baseObject.count, send);
     RW(baseObject.charge, send);
     RW(baseObject.enchantmentCharge, send);
+    RW(baseObject.soul, send, true);
     RW(baseObject.goldValue, send);
     RW(baseObject.position, send);
     RW(baseObject.droppedByPlayer, send);

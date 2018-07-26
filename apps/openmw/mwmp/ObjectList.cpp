@@ -78,6 +78,7 @@ void ObjectList::addContainerItem(mwmp::BaseObject& baseObject, const MWWorld::P
     containerItem.count = itemPtr.getRefData().getCount();
     containerItem.charge = itemPtr.getCellRef().getCharge();
     containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+    containerItem.soul = itemPtr.getCellRef().getSoul();
     containerItem.actionCount = actionCount;
 
     LOG_APPEND(Log::LOG_VERBOSE, "--- Adding container item %s", containerItem.refId.c_str());
@@ -174,6 +175,9 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
                     if (containerItem.enchantmentCharge > -1)
                         newPtr.getCellRef().setEnchantmentCharge(containerItem.enchantmentCharge);
 
+                    if (!containerItem.soul.empty())
+                        newPtr.getCellRef().setSoul(containerItem.soul);
+
                     containerStore.add(newPtr, containerItem.count, ownerPtr, true);
                 }
 
@@ -186,7 +190,8 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
                         if (Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), containerItem.refId))
                         {
                             if (itemPtr.getCellRef().getCharge() == containerItem.charge &&
-                                itemPtr.getCellRef().getEnchantmentCharge() == containerItem.enchantmentCharge)
+                                itemPtr.getCellRef().getEnchantmentCharge() == containerItem.enchantmentCharge &&
+                                Misc::StringUtils::ciEqual(itemPtr.getCellRef().getSoul(), containerItem.soul))
                             {
                                 // Store the sound of the first item in a TAKE_ALL
                                 if (isLocalTakeAll && takeAllSound.empty())
@@ -327,8 +332,9 @@ void ObjectList::placeObjects(MWWorld::CellStore* cellStore)
 
     for (const auto &baseObject : baseObjects)
     {
-        LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s %i-%i, count: %i, charge: %i, enchantmentCharge: %i", baseObject.refId.c_str(),
-                   baseObject.refNum, baseObject.mpNum, baseObject.count, baseObject.charge, baseObject.enchantmentCharge);
+        LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s %i-%i, count: %i, charge: %i, enchantmentCharge: %i, soul: %s",
+            baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum, baseObject.count, baseObject.charge,
+            baseObject.enchantmentCharge, baseObject.soul.c_str());
 
         // Ignore generic dynamic refIds because they could be anything on other clients
         if (baseObject.refId.find("$dynamic") != string::npos)
@@ -353,6 +359,9 @@ void ObjectList::placeObjects(MWWorld::CellStore* cellStore)
 
                 if (baseObject.enchantmentCharge > -1)
                     newPtr.getCellRef().setEnchantmentCharge(baseObject.enchantmentCharge);
+
+                if (!baseObject.soul.empty())
+                    newPtr.getCellRef().setSoul(baseObject.soul);
 
                 newPtr.getCellRef().setGoldValue(baseObject.goldValue);
                 newPtr = world->placeObject(newPtr, cellStore, baseObject.position);
@@ -896,6 +905,7 @@ void ObjectList::addObjectPlace(const MWWorld::Ptr& ptr, bool droppedByPlayer)
     baseObject.mpNum = 0;
     baseObject.charge = ptr.getCellRef().getCharge();
     baseObject.enchantmentCharge = ptr.getCellRef().getEnchantmentCharge();
+    baseObject.soul = ptr.getCellRef().getSoul();
     baseObject.droppedByPlayer = droppedByPlayer;
     baseObject.hasContainer = ptr.getClass().hasContainerStore(ptr);
 

@@ -139,6 +139,7 @@ namespace MWScript
                         containerItem.count = count;
                         containerItem.charge = -1;
                         containerItem.enchantmentCharge = -1;
+                        containerItem.soul = "";
 
                         baseObject.containerItems.push_back(containerItem);
                         objectList->addObject(baseObject);
@@ -267,6 +268,7 @@ namespace MWScript
                         containerItem.actionCount = count;
                         containerItem.charge = -1;
                         containerItem.enchantmentCharge = -1;
+                        containerItem.soul = "";
 
                         baseObject.containerItems.push_back(containerItem);
                         objectList->addObject(baseObject);

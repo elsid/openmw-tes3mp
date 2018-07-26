@@ -46,10 +46,11 @@ void PacketContainer::Packet(RakNet::BitStream *bs, bool send)
             if (send)
                 containerItem = baseObject.containerItems.at(j);
 
-            RW(containerItem.refId, send);
+            RW(containerItem.refId, send, true);
             RW(containerItem.count, send);
             RW(containerItem.charge, send);
             RW(containerItem.enchantmentCharge, send);
+            RW(containerItem.soul, send, true);
             RW(containerItem.actionCount, send);
 
             if (!send)

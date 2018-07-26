@@ -1,7 +1,3 @@
-//
-// Created by koncord on 30.08.16.
-//
-
 #ifndef OPENMW_ITEMAPI_HPP
 #define OPENMW_ITEMAPI_HPP
 
@@ -28,6 +24,7 @@
     {"GetInventoryItemCount",                 ItemFunctions::GetInventoryItemCount},\
     {"GetInventoryItemCharge",                ItemFunctions::GetInventoryItemCharge},\
     {"GetInventoryItemEnchantmentCharge",     ItemFunctions::GetInventoryItemEnchantmentCharge},\
+    {"GetInventoryItemSoul",                  ItemFunctions::GetInventoryItemSoul},\
     \
     {"SendEquipment",                         ItemFunctions::SendEquipment},\
     {"SendInventoryChanges",                  ItemFunctions::SendInventoryChanges}
@@ -95,9 +92,11 @@ public:
     * \param count The count of the item.
     * \param charge The charge of the item.
     * \param enchantmentCharge The enchantment charge of the item.
+    * \param soul The soul of the item.
     * \return void
     */
-    static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge, double enchantmentCharge = -1) noexcept;
+    static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
+        double enchantmentCharge, const char* soul) noexcept;
 
     /**
     * \brief Remove an item from a player's inventory.
@@ -196,6 +195,16 @@ public:
     * \return The enchantment charge.
     */
     static double GetInventoryItemEnchantmentCharge(unsigned short pid, unsigned int index) noexcept;
+
+    /**
+    * \brief Get the soul of the item at a certain index in a player's latest inventory
+    *        changes.
+    *
+    * \param pid The player ID whose inventory changes should be used.
+    * \param index The index of the inventory item.
+    * \return The soul.
+    */
+    static const char *GetInventoryItemSoul(unsigned short pid, unsigned int index) noexcept;
 
     /**
     * \brief Send a PlayerEquipment packet with a player's equipment.

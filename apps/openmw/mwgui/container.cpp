@@ -174,6 +174,7 @@ namespace MWGui
 
             containerItem.charge = itemPtr.getCellRef().getCharge();
             containerItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+            containerItem.soul = itemPtr.getCellRef().getSoul();
 
             baseObject.containerItems.push_back(containerItem);
             objectList->addObject(baseObject);

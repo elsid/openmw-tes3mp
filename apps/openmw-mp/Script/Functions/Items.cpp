@@ -31,7 +31,8 @@ unsigned int ItemFunctions::GetInventoryChangesSize(unsigned short pid) noexcept
     return player->inventoryChanges.count;
 }
 
-void ItemFunctions::EquipItem(unsigned short pid, unsigned short slot, const char *refId, unsigned int count, int charge, double enchantmentCharge) noexcept
+void ItemFunctions::EquipItem(unsigned short pid, unsigned short slot, const char *refId, unsigned int count,
+    int charge, double enchantmentCharge) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
@@ -53,7 +54,8 @@ void ItemFunctions::UnequipItem(unsigned short pid, unsigned short slot) noexcep
     ItemFunctions::EquipItem(pid, slot, "", 0, -1, -1);
 }
 
-void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int count, int charge, double enchantmentCharge) noexcept
+void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
+    double enchantmentCharge, const char* soul) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -63,6 +65,7 @@ void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int 
     item.count = count;
     item.charge = charge;
     item.enchantmentCharge = enchantmentCharge;
+    item.soul = soul;
 
     player->inventoryChanges.items.push_back(item);
     player->inventoryChanges.action = InventoryChanges::ADD;
@@ -157,6 +160,17 @@ double ItemFunctions::GetInventoryItemEnchantmentCharge(unsigned short pid, unsi
     GET_PLAYER(pid, player, 0);
 
     return player->inventoryChanges.items.at(index).enchantmentCharge;
+}
+
+const char *ItemFunctions::GetInventoryItemSoul(unsigned short pid, unsigned int index) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, "");
+
+    if (index >= player->inventoryChanges.count)
+        return "invalid";
+
+    return player->inventoryChanges.items.at(index).soul.c_str();
 }
 
 void ItemFunctions::SendEquipment(unsigned short pid) noexcept
