@@ -408,6 +408,8 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
             MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), baseObject.refId, 1);
             MWWorld::Ptr newPtr = ref.getPtr();
 
+            newPtr.getCellRef().setMpNum(baseObject.mpNum);
+
             newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, baseObject.position);
             MWMechanics::CreatureStats& creatureStats = newPtr.getClass().getCreatureStats(newPtr);
 
