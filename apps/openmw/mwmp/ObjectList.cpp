@@ -6,6 +6,7 @@
 #include "DedicatedPlayer.hpp"
 #include "PlayerList.hpp"
 #include "CellController.hpp"
+#include "RecordHelper.hpp"
 
 #include <components/openmw-mp/Log.hpp>
 
@@ -375,7 +376,7 @@ void ObjectList::placeObjects(MWWorld::CellStore* cellStore)
             }
             catch (std::exception&)
             {
-                LOG_APPEND(Log::LOG_INFO, "-- Ignored placement of invalid object");
+                LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Ignored placement of invalid object %s", baseObject.refId.c_str());
             }
         }
         else
@@ -393,6 +394,11 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
         // Ignore generic dynamic refIds because they could be anything on other clients
         if (baseObject.refId.find("$dynamic") != string::npos)
             continue;
+        else if (!RecordHelper::doesCreatureExist(baseObject.refId) && !RecordHelper::doesNpcExist(baseObject.refId))
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Ignored spawning of invalid object %s", baseObject.refId.c_str());
+            continue;
+        }
 
         MWWorld::Ptr ptrFound = cellStore->searchExact(0, baseObject.mpNum);
 
@@ -402,45 +408,40 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
             MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), baseObject.refId, 1);
             MWWorld::Ptr newPtr = ref.getPtr();
 
-            if (newPtr.getClass().isActor())
+            newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, baseObject.position);
+            MWMechanics::CreatureStats& creatureStats = newPtr.getClass().getCreatureStats(newPtr);
+
+            if (baseObject.isSummon)
             {
-                newPtr = MWBase::Environment::get().getWorld()->placeObject(newPtr, cellStore, baseObject.position);
-                MWMechanics::CreatureStats& creatureStats = newPtr.getClass().getCreatureStats(newPtr);
+                MWWorld::Ptr masterPtr;
 
-                if (baseObject.isSummon)
+                if (baseObject.master.isPlayer)
+                    masterPtr = MechanicsHelper::getPlayerPtr(baseObject.master);
+                else
+                    masterPtr = cellStore->searchExact(baseObject.master.refNum, baseObject.master.mpNum);
+
+                if (masterPtr)
                 {
-                    MWWorld::Ptr masterPtr;
+                    LOG_APPEND(Log::LOG_VERBOSE, "-- Actor has master: %s", masterPtr.getCellRef().getRefId().c_str());
 
-                    if (baseObject.master.isPlayer)
-                        masterPtr = MechanicsHelper::getPlayerPtr(baseObject.master);
-                    else
-                        masterPtr = cellStore->searchExact(baseObject.master.refNum, baseObject.master.mpNum);
+                    MWMechanics::AiFollow package(masterPtr);
+                    creatureStats.getAiSequence().stack(package, newPtr);
 
-                    if (masterPtr)
+                    MWRender::Animation* anim = MWBase::Environment::get().getWorld()->getAnimation(newPtr);
+                    if (anim)
                     {
-                        LOG_APPEND(Log::LOG_VERBOSE, "-- Actor has master: %s", masterPtr.getCellRef().getRefId().c_str());
-
-                        MWMechanics::AiFollow package(masterPtr);
-                        creatureStats.getAiSequence().stack(package, newPtr);
-
-                        MWRender::Animation* anim = MWBase::Environment::get().getWorld()->getAnimation(newPtr);
-                        if (anim)
-                        {
-                            const ESM::Static* fx = MWBase::Environment::get().getWorld()->getStore().get<ESM::Static>()
-                                .search("VFX_Summon_Start");
-                            if (fx)
-                                anim->addEffect("meshes\\" + fx->mModel, -1, false);
-                        }
-
-                        int creatureActorId = newPtr.getClass().getCreatureStats(newPtr).getActorId();
-
-                        MWMechanics::CreatureStats& masterCreatureStats = masterPtr.getClass().getCreatureStats(masterPtr);
-                        masterCreatureStats.setSummonedCreatureActorId(baseObject.refId, creatureActorId);
+                        const ESM::Static* fx = MWBase::Environment::get().getWorld()->getStore().get<ESM::Static>()
+                            .search("VFX_Summon_Start");
+                        if (fx)
+                            anim->addEffect("meshes\\" + fx->mModel, -1, false);
                     }
+
+                    int creatureActorId = newPtr.getClass().getCreatureStats(newPtr).getActorId();
+
+                    MWMechanics::CreatureStats& masterCreatureStats = masterPtr.getClass().getCreatureStats(masterPtr);
+                    masterCreatureStats.setSummonedCreatureActorId(baseObject.refId, creatureActorId);
                 }
             }
-            else
-                LOG_APPEND(Log::LOG_VERBOSE, "-- Cannot spawn non-actor object!");
         }
         else
             LOG_APPEND(Log::LOG_VERBOSE, "-- Actor already existed!");
