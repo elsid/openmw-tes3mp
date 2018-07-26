@@ -59,7 +59,7 @@ DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
 
     MWBase::World *world = MWBase::Environment::get().getWorld();
     npc = *world->getPlayerPtr().get<ESM::NPC>()->mBase;
-    npc.mId = "Dedicated Player";
+    npc.mId = "";
     previousRace = npc.mRace;
 
     hasFinishedInitialTeleportation = false;
@@ -162,7 +162,7 @@ void DedicatedPlayer::setBaseInfo()
     }
     else
     {
-        RecordHelper::updateNpcRecord(npc);
+        RecordHelper::overrideNpcRecord(npc);
         reloadPtr();
     }
 
@@ -202,14 +202,13 @@ void DedicatedPlayer::setShapeshift()
             // and reuse it
             if (creatureRecordId.empty())
             {
-                creature.mId = "Dedicated Player";
                 creature.mId = creatureRecordId = RecordHelper::createCreatureRecord(creature);
                 LOG_APPEND(Log::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
             }
             else
             {
                 creature.mId = creatureRecordId;
-                RecordHelper::updateCreatureRecord(creature);
+                RecordHelper::overrideCreatureRecord(creature);
             }
 
             if (!reference)
@@ -231,7 +230,7 @@ void DedicatedPlayer::setShapeshift()
                 deleteReference();
             }
 
-            RecordHelper::updateNpcRecord(npc);
+            RecordHelper::overrideNpcRecord(npc);
             createReference(npc.mId);
             reloadPtr();
         }
