@@ -46,7 +46,7 @@ void PacketPlayerEquipment::Packet(RakNet::BitStream *bs, bool send)
 
 void PacketPlayerEquipment::ExchangeItemInformation(Item &item, bool send)
 {
-    RW(item.refId, send);
+    RW(item.refId, send, true);
     RW(item.count, send);
     RW(item.charge, send);
     RW(item.enchantmentCharge, send);
