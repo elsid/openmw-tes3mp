@@ -23,7 +23,22 @@ namespace MWWorld
     /*
         Start of tes3mp addition
 
-        Get the mMpNum (unique multiplayer reference number) of a CellRef
+        Set the unique reference number index of a CellRef, needed to
+        make objects retain their uniqueIndex when they are updated
+        after their records are modified on the fly by the server
+    */
+    void CellRef::setRefNum(unsigned int index)
+    {
+        mCellRef.mRefNum.mIndex = index;
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Get the mMpNum (unique multiplayer number) of a CellRef
     */
     unsigned int CellRef::getMpNum() const
     {

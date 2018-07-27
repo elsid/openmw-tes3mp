@@ -766,6 +766,53 @@ namespace MWWorld
         End of tes3mp addition
     */
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to update all Ptrs in active cells that have a certain refId
+    */
+    void World::updatePtrsWithRefId(std::string refId)
+    {
+        for (Scene::CellStoreCollection::const_iterator iter(mWorldScene->getActiveCells().begin());
+            iter != mWorldScene->getActiveCells().end(); ++iter)
+        {
+            CellStore* cellStore = *iter;
+
+            for (auto &mergedRef : cellStore->getMergedRefs())
+            {
+                if (Misc::StringUtils::ciEqual(refId, mergedRef->mRef.getRefId()))
+                {
+                    MWWorld::Ptr ptr(mergedRef, cellStore);
+
+                    const ESM::Position* position = &ptr.getRefData().getPosition();
+                    const unsigned int refNum = ptr.getCellRef().getRefNum().mIndex;
+                    const unsigned int mpNum = ptr.getCellRef().getMpNum();
+
+                    deleteObject(ptr);
+                    ptr.getCellRef().unsetRefNum();
+                    ptr.getCellRef().setMpNum(0);
+
+                    MWWorld::ManualRef* reference = new MWWorld::ManualRef(getStore(), refId, 1);
+                    MWWorld::Ptr newPtr = placeObject(reference->getPtr(), cellStore, *position);
+                    newPtr.getCellRef().setRefNum(refNum);
+                    newPtr.getCellRef().setMpNum(mpNum);
+
+                    // Update Ptrs for LocalActors and DedicatedActors
+                    if (newPtr.getClass().isActor())
+                    {
+                        if (mwmp::Main::get().getCellController()->isLocalActor(refNum, mpNum))
+                            mwmp::Main::get().getCellController()->getLocalActor(refNum, mpNum)->setPtr(newPtr);
+                        else if (mwmp::Main::get().getCellController()->isDedicatedActor(refNum, mpNum))
+                            mwmp::Main::get().getCellController()->getDedicatedActor(refNum, mpNum)->setPtr(newPtr);
+                    }
+                }
+            }
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
+
     struct FindContainerVisitor
     {
         ConstPtr mContainedPtr;

@@ -311,6 +311,16 @@ namespace MWWorld
                 End of tes3mp addition
             */
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to update all Ptrs in active cells that have a certain refId
+            */
+            void updatePtrsWithRefId(std::string refId) override;
+            /*
+                End of tes3mp addition
+            */
+
             MWWorld::Ptr findContainer (const MWWorld::ConstPtr& ptr) override;
             ///< Return a pointer to a liveCellRef which contains \a ptr.
             /// \note Search is limited to the active cells.
