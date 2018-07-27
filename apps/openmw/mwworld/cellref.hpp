@@ -35,7 +35,7 @@ namespace MWWorld
             make objects retain their uniqueIndex when they are updated
             after their records are modified on the fly by the server
         */
-        void CellRef::setRefNum(unsigned int index);
+        void setRefNum(unsigned int index);
         /*
             End of tes3mp addition
         */
