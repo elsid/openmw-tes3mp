@@ -10,6 +10,7 @@
 #include "Worldstate.hpp"
 #include "Main.hpp"
 #include "Networking.hpp"
+#include "RecordHelper.hpp"
 
 using namespace mwmp;
 using namespace std;
@@ -30,6 +31,133 @@ Worldstate::~Worldstate()
 Networking *Worldstate::getNetworking()
 {
     return mwmp::Main::get().getNetworking();
+}
+
+void Worldstate::addRecords()
+{
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Received ID_RECORD_DYNAMIC with %i records of type %i",
+        recordsCount, recordsType);
+
+    if (recordsType == mwmp::RECORD_TYPE::SPELL)
+    {
+        for (auto &&record : spellRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- spell record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideSpellRecord(record.data);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::POTION)
+    {
+        for (auto &&record : potionRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- potion record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overridePotionRecord(record.data);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::ENCHANTMENT)
+    {
+        for (auto &&record : enchantmentRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- enchantment record %s, %i\n-- baseId is %s", record.data.mId.c_str(), record.data.mData.mType,
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideEnchantmentRecord(record.data);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::CREATURE)
+    {
+        for (auto &&record : creatureRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- creature record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideCreatureRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::NPC)
+    {
+        for (auto &&record : npcRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- NPC record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideNpcRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::ARMOR)
+    {
+        for (auto &&record : armorRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- armor record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideArmorRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::BOOK)
+    {
+        for (auto &&record : bookRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- book record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideBookRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::CLOTHING)
+    {
+        for (auto &&record : clothingRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- clothing record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideClothingRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::MISCELLANEOUS)
+    {
+        for (auto &&record : miscellaneousRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- miscellaneous record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideMiscellaneousRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::WEAPON)
+    {
+        for (auto &&record : weaponRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_ERROR, "- weapon record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideWeaponRecord(record);
+        }
+    }
 }
 
 bool Worldstate::containsExploredMapTile(int cellX, int cellY)
@@ -117,4 +245,132 @@ void Worldstate::sendWeather(std::string region, int currentWeather, int nextWea
 
     getNetworking()->getWorldstatePacket(ID_WORLD_WEATHER)->setWorldstate(this);
     getNetworking()->getWorldstatePacket(ID_WORLD_WEATHER)->Send();
+}
+
+void Worldstate::sendEnchantmentRecord(const ESM::Enchantment* enchantment)
+{
+    enchantmentRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with enchantment");
+
+    recordsType = mwmp::RECORD_TYPE::ENCHANTMENT;
+
+    mwmp::EnchantmentRecord record;
+    record.data = *enchantment;
+    enchantmentRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
+}
+
+void Worldstate::sendPotionRecord(const ESM::Potion* potion)
+{
+    potionRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with potion %s", potion->mName.c_str());
+
+    recordsType = mwmp::RECORD_TYPE::POTION;
+
+    mwmp::PotionRecord record;
+    record.data = *potion;
+    potionRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
+}
+
+void Worldstate::sendSpellRecord(const ESM::Spell* spell)
+{
+    spellRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with spell %s", spell->mName.c_str());
+
+    recordsType = mwmp::RECORD_TYPE::SPELL;
+
+    mwmp::SpellRecord record;
+    record.data = *spell;
+    spellRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
+}
+
+void Worldstate::sendArmorRecord(const ESM::Armor* armor, std::string baseId)
+{
+    armorRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with armor %s", armor->mName.c_str());
+
+    recordsType = mwmp::RECORD_TYPE::ARMOR;
+
+    mwmp::ArmorRecord record;
+    record.data = *armor;
+    record.baseId = baseId;
+    record.baseOverrides.hasName = true;
+    record.baseOverrides.hasEnchantmentId = true;
+    record.baseOverrides.hasEnchantmentCharge = true;
+    armorRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
+}
+
+void Worldstate::sendBookRecord(const ESM::Book* book, std::string baseId)
+{
+    bookRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with book %s", book->mName.c_str());
+
+    recordsType = mwmp::RECORD_TYPE::BOOK;
+
+    mwmp::BookRecord record;
+    record.data = *book;
+    record.baseId = baseId;
+    record.baseOverrides.hasName = true;
+    record.baseOverrides.hasEnchantmentId = true;
+    record.baseOverrides.hasEnchantmentCharge = true;
+    bookRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
+}
+
+void Worldstate::sendClothingRecord(const ESM::Clothing* clothing, std::string baseId)
+{
+    clothingRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with clothing %s", clothing->mName.c_str());
+
+    recordsType = mwmp::RECORD_TYPE::CLOTHING;
+
+    mwmp::ClothingRecord record;
+    record.data = *clothing;
+    record.baseId = baseId;
+    record.baseOverrides.hasName = true;
+    record.baseOverrides.hasEnchantmentId = true;
+    record.baseOverrides.hasEnchantmentCharge = true;
+    clothingRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
+}
+
+void Worldstate::sendWeaponRecord(const ESM::Weapon* weapon, std::string baseId)
+{
+    weaponRecords.clear();
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending ID_RECORD_DYNAMIC with weapon %s", weapon->mName.c_str());
+
+    recordsType = mwmp::RECORD_TYPE::WEAPON;
+
+    mwmp::WeaponRecord record;
+    record.data = *weapon;
+    record.baseId = baseId;
+    record.baseOverrides.hasName = true;
+    record.baseOverrides.hasEnchantmentId = true;
+    record.baseOverrides.hasEnchantmentCharge = true;
+    weaponRecords.push_back(record);
+
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_RECORD_DYNAMIC)->Send();
 }

@@ -241,6 +241,18 @@ namespace MWClass
         newItem.mName=newName;
         newItem.mData.mEnchant=enchCharge;
         newItem.mEnchant=enchId;
+
+        /*
+            Start of tes3mp addition
+
+            Send the newly created record to the server and expect it to be
+            returned with a server-set id
+        */
+        mwmp::Main::get().getNetworking()->getWorldstate()->sendClothingRecord(&newItem, ref->mBase->mId);
+        /*
+            End of tes3mp addition
+        */
+
         const ESM::Clothing *record = MWBase::Environment::get().getWorld()->createRecord (newItem);
         return record->mId;
     }

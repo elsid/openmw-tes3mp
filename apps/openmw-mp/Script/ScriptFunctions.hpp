@@ -15,6 +15,7 @@
 #include <Script/Functions/Objects.hpp>
 #include <Script/Functions/Positions.hpp>
 #include <Script/Functions/Quests.hpp>
+#include <Script/Functions/RecordsDynamic.hpp>
 #include <Script/Functions/Shapeshift.hpp>
 #include <Script/Functions/Server.hpp>
 #include <Script/Functions/Settings.hpp>
@@ -138,6 +139,7 @@ public:
             MISCELLANEOUSAPI,
             POSITIONAPI,
             QUESTAPI,
+            RECORDSDYNAMICAPI,
             SHAPESHIFTAPI,
             SERVERAPI,
             SETTINGSAPI,

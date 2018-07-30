@@ -191,6 +191,18 @@ namespace MWClass
         newItem.mData.mIsScroll = 1;
         newItem.mData.mEnchant=enchCharge;
         newItem.mEnchant=enchId;
+
+        /*
+            Start of tes3mp addition
+
+            Send the newly created record to the server and expect it to be
+            returned with a server-set id
+        */
+        mwmp::Main::get().getNetworking()->getWorldstate()->sendBookRecord(&newItem, ref->mBase->mId);
+        /*
+            End of tes3mp addition
+        */
+
         const ESM::Book *record = MWBase::Environment::get().getWorld()->createRecord (newItem);
         return record->mId;
     }

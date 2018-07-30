@@ -15,7 +15,7 @@ namespace mwmp
 
         virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)
         {
-            // Placeholder
+            worldstate.addRecords();
         }
     };
 }

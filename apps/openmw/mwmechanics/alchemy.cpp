@@ -15,6 +15,19 @@
 #include <components/esm/loadgmst.hpp>
 #include <components/esm/loadmgef.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include <components/openmw-mp/Log.hpp>
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/Worldstate.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
 
@@ -302,11 +315,27 @@ void MWMechanics::Alchemy::addPotion (const std::string& name)
 
     newRecord.mEffects.mList = mEffects;
 
+    /*
+        Start of tes3mp change (major)
+
+        Don't create a record and don't add the potion to the player's inventory;
+        instead just send its record to the server and expect the server to add it
+        to the player's inventory
+    */
+    /*
     const ESM::Potion* record = getRecord(newRecord);
     if (!record)
-        record = MWBase::Environment::get().getWorld()->createRecord (newRecord);
+    {
+        record = MWBase::Environment::get().getWorld()->createRecord(newRecord);
+    }
 
     mAlchemist.getClass().getContainerStore (mAlchemist).add (record->mId, 1, mAlchemist);
+    */
+
+    mwmp::Main::get().getNetworking()->getWorldstate()->sendPotionRecord(&newRecord);
+    /*
+        End of tes3mp change (major)
+    */
 }
 
 void MWMechanics::Alchemy::increaseSkill()

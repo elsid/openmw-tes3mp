@@ -122,7 +122,7 @@ public:
     static void ReadCellActorList(const char* cellDescription) noexcept;
 
     /**
-    * \brief Clear the data from the last actor list sent by the server.
+    * \brief Clear the data from the actor list stored on the server.
     *
     * \return void
     */

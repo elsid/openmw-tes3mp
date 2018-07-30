@@ -402,6 +402,18 @@ namespace MWClass
         newItem.mData.mEnchant=enchCharge;
         newItem.mEnchant=enchId;
         newItem.mData.mFlags |= ESM::Weapon::Magical;
+
+        /*
+            Start of tes3mp addition
+
+            Send the newly created record to the server and expect it to be
+            returned with a server-set id
+        */
+        mwmp::Main::get().getNetworking()->getWorldstate()->sendWeaponRecord(&newItem, ref->mBase->mId);
+        /*
+            End of tes3mp addition
+        */
+
         const ESM::Weapon *record = MWBase::Environment::get().getWorld()->createRecord (newItem);
         return record->mId;
     }

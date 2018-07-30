@@ -13,8 +13,9 @@ namespace mwmp
         Worldstate();
         virtual ~Worldstate();
 
-        bool containsExploredMapTile(int cellX, int cellY);
+        void addRecords();
 
+        bool containsExploredMapTile(int cellX, int cellY);
         void markExploredMapTile(int cellX, int cellY);
 
         void setMapExplored();
@@ -22,6 +23,15 @@ namespace mwmp
 
         void sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData);
         void sendWeather(std::string region, int currentWeather, int nextWeather, int queuedWeather, float transitionFactor);
+
+        void sendEnchantmentRecord(const ESM::Enchantment* enchantment);
+        void sendPotionRecord(const ESM::Potion* potion);
+        void sendSpellRecord(const ESM::Spell* spell);
+
+        void sendArmorRecord(const ESM::Armor* armor, std::string baseRefId = "");
+        void sendBookRecord(const ESM::Book* book, std::string baseRefId = "");
+        void sendClothingRecord(const ESM::Clothing* clothing, std::string baseRefId = "");
+        void sendWeaponRecord(const ESM::Weapon* weapon, std::string baseRefId = "");
 
     private:
 

@@ -8,6 +8,7 @@
 #include <components/openmw-mp/Utils.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
+#include "../mwmp/Worldstate.hpp"
 /*
     End of tes3mp addition
 */
@@ -306,6 +307,18 @@ namespace MWClass
         newItem.mName=newName;
         newItem.mData.mEnchant=enchCharge;
         newItem.mEnchant=enchId;
+
+        /*
+            Start of tes3mp addition
+
+            Send the newly created record to the server and expect it to be
+            returned with a server-set id
+        */
+        mwmp::Main::get().getNetworking()->getWorldstate()->sendArmorRecord(&newItem, ref->mBase->mId);
+        /*
+            End of tes3mp addition
+        */
+
         const ESM::Armor *record = MWBase::Environment::get().getWorld()->createRecord (newItem);
         return record->mId;
     }

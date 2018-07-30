@@ -12,7 +12,8 @@
     Include additional headers for multiplayer purposes
 */
 #include "../mwmp/Main.hpp"
-#include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/Worldstate.hpp"
 /*
     End of tes3mp addition
 */
@@ -419,21 +420,22 @@ namespace MWGui
 
         MWBase::Environment::get().getWindowManager()->playSound ("Mysticism Hit");
 
+        /*
+            Start of tes3mp change (major)
+
+            Don't create a record and don't add the spell to the player's spellbook;
+            instead just send its record to the server and expect the server to add it
+            to the player's spellbook
+        */
+        /*
         const ESM::Spell* spell = MWBase::Environment::get().getWorld()->createRecord(mSpell);
 
         MWMechanics::CreatureStats& stats = player.getClass().getCreatureStats(player);
         MWMechanics::Spells& spells = stats.getSpells();
-        spells.add (spell->mId);
-
-        /*
-            Start of tes3mp addition
-
-            Send an ID_PLAYER_SPELLBOOK packet every time a player buys a custom spell from
-            the Spellmaking screen
-
-            Include a messagebox notifying players that custom spells are not synced yet
+        spells.add(spell->mId);
         */
-        MWBase::Environment::get().getWindowManager()->messageBox("Custom spells are not synchronized in multiplayer yet and their effects cannot be seen by other players in most cases.");
+
+        mwmp::Main::get().getNetworking()->getWorldstate()->sendSpellRecord(&mSpell);
         /*
             End of tes3mp addition
         */

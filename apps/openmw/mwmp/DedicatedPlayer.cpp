@@ -152,7 +152,7 @@ void DedicatedPlayer::move(float dt)
 void DedicatedPlayer::setBaseInfo()
 {
     // Use the previous race if the new one doesn't exist
-    if (!RecordHelper::doesRaceExist(npc.mRace))
+    if (!RecordHelper::doesRaceRecordExist(npc.mRace))
         npc.mRace = previousRace;
 
     if (!reference)
@@ -184,7 +184,7 @@ void DedicatedPlayer::setShapeshift()
 
     if (creatureRefId != previousCreatureRefId || displayCreatureName != previousDisplayCreatureName)
     {
-        if (!creatureRefId.empty() && RecordHelper::doesCreatureExist(creatureRefId))
+        if (!creatureRefId.empty() && RecordHelper::doesCreatureRecordExist(creatureRefId))
         {
             deleteReference();
 
