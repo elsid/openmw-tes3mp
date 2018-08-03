@@ -21,6 +21,9 @@
     {"GetPlayerKillerMpNum",        MechanicsFunctions::GetPlayerKillerMpNum},\
     {"GetPlayerKillerName",         MechanicsFunctions::GetPlayerKillerName},\
     \
+    {"GetDrawState",                MechanicsFunctions::GetDrawState},\
+    {"GetSneakState",               MechanicsFunctions::GetSneakState},\
+    \
     {"SetMarkCell",                 MechanicsFunctions::SetMarkCell},\
     {"SetMarkPos",                  MechanicsFunctions::SetMarkPos},\
     {"SetMarkRot",                  MechanicsFunctions::SetMarkRot},\
@@ -150,6 +153,23 @@ public:
     * \return The name of the killer.
     */
     static const char *GetPlayerKillerName(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the draw state of a player (0 for nothing, 1 for drawn weapon,
+    *        2 for drawn spell).
+    *
+    * \param pid The player ID.
+    * \return The draw state.
+    */
+    static unsigned int GetDrawState(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the sneak state of a player.
+    *
+    * \param pid The player ID.
+    * \return Whether the player is sneaking.
+    */
+    static bool GetSneakState(unsigned short pid) noexcept;
 
     /**
     * \brief Set the Mark cell of a player.

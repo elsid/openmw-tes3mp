@@ -129,6 +129,23 @@ const char *MechanicsFunctions::GetSelectedSpellId(unsigned short pid) noexcept
     return player->selectedSpellId.c_str();
 }
 
+unsigned int MechanicsFunctions::GetDrawState(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, false);
+
+    return player->drawState;
+}
+
+bool MechanicsFunctions::GetSneakState(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, false);
+
+    // TODO: Avoid having to use a magic number here
+    return (player->movementFlags & 8) != 0;
+}
+
 void MechanicsFunctions::SetMarkCell(unsigned short pid, const char *cellDescription) noexcept
 {
     Player *player;
