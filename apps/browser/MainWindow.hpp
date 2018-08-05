@@ -17,11 +17,11 @@ class MainWindow : public QMainWindow,  private Ui::MainWindow
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    virtual ~MainWindow();
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override;
 protected:
     void closeEvent(QCloseEvent * event) Q_DECL_OVERRIDE;
-    void addServerAndUpdate(QString addr);
+    void addServerAndUpdate(const QString &addr);
 protected slots:
     void tabSwitched(int index);
     void addServer();
@@ -31,6 +31,7 @@ protected slots:
     void serverSelected();
     void notFullSwitch(bool state);
     void havePlayersSwitch(bool state);
+    void noPasswordSwitch(bool state);
     void maxLatencyChanged(int index);
     void gamemodeChanged(const QString &text);
 private:

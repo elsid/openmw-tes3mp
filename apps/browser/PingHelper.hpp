@@ -17,17 +17,17 @@ class PingHelper : public QObject
     Q_OBJECT
 public:
 
-    void Add(int row, AddrPair addrPair);
+    void Reset();
+    void Add(int row, const AddrPair &addrPair);
     void Stop();
     void SetModel(QAbstractTableModel *model);
     //void UpdateImmedialy(PingUpdater::AddrPair addrPair);
     static PingHelper &Get();
-private:
-    PingHelper();
-    ~PingHelper();
 
     PingHelper(const PingHelper&) = delete;
     PingHelper& operator=(const PingHelper&) = delete;
+private:
+    PingHelper();
 signals:
     void stop();
 public slots:

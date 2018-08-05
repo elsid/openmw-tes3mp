@@ -19,8 +19,8 @@ QueryHelper::QueryHelper(QAbstractItemModel *model)
     connect(queryThread, SIGNAL(started()), queryUpdate, SLOT(process()));
     connect(queryUpdate, SIGNAL(finished()), queryThread, SLOT(quit()));
     connect(queryUpdate, &QueryUpdate::finished, [this](){emit finished();});
-    connect(queryUpdate, SIGNAL(updateModel(QString, unsigned short, QueryData)),
-            this, SLOT(update(QString, unsigned short, QueryData)));
+    connect(queryUpdate, SIGNAL(updateModel(const QString&, unsigned short, const QueryData&)),
+            this, SLOT(update(const QString&, unsigned short, const QueryData&)));
     queryUpdate->moveToThread(queryThread);
 }
 
@@ -29,6 +29,7 @@ void QueryHelper::refresh()
     if (!queryThread->isRunning())
     {
         _model->removeRows(0, _model->rowCount());
+        PingHelper::Get().Stop();
         queryThread->start();
         emit started();
     }
@@ -39,7 +40,7 @@ void QueryHelper::terminate()
     queryThread->terminate();
 }
 
-void QueryHelper::update(QString addr, unsigned short port, QueryData data)
+void QueryHelper::update(const QString &addr, unsigned short port, const QueryData& data)
 {
     ServerModel *model = ((ServerModel*)_model);
     model->insertRow(model->rowCount());
@@ -80,7 +81,7 @@ void QueryUpdate::process()
         return;
     }
 
-    for (auto server : data)
+    for (const auto &server : data)
         emit updateModel(server.first.ToString(false), server.first.GetPort(), server.second);
     emit finished();
 }

@@ -14,7 +14,7 @@ class PingUpdater : public QObject
 {
     Q_OBJECT
 public:
-    void addServer(int row, AddrPair addrPair);
+    void addServer(int row, const AddrPair &addrPair);
 public slots:
     void stop();
     void process();

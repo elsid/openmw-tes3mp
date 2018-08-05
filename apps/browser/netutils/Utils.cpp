@@ -44,10 +44,14 @@ unsigned int PingRakNetServer(const char *addr, unsigned short port)
                 break;
             case ID_CONNECTED_PING:
             case ID_UNCONNECTED_PONG:
+            {
                 RakNet::BitStream bsIn(&packet->data[1], packet->length, false);
                 bsIn.Read(time);
                 time = now - time;
                 done = true;
+                break;
+            }
+            default:
                 break;
         }
         peer->DeallocatePacket(packet);
@@ -69,9 +73,9 @@ ServerExtendedData getExtendedData(const char *addr, unsigned short port)
     sstr << TES3MP_VERSION;
     sstr << TES3MP_PROTO_VERSION;
 
-    std::string msg = "";
+    std::string msg;
 
-    if (peer->Connect(addr, port, sstr.str().c_str(), (int)(sstr.str().size()), 0, 0, 3, 500, 0) != RakNet::CONNECTION_ATTEMPT_STARTED)
+    if (peer->Connect(addr, port, sstr.str().c_str(), (int)(sstr.str().size()), nullptr, 0, 3, 500, 0) != RakNet::CONNECTION_ATTEMPT_STARTED)
         msg = "Connection attempt failed.\n";
 
 
@@ -142,14 +146,14 @@ ServerExtendedData getExtendedData(const char *addr, unsigned short port)
                 {
                     RakNet::RakString str;
                     bs.Read(str);
-                    data.players.push_back(str.C_String());
+                    data.players.emplace_back(str.C_String());
                 }
                 bs.Read(length);
                 for (size_t i = 0; i < length; i++)
                 {
                     RakNet::RakString str;
                     bs.Read(str);
-                    data.plugins.push_back(str.C_String());
+                    data.plugins.emplace_back(str.C_String());
                 }
                 done = true;
             }

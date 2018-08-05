@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tblServerBrowser, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(play()));
     connect(cBoxNotFull, SIGNAL(toggled(bool)), this, SLOT(notFullSwitch(bool)));
     connect(cBoxWithPlayers, SIGNAL(toggled(bool)), this, SLOT(havePlayersSwitch(bool)));
+    connect(cBBoxWOPass, SIGNAL(toggled(bool)), this, SLOT(noPasswordSwitch(bool)));
     connect(comboLatency, SIGNAL(currentIndexChanged(int)), this, SLOT(maxLatencyChanged(int)));
     connect(leGamemode, SIGNAL(textChanged(const QString &)), this, SLOT(gamemodeChanged(const QString &)));
     loadFavorites();
@@ -65,7 +66,7 @@ MainWindow::~MainWindow()
     delete mGameInvoker;
 }
 
-void MainWindow::addServerAndUpdate(QString addr)
+void MainWindow::addServerAndUpdate(const QString &addr)
 {
     favorites->insertRow(0);
     QModelIndex mi = favorites->index(0, ServerData::ADDR);
@@ -121,19 +122,16 @@ void MainWindow::play()
     if (id < 0)
         return;
 
-    ServerInfoDialog infoDialog(this);
+
     ServerModel *sm = ((ServerModel*)proxyModel->sourceModel());
 
     int sourceId = proxyModel->mapToSource(proxyModel->index(id, ServerData::ADDR)).row();
-    infoDialog.Server(sm->myData[sourceId].addr);
-
-    if (!infoDialog.refresh())
-    {
-        queryHelper->refresh();
-        return;
-    }
+    ServerInfoDialog infoDialog(sm->myData[sourceId].addr, this);
 
     if (!infoDialog.exec())
+        return;
+
+    if (!infoDialog.isUpdated())
         return;
 
     QStringList arguments;
@@ -142,7 +140,8 @@ void MainWindow::play()
     if (sm->myData[sourceId].GetPassword() == 1)
     {
         bool ok;
-        QString passw = QInputDialog::getText(this, "Connecting to: " + sm->myData[sourceId].addr, "Password: ", QLineEdit::Password, "", &ok);
+        QString passw = QInputDialog::getText(this, tr("Connecting to: ") + sm->myData[sourceId].addr, tr("Password: "),
+                                              QLineEdit::Password, "", &ok);
         if (!ok)
             return;
         arguments.append(QLatin1String("--password=") + passw.toLatin1());
@@ -226,6 +225,11 @@ void MainWindow::notFullSwitch(bool state)
 void MainWindow::havePlayersSwitch(bool state)
 {
     proxyModel->filterEmptyServers(state);
+}
+
+void MainWindow::noPasswordSwitch(bool state)
+{
+    proxyModel->filterPassworded(state);
 }
 
 void MainWindow::maxLatencyChanged(int index)

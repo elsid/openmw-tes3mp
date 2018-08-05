@@ -14,16 +14,16 @@
 
 class QueryClient
 {
-private:
+public:
     QueryClient(QueryClient const &) = delete;
     QueryClient(QueryClient &&) = delete;
     QueryClient &operator=(QueryClient const &) = delete;
     QueryClient &operator=(QueryClient &&) = delete;
-public:
+
     static QueryClient &Get();
-    void SetServer(std::string addr, unsigned short port);
+    void SetServer(const std::string &addr, unsigned short port);
     std::map<RakNet::SystemAddress, QueryData> Query();
-    std::pair<RakNet::SystemAddress, QueryData> Update(RakNet::SystemAddress addr);
+    std::pair<RakNet::SystemAddress, QueryData> Update(const RakNet::SystemAddress &addr);
     int Status();
 private:
     RakNet::ConnectionState Connect();

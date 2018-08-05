@@ -23,7 +23,7 @@ public slots:
     void refresh();
     void terminate();
 private slots:
-    void update(QString addr, unsigned short port, QueryData data);
+    void update(const QString &addr, unsigned short port, const QueryData& data);
 signals:
     void finished();
     void started();
@@ -38,7 +38,7 @@ class QueryUpdate : public QObject
 Q_OBJECT
 signals:
     void finished();
-    void updateModel(QString addr, unsigned short port, QueryData data);
+    void updateModel(const QString &addr, unsigned short port, const QueryData& data);
 public slots:
     void process();
 };

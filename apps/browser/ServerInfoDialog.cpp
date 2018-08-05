@@ -6,32 +6,65 @@
 #include "qdebug.h"
 
 #include "ServerInfoDialog.hpp"
-#include <apps/browser/netutils/Utils.hpp>
 #include <algorithm>
+#include <utility>
+#include <QThread>
 
 using namespace std;
 using namespace RakNet;
 
-ServerInfoDialog::ServerInfoDialog(QWidget *parent): QDialog(parent)
+ThrWorker::ThrWorker(ServerInfoDialog *dialog, QString addr, unsigned short port): addr(std::move(addr)), port(port), stopped(false)
+{
+    this->dialog = dialog;
+}
+
+void ThrWorker::process()
+{
+    stopped = false;
+    auto newSD = QueryClient::Get().Update(SystemAddress(addr.toUtf8(), port));
+    if (dialog != nullptr)
+        dialog->setData(newSD);
+    stopped = true;
+    emit finished();
+}
+
+ServerInfoDialog::ServerInfoDialog(const QString &addr, QWidget *parent): QDialog(parent)
 {
     setupUi(this);
-    connect(btnRefresh, SIGNAL(clicked()), this, SLOT(refresh()));
+    refreshThread = new QThread;
+
+    QStringList list = addr.split(':');
+    worker = new ThrWorker(this, list[0].toLatin1(), list[1].toUShort());
+    worker->moveToThread(refreshThread);
+    connect(refreshThread, SIGNAL(started()), worker, SLOT(process()));
+    connect(worker, SIGNAL(finished()), refreshThread, SLOT(quit()));
+    connect(refreshThread, SIGNAL(finished()), this, SLOT(refresh()));
+
+    connect(btnRefresh, &QPushButton::clicked, [this]{
+        if (!refreshThread->isRunning())
+            refreshThread->start();
+    });
 }
 
 ServerInfoDialog::~ServerInfoDialog()
 {
-
+    worker->dialog = nullptr;
+    if (!refreshThread->isRunning())
+        refreshThread->terminate();
 }
 
-void ServerInfoDialog::Server(QString addr)
+bool ServerInfoDialog::isUpdated()
 {
-    this->addr = addr;
+    return sd.first != UNASSIGNED_SYSTEM_ADDRESS;
 }
 
-bool ServerInfoDialog::refresh()
+void ServerInfoDialog::setData(std::pair<RakNet::SystemAddress, QueryData> &newSD)
 {
-    QStringList list = addr.split(':');
-    auto sd = QueryClient::Get().Update(SystemAddress(list[0].toLatin1(), list[1].toUShort()));
+    sd = newSD;
+}
+
+void ServerInfoDialog::refresh()
+{
     if (sd.first != UNASSIGNED_SYSTEM_ADDRESS)
     {
         leAddr->setText(sd.first.ToString(true, ':'));
@@ -41,17 +74,16 @@ bool ServerInfoDialog::refresh()
         btnConnect->setDisabled(ping == PING_UNREACHABLE);
 
         listPlayers->clear();
-
-        for (auto player : sd.second.players)
+        for (const auto &player : sd.second.players)
             listPlayers->addItem(QString::fromStdString(player));
 
         listPlugins->clear();
-        for (auto plugin : sd.second.plugins)
+        for (const auto &plugin : sd.second.plugins)
             listPlugins->addItem(QString::fromStdString(plugin.name));
 
         listRules->clear();
         const static vector<std::string> defaultRules {"gamemode", "maxPlayers", "name", "passw", "players", "version"};
-        for (auto rule : sd.second.rules)
+        for (auto &rule : sd.second.rules)
         {
             if (::find(defaultRules.begin(), defaultRules.end(), rule.first) != defaultRules.end())
                 continue;
@@ -64,7 +96,12 @@ bool ServerInfoDialog::refresh()
         }
 
         lblPlayers->setText(QString::number(sd.second.players.size()) + " / " + QString::number(sd.second.GetMaxPlayers()));
-        return true;
     }
-    return false;
+}
+
+int ServerInfoDialog::exec()
+{
+    if (!refreshThread->isRunning())
+        refreshThread->start();
+    return QDialog::exec();
 }

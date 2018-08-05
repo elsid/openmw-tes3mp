@@ -29,8 +29,7 @@ class ServerModel: public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit ServerModel(QObject *parent = 0);
-    ~ServerModel();
+    explicit ServerModel(QObject *parent = nullptr);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_FINAL;
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_FINAL;
     int columnCount(const QModelIndex &parent) const Q_DECL_FINAL;

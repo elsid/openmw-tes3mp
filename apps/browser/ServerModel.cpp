@@ -1,16 +1,11 @@
 #include <qmessagebox.h>
 #include "ServerModel.hpp"
 #include <qdebug.h>
+#include <apps/browser/netutils/Utils.hpp>
 
 ServerModel::ServerModel(QObject *parent) : QAbstractTableModel(parent)
 {
 }
-
-ServerModel::~ServerModel()
-{
-
-}
-
 /*QHash<int, QByteArray> ServerModel::roleNames() const
 {
     return roles;
@@ -49,7 +44,7 @@ QVariant ServerModel::data(const QModelIndex &index, int role) const
                 var = QString(sd.rules.at("name").str.c_str());
                 break;
             case ServerData::PING:
-                var = sd.ping;
+                var = sd.ping == PING_UNREACHABLE ? QVariant("Unreachable") : sd.ping;
                 break;
             case ServerData::MODNAME:
                 if (sd.rules.at("gamemode").str == "")
@@ -136,7 +131,7 @@ bool ServerModel::setData(const QModelIndex &index, const QVariant &value, int r
                 sd.SetPassword(value.toBool());
                 break;
             case ServerData::VERSION:
-                sd.SetVersion(value.toString().toLatin1());
+                sd.SetVersion(value.toString().toUtf8());
                 ok = !sd.addr.isEmpty();
                 break;
             case ServerData::PLAYERS:
@@ -146,14 +141,14 @@ bool ServerModel::setData(const QModelIndex &index, const QVariant &value, int r
                 sd.SetMaxPlayers(value.toInt(&ok));
                 break;
             case ServerData::HOSTNAME:
-                sd.SetName(value.toString().toLatin1());
+                sd.SetName(value.toString().toUtf8());
                 ok = !sd.addr.isEmpty();
                 break;
             case ServerData::PING:
                 sd.ping = value.toInt(&ok);
                 break;
             case ServerData::MODNAME:
-                sd.SetGameMode(value.toString().toLatin1());
+                sd.SetGameMode(value.toString().toUtf8());
                 break;
             default:
                 return false;
@@ -170,9 +165,7 @@ bool ServerModel::insertRows(int position, int count, const QModelIndex &index)
     Q_UNUSED(index);
     beginInsertRows(QModelIndex(), position, position + count - 1);
 
-    for (int row = 0; row < count; ++row) {
-        myData.insert(position, {});
-    }
+    myData.insert(position, count, {});
 
     endInsertRows();
     return true;
