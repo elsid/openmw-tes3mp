@@ -139,6 +139,18 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         if (record.baseOverrides.hasLevel)
             finalData.mData.mLevel = recordData.mData.mLevel;
 
+        if (record.baseOverrides.hasHealth)
+            finalData.mData.mHealth = recordData.mData.mHealth;
+
+        if (record.baseOverrides.hasMagicka)
+            finalData.mData.mMana = recordData.mData.mMana;
+
+        if (record.baseOverrides.hasFatigue)
+            finalData.mData.mFatigue = recordData.mData.mFatigue;
+
+        if (record.baseOverrides.hasAiFight)
+            finalData.mAiData.mFight = recordData.mAiData.mFight;
+
         if (record.baseOverrides.hasFlags)
             finalData.mFlags = recordData.mFlags;
 
@@ -228,8 +240,30 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
         if (record.baseOverrides.hasLevel)
             finalData.mNpdt.mLevel = recordData.mNpdt.mLevel;
 
+        if (record.baseOverrides.hasHealth)
+            finalData.mNpdt.mHealth = recordData.mNpdt.mHealth;
+
+        if (record.baseOverrides.hasMagicka)
+            finalData.mNpdt.mMana = recordData.mNpdt.mMana;
+
+        if (record.baseOverrides.hasFatigue)
+            finalData.mNpdt.mFatigue = recordData.mNpdt.mFatigue;
+
+        if (record.baseOverrides.hasAiFight)
+            finalData.mAiData.mFight = recordData.mAiData.mFight;
+
+        if (record.baseOverrides.hasFlags)
+            finalData.mFlags = recordData.mFlags;
+
         if (record.baseOverrides.hasAutoCalc)
+        {
             finalData.mNpdtType = recordData.mNpdtType;
+
+            if ((recordData.mFlags & ESM::NPC::Autocalc) != 0)
+                finalData.mFlags |= ESM::NPC::Autocalc;
+            else
+                finalData.mFlags &= ~ESM::NPC::Autocalc;
+        }
 
         if (!record.inventoryBaseId.empty() && doesNpcRecordExist(record.inventoryBaseId))
             finalData.mInventory.mList = world->getStore().get<ESM::NPC>().search(record.inventoryBaseId)->mInventory.mList;

@@ -80,6 +80,9 @@
     {"SetRecordFaction",                        RecordsDynamicFunctions::SetRecordFaction},\
     \
     {"SetRecordLevel",                          RecordsDynamicFunctions::SetRecordLevel},\
+    {"SetRecordMagicka",                        RecordsDynamicFunctions::SetRecordMagicka},\
+    {"SetRecordFatigue",                        RecordsDynamicFunctions::SetRecordFatigue},\
+    {"SetRecordAiFight",                        RecordsDynamicFunctions::SetRecordAiFight},\
     \
     {"SetRecordIdByIndex",                      RecordsDynamicFunctions::SetRecordIdByIndex},\
     {"SetRecordEnchantmentIdByIndex",           RecordsDynamicFunctions::SetRecordEnchantmentIdByIndex},\
@@ -677,10 +680,37 @@ public:
     * \brief Set the level of the temporary record stored on the server for the
     * currently specified record type.
     *
-    * \param value The level of the record.
+    * \param level The level of the record.
     * \return void
     */
     static void SetRecordLevel(int level) noexcept;
+
+    /**
+    * \brief Set the magicka of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param magicka The magicka of the record.
+    * \return void
+    */
+    static void SetRecordMagicka(int magicka) noexcept;
+
+    /**
+    * \brief Set the fatigue of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param fatigue The fatigue of the record.
+    * \return void
+    */
+    static void SetRecordFatigue(int fatigue) noexcept;
+
+    /**
+    * \brief Set the AI fight value of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param aiFight The AI fight value of the record.
+    * \return void
+    */
+    static void SetRecordAiFight(int aiFight) noexcept;
 
     /**
     * \brief Set the id of the record at a certain index in the records stored on the server.

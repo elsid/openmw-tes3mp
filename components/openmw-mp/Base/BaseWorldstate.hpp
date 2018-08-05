@@ -88,6 +88,9 @@ namespace mwmp
         bool hasFaction = false;
 
         bool hasLevel = false;
+        bool hasMagicka = false;
+        bool hasFatigue = false;
+        bool hasAiFight = false;
     };
 
     struct ArmorRecord

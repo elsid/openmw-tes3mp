@@ -719,6 +719,10 @@ void RecordsDynamicFunctions::SetRecordHealth(int health) noexcept
         tempArmor.data.mData.mHealth = health;
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         tempWeapon.data.mData.mHealth = health;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mData.mHealth = health;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mNpdt.mHealth = health;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set health for record type %i which lacks that property", writeRecordsType);
@@ -969,6 +973,57 @@ void RecordsDynamicFunctions::SetRecordLevel(int level) noexcept
     }
 
     tempOverrides.hasLevel = true;
+}
+
+void RecordsDynamicFunctions::SetRecordMagicka(int magicka) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mData.mMana = magicka;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mNpdt.mMana = magicka;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set magicka for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasMagicka = true;
+}
+
+void RecordsDynamicFunctions::SetRecordFatigue(int fatigue) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mData.mFatigue = fatigue;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mNpdt.mFatigue = fatigue;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set fatigue for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasFatigue = true;
+}
+
+void RecordsDynamicFunctions::SetRecordAiFight(int aiFight) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mAiData.mFight = aiFight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mAiData.mFight = aiFight;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasAiFight = true;
 }
 
 void RecordsDynamicFunctions::SetRecordIdByIndex(unsigned int index, const char* id) noexcept

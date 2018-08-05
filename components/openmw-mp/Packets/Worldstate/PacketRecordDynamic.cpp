@@ -176,6 +176,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             RW(recordData.mModel, send, true);
             RW(recordData.mData.mType, send);
             RW(recordData.mData.mLevel, send);
+            RW(recordData.mData.mHealth, send);
+            RW(recordData.mData.mMana, send);
+            RW(recordData.mData.mFatigue, send);
+            RW(recordData.mAiData.mFight, send);
             RW(recordData.mFlags, send);
             RW(recordData.mScript, send, true);
             ProcessInventoryList(record.inventory, recordData.mInventory, send);
@@ -187,6 +191,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasModel, send);
                 RW(overrides.hasSubtype, send);
                 RW(overrides.hasLevel, send);
+                RW(overrides.hasHealth, send);
+                RW(overrides.hasMagicka, send);
+                RW(overrides.hasFatigue, send);
+                RW(overrides.hasAiFight, send);
                 RW(overrides.hasFlags, send);
                 RW(overrides.hasScript, send);
                 RW(overrides.hasInventory, send);
@@ -212,6 +220,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             RW(recordData.mFaction, send, true);
             RW(recordData.mScript, send, true);
             RW(recordData.mNpdt.mLevel, send);
+            RW(recordData.mNpdt.mHealth, send);
+            RW(recordData.mNpdt.mMana, send);
+            RW(recordData.mNpdt.mFatigue, send);
+            RW(recordData.mAiData.mFight, send);
             RW(recordData.mNpdtType, send);
             ProcessInventoryList(record.inventory, recordData.mInventory, send);
 
@@ -227,6 +239,11 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasFaction, send);
                 RW(overrides.hasScript, send);
                 RW(overrides.hasLevel, send);
+                RW(overrides.hasHealth, send);
+                RW(overrides.hasMagicka, send);
+                RW(overrides.hasFatigue, send);
+                RW(overrides.hasAiFight, send);
+                RW(overrides.hasAutoCalc, send);
                 RW(overrides.hasInventory, send);
             }
         }
