@@ -6,7 +6,8 @@
 #include "apps/openmw/mwgui/windowmanagerimp.hpp"
 #include "apps/openmw/mwworld/inventorystore.hpp"
 
-#include "../MechanicsHelper.hpp"
+#include "apps/openmw/mwmp/MechanicsHelper.hpp"
+
 #include "../PlayerProcessor.hpp"
 
 namespace mwmp
