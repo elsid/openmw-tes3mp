@@ -360,3 +360,18 @@ void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short enchan
         }
     }
 }
+
+MWWorld::Ptr MechanicsHelper::getItemPtrFromStore(const mwmp::Item& item, MWWorld::ContainerStore& store)
+{
+    for (MWWorld::ContainerStoreIterator storeIterator = store.begin(); storeIterator != store.end(); ++storeIterator)
+    {
+        if (Misc::StringUtils::ciEqual(item.refId, storeIterator->getCellRef().getRefId()) &&
+            item.count == storeIterator->getRefData().getCount() &&
+            item.charge == storeIterator->getCellRef().getCharge() &&
+            item.enchantmentCharge == storeIterator->getCellRef().getEnchantmentCharge() &&
+            Misc::StringUtils::ciEqual(item.soul, storeIterator->getCellRef().getSoul()))
+        {
+            return *storeIterator;
+        }
+    }
+}

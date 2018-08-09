@@ -1,9 +1,9 @@
 #ifndef OPENMW_PROCESSORWORLDTIME_HPP
 #define OPENMW_PROCESSORWORLDTIME_HPP
 
-
 #include <apps/openmw/mwbase/world.hpp>
 #include <apps/openmw/mwbase/environment.hpp>
+
 #include "../WorldstateProcessor.hpp"
 
 namespace mwmp

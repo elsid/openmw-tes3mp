@@ -324,6 +324,8 @@ namespace mwmp
         ESM::Position markPosition;
         std::string selectedSpellId;
 
+        mwmp::Item usedItem;
+
         bool isReceivingQuickKeys;
         bool isPlayingAnimation;
         bool diedSinceArrestAttempt;

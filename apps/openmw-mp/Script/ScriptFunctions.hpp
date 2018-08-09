@@ -174,6 +174,7 @@ public:
             {"OnPlayerTopic",            Function<void, unsigned short>()},
             {"OnPlayerDisposition",      Function<void, unsigned short>()},
             {"OnPlayerBook",             Function<void, unsigned short>()},
+            {"OnPlayerItemUse",          Function<void, unsigned short>()},
             {"OnPlayerMiscellaneous",    Function<void, unsigned short>()},
             {"OnPlayerInput",            Function<void, unsigned short>()},
             {"OnPlayerRest",             Function<void, unsigned short>()},

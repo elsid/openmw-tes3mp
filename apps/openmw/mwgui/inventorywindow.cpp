@@ -567,7 +567,17 @@ namespace MWGui
                 ptr = mDragAndDrop->mSourceModel->moveItem(mDragAndDrop->mItem, mDragAndDrop->mDraggedCount, mTradeModel);
             }
 
-            useItem(ptr);
+            /*
+                Start of tes3mp change (major)
+
+                Instead of unilaterally using an item, send an ID_PLAYER_ITEM_USE packet and let the server
+                decide if the item actually gets used
+            */
+            //useItem(ptr);
+            mwmp::Main::get().getLocalPlayer()->sendItemUse(ptr);
+            /*
+                End of tes3mp change (major)
+            */
 
             // If item is ingredient or potion don't stop drag and drop to simplify action of taking more than one 1 item
             if ((ptr.getTypeName() == typeid(ESM::Potion).name() ||
@@ -792,7 +802,17 @@ namespace MWGui
         if (!found || selected == cycled)
             return;
 
-        useItem(model.getItem(cycled).mBase);
+        /*
+            Start of tes3mp change (major)
+
+            Instead of unilaterally using an item, send an ID_PLAYER_ITEM_USE packet and let the server
+            decide if the item actually gets used
+        */
+        //useItem(model.getItem(cycled).mBase);
+        mwmp::Main::get().getLocalPlayer()->sendItemUse(model.getItem(cycled).mBase);
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     void InventoryWindow::rebuildAvatar()

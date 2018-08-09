@@ -3,6 +3,8 @@
 
 #include <components/openmw-mp/Base/BaseStructs.hpp>
 
+#include "../mwworld/containerstore.hpp"
+
 #include <osg/Vec3f>
 
 
@@ -30,6 +32,8 @@ namespace MechanicsHelper
 
     bool doesEffectListContainEffect(const ESM::EffectList& effectList, short effectId, short attributeId = -1, short skillId = -1);
     void unequipItemsByEffect(const MWWorld::Ptr& ptr, short enchantmentType, short effectId, short attributeId = -1, short skillId = -1);
+
+    MWWorld::Ptr getItemPtrFromStore(const mwmp::Item& item, MWWorld::ContainerStore& store);
 }
 
 

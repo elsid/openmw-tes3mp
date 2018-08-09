@@ -109,7 +109,9 @@ enum GameMessages
     ID_WORLD_COLLISION_OVERRIDE,
     ID_WORLD_MAP,
     ID_WORLD_TIME,
-    ID_WORLD_WEATHER
+    ID_WORLD_WEATHER,
+
+    ID_PLAYER_ITEM_USE
 };
 
 enum OrderingChannel

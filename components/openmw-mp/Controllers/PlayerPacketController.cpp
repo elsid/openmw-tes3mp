@@ -22,6 +22,7 @@
 #include "../Packets/Player/PacketPlayerFaction.hpp"
 #include "../Packets/Player/PacketPlayerInput.hpp"
 #include "../Packets/Player/PacketPlayerInventory.hpp"
+#include "../Packets/Player/PacketPlayerItemUse.hpp"
 #include "../Packets/Player/PacketPlayerJail.hpp"
 #include "../Packets/Player/PacketPlayerJournal.hpp"
 #include "../Packets/Player/PacketWorldKillCount.hpp"
@@ -77,6 +78,7 @@ mwmp::PlayerPacketController::PlayerPacketController(RakNet::RakPeerInterface *p
     AddPacket<PacketPlayerFaction>(&packets, peer);
     AddPacket<PacketPlayerInput>(&packets, peer);
     AddPacket<PacketPlayerInventory>(&packets, peer);
+    AddPacket<PacketPlayerItemUse>(&packets, peer);
     AddPacket<PacketPlayerJail>(&packets, peer);
     AddPacket<PacketPlayerJournal>(&packets, peer);
     AddPacket<PacketWorldKillCount>(&packets, peer);

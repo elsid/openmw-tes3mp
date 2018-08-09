@@ -1618,6 +1618,18 @@ void LocalPlayer::sendSelectedSpell(const std::string& newSelectedSpellId)
     getNetworking()->getPlayerPacket(ID_PLAYER_MISCELLANEOUS)->Send();
 }
 
+void LocalPlayer::sendItemUse(const MWWorld::Ptr& itemPtr)
+{
+    usedItem.refId = itemPtr.getCellRef().getRefId();
+    usedItem.count = itemPtr.getRefData().getCount();
+    usedItem.charge = itemPtr.getCellRef().getCharge();
+    usedItem.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+    usedItem.soul = itemPtr.getCellRef().getSoul();
+
+    getNetworking()->getPlayerPacket(ID_PLAYER_ITEM_USE)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_ITEM_USE)->Send();
+}
+
 void LocalPlayer::clearCellStates()
 {
     cellStateChanges.cellStates.clear();

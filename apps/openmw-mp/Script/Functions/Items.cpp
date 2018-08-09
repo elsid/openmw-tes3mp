@@ -173,6 +173,46 @@ const char *ItemFunctions::GetInventoryItemSoul(unsigned short pid, unsigned int
     return player->inventoryChanges.items.at(index).soul.c_str();
 }
 
+const char *ItemFunctions::GetUsedItemRefId(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, "");
+
+    return player->usedItem.refId.c_str();
+}
+
+int ItemFunctions::GetUsedItemCount(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->usedItem.count;
+}
+
+int ItemFunctions::GetUsedItemCharge(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->usedItem.charge;
+}
+
+double ItemFunctions::GetUsedItemEnchantmentCharge(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->usedItem.enchantmentCharge;
+}
+
+const char *ItemFunctions::GetUsedItemSoul(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, "");
+
+    return player->usedItem.soul.c_str();
+}
+
 void ItemFunctions::SendEquipment(unsigned short pid) noexcept
 {
     Player *player;
@@ -199,4 +239,15 @@ void ItemFunctions::SendInventoryChanges(unsigned short pid, bool sendToOtherPla
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+void ItemFunctions::SendItemUse(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    mwmp::PlayerPacket *packet = mwmp::Networking::get().getPlayerPacketController()->GetPacket(ID_PLAYER_ITEM_USE);
+    packet->setPlayer(player);
+
+    packet->Send(false);
 }

@@ -26,8 +26,15 @@
     {"GetInventoryItemEnchantmentCharge",     ItemFunctions::GetInventoryItemEnchantmentCharge},\
     {"GetInventoryItemSoul",                  ItemFunctions::GetInventoryItemSoul},\
     \
+    {"GetUsedItemRefId",                      ItemFunctions::GetUsedItemRefId},\
+    {"GetUsedItemCount",                      ItemFunctions::GetUsedItemCount},\
+    {"GetUsedItemCharge",                     ItemFunctions::GetUsedItemCharge},\
+    {"GetUsedItemEnchantmentCharge",          ItemFunctions::GetUsedItemEnchantmentCharge},\
+    {"GetUsedItemSoul",                       ItemFunctions::GetUsedItemSoul},\
+    \
     {"SendEquipment",                         ItemFunctions::SendEquipment},\
-    {"SendInventoryChanges",                  ItemFunctions::SendInventoryChanges}
+    {"SendInventoryChanges",                  ItemFunctions::SendInventoryChanges},\
+    {"SendItemUse",                           ItemFunctions::SendItemUse}
 
 class ItemFunctions
 {
@@ -207,6 +214,46 @@ public:
     static const char *GetInventoryItemSoul(unsigned short pid, unsigned int index) noexcept;
 
     /**
+    * \brief Get the refId of the item last used by a player.
+    *
+    * \param pid The player ID.
+    * \return The refId.
+    */
+    static const char *GetUsedItemRefId(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the count of the item last used by a player.
+    *
+    * \param pid The player ID.
+    * \return The item count.
+    */
+    static int GetUsedItemCount(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the charge of the item last used by a player.
+    *
+    * \param pid The player ID.
+    * \return The charge.
+    */
+    static int GetUsedItemCharge(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the enchantment charge of the item last used by a player.
+    *
+    * \param pid The player ID.
+    * \return The enchantment charge.
+    */
+    static double GetUsedItemEnchantmentCharge(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the soul of the item last used by a player.
+    *
+    * \param pid The player ID.
+    * \return The soul.
+    */
+    static const char *GetUsedItemSoul(unsigned short pid) noexcept;
+
+    /**
     * \brief Send a PlayerEquipment packet with a player's equipment.
     *
     * It is always sent to all players.
@@ -227,6 +274,15 @@ public:
     * \return void
     */
     static void SendInventoryChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+    /**
+    * \brief Send a PlayerItemUse causing a player to use their recorded usedItem.
+    *
+    * \param pid The player ID affected.
+    * \return void
+    */
+    static void SendItemUse(unsigned short pid) noexcept;
+
 private:
 
 };
