@@ -677,6 +677,10 @@ void LocalPlayer::addItems()
 
     for (const auto &item : inventoryChanges.items)
     {
+        // Skip bound items
+        if (MWBase::Environment::get().getMechanicsManager()->isBoundItem(item.refId))
+            continue;
+
         try
         {
             MWWorld::Ptr itemPtr = *ptrStore.add(item.refId, item.count, ptrPlayer);
@@ -1116,17 +1120,21 @@ void LocalPlayer::setEquipment()
                 return Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), currentItem.refId);
             });
 
-            if (it == ptrInventory.end()) // If the item is not in our inventory, add it
+            // If the item is not in our inventory, add it as long as it's not a bound item
+            if (it == ptrInventory.end())
             {
-                try
+                if (!MWBase::Environment::get().getMechanicsManager()->isBoundItem(currentItem.refId))
                 {
-                    auto addIter = ptrInventory.ContainerStore::add(currentItem.refId.c_str(), currentItem.count, ptrPlayer);
+                    try
+                    {
+                        auto addIter = ptrInventory.ContainerStore::add(currentItem.refId.c_str(), currentItem.count, ptrPlayer);
 
-                    ptrInventory.equip(slot, addIter, ptrPlayer);
-                }
-                catch (std::exception&)
-                {
-                    LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid equipment item %s", currentItem.refId.c_str());
+                        ptrInventory.equip(slot, addIter, ptrPlayer);
+                    }
+                    catch (std::exception&)
+                    {
+                        LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid equipment item %s", currentItem.refId.c_str());
+                    }
                 }
             }
             else
@@ -1368,7 +1376,13 @@ void LocalPlayer::sendInventory()
     for (const auto &iter : ptrInventory)
     {
         item.refId = iter.getCellRef().getRefId();
-        if (item.refId.find("$dynamic") != string::npos) // skip generated items (self enchanted for e.g.)
+
+        // Skip any items that somehow have clientside-only dynamic IDs
+        if (item.refId.find("$dynamic") != string::npos)
+            continue;
+
+        // Skip bound items
+        if (MWBase::Environment::get().getMechanicsManager()->isBoundItem(item.refId))
             continue;
 
         item.count = iter.getRefData().getCount();
