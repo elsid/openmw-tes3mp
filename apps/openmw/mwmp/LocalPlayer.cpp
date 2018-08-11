@@ -530,6 +530,7 @@ void LocalPlayer::updateInventory(bool forceUpdate)
         item.charge = iter.getCellRef().getCharge();
         item.enchantmentCharge = iter.getCellRef().getEnchantmentCharge();
         item.soul = iter.getCellRef().getSoul();
+
         return false;
     };
 
@@ -1111,22 +1112,21 @@ void LocalPlayer::setEquipment()
 
         if (!currentItem.refId.empty())
         {
-            auto it = find_if(ptrInventory.begin(), ptrInventory.end(), [&currentItem](const MWWorld::Ptr &a) {
-                return Misc::StringUtils::ciEqual(a.getCellRef().getRefId(), currentItem.refId);
+            auto it = find_if(ptrInventory.begin(), ptrInventory.end(), [&currentItem](const MWWorld::Ptr &itemPtr) {
+                return Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), currentItem.refId);
             });
 
             if (it == ptrInventory.end()) // If the item is not in our inventory, add it
             {
-                auto equipmentItem = equipmentItems[slot];
-
                 try
                 {
-                    auto addIter = ptrInventory.ContainerStore::add(equipmentItem.refId.c_str(), equipmentItem.count, ptrPlayer);
+                    auto addIter = ptrInventory.ContainerStore::add(currentItem.refId.c_str(), currentItem.count, ptrPlayer);
+
                     ptrInventory.equip(slot, addIter, ptrPlayer);
                 }
                 catch (std::exception&)
                 {
-                    LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid equipment item %s", equipmentItem.refId.c_str());
+                    LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid equipment item %s", currentItem.refId.c_str());
                 }
             }
             else
