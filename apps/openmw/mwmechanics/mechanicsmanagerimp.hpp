@@ -223,6 +223,16 @@ namespace MWMechanics
 
             virtual bool isBoundItem(const MWWorld::Ptr& item);
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to check if an itemId corresponds to a bound item
+            */
+            virtual bool isBoundItem(std::string itemId);
+            /*
+                End of tes3mp addition
+            */
+
             /// @return is \a ptr allowed to take/use \a target or is it a crime?
             virtual bool isAllowedToUse (const MWWorld::Ptr& ptr, const MWWorld::Ptr& target, MWWorld::Ptr& victim);
 

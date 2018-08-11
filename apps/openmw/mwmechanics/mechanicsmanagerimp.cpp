@@ -879,10 +879,19 @@ namespace MWMechanics
         */
     }
 
+    /*
+        Start of tes3mp change (major)
+
+        Move boundItemIDCache outside of the original isBoundItem(const MWWorld::Ptr& item)
+        method so it can be reused in the new isBoundItem(std::string itemId) method
+    */
+    std::set<std::string> boundItemIDCache;
+
     bool MechanicsManager::isBoundItem(const MWWorld::Ptr& item)
     {
-        static std::set<std::string> boundItemIDCache;
-
+    /*
+        End of tes3mp change (major)
+    */
         // If this is empty then we haven't executed the GMST cache logic yet; or there isn't any sMagicBound* GMST's for some reason
         if (boundItemIDCache.empty())
         {
@@ -917,6 +926,24 @@ namespace MWMechanics
 
         return false;
     }
+
+    /*
+        Start of tes3mp addition
+
+        Make it possible to check if an itemId corresponds to a bound item
+    */
+    bool MechanicsManager::isBoundItem(std::string itemId)
+    {
+        Misc::StringUtils::lowerCaseInPlace(itemId);
+
+        if (boundItemIDCache.count(itemId) != 0)
+            return true;
+
+        return false;
+    }
+    /*
+        End of tes3mp addition
+    */
 
     bool MechanicsManager::isAllowedToUse (const MWWorld::Ptr& ptr, const MWWorld::Ptr& target, MWWorld::Ptr& victim)
     {

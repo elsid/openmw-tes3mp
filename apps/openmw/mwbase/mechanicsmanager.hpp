@@ -255,6 +255,17 @@ namespace MWBase
             virtual bool isItemStolenFrom(const std::string& itemid, const MWWorld::Ptr& ptr) = 0;
 
             virtual bool isBoundItem(const MWWorld::Ptr& item) = 0;
+
+            /*
+                Start of tes3mp addition
+
+                Make it possible to check if an itemId corresponds to a bound item
+            */
+            virtual bool isBoundItem(std::string itemId) = 0;
+            /*
+                End of tes3mp addition
+            */
+
             virtual bool isAllowedToUse (const MWWorld::Ptr& ptr, const MWWorld::Ptr& target, MWWorld::Ptr& victim) = 0;
 
             /// Turn actor into werewolf or normal form.
