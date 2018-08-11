@@ -82,7 +82,7 @@
     {"SetRecordLevel",                          RecordsDynamicFunctions::SetRecordLevel},\
     {"SetRecordMagicka",                        RecordsDynamicFunctions::SetRecordMagicka},\
     {"SetRecordFatigue",                        RecordsDynamicFunctions::SetRecordFatigue},\
-    {"SetRecordAiFight",                        RecordsDynamicFunctions::SetRecordAiFight},\
+    {"SetRecordAIFight",                        RecordsDynamicFunctions::SetRecordAIFight},\
     \
     {"SetRecordIdByIndex",                      RecordsDynamicFunctions::SetRecordIdByIndex},\
     {"SetRecordEnchantmentIdByIndex",           RecordsDynamicFunctions::SetRecordEnchantmentIdByIndex},\
@@ -710,7 +710,7 @@ public:
     * \param aiFight The AI fight value of the record.
     * \return void
     */
-    static void SetRecordAiFight(int aiFight) noexcept;
+    static void SetRecordAIFight(int aiFight) noexcept;
 
     /**
     * \brief Set the id of the record at a certain index in the records stored on the server.

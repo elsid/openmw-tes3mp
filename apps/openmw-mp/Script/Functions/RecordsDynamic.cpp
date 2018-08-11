@@ -1009,7 +1009,7 @@ void RecordsDynamicFunctions::SetRecordFatigue(int fatigue) noexcept
     tempOverrides.hasFatigue = true;
 }
 
-void RecordsDynamicFunctions::SetRecordAiFight(int aiFight) noexcept
+void RecordsDynamicFunctions::SetRecordAIFight(int aiFight) noexcept
 {
     unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
 
