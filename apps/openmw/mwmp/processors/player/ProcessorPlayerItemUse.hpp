@@ -35,7 +35,7 @@ namespace mwmp
                 MWWorld::Ptr &playerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
                 MWWorld::InventoryStore &inventoryStore = playerPtr.getClass().getInventoryStore(playerPtr);
 
-                MWWorld::Ptr &itemPtr = MechanicsHelper::getItemPtrFromStore(player->usedItem, inventoryStore);
+                MWWorld::Ptr itemPtr = MechanicsHelper::getItemPtrFromStore(player->usedItem, inventoryStore);
                 MWBase::Environment::get().getWindowManager()->getInventoryWindow()->useItem(itemPtr);
             }
         }

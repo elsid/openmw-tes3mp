@@ -374,4 +374,6 @@ MWWorld::Ptr MechanicsHelper::getItemPtrFromStore(const mwmp::Item& item, MWWorl
             return *storeIterator;
         }
     }
+
+    return 0;
 }
