@@ -71,6 +71,8 @@
     {"SetActorFatigueCurrent",                 ActorFunctions::SetActorFatigueCurrent},\
     {"SetActorFatigueModified",                ActorFunctions::SetActorFatigueModified},\
     \
+    {"SetActorSound",                          ActorFunctions::SetActorSound},\
+    \
     {"SetActorAIAction",                       ActorFunctions::SetActorAIAction},\
     {"SetActorAITargetToPlayer",               ActorFunctions::SetActorAITargetToPlayer},\
     {"SetActorAITargetToObject",               ActorFunctions::SetActorAITargetToObject},\
@@ -89,6 +91,7 @@
     {"SendActorPosition",                      ActorFunctions::SendActorPosition},\
     {"SendActorStatsDynamic",                  ActorFunctions::SendActorStatsDynamic},\
     {"SendActorEquipment",                     ActorFunctions::SendActorEquipment},\
+    {"SendActorSpeech",                        ActorFunctions::SendActorSpeech},\
     {"SendActorAI",                            ActorFunctions::SendActorAI},\
     {"SendActorCellChange",                    ActorFunctions::SendActorCellChange},\
     \
@@ -571,6 +574,14 @@ public:
     static void SetActorFatigueModified(double value) noexcept;
 
     /**
+    * \brief Set the sound of the temporary actor stored on the server.
+    *
+    * \param sound The sound.
+    * \return void
+    */
+    static void SetActorSound(const char* sound) noexcept;
+
+    /**
     * \brief Set the AI action of the temporary actor stored on the server.
     *
     * \param action The new action.
@@ -719,6 +730,17 @@ public:
     * \return void
     */
     static void SendActorEquipment(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
+
+    /**
+    * \brief Send an ActorSpeech packet.
+    *
+    * \param sendToOtherVisitors Whether this packet should be sent to cell visitors other
+    *                            than the player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
+    * \return void
+    */
+    static void SendActorSpeech(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send an ActorAI packet.

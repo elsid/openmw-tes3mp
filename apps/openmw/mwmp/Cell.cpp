@@ -233,6 +233,8 @@ void Cell::readEquipment(ActorList& actorList)
 
 void Cell::readSpeech(ActorList& actorList)
 {
+    initializeDedicatedActors(actorList);
+
     for (const auto &baseActor : actorList.baseActors)
     {
         std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);

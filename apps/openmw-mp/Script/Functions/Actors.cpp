@@ -311,6 +311,11 @@ void ActorFunctions::SetActorFatigueModified(double value) noexcept
     tempActor.creatureStats.mDynamic[2].mMod = value;
 }
 
+void ActorFunctions::SetActorSound(const char* sound) noexcept
+{
+    tempActor.sound = sound;
+}
+
 void ActorFunctions::SetActorAIAction(unsigned int action) noexcept
 {
     tempActor.aiAction = action;
@@ -443,6 +448,25 @@ void ActorFunctions::SendActorStatsDynamic(bool sendToOtherVisitors, bool skipAt
 void ActorFunctions::SendActorEquipment(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
 {
     mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_EQUIPMENT);
+    actorPacket->setActorList(&writeActorList);
+
+    if (!skipAttachedPlayer)
+        actorPacket->Send(writeActorList.guid);
+
+    if (sendToOtherVisitors)
+    {
+        Cell *serverCell = CellController::get()->getCell(&writeActorList.cell);
+
+        if (serverCell != nullptr)
+        {
+            serverCell->sendToLoaded(actorPacket, &writeActorList);
+        }
+    }
+}
+
+void ActorFunctions::SendActorSpeech(bool sendToOtherVisitors, bool skipAttachedPlayer) noexcept
+{
+    mwmp::ActorPacket *actorPacket = mwmp::Networking::get().getActorPacketController()->GetPacket(ID_ACTOR_SPEECH);
     actorPacket->setActorList(&writeActorList);
 
     if (!skipAttachedPlayer)

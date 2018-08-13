@@ -82,7 +82,7 @@ public:
 
     /**
     * \brief Play a certain sound for a player as spoken by their character by sending
-    *        a PlayerSound packet.
+    *        a PlayerSpeech packet.
     *
     * \param pid The player ID of the character playing the sound.
     * \param sound The path of the sound file.
