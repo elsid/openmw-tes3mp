@@ -35,6 +35,7 @@ namespace mwmp
         void initializeDedicatedActors(ActorList& actorList);
 
         void uninitializeLocalActors();
+        void uninitializeDedicatedActors(ActorList& actorList);
         void uninitializeDedicatedActors();
 
         virtual LocalActor *getLocalActor(std::string actorIndex);

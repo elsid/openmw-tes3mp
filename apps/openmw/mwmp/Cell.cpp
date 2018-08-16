@@ -171,6 +171,7 @@ void Cell::readAnimPlay(ActorList& actorList)
             actor->animation.mode = baseActor.animation.mode;
             actor->animation.count = baseActor.animation.count;
             actor->animation.persist = baseActor.animation.persist;
+            actor->playAnimation();
         }
     }
 }
@@ -229,6 +230,9 @@ void Cell::readEquipment(ActorList& actorList)
             actor->setEquipment();
         }
     }
+
+    if (hasLocalAuthority())
+        uninitializeDedicatedActors(actorList);
 }
 
 void Cell::readSpeech(ActorList& actorList)
@@ -243,8 +247,12 @@ void Cell::readSpeech(ActorList& actorList)
         {
             DedicatedActor *actor = dedicatedActors[mapIndex];
             actor->sound = baseActor.sound;
+            actor->playSound();
         }
     }
+
+    if (hasLocalAuthority())
+        uninitializeDedicatedActors(actorList);
 }
 
 void Cell::readAi(ActorList& actorList)
@@ -268,6 +276,9 @@ void Cell::readAi(ActorList& actorList)
             actor->setAi();
         }
     }
+
+    if (hasLocalAuthority())
+        uninitializeDedicatedActors(actorList);
 }
 
 void Cell::readAttack(ActorList& actorList)
@@ -452,6 +463,17 @@ void Cell::uninitializeLocalActors()
     }
 
     localActors.clear();
+}
+
+void Cell::uninitializeDedicatedActors(ActorList& actorList)
+{
+    for (const auto &baseActor : actorList.baseActors)
+    {
+        std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);
+        Main::get().getCellController()->removeDedicatedActorRecord(mapIndex);
+        delete dedicatedActors.at(mapIndex);
+        dedicatedActors.erase(mapIndex);
+    }
 }
 
 void Cell::uninitializeDedicatedActors()

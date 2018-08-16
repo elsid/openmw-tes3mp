@@ -61,8 +61,6 @@ void DedicatedActor::update(float dt)
         setAnimFlags();
     }
 
-    playAnimation();
-    playSound();
     setStatsDynamic();
 }
 
