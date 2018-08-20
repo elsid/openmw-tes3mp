@@ -941,7 +941,8 @@ namespace MWGui
 
         mKeyboardNavigation->onFrame();
 
-        mMessageBoxManager->onFrame(frameDuration);
+        if (mMessageBoxManager)
+            mMessageBoxManager->onFrame(frameDuration);
 
         mToolTips->onFrame(frameDuration);
 

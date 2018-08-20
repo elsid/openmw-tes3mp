@@ -43,7 +43,6 @@ void Launcher::AdvancedPage::on_runScriptAfterStartupBrowseButton_clicked()
             QDir::currentPath(),
             QString(tr("Text file (*.txt)")));
 
-
     if (scriptFile.isEmpty())
         return;
 
@@ -53,7 +52,7 @@ void Launcher::AdvancedPage::on_runScriptAfterStartupBrowseButton_clicked()
         return;
 
     const QString path(QDir::toNativeSeparators(info.absoluteFilePath()));
-
+    runScriptAfterStartupField->setText(path);
 }
 
 bool Launcher::AdvancedPage::loadSettings()
@@ -74,6 +73,9 @@ bool Launcher::AdvancedPage::loadSettings()
     loadSettingBool(followersAttackOnSightCheckBox, "followers attack on sight", "Game");
     loadSettingBool(preventMerchantEquippingCheckBox, "prevent merchant equipping", "Game");
     loadSettingBool(rebalanceSoulGemValuesCheckBox, "rebalance soul gem values", "Game");
+    loadSettingBool(chargeForEveryFollowerCheckBox, "charge for every follower travelling", "Game");
+    loadSettingBool(enchantedWeaponsMagicalCheckBox, "enchanted weapons are magical", "Game");
+    loadSettingBool(permanentBarterDispositionChangeCheckBox, "barter disposition change is permanent", "Game");
 
     // Input Settings
     loadSettingBool(allowThirdPersonZoomCheckBox, "allow third person zoom", "Input");
@@ -126,6 +128,9 @@ void Launcher::AdvancedPage::saveSettings()
     saveSettingBool(followersAttackOnSightCheckBox, "followers attack on sight", "Game");
     saveSettingBool(preventMerchantEquippingCheckBox, "prevent merchant equipping", "Game");
     saveSettingBool(rebalanceSoulGemValuesCheckBox, "rebalance soul gem values", "Game");
+    saveSettingBool(chargeForEveryFollowerCheckBox, "charge for every follower travelling", "Game");
+    saveSettingBool(enchantedWeaponsMagicalCheckBox, "enchanted weapons are magical", "Game");
+    saveSettingBool(permanentBarterDispositionChangeCheckBox, "barter disposition change is permanent", "Game");
 
     // Input Settings
     saveSettingBool(allowThirdPersonZoomCheckBox, "allow third person zoom", "Input");

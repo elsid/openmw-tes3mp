@@ -23,8 +23,10 @@ float scaleDamage(float damage, const MWWorld::Ptr& attacker, const MWWorld::Ptr
 {
     const MWWorld::Ptr& player = MWMechanics::getPlayer();
 
-    // [-100, 100]
+    // [-500, 500]
     int difficultySetting = Settings::Manager::getInt("difficulty", "Game");
+    difficultySetting = std::min(difficultySetting, 500);
+    difficultySetting = std::max(difficultySetting, -500);
 
     /*
         Start of tes3mp change (major)

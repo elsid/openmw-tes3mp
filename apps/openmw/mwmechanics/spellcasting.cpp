@@ -332,14 +332,14 @@ namespace MWMechanics
         return true;
     }
 
-    CastSpell::CastSpell(const MWWorld::Ptr &caster, const MWWorld::Ptr &target, const bool fromProjectile, const bool isScripted)
+    CastSpell::CastSpell(const MWWorld::Ptr &caster, const MWWorld::Ptr &target, const bool fromProjectile, const bool manualSpell)
         : mCaster(caster)
         , mTarget(target)
         , mStack(false)
         , mHitPosition(0,0,0)
         , mAlwaysSucceed(false)
         , mFromProjectile(fromProjectile)
-        , mIsScripted(isScripted)
+        , mManualSpell(manualSpell)
     {
     }
 
@@ -437,9 +437,9 @@ namespace MWMechanics
             if (!checkEffectTarget(effectIt->mEffectID, target, caster, castByPlayer))
                 continue;
 
-            // caster needs to be an actor for linked effects (e.g. Absorb)
+            // caster needs to be an actor that's not the target for linked effects (e.g. Absorb)
             if (magicEffect->mData.mFlags & ESM::MagicEffect::CasterLinked
-                    && (caster.isEmpty() || !caster.getClass().isActor()))
+                    && (caster.isEmpty() || !caster.getClass().isActor() || caster == target))
                 continue;
 
             // If player is healing someone, show the target's HP bar
@@ -595,7 +595,7 @@ namespace MWMechanics
 
                         // For absorb effects, also apply the effect to the caster - but with a negative
                         // magnitude, since we're transferring stats from the target to the caster
-                        if (!caster.isEmpty() && caster.getClass().isActor())
+                        if (!caster.isEmpty() && caster != target && caster.getClass().isActor())
                         {
                             for (int i=0; i<5; ++i)
                             {
@@ -983,7 +983,7 @@ namespace MWMechanics
 
         bool godmode = mCaster == MWMechanics::getPlayer() && MWBase::Environment::get().getWorld()->getGodModeState();
 
-        if (mCaster.getClass().isActor() && !mAlwaysSucceed && !mIsScripted)
+        if (mCaster.getClass().isActor() && !mAlwaysSucceed && !mManualSpell)
         {
             school = getSpellSchool(spell, mCaster);
 
@@ -1173,7 +1173,7 @@ namespace MWMechanics
 
     bool CastSpell::spellIncreasesSkill()
     {
-        if (mIsScripted)
+        if (mManualSpell)
             return false;
 
         return MWMechanics::spellIncreasesSkill(mId);

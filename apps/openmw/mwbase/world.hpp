@@ -445,7 +445,7 @@ namespace MWBase
                 End of tes3mp addition
             */
 
-            virtual bool castRay (float x1, float y1, float z1, float x2, float y2, float z2) = 0;
+            virtual bool castRay (float x1, float y1, float z1, float x2, float y2, float z2, bool ignoreDoors=false) = 0;
             ///< cast a Ray and return true if there is an object in the ray path.
 
             virtual bool toggleCollisionMode() = 0;

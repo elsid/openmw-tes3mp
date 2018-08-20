@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "dialogueextensions.hpp"
 
 /*
@@ -180,6 +182,14 @@ namespace MWScript
 
                     if (!ptr.getRefData().isEnabled())
                         return;
+
+                    if (!ptr.getClass().isActor())
+                    {
+                        const std::string error = "Warning: \"forcegreeting\" command works only for actors.";
+                        runtime.getContext().report(error);
+                        std::cerr << error << std::endl;
+                        return;
+                    }
 
                     /*
                         Start of tes3mp change (major)

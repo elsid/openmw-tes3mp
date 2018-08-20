@@ -5,11 +5,9 @@
 #include <components/files/configurationmanager.hpp>
 #include <components/files/escape.hpp>
 #include <components/fallback/validate.hpp>
+#include <components/misc/debugging.hpp>
 
-#include <SDL_messagebox.h>
 #include "engine.hpp"
-
-#include <boost/filesystem/fstream.hpp>
 
 /*
     Start of tes3mp addition
@@ -331,43 +329,25 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
     return true;
 }
 
-#if defined(_WIN32) && defined(_DEBUG)
-
-class DebugOutput : public boost::iostreams::sink
+int runApplication(int argc, char *argv[])
 {
-public:
-    std::streamsize write(const char *str, std::streamsize size)
-    {
-        // Make a copy for null termination
-        std::string tmp (str, static_cast<unsigned int>(size));
-        // Write string to Visual Studio Debug output
-        OutputDebugString (tmp.c_str ());
-        return size;
-    }
-};
-#else
-class Tee : public boost::iostreams::sink
-{
-public:
-    Tee(std::ostream &stream, std::ostream &stream2)
-        : out(stream), out2(stream2)
-    {
-    }
-
-    std::streamsize write(const char *str, std::streamsize size)
-    {
-        out.write (str, size);
-        out.flush();
-        out2.write (str, size);
-        out2.flush();
-        return size;
-    }
-
-private:
-    std::ostream &out;
-    std::ostream &out2;
-};
+#ifdef __APPLE__
+    boost::filesystem::path binary_path = boost::filesystem::system_complete(boost::filesystem::path(argv[0]));
+    boost::filesystem::current_path(binary_path.parent_path());
+    setenv("OSG_GL_TEXTURE_STORAGE", "OFF", 0);
 #endif
+
+    Files::ConfigurationManager cfgMgr;
+    std::unique_ptr<OMW::Engine> engine;
+    engine.reset(new OMW::Engine(cfgMgr));
+
+    if (parseOptions(argc, argv, *engine, cfgMgr))
+    {
+        engine->go();
+    }
+
+    return 0;
+}
 
 #ifdef ANDROID
 extern "C" int SDL_main(int argc, char**argv)
@@ -375,99 +355,16 @@ extern "C" int SDL_main(int argc, char**argv)
 int main(int argc, char**argv)
 #endif
 {
-#if defined(__APPLE__)
-    setenv("OSG_GL_TEXTURE_STORAGE", "OFF", 0);
-#endif
+    /*
+        Start of tes3mp change (major)
 
-    // Some objects used to redirect cout and cerr
-    // Scope must be here, so this still works inside the catch block for logging exceptions
-    std::streambuf* cout_rdbuf = std::cout.rdbuf ();
-    std::streambuf* cerr_rdbuf = std::cerr.rdbuf ();
-
-#if !(defined(_WIN32) && defined(_DEBUG))
-    boost::iostreams::stream_buffer<Tee> coutsb;
-    boost::iostreams::stream_buffer<Tee> cerrsb;
-#endif
-
-    std::ostream oldcout(cout_rdbuf);
-    std::ostream oldcerr(cerr_rdbuf);
-
-    boost::filesystem::ofstream logfile;
-
-    std::unique_ptr<OMW::Engine> engine;
-
-    int ret = 0;
-    try
-    {
-        Files::ConfigurationManager cfgMgr;
-
-#if defined(_WIN32) && defined(_DEBUG)
-        // Redirect cout and cerr to VS debug output when running in debug mode
-        boost::iostreams::stream_buffer<DebugOutput> sb;
-        sb.open(DebugOutput());
-        std::cout.rdbuf (&sb);
-        std::cerr.rdbuf (&sb);
-#else
-        /*
-            Start of tes3mp change (major)
-
-            Instead of logging information in openmw.log, use a more descriptive filename
-            that includes a timestamp
-        */
-        // Redirect cout and cerr to tes3mp client log
-        logfile.open (boost::filesystem::path(cfgMgr.getLogPath() / "/tes3mp-client-" += Log::getFilenameTimestamp() += ".log"));
-        /*
-            End of tes3mp change (major)
-        */
-
-        coutsb.open (Tee(logfile, oldcout));
-        cerrsb.open (Tee(logfile, oldcerr));
-
-        std::cout.rdbuf (&coutsb);
-        std::cerr.rdbuf (&cerrsb);
-#endif
-
-        /*
-            Start of tes3mp addition
-
-            Initialize the logger added for multiplayer
-        */
-        LOG_INIT(Log::LOG_INFO);
-        /*
-            End of tes3mp addition
-        */
-
-        crashCatcherInstall(argc, argv, (cfgMgr.getLogPath() / "crash.log").string());
-
-#ifdef __APPLE__
-        boost::filesystem::path binary_path = boost::filesystem::system_complete(boost::filesystem::path(argv[0]));
-        boost::filesystem::current_path(binary_path.parent_path());
-#endif
-
-        engine.reset(new OMW::Engine(cfgMgr));
-
-        if (parseOptions(argc, argv, *engine, cfgMgr))
-        {
-            engine->go();
-        }
-    }
-    catch (std::exception &e)
-    {
-#if (defined(__APPLE__) || defined(__linux) || defined(__unix) || defined(__posix))
-        if (!isatty(fileno(stdin)))
-#endif
-            SDL_ShowSimpleMessageBox(0, "OpenMW: Fatal error", e.what(), NULL);
-
-        std::cerr << "\nERROR: " << e.what() << std::endl;
-
-        ret = 1;
-    }
-
-    // Restore cout and cerr
-    std::cout.rdbuf(cout_rdbuf);
-    std::cerr.rdbuf(cerr_rdbuf);
-
-    return ret;
+        Instead of logging information in openmw.log, use a more descriptive filename
+        that includes a timestamp
+    */
+    return wrapApplication(&runApplication, argc, argv, "/tes3mp-client-" + Log::getFilenameTimestamp() + ".log");
+    /*
+        End of tes3mp change (major)
+    */
 }
 
 // Platform specific for Windows when there is no console built into the executable.

@@ -1250,7 +1250,7 @@ namespace MWClass
     {
         const MWMechanics::CreatureStats& stats = getCreatureStats (ptr);
         static const float fEncumbranceStrMult = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>().find("fEncumbranceStrMult")->getFloat();
-        return stats.getAttribute(0).getModified()*fEncumbranceStrMult;
+        return stats.getAttribute(ESM::Attribute::Strength).getModified()*fEncumbranceStrMult;
     }
 
     float Npc::getEncumbrance (const MWWorld::Ptr& ptr) const

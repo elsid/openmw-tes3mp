@@ -201,6 +201,12 @@ namespace MWGui
             }
         }
         assert(index != -1);
+        if (index < 0)
+        {
+            mSelected = nullptr;
+            return;
+        }
+
         mSelected = &mKey[index];
 
         // prevent reallocation of zero key from Type_HandToHand
@@ -398,15 +404,19 @@ namespace MWGui
 
         bool isReturnNeeded = playerStats.isParalyzed() || playerStats.isDead();
 
-        if (isReturnNeeded)
+        if (isReturnNeeded && key->type != Type_Item)
+        {
             return;
-
-        else if (isDelayNeeded)
+        }
+        else if (isDelayNeeded && key->type != Type_Item)
+        {
             mActivated = key;
-
+            return;
+        }
         else
+        {
             mActivated = nullptr;
-
+        }
 
         if (key->type == Type_Item || key->type == Type_MagicItem)
         {
@@ -444,6 +454,11 @@ namespace MWGui
 
                 // delay weapon switching if player is busy
                 if (isDelayNeeded && (isWeapon || isTool))
+                {
+                    mActivated = key;
+                    return;
+                }
+                else if (isReturnNeeded && (isWeapon || isTool))
                 {
                     return;
                 }

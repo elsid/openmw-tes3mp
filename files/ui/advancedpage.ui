@@ -21,8 +21,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>630</width>
-        <height>791</height>
+        <width>641</width>
+        <height>998</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="scrollAreaVerticalLayout">
@@ -45,7 +45,7 @@
           <item>
            <widget class="QCheckBox" name="followersAttackOnSightCheckBox">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes player followers and escorters start combat with enemies who have started combat with them or the player. Otherwise they wait for the enemies or the player to do an attack first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make player followers and escorters start combat with enemies who have started combat with them or the player. Otherwise they wait for the enemies or the player to do an attack first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Followers attack on sight</string>
@@ -65,10 +65,40 @@
           <item>
            <widget class="QCheckBox" name="rebalanceSoulGemValuesCheckBox">
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this setting is true, the value of filled soul gems is dependent only on soul magnitude.&lt;/p&gt;&lt;p&gt;The default value is false.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make the value of filled soul gems dependent only on soul magnitude.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Rebalance soul gem values</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chargeForEveryFollowerCheckBox">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Account for the first follower in fast travel cost calculations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Charge for every follower travelling</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="enchantedWeaponsMagicalCheckBox">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make enchanted weaponry without Magical flag bypass normal weapons resistance, like in Morrowind.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Enchanted weapons are magical</string>
+             </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="permanentBarterDispositionChangeCheckBox">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make disposition change of merchants caused by trading permanent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Barter disposition change is permanent</string>
             </property>
            </widget>
           </item>
@@ -137,7 +167,7 @@
             </property>
             <layout class="QHBoxLayout" name="maximumQuicksavesLayout">
              <property name="spacing">
-              <number>-1</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -312,7 +342,7 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <property name="spacing">
-              <number>-1</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -379,7 +409,7 @@
             </property>
             <layout class="QHBoxLayout" name="screenshotFormatLayout">
              <property name="spacing">
-              <number>-1</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
