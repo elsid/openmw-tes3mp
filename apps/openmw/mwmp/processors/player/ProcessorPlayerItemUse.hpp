@@ -32,7 +32,7 @@ namespace mwmp
                     player->usedItem.refId.c_str(), player->usedItem.count, player->usedItem.charge,
                     player->usedItem.enchantmentCharge, player->usedItem.soul.c_str());
 
-                MWWorld::Ptr &playerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
+                MWWorld::Ptr playerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
                 MWWorld::InventoryStore &inventoryStore = playerPtr.getClass().getInventoryStore(playerPtr);
 
                 MWWorld::Ptr itemPtr = MechanicsHelper::getItemPtrFromStore(player->usedItem, inventoryStore);
