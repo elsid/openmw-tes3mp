@@ -47,7 +47,7 @@ void Worldstate::addRecords()
             LOG_APPEND(Log::LOG_ERROR, "- spell record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideSpellRecord(record.data);
+            RecordHelper::overrideSpellRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::POTION)
@@ -59,7 +59,7 @@ void Worldstate::addRecords()
             LOG_APPEND(Log::LOG_ERROR, "- potion record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overridePotionRecord(record.data);
+            RecordHelper::overridePotionRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::ENCHANTMENT)
@@ -71,7 +71,7 @@ void Worldstate::addRecords()
             LOG_APPEND(Log::LOG_ERROR, "- enchantment record %s, %i\n-- baseId is %s", record.data.mId.c_str(), record.data.mData.mType,
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideEnchantmentRecord(record.data);
+            RecordHelper::overrideEnchantmentRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::CREATURE)

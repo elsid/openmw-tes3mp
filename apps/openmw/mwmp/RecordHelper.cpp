@@ -292,7 +292,13 @@ void RecordHelper::overrideEnchantmentRecord(const mwmp::EnchantmentRecord& reco
 
     if (record.baseId.empty())
     {
-        world->getModifiableStore().overrideRecord(recordData);
+        if (recordData.mEffects.mList.empty())
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Ignoring new enchantment record with no effects");
+            return;
+        }
+        else
+            world->getModifiableStore().overrideRecord(recordData);
     }
     else if (doesEnchantmentRecordExist(record.baseId))
     {
