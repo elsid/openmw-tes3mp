@@ -479,7 +479,7 @@ namespace MWScript
                         through a script
                     */
                     if (ptr == MWMechanics::getPlayer())
-                        mwmp::Main::get().getLocalPlayer()->sendSpellAddition(id);
+                        mwmp::Main::get().getLocalPlayer()->sendSpellChange(id, mwmp::SpellbookChanges::ADD);
                     /*
                         End of tes3mp addition
                     */
@@ -515,7 +515,7 @@ namespace MWScript
                         through a script
                     */
                     if (ptr == MWMechanics::getPlayer())
-                        mwmp::Main::get().getLocalPlayer()->sendSpellRemoval(id);
+                        mwmp::Main::get().getLocalPlayer()->sendSpellChange(id, mwmp::SpellbookChanges::REMOVE);
                     /*
                         End of tes3mp addition
                     */

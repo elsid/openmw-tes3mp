@@ -1425,9 +1425,10 @@ void LocalPlayer::sendCellStates()
     getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->Send();
 }
 
-void LocalPlayer::sendSpellAddition(std::string id)
+void LocalPlayer::sendSpellChange(std::string id, unsigned int action)
 {
-    if (id.find("$dynamic") != string::npos) // skip custom spells
+    // Skip any bugged spells that somehow have clientside-only dynamic IDs
+    if (id.find("$dynamic") != string::npos)
         return;
 
     spellbookChanges.spells.clear();
@@ -1436,23 +1437,7 @@ void LocalPlayer::sendSpellAddition(std::string id)
     spell.mId = id;
     spellbookChanges.spells.push_back(spell);
 
-    spellbookChanges.action = SpellbookChanges::ADD;
-    getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
-}
-
-void LocalPlayer::sendSpellRemoval(std::string id)
-{
-    if (id.find("$dynamic") != string::npos) // skip custom spells
-        return;
-
-    spellbookChanges.spells.clear();
-
-    ESM::Spell spell;
-    spell.mId = id;
-    spellbookChanges.spells.push_back(spell);
-
-    spellbookChanges.action = SpellbookChanges::REMOVE;
+    spellbookChanges.action = action;
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
 }

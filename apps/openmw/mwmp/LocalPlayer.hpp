@@ -73,8 +73,7 @@ namespace mwmp
         void sendInventory();
         void sendSpellbook();
         void sendCellStates();
-        void sendSpellAddition(std::string id);
-        void sendSpellRemoval(std::string id);
+        void sendSpellChange(std::string id, unsigned int action);
         void sendQuickKey(unsigned short slot, int type, const std::string& itemId = "");
         void sendJournalEntry(const std::string& quest, int index, const MWWorld::Ptr& actor);
         void sendJournalIndex(const std::string& quest, int index);

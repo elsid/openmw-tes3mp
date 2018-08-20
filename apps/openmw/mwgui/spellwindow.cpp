@@ -229,7 +229,7 @@ namespace MWGui
 
             Send an ID_PLAYER_SPELLBOOK packet every time a player deletes one of their spells
         */
-        mwmp::Main::get().getLocalPlayer()->sendSpellRemoval(mSpellToDelete);
+        mwmp::Main::get().getLocalPlayer()->sendSpellChange(mSpellToDelete, mwmp::SpellbookChanges::REMOVE);
         /*
             End of tes3mp addition
         */
