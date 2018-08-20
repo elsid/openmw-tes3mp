@@ -37,6 +37,7 @@ void ActorList::reset()
     statsDynamicActors.clear();
     deathActors.clear();
     equipmentActors.clear();
+    aiActors.clear();
     attackActors.clear();
     cellChangeActors.clear();
     guid = mwmp::Main::get().getNetworking()->getLocalPlayer()->guid;
