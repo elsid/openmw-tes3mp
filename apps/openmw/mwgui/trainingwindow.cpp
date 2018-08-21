@@ -181,9 +181,9 @@ namespace MWGui
         /*
             Start of tes3mp addition
 
-            Send an ID_PLAYER_INVENTORY packet every time a player buys training
+            Send an ID_PLAYER_INVENTORY packet with the gold lost
         */
-        mwmp::Main::get().getLocalPlayer()->sendInventory();
+        mwmp::Main::get().getLocalPlayer()->sendItemChange(MWWorld::ContainerStore::sGoldId, price, mwmp::InventoryChanges::REMOVE);
         /*
             End of tes3mp addition
         */

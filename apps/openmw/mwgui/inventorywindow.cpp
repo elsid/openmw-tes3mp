@@ -732,7 +732,11 @@ namespace MWGui
         objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addObjectDelete(object);
         objectList->sendObjectDelete();
-        mwmp::Main::get().getLocalPlayer()->sendInventory();
+
+        // If the item is gold, make sure we get the correct value
+        unsigned int itemCount = object.getClass().isGold(object) ? object.getCellRef().getGoldValue() : object.getRefData().getCount();
+
+        mwmp::Main::get().getLocalPlayer()->sendItemChange(object, itemCount, mwmp::InventoryChanges::ADD);
         /*
             End of tes3mp addition
         */

@@ -1367,6 +1367,8 @@ void LocalPlayer::sendClass()
 
 void LocalPlayer::sendInventory()
 {
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending entire inventory to server");
+
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     MWWorld::InventoryStore &ptrInventory = ptrPlayer.getClass().getInventoryStore(ptrPlayer);
     mwmp::Item item;
@@ -1393,8 +1395,55 @@ void LocalPlayer::sendInventory()
         inventoryChanges.items.push_back(item);
     }
 
-    inventoryChanges.count = (unsigned int) inventoryChanges.items.size();
     inventoryChanges.action = InventoryChanges::SET;
+    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->Send();
+}
+
+
+void LocalPlayer::sendItemChange(const MWWorld::Ptr& itemPtr, int count, unsigned int action)
+{
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending item change for %s with action %i, count %i",
+        itemPtr.getCellRef().getRefId().c_str(), action, count);
+
+    inventoryChanges.items.clear();
+
+    mwmp::Item item;
+
+    if (itemPtr.getClass().isGold(itemPtr))
+        item.refId = MWWorld::ContainerStore::sGoldId;
+    else
+        item.refId = itemPtr.getCellRef().getRefId();
+
+    item.count = count;
+    item.charge = itemPtr.getCellRef().getCharge();
+    item.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+    item.soul = itemPtr.getCellRef().getSoul();
+
+    inventoryChanges.items.push_back(item);
+
+    inventoryChanges.action = action;
+    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->Send();
+}
+
+void LocalPlayer::sendItemChange(const std::string& refId, int count, unsigned int action)
+{
+    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Sending item change for %s with action %i, count %i",
+        refId.c_str(), action, count);
+
+    inventoryChanges.items.clear();
+    
+    mwmp::Item item;
+    item.refId = refId;
+    item.count = count;
+    item.charge = -1;
+    item.enchantmentCharge = -1;
+    item.soul = "";
+
+    inventoryChanges.items.push_back(item);
+
+    inventoryChanges.action = action;
     getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->Send();
 }
@@ -1416,13 +1465,6 @@ void LocalPlayer::sendSpellbook()
     spellbookChanges.action = SpellbookChanges::SET;
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_SPELLBOOK)->Send();
-}
-
-void LocalPlayer::sendCellStates()
-{
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_CELL_STATE to server");
-    getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->Send();
 }
 
 void LocalPlayer::sendSpellChange(std::string id, unsigned int action)
@@ -1627,6 +1669,13 @@ void LocalPlayer::sendItemUse(const MWWorld::Ptr& itemPtr)
 
     getNetworking()->getPlayerPacket(ID_PLAYER_ITEM_USE)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_ITEM_USE)->Send();
+}
+
+void LocalPlayer::sendCellStates()
+{
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_CELL_STATE to server");
+    getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->Send();
 }
 
 void LocalPlayer::clearCellStates()

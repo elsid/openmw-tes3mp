@@ -71,12 +71,16 @@ namespace MWGui
 
                 Send an ID_OBJECT_PLACE packet every time an object is dropped into the world from
                 the inventory screen
+
+                Send an ID_PLAYER_INVENTORY packet about the item's removal
             */
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
             objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
             objectList->addObjectPlace(dropped, true);
             objectList->sendObjectPlace();
+
+            mwmp::Main::get().getLocalPlayer()->sendItemChange(dropped, count, mwmp::InventoryChanges::REMOVE);
             /*
                 End of tes3mp addition
             */
@@ -289,17 +293,6 @@ namespace MWGui
 
             WorldItemModel drop (mouseX, mouseY);
             mDragAndDrop->drop(&drop, NULL);
-
-            /*
-                Start of tes3mp addition
-
-                Send an ID_PLAYER_INVENTORY packet every time a player loses an item
-                by dropping it in the world
-            */
-            mwmp::Main::get().getLocalPlayer()->sendInventory();
-            /*
-                End of tes3mp addition
-            */
 
             MWBase::Environment::get().getWindowManager()->changePointer("arrow");
         }
