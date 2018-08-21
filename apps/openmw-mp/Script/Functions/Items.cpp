@@ -31,6 +31,14 @@ unsigned int ItemFunctions::GetInventoryChangesSize(unsigned short pid) noexcept
     return player->inventoryChanges.count;
 }
 
+unsigned int ItemFunctions::GetInventoryChangesAction(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, 0);
+
+    return player->inventoryChanges.action;
+}
+
 void ItemFunctions::EquipItem(unsigned short pid, unsigned short slot, const char *refId, unsigned int count,
     int charge, double enchantmentCharge) noexcept
 {

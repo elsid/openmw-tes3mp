@@ -6,6 +6,7 @@
     \
     {"GetEquipmentSize",                      ItemFunctions::GetEquipmentSize},\
     {"GetInventoryChangesSize",               ItemFunctions::GetInventoryChangesSize},\
+    {"GetInventoryChangesAction",             ItemFunctions::GetInventoryChangesAction},\
     \
     {"EquipItem",                             ItemFunctions::EquipItem},\
     {"UnequipItem",                           ItemFunctions::UnequipItem},\
@@ -66,6 +67,14 @@ public:
     * \return The number of indexes.
     */
     static unsigned int GetInventoryChangesSize(unsigned short pid) noexcept;
+
+    /**
+    * \brief Get the action type used in a player's latest inventory changes.
+    *
+    * \param pid The player ID whose inventory changes should be used.
+    * \return The action type (0 for SET, 1 for ADD, 2 for REMOVE).
+    */
+    static unsigned int GetInventoryChangesAction(unsigned short pid) noexcept;
 
     /**
     * \brief Equip an item in a certain slot of the equipment of a player.

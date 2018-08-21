@@ -39,7 +39,7 @@ public:
     /**
     * \brief Get the action type used in a player's latest spellbook changes.
     *
-    * \param pid The player ID whose faction changes should be used.
+    * \param pid The player ID whose spellbook changes should be used.
     * \return The action type (0 for SET, 1 for ADD, 2 for REMOVE).
     */
     static unsigned int GetSpellbookChangesAction(unsigned short pid) noexcept;
