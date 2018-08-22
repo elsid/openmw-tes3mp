@@ -296,8 +296,15 @@ int main(int argc, char *argv[])
             // redirect it to the correct port for the currently used fork of RakNet
             if (Misc::StringUtils::ciEqual(masterAddr, "master.tes3mp.com") && masterPort == 25560)
             {
-                LOG_APPEND(Log::LOG_INFO, "- switching to port 25561 because the correct official master server for this version is on that port");
                 masterPort = 25561;
+                LOG_APPEND(Log::LOG_INFO, "- switching to port %i because the correct official master server for this version is on that port",
+                    masterPort);
+            }
+
+            if (updateRate < 8000)
+            {
+                updateRate = 8000;
+                LOG_APPEND(Log::LOG_INFO, "- switching to updateRate %i because the one in the server config was too low", updateRate);
             }
 
             networking.InitQuery(masterAddr, (unsigned short) masterPort);
