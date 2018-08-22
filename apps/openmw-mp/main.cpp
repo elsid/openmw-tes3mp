@@ -292,6 +292,14 @@ int main(int argc, char *argv[])
             int masterPort = mgr.getInt("port", "MasterServer");
             int updateRate = mgr.getInt("rate", "MasterServer");
 
+            // Is this an attempt to connect to the official master server at the old port? If so,
+            // redirect it to the correct port for the currently used fork of RakNet
+            if (Misc::StringUtils::ciEqual(masterAddr, "master.tes3mp.com") && masterPort == 25560)
+            {
+                LOG_APPEND(Log::LOG_INFO, "- switching to port 25561 because the correct official master server for this version is on that port");
+                masterPort = 25561;
+            }
+
             networking.InitQuery(masterAddr, (unsigned short) masterPort);
             networking.getMasterClient()->SetMaxPlayers((unsigned) players);
             networking.getMasterClient()->SetUpdateRate((unsigned) updateRate);

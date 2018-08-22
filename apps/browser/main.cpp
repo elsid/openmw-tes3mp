@@ -36,6 +36,11 @@ int main(int argc, char *argv[])
     std::string addr = mgr.getString("address", "Master");
     int port = mgr.getInt("port", "Master");
 
+    // Is this an attempt to connect to the official master server at the old port? If so,
+    // redirect it to the correct port for the currently used fork of RakNet
+    if (Misc::StringUtils::ciEqual(addr, "master.tes3mp.com") && port == 25560)
+        port = 25561;
+
     // initialize resources, if needed
     // Q_INIT_RESOURCE(resfile);
 
