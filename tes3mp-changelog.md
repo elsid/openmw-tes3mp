@@ -1,3 +1,42 @@
+0.7.0
+-----
+
+* Synchronization of custom records for spells, potions, enchantments, creatures, NPCs, armor, books, clothing, miscellaneous items and weapons
+* Synchronization of weather
+* Synchronization of world map exploration
+* Synchronization of spells cast through items
+* Synchronization of "cast on strike" enchantments
+* Synchronization of player reputations
+* Reworked container synchronization that relies on server approval of every container change
+* Reworked object synchronization that relies on server approval of every action on objects and tracks whether actions originated from regular gameplay, the console or from ingame scripts
+* Reworked time synchronization that preserves ingame date and does not allow for any unilateral clientside time changes
+* Reworked summoning synchronization that prevents duplicate summons and retains summon durations
+* Reworked inventory, equipment, attribute, skill and dynamic stat packets that are sent more often while containing minimal instead of maximal data
+* Packet for activation of objects
+* Packet for using items in inventory
+* Packet for actor AI
+* Packet for actor deaths, used to track their killers
+* Packet for overriding collision on objects
+* Packet for setting momentum of players
+* Packet for saving and loading marked locations and selected spells
+* Player scales and disguises as creatures are now included in shapeshift packets
+* Soulgem souls are now included in item and object placement packets
+* Physics framerate caps and enforced log levels are now included in game settings packets
+* Journal entry timestamps are now included in journal packets
+* The value of the OnPCDrop variable for player-placed objects is now preserved by being included in object placement packets
+* Video play packets no longer have hardcoded synchronization
+* Death packets now include clear information about the killers, and deaths through spells are no longer treated as suicides
+* Inventory packets no longer include bound items, preventing them from becoming persistent upon quitting
+* Fix broken check in equipment synchronization that was preventing throwing weapon synchronization from working
+* Fix rare inability to start up game caused by use of potentially invalid pointer for storing cell unloads
+* Death as a werewolf now removes status as known werewolf, to prevent infinite aggression from NPCs
+* Death as a criminal now prevents witnesses to previous crimes from continuing combat
+* Players are now kicked from the server when failing to reply to its handshake
+* Players can no longer open up their rest menu before logging in
+* NPC followers now follow players correctly from interiors to exteriors and vice versa, and are able to follow non-authority players
+* NPCs can now start combat through dialogue with non-authority players
+* The console window now displays the unique index of a selected object
+
 0.6.2
 -----
 
@@ -42,7 +81,7 @@
 * Synchronization of object states (i.e. whether they are enabled or disabled)
 * Synchronization of player werewolf states
 * Synchronization of time of day
-* Saving & loading of read skill books
+* Packet for saving and loading of read skill books
 * Fix to messagebox buttons for client scripts
 * Fix to synchronization of object locking/unlocking
 * Packet for jailing players
