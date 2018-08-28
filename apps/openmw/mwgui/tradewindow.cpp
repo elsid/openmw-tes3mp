@@ -6,17 +6,6 @@
 #include <MyGUI_InputManager.h>
 #include <MyGUI_ControllerManager.h>
 
-/*
-    Start of tes3mp addition
-
-    Include additional headers for multiplayer purposes
-*/
-#include "../mwmp/Main.hpp"
-#include "../mwmp/LocalPlayer.hpp"
-/*
-    End of tes3mp addition
-*/
-
 #include <components/widgets/numericeditbox.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -366,16 +355,6 @@ namespace MWGui
             mPtr.getClass().getCreatureStats(mPtr).setGoldPool(
                         mPtr.getClass().getCreatureStats(mPtr).getGoldPool() - mCurrentBalance );
         }
-
-        /*
-            Start of tes3mp addition
-
-            Send an ID_PLAYER_INVENTORY packet every time a player completes a trade
-        */
-        mwmp::Main::get().getLocalPlayer()->sendInventory();
-        /*
-            End of tes3mp addition
-        */
 
         eventTradeDone();
 

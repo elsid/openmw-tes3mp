@@ -723,20 +723,12 @@ namespace MWGui
 
             Send an ID_OBJECT_DELETE packet every time an item from the world is picked up
             by the player through the inventory HUD
-
-            Send an ID_PLAYER_INVENTORY packet as well because of the item thus gained
-            by the player
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
         objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addObjectDelete(object);
         objectList->sendObjectDelete();
-
-        // If the item is gold, make sure we get the correct value
-        unsigned int itemCount = object.getClass().isGold(object) ? object.getCellRef().getGoldValue() : object.getRefData().getCount();
-
-        mwmp::Main::get().getLocalPlayer()->sendItemChange(object, itemCount, mwmp::InventoryChanges::ADD);
         /*
             End of tes3mp addition
         */

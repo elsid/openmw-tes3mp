@@ -4,6 +4,18 @@
 #include <typeinfo>
 #include <stdexcept>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include <components/esm/inventorystate.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -284,6 +296,31 @@ MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add (const Ptr& itemPtr
     // The copy of the original item we just made
     MWWorld::Ptr item = *it;
 
+    /*
+        Start of tes3mp addition
+
+        Send an ID_PLAYER_INVENTORY packet every time an item gets added for a player here
+    */
+    if (actorPtr == player && this == &player.getClass().getContainerStore(player))
+    {
+        mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
+
+        if (!localPlayer->isReceivingInventory)
+        {
+            int realCount = count;
+
+            if (itemPtr.getClass().isGold(itemPtr))
+            {
+                realCount = realCount * itemPtr.getClass().getValue(itemPtr);
+            }
+
+            localPlayer->sendItemChange(item, realCount, mwmp::InventoryChanges::ADD);
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
+
     // we may have copied an item from the world, so reset a few things first
     item.getRefData().setBaseNode(NULL); // Especially important, otherwise scripts on the item could think that it's actually in a cell
     ESM::Position pos;
@@ -421,6 +458,24 @@ int MWWorld::ContainerStore::remove(const std::string& itemId, int count, const 
 int MWWorld::ContainerStore::remove(const Ptr& item, int count, const Ptr& actor)
 {
     assert(this == item.getContainerStore());
+
+    /*
+        Start of tes3mp addition
+
+        Send an ID_PLAYER_INVENTORY packet every time an item gets removed for a player here
+    */
+    Ptr player = MWBase::Environment::get().getWorld()->getPlayerPtr();
+
+    if (actor == player && this == &player.getClass().getContainerStore(player))
+    {
+        mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
+
+        if (!localPlayer->isReceivingInventory)
+            localPlayer->sendItemChange(item, count, mwmp::InventoryChanges::REMOVE);
+    }
+    /*
+        End of tes3mp addition
+    */
 
     int toRemove = count;
     RefData& itemRef = item.getRefData();

@@ -8,7 +8,6 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/ObjectList.hpp"
-#include "../mwmp/LocalPlayer.hpp"
 /*
     End of tes3mp addition
 */
@@ -36,20 +35,12 @@ namespace MWWorld
 
             Send an ID_OBJECT_DELETE packet every time an item is taken from the world
             by the player outside of the inventory screen
-
-            Send an ID_PLAYER_INVENTORY packet as well with the item thus gained
-            by the player
         */
         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
         objectList->reset();
         objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
         objectList->addObjectDelete(getTarget());
         objectList->sendObjectDelete();
-
-        // If the item is gold, make sure we get the correct value
-        unsigned int itemCount = getTarget().getClass().isGold(newitem) ? getTarget().getCellRef().getGoldValue() : getTarget().getRefData().getCount();
-
-        mwmp::Main::get().getLocalPlayer()->sendItemChange(getTarget(), itemCount, mwmp::InventoryChanges::ADD);
         /*
             End of tes3mp addition
         */

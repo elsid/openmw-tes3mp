@@ -17,6 +17,11 @@ namespace mwmp
 
         time_t deathTime;
 
+        bool isReceivingInventory;
+        bool isReceivingQuickKeys;
+        bool isPlayingAnimation;
+        bool diedSinceArrestAttempt;
+
         void update();
 
         bool processCharGen();

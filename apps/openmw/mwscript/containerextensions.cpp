@@ -92,17 +92,6 @@ namespace MWScript
                         End of tes3mp change (major)
                     */
 
-                        /*
-                            Start of tes3mp addition
-
-                            Send an ID_PLAYER_INVENTORY packet every time a player gains an item
-                            through a script
-                        */
-                        mwmp::Main::get().getLocalPlayer()->sendItemChange(item, count, mwmp::InventoryChanges::ADD);
-                        /*
-                            End of tes3mp addition
-                        */
-
                         // The two GMST entries below expand to strings informing the player of what, and how many of it has been added to their inventory
                         std::string msgBox;
                         std::string itemName = itemPtr.getClass().getName(itemPtr);
@@ -226,7 +215,6 @@ namespace MWScript
                     if ((numRemoved > 0)
                         && (ptr == MWMechanics::getPlayer()))
                     {
-                        mwmp::Main::get().getLocalPlayer()->sendItemChange(item, count, mwmp::InventoryChanges::REMOVE);
                     /*
                         End of tes3mp change (major)
                     */

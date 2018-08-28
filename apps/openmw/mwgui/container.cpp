@@ -276,7 +276,6 @@ namespace MWGui
             Mark this container as closed for multiplayer logic purposes
         */
         mwmp::Main::get().getLocalPlayer()->clearCurrentContainer();
-        mwmp::Main::get().getLocalPlayer()->updateInventory();
         /*
             End of tes3mp addition
         */

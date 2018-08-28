@@ -325,10 +325,6 @@ namespace mwmp
         std::string selectedSpellId;
 
         mwmp::Item usedItem;
-
-        bool isReceivingQuickKeys;
-        bool isPlayingAnimation;
-        bool diedSinceArrestAttempt;
     };
 }
 

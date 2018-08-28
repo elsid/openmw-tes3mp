@@ -23,7 +23,14 @@ namespace mwmp
             if (!isRequest())
             {
                 LocalPlayer &localPlayer = static_cast<LocalPlayer&>(*player);
+
+                // Because we send PlayerQuickKeys packets from the same OpenMW methods that we use to set the
+                // quick keys received, we need to set a boolean to prevent resending the keys set here
+                localPlayer.isReceivingQuickKeys = true;
+
                 localPlayer.setQuickKeys();
+
+                localPlayer.isReceivingQuickKeys = false;
             }
         }
     };

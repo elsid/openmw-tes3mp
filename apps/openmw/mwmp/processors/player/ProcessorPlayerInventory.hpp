@@ -1,7 +1,3 @@
-//
-// Created by koncord on 16.04.17.
-//
-
 #ifndef OPENMW_PROCESSORPLAYERUPDATEINVENTORY_HPP
 #define OPENMW_PROCESSORPLAYERUPDATEINVENTORY_HPP
 
@@ -30,12 +26,18 @@ namespace mwmp
                 LocalPlayer &localPlayer = static_cast<LocalPlayer&>(*player);
                 int inventoryAction = localPlayer.inventoryChanges.action;
 
+                // Because we send PlayerInventory packets from the same OpenMW methods that we use to set the
+                // items received, we need to set a boolean to prevent resending the items set here
+                localPlayer.isReceivingInventory = true;
+
                 if (inventoryAction == InventoryChanges::ADD)
                     localPlayer.addItems();
                 else if (inventoryAction == InventoryChanges::REMOVE)
                     localPlayer.removeItems();
                 else // InventoryChanges::SET
                     localPlayer.setInventory();
+
+                localPlayer.isReceivingInventory = false;
             }
         }
     };

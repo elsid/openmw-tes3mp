@@ -15,7 +15,6 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/ObjectList.hpp"
-#include "../mwmp/LocalPlayer.hpp"
 #include "../mwworld/cellstore.hpp"
 /*
     End of tes3mp addition
@@ -71,16 +70,12 @@ namespace MWGui
 
                 Send an ID_OBJECT_PLACE packet every time an object is dropped into the world from
                 the inventory screen
-
-                Send an ID_PLAYER_INVENTORY packet about the item's removal
             */
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();
             objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
             objectList->addObjectPlace(dropped, true);
             objectList->sendObjectPlace();
-
-            mwmp::Main::get().getLocalPlayer()->sendItemChange(dropped, count, mwmp::InventoryChanges::REMOVE);
             /*
                 End of tes3mp addition
             */

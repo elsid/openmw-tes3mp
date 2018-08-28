@@ -76,6 +76,7 @@ LocalPlayer::LocalPlayer()
     scale = 1;
     isWerewolf = false;
 
+    isReceivingInventory = false;
     isReceivingQuickKeys = false;
     isPlayingAnimation = false;
     diedSinceArrestAttempt = false;
@@ -456,9 +457,6 @@ void LocalPlayer::updateCell(bool forceUpdate)
         getNetworking()->getPlayerPacket(ID_PLAYER_CELL_CHANGE)->Send();
 
         isChangingRegion = false;
-
-        // Also check if the inventory needs to be updated
-        updateInventory();
     }
 }
 
@@ -1204,10 +1202,6 @@ void LocalPlayer::setQuickKeys()
 
     LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_QUICKKEYS from server");
 
-    // Because we send QuickKeys packets from the same OpenMW methods that we use to set received ones with,
-    // we need a boolean to prevent their sending here
-    isReceivingQuickKeys = true;
-
     for (const auto &quickKey : quickKeyChanges.quickKeys)
     {
         LOG_APPEND(Log::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
@@ -1245,8 +1239,6 @@ void LocalPlayer::setQuickKeys()
         else
             MWBase::Environment::get().getWindowManager()->setQuickKey(quickKey.slot, quickKey.type, 0);
     }
-
-    isReceivingQuickKeys = false;
 }
 
 void LocalPlayer::setFactions()

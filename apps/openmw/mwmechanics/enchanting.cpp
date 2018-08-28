@@ -10,7 +10,6 @@
 #include <components/openmw-mp/Log.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
-#include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/Worldstate.hpp"
 /*
     End of tes3mp addition
@@ -108,9 +107,6 @@ namespace MWMechanics
 
             Don't add the new item to the player's inventory and instead expect the server to
             add it
-
-            Before using the applyEnchantment() method, send an ID_PLAYER_INVENTORY packet
-            removing the old item from the player's inventory
             
             The applyEnchantment() method is where the record of the newly enchanted will be sent
             to the server, causing the server to send back the player's inventory with the new item
@@ -122,8 +118,6 @@ namespace MWMechanics
 
         if(!mSelfEnchanting)
             payForEnchantment();
-
-        mwmp::Main::get().getLocalPlayer()->sendItemChange(mOldItemPtr, 1, mwmp::InventoryChanges::REMOVE);
 
         std::string newItemId = mOldItemPtr.getClass().applyEnchantment(mOldItemPtr, enchantmentPtr->mId, getGemCharge(), mNewItemName);
         /*
@@ -336,16 +330,6 @@ namespace MWMechanics
         MWWorld::ContainerStore& store = player.getClass().getContainerStore(player);
 
         store.remove(MWWorld::ContainerStore::sGoldId, getEnchantPrice(), player);
-
-        /*
-            Start of tes3mp addition
-
-            Send an ID_PLAYER_INVENTORY packet removing the gold from the player
-        */
-        mwmp::Main::get().getLocalPlayer()->sendItemChange(MWWorld::ContainerStore::sGoldId, getEnchantPrice(), mwmp::InventoryChanges::REMOVE);
-        /*
-            End of tes3mp addition
-        */
 
         // add gold to NPC trading gold pool
         CreatureStats& enchanterStats = mEnchanter.getClass().getCreatureStats(mEnchanter);
