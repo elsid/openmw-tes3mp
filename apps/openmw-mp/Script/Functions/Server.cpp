@@ -57,6 +57,21 @@ const char *ServerFunctions::GetIP(unsigned short pid) noexcept
     return addr.ToString(false);
 }
 
+unsigned short ServerFunctions::GetPort() noexcept
+{
+    return mwmp::Networking::get().getPort();
+}
+
+unsigned int ServerFunctions::GetMaxPlayers() noexcept
+{
+    return mwmp::Networking::get().maxConnections();
+}
+
+bool ServerFunctions::HasPassword() noexcept
+{
+    return mwmp::Networking::get().isPassworded();
+}
+
 void ServerFunctions::SetGameMode(const char *gameMode) noexcept
 {
     if (mwmp::Networking::getPtr()->getMasterClient())

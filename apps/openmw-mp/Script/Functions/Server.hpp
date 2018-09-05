@@ -14,6 +14,9 @@
     {"GetProtocolVersion",  ServerFunctions::GetProtocolVersion},\
     {"GetAvgPing",          ServerFunctions::GetAvgPing},\
     {"GetIP",               ServerFunctions::GetIP},\
+    {"GetMaxPlayers",       ServerFunctions::GetMaxPlayers},\
+    {"GetPort",             ServerFunctions::GetPort},\
+    {"HasPassword",         ServerFunctions::HasPassword},\
     \
     {"SetGameMode",         ServerFunctions::SetGameMode},\
     {"SetHostname",         ServerFunctions::SetHostname},\
@@ -86,6 +89,27 @@ public:
     * \return The IP address.
     */
     static const char* GetIP(unsigned short pid) noexcept;
+
+    /**
+     * \brief Get the port used by the server.
+     *
+     * \return Port
+     */
+    static unsigned short GetPort() noexcept;
+
+    /**
+     * \brief Get the maximum number of players.
+     *
+     * \return Max players
+     */
+    static unsigned int GetMaxPlayers() noexcept;
+
+    /**
+     * \brief Checking if the server requires a password to connect.
+     *
+     * @return
+     */
+    static bool HasPassword() noexcept;
 
     /**
     * \brief Set the game mode of the server, as displayed in the server browser.

@@ -578,6 +578,11 @@ int Networking::getAvgPing(RakNet::AddressOrGUID addr) const
     return peer->GetAveragePing(addr);
 }
 
+unsigned short Networking::getPort() const
+{
+    return peer->GetMyBoundAddress().GetPort();
+}
+
 MasterClient *Networking::getMasterClient()
 {
     return mclient;
