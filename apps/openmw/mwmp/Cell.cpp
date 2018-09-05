@@ -116,6 +116,8 @@ void Cell::updateDedicated(float dt)
 void Cell::readPositions(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
+
+    if (dedicatedActors.empty()) return;
     
     for (const auto &baseActor : actorList.baseActors)
     {
@@ -180,6 +182,8 @@ void Cell::readStatsDynamic(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
 
+    if (dedicatedActors.empty()) return;
+
     for (const auto &baseActor : actorList.baseActors)
     {
         std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);
@@ -216,6 +220,8 @@ void Cell::readEquipment(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
 
+    if (dedicatedActors.empty()) return;
+
     for (const auto &baseActor : actorList.baseActors)
     {
         std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);
@@ -239,6 +245,8 @@ void Cell::readSpeech(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
 
+    if (dedicatedActors.empty()) return;
+
     for (const auto &baseActor : actorList.baseActors)
     {
         std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);
@@ -258,6 +266,8 @@ void Cell::readSpeech(ActorList& actorList)
 void Cell::readAi(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
+
+    if (dedicatedActors.empty()) return;
 
     for (const auto &baseActor : actorList.baseActors)
     {
@@ -313,6 +323,8 @@ void Cell::readAttack(ActorList& actorList)
 void Cell::readCellChange(ActorList& actorList)
 {
     initializeDedicatedActors(actorList);
+
+    if (dedicatedActors.empty()) return;
 
     CellController *cellController = Main::get().getCellController();
 
