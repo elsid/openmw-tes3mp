@@ -684,6 +684,17 @@ void WeatherManager::playerTeleported(const std::string& playerRegion, bool isEx
             mCurrentRegion = playerRegion;
             forceWeather(it->second.getWeather());
         }
+        /*
+            Start of tes3mp addition
+
+            There's no scenario where we want our weather creation ability to be true in
+            an interior, so set it to false
+        */
+        else if (!isExterior)
+            setWeatherCreationState(false);
+        /*
+            End of tes3mp addition
+        */
     }
 }
 
