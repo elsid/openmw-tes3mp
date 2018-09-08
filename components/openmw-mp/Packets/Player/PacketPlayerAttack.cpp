@@ -32,6 +32,13 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
         RW(player->attack.pressed, send);
         RW(player->attack.success, send);
 
+        if (player->attack.success)
+        {
+            RW(player->attack.hitPosition.pos[0], send);
+            RW(player->attack.hitPosition.pos[1], send);
+            RW(player->attack.hitPosition.pos[2], send);
+        }
+
         if (player->attack.type == mwmp::Attack::MELEE)
         {
             RW(player->attack.damage, send);

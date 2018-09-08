@@ -300,14 +300,15 @@ namespace MWClass
         /*
             Start of tes3mp addition
 
-            If the attacker is a LocalPlayer or LocalActor, get their Attack and
-            assign data for its target
+            If the attacker is a LocalPlayer or LocalActor, get their Attack to assign its
+            hit position and target
         */
         mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(ptr);
 
         if (localAttack)
         {
             localAttack->success = true;
+            localAttack->hitPosition = MechanicsHelper::getPositionFromVector(hitPosition);
             MechanicsHelper::assignAttackTarget(localAttack, victim);
         }
         /*

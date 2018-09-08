@@ -31,6 +31,13 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
         RW(actor.attack.pressed, send);
         RW(actor.attack.success, send);
 
+        if (actor.attack.success)
+        {
+            RW(actor.attack.hitPosition.pos[0], send);
+            RW(actor.attack.hitPosition.pos[1], send);
+            RW(actor.attack.hitPosition.pos[2], send);
+        }
+
         if (actor.attack.type == mwmp::Attack::MELEE)
         {
             RW(actor.attack.damage, send);

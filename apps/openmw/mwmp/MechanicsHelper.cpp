@@ -31,6 +31,16 @@ osg::Vec3f MechanicsHelper::getLinearInterpolation(osg::Vec3f start, osg::Vec3f 
     return (start + osg::componentMultiply(position, (end - start)));
 }
 
+ESM::Position MechanicsHelper::getPositionFromVector(osg::Vec3f vector)
+{
+    ESM::Position position;
+    position.pos[0] = vector.x();
+    position.pos[1] = vector.y();
+    position.pos[2] = vector.z();
+
+    return position;
+}
+
 // Inspired by similar code in mwclass\creaturelevlist.cpp
 void MechanicsHelper::spawnLeveledCreatures(MWWorld::CellStore* cellStore)
 {
@@ -263,19 +273,19 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
                 if (attack.applyWeaponEnchantment)
                 {
                     MWMechanics::CastSpell cast(attacker, victim, false);
-                    cast.mHitPosition = osg::Vec3f();
+                    cast.mHitPosition = attack.hitPosition.asVec3();
                     cast.cast(weapon, false);
                 }
 
                 if (attack.applyProjectileEnchantment)
                 {
                     MWMechanics::CastSpell cast(attacker, victim, false);
-                    cast.mHitPosition = osg::Vec3f();
+                    cast.mHitPosition = attack.hitPosition.asVec3();
                     cast.cast(projectile, false);
                 }
             }
 
-            victim.getClass().onHit(victim, attack.damage, healthdmg, weapon, attacker, osg::Vec3f(),
+            victim.getClass().onHit(victim, attack.damage, healthdmg, weapon, attacker, attack.hitPosition.asVec3(),
                 attack.success);
         }
     }

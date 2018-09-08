@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <components/esm/loadcell.hpp>
 #include <components/esm/statstate.hpp>
 
 #include <RakNetTypes.h>
@@ -75,6 +76,8 @@ namespace mwmp
 
         std::string spellId; // id of spell (e.g. "fireball")
         std::string itemId;
+
+        ESM::Position hitPosition;
 
         float damage;
 
