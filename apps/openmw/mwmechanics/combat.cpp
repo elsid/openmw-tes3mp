@@ -320,10 +320,12 @@ namespace MWMechanics
             localAttack->applyWeaponEnchantment = appliedEnchantment;
 
         if (weapon != projectile)
+        {
             appliedEnchantment = applyOnStrikeEnchantment(attacker, victim, projectile, hitPosition, true);
 
-        if (localAttack)
-            localAttack->applyProjectileEnchantment = appliedEnchantment;
+            if (localAttack)
+                localAttack->applyProjectileEnchantment = appliedEnchantment;
+        }
         /*
             End of tes3mp change (minor)
         */
