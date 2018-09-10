@@ -19,6 +19,7 @@
 #include "../mwmp/DedicatedActor.hpp"
 #include "../mwmp/ObjectList.hpp"
 #include "../mwmp/CellController.hpp"
+#include "../mwmp/MechanicsHelper.hpp"
 /*
     End of tes3mp addition
 */
@@ -3260,7 +3261,28 @@ namespace MWWorld
         {
             MWWorld::InventoryStore& inv = actor.getClass().getInventoryStore(actor);
             if (inv.getSelectedEnchantItem() != inv.end())
+            /*
+                Start of tes3mp change (minor)
+
+                If this actor is a LocalPlayer or LocalActor, get their Attack and prepare
+                it for sending
+            */
+            {
                 cast.cast(*inv.getSelectedEnchantItem());
+
+                mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(actor);
+
+                if (localAttack)
+                {
+                    MechanicsHelper::resetAttack(localAttack);
+                    localAttack->type = mwmp::Attack::ITEM_MAGIC;
+                    localAttack->itemId = inv.getSelectedEnchantItem()->getCellRef().getRefId();
+                    localAttack->shouldSend = true;
+                }
+            }
+            /*
+                End of tes3mp addition
+            */
         }
     }
 
