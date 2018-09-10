@@ -188,6 +188,7 @@ void MechanicsHelper::resetAttack(Attack* attack)
     attack->block = false;
     attack->applyWeaponEnchantment = false;
     attack->applyProjectileEnchantment = false;
+    attack->hitPosition.pos[0] = attack->hitPosition.pos[1] = attack->hitPosition.pos[2] = 0;
     attack->target.guid = RakNet::RakNetGUID();
     attack->target.refId.clear();
     attack->target.refNum = 0;
