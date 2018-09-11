@@ -304,12 +304,12 @@ void Cell::readAttack(ActorList& actorList)
 
             // Set the correct drawState here if we've somehow we've missed a previous
             // AnimFlags packet
-            if (actor->attack.type == mwmp::Attack::MELEE && actor->drawState != 1)
+            if (actor->drawState != 1 && (actor->attack.type == mwmp::Attack::MELEE || actor->attack.type == mwmp::Attack::RANGED))
             {
                 actor->drawState = 1;
                 actor->setAnimFlags();
             }
-            else if (actor->attack.type == mwmp::Attack::MAGIC && actor->drawState != 2)
+            else if (actor->drawState != 2 && (actor->attack.type == mwmp::Attack::MAGIC || actor->attack.type == mwmp::Attack::ITEM_MAGIC))
             {
                 actor->drawState = 2;
                 actor->setAnimFlags();
