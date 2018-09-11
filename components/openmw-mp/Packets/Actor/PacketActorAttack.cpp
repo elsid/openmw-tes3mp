@@ -26,19 +26,19 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
 
     RW(actor.attack.type, send);
 
-    if (actor.attack.type == mwmp::Attack::MELEE || actor.attack.type == mwmp::Attack::MAGIC)
+    if (actor.attack.type == mwmp::Attack::ITEM_MAGIC)
+        RW(actor.attack.itemId, send, true);
+    else
     {
         RW(actor.attack.pressed, send);
         RW(actor.attack.success, send);
 
-        if (actor.attack.success)
+        if (actor.attack.type == mwmp::Attack::MAGIC)
         {
-            RW(actor.attack.hitPosition.pos[0], send);
-            RW(actor.attack.hitPosition.pos[1], send);
-            RW(actor.attack.hitPosition.pos[2], send);
+            RW(actor.attack.instant, send);
+            RW(actor.attack.spellId, send, true);
         }
-
-        if (actor.attack.type == mwmp::Attack::MELEE)
+        else
         {
             RW(actor.attack.damage, send);
             RW(actor.attack.block, send);
@@ -46,13 +46,13 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
 
             RW(actor.attack.applyWeaponEnchantment, send);
             RW(actor.attack.applyProjectileEnchantment, send);
-        }
-        else if (actor.attack.type == mwmp::Attack::MAGIC)
-        {
-            RW(actor.attack.instant, send);
-            RW(actor.attack.spellId, send, true);
+
+            if (actor.attack.success || actor.attack.applyWeaponEnchantment || actor.attack.applyProjectileEnchantment)
+            {
+                RW(actor.attack.hitPosition.pos[0], send);
+                RW(actor.attack.hitPosition.pos[1], send);
+                RW(actor.attack.hitPosition.pos[2], send);
+            }
         }
     }
-    else if (actor.attack.type == mwmp::Attack::ITEM_MAGIC)
-        RW(actor.attack.itemId, send, true);
 }

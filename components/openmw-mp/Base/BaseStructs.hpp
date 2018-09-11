@@ -69,6 +69,7 @@ namespace mwmp
         enum TYPE
         {
             MELEE = 0,
+            RANGED,
             MAGIC,
             ITEM_MAGIC,
             THROWABLE

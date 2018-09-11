@@ -217,10 +217,18 @@ namespace MWMechanics
         /*
             Start of tes3mp addition
 
-            Ignore projectiles fired by DedicatedPlayers
+            Ignore projectiles fired by DedicatedPlayers and DedicatedActors
+
+            If fired by LocalPlayers and LocalActors, get the associated LocalAttack and set its type
+            to RANGED
         */
-        if (mwmp::PlayerList::isDedicatedPlayer(attacker))
+        if (mwmp::PlayerList::isDedicatedPlayer(attacker) || mwmp::Main::get().getCellController()->isDedicatedActor(attacker))
             return;
+
+        mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
+
+        if (localAttack)
+            localAttack->type = mwmp::Attack::RANGED;
         /*
             End of tes3mp addition
         */
@@ -245,10 +253,10 @@ namespace MWMechanics
             /*
                 Start of tes3mp addition
 
-                Mark this as a successful attack for LocalPlayer unless proven otherwise
+                Mark this as a successful attack for the associated LocalAttack unless proven otherwise
             */
-            if (attacker == MWBase::Environment::get().getWorld()->getPlayerPtr())
-                mwmp::Main::get().getLocalPlayer()->attack.success = true;
+            if (localAttack)
+                localAttack->success = true;
             /*
                 End of tes3mp addition
             */
@@ -258,11 +266,10 @@ namespace MWMechanics
                 /*
                     Start of tes3mp addition
 
-                    Mark this as a failed attack for LocalPlayer now that the hit roll
-                    has failed
+                    Mark this as a failed LocalAttack now that the hit roll has failed
                 */
-                if (attacker == getPlayer())
-                    mwmp::Main::get().getLocalPlayer()->attack.success = false;
+                if (localAttack)
+                    localAttack->success = false;
                 /*
                     End of tes3mp addition
                 */
@@ -312,8 +319,6 @@ namespace MWMechanics
             Track whether the strike enchantment is successful for attacks by the
             LocalPlayer or LocalActors for both their weapon and projectile
         */
-        mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
-
         bool appliedEnchantment = applyOnStrikeEnchantment(attacker, victim, weapon, hitPosition, true);
 
         if (localAttack)
@@ -342,6 +347,19 @@ namespace MWMechanics
 
             victim.getClass().onHit(victim, damage, true, projectile, attacker, hitPosition, true);
         }
+        /*
+            Start of tes3mp addition
+
+            If this is a local attack that had no victim, send a packet for it here
+        */
+        else if (localAttack)
+        {
+            localAttack->hitPosition = MechanicsHelper::getPositionFromVector(hitPosition);
+            localAttack->shouldSend = true;
+        }
+        /*
+            End of tes3mp addition
+        */
     }
 
     float getHitChance(const MWWorld::Ptr &attacker, const MWWorld::Ptr &victim, int skillValue)

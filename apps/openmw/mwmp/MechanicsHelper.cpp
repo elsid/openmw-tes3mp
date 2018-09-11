@@ -204,13 +204,15 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
 {
     if (!attack.pressed)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Processing attack from %s",
-            attacker.getCellRef().getRefId().c_str());
+        LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Processing attack from %s of type %i",
+            attacker.getCellRef().getRefId().c_str(), attack.type);
         LOG_APPEND(Log::LOG_VERBOSE, "- success: %s", attack.success ? "true" : "false");
 
         if (attack.success)
             LOG_APPEND(Log::LOG_VERBOSE, "- damage: %f", attack.damage);
     }
+
+    LOG_APPEND(Log::LOG_VERBOSE, "- pressed: %s", attack.pressed ? "true" : "false");
 
     MWMechanics::CreatureStats &attackerStats = attacker.getClass().getCreatureStats(attacker);
     MWWorld::Ptr victim;
@@ -231,12 +233,14 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             victim = controller->getDedicatedActor(attack.target.refNum, attack.target.mpNum)->getPtr();
     }
 
-    // Get the weapon used (if hand-to-hand, weapon = inv.end())
-    if (attack.type == attack.MELEE)
+    if (attack.type == attack.MELEE || attack.type == attack.RANGED)
     {
+        bool isRanged = attack.type == attack.RANGED;
+
         MWWorld::Ptr weapon;
         MWWorld::Ptr projectile;
 
+        // Get the weapon used; if using hand-to-hand, the weapon is equal to inv.end()
         if (attacker.getClass().hasInventoryStore(attacker))
         {
             MWWorld::InventoryStore &inventoryStore = attacker.getClass().getInventoryStore(attacker);
@@ -253,40 +257,44 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
                 weapon = MWWorld::Ptr();
         }
 
+        bool isHealthDamage = true;
+
+        if (weapon.isEmpty())
+        {
+            if (attacker.getClass().isBipedal(attacker))
+            {
+                MWMechanics::CreatureStats &otherstats = victim.getClass().getCreatureStats(victim);
+                isHealthDamage = otherstats.isParalyzed() || otherstats.getKnockedDown();
+            }
+        }
+        else
+        {
+            LOG_APPEND(Log::LOG_VERBOSE, "- weapon: %s\n- isRanged: %s\n- applyWeaponEnchantment: %s\n- applyProjectileEnchantment: %s",
+                weapon.getCellRef().getRefId().c_str(), isRanged ? "true" : "false", attack.applyWeaponEnchantment ? "true" : "false",
+                attack.applyProjectileEnchantment ? "true" : "false");
+
+            if (attack.applyWeaponEnchantment)
+            {
+                MWMechanics::CastSpell cast(attacker, victim, isRanged);
+                cast.mHitPosition = attack.hitPosition.asVec3();
+
+                cast.cast(weapon, false);
+            }
+
+            if (isRanged && !projectile.isEmpty() && attack.applyProjectileEnchantment)
+            {
+                MWMechanics::CastSpell cast(attacker, victim, isRanged);
+                cast.mHitPosition = attack.hitPosition.asVec3();
+                cast.cast(projectile, false);
+            }
+        }
+
         if (victim.mRef != nullptr)
         {
-            bool healthdmg = true;
-
-            if (weapon.isEmpty())
-            {
-                if (attacker.getClass().isBipedal(attacker))
-                {
-                    MWMechanics::CreatureStats &otherstats = victim.getClass().getCreatureStats(victim);
-                    healthdmg = otherstats.isParalyzed() || otherstats.getKnockedDown();
-                }
-            }
-            else
-            {
-                LOG_APPEND(Log::LOG_VERBOSE, "- weapon: %s", weapon.getCellRef().getRefId().c_str());
-
+            if (!isRanged)
                 MWMechanics::blockMeleeAttack(attacker, victim, weapon, attack.damage, 1);
 
-                if (attack.applyWeaponEnchantment)
-                {
-                    MWMechanics::CastSpell cast(attacker, victim, false);
-                    cast.mHitPosition = attack.hitPosition.asVec3();
-                    cast.cast(weapon, false);
-                }
-
-                if (attack.applyProjectileEnchantment)
-                {
-                    MWMechanics::CastSpell cast(attacker, victim, false);
-                    cast.mHitPosition = attack.hitPosition.asVec3();
-                    cast.cast(projectile, false);
-                }
-            }
-
-            victim.getClass().onHit(victim, attack.damage, healthdmg, weapon, attacker, attack.hitPosition.asVec3(),
+            victim.getClass().onHit(victim, attack.damage, isHealthDamage, weapon, attacker, attack.hitPosition.asVec3(),
                 attack.success);
         }
     }
@@ -300,7 +308,7 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             attack.instant = false;
         }
 
-        LOG_APPEND(Log::LOG_VERBOSE, "- spellId: %s, success: %s", attack.spellId.c_str(), attack.success ? "true" : "false");
+        LOG_APPEND(Log::LOG_VERBOSE, "- spellId: %s", attack.spellId.c_str());
     }
     else if (attack.type == attack.ITEM_MAGIC)
     {

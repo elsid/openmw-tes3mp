@@ -27,19 +27,19 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
 
     RW(player->attack.type, send);
 
-    if (player->attack.type == mwmp::Attack::MELEE || player->attack.type == mwmp::Attack::MAGIC)
+    if (player->attack.type == mwmp::Attack::ITEM_MAGIC)
+        RW(player->attack.itemId, send, true);
+    else
     {
         RW(player->attack.pressed, send);
         RW(player->attack.success, send);
 
-        if (player->attack.success)
+        if (player->attack.type == mwmp::Attack::MAGIC)
         {
-            RW(player->attack.hitPosition.pos[0], send);
-            RW(player->attack.hitPosition.pos[1], send);
-            RW(player->attack.hitPosition.pos[2], send);
+            RW(player->attack.instant, send);
+            RW(player->attack.spellId, send, true);
         }
-
-        if (player->attack.type == mwmp::Attack::MELEE)
+        else
         {
             RW(player->attack.damage, send);
             RW(player->attack.block, send);
@@ -47,13 +47,13 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
 
             RW(player->attack.applyWeaponEnchantment, send);
             RW(player->attack.applyProjectileEnchantment, send);
-        }
-        else if (player->attack.type == mwmp::Attack::MAGIC)
-        {
-            RW(player->attack.instant, send);
-            RW(player->attack.spellId, send, true);
+
+            if (player->attack.success || player->attack.applyWeaponEnchantment || player->attack.applyProjectileEnchantment)
+            {
+                RW(player->attack.hitPosition.pos[0], send);
+                RW(player->attack.hitPosition.pos[1], send);
+                RW(player->attack.hitPosition.pos[2], send);
+            }
         }
     }
-    else if (player->attack.type == mwmp::Attack::ITEM_MAGIC)
-        RW(player->attack.itemId, send, true);
 }
