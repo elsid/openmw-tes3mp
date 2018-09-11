@@ -257,17 +257,7 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
                 weapon = MWWorld::Ptr();
         }
 
-        bool isHealthDamage = true;
-
-        if (weapon.isEmpty())
-        {
-            if (attacker.getClass().isBipedal(attacker))
-            {
-                MWMechanics::CreatureStats &otherstats = victim.getClass().getCreatureStats(victim);
-                isHealthDamage = otherstats.isParalyzed() || otherstats.getKnockedDown();
-            }
-        }
-        else
+        if (!weapon.isEmpty())
         {
             LOG_APPEND(Log::LOG_VERBOSE, "- weapon: %s\n- isRanged: %s\n- applyWeaponEnchantment: %s\n- applyProjectileEnchantment: %s",
                 weapon.getCellRef().getRefId().c_str(), isRanged ? "true" : "false", attack.applyWeaponEnchantment ? "true" : "false",
@@ -291,6 +281,17 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
 
         if (victim.mRef != nullptr)
         {
+            bool isHealthDamage = true;
+
+            if (weapon.isEmpty())
+            {
+                if (attacker.getClass().isBipedal(attacker))
+                {
+                    MWMechanics::CreatureStats &victimStats = victim.getClass().getCreatureStats(victim);
+                    isHealthDamage = victimStats.isParalyzed() || victimStats.getKnockedDown();
+                }
+            }
+
             if (!isRanged)
                 MWMechanics::blockMeleeAttack(attacker, victim, weapon, attack.damage, 1);
 
