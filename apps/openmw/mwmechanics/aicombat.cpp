@@ -155,7 +155,6 @@ namespace MWMechanics
             if (localAttack && localAttack->pressed != storage.mAttack)
             {
                 MechanicsHelper::resetAttack(localAttack);
-                localAttack->type = mwmp::Attack::MELEE;
                 localAttack->pressed = storage.mAttack;
                 localAttack->shouldSend = true;
             }
@@ -227,7 +226,6 @@ namespace MWMechanics
             if (localAttack && localAttack->pressed != false)
             {
                 MechanicsHelper::resetAttack(localAttack);
-                localAttack->type = mwmp::Attack::MELEE;
                 localAttack->pressed = false;
                 localAttack->shouldSend = true;
             }
@@ -580,7 +578,7 @@ namespace MWMechanics
                 if (localAttack && localAttack->pressed != true)
                 {
                     MechanicsHelper::resetAttack(localAttack);
-                    localAttack->type = mwmp::Attack::MELEE;
+                    localAttack->type = distantCombat ? mwmp::Attack::MELEE : mwmp::Attack::RANGED;
                     localAttack->pressed = true;
                     localAttack->shouldSend = true;
                 }

@@ -1411,7 +1411,7 @@ namespace MWMechanics
                         if (localAttack->pressed != state)
                         {
                             MechanicsHelper::resetAttack(localAttack);
-                            localAttack->type = mwmp::Attack::MELEE;
+                            localAttack->type = MechanicsHelper::isUsingRangedWeapon(player) ? mwmp::Attack::RANGED : mwmp::Attack::MELEE;
                             localAttack->pressed = state;
                             localAttack->shouldSend = true;
                         }
