@@ -75,6 +75,26 @@ void MechanicsHelper::spawnLeveledCreatures(MWWorld::CellStore* cellStore)
         objectList->sendObjectSpawn();
 }
 
+bool MechanicsHelper::isUsingRangedWeapon(const MWWorld::Ptr& ptr)
+{
+    if (ptr.getClass().hasInventoryStore(ptr))
+    {
+        MWWorld::InventoryStore &inventoryStore = ptr.getClass().getInventoryStore(ptr);
+        MWWorld::ContainerStoreIterator weaponSlot = inventoryStore.getSlot(
+            MWWorld::InventoryStore::Slot_CarriedRight);
+
+        if (weaponSlot != inventoryStore.end())
+        {
+            const ESM::Weapon* weaponRecord = weaponSlot->get<ESM::Weapon>()->mBase;
+
+            if (weaponRecord->mData.mType >= ESM::Weapon::MarksmanBow)
+                return true;
+        }
+    }
+
+    return false;
+}
+
 Attack *MechanicsHelper::getLocalAttack(const MWWorld::Ptr& ptr)
 {
     if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())

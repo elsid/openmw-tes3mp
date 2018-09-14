@@ -15,6 +15,8 @@ namespace MechanicsHelper
 
     void spawnLeveledCreatures(MWWorld::CellStore* cellStore);
 
+    bool isUsingRangedWeapon(const MWWorld::Ptr& ptr);
+
     mwmp::Attack *getLocalAttack(const MWWorld::Ptr& ptr);
     mwmp::Attack *getDedicatedAttack(const MWWorld::Ptr& ptr);
 
