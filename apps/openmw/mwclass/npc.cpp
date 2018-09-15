@@ -837,20 +837,31 @@ namespace MWClass
             /*
                 Start of tes3mp change (major)
 
-                If the attacker is a DedicatedPlayer or DedicatedActor with a successful knockdown, apply the knockdown;
-                otherwise, use default probability roll
+                If the attacker is a DedicatedPlayer or DedicatedActor with a successful knockdown, apply the knockdown
+
+                If the attacker is neither of those, then it must be a LocalPlayer or a LocalActor, so calculate the
+                knockdown probability on our client
+
+                Default to hit recovery if no knockdown has taken place, like in regular OpenMW
             */
             mwmp::Attack *dedicatedAttack = MechanicsHelper::getDedicatedAttack(attacker);
 
-            if (dedicatedAttack && dedicatedAttack->knockdown)
-                stats.setKnockedDown(true);
-            else if (ishealth && agilityTerm <= damage && knockdownTerm <= Misc::Rng::roll0to99())
+            if (dedicatedAttack)
+            {
+                if (dedicatedAttack->knockdown)
+                    stats.setKnockedDown(true);
+            }
+            else
+            {
+                if (ishealth && agilityTerm <= damage && knockdownTerm <= Misc::Rng::roll0to99())
+                    stats.setKnockedDown(true);
+            }
+
+            if (!stats.getKnockedDown())
+                stats.setHitRecovery(true); // Is this supposed to always occur?
             /*
                 End of tes3mp change (major)
             */
-                stats.setKnockedDown(true);
-            else
-                stats.setHitRecovery(true); // Is this supposed to always occur?
 
             if (damage > 0 && ishealth)
             {
