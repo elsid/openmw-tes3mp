@@ -222,10 +222,11 @@ bool MechanicsHelper::getSpellSuccess(std::string spellId, const MWWorld::Ptr& c
 
 void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
 {
+    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Processing attack from %s of type %i",
+        attacker.getClass().getName(attacker).c_str(), attack.type);
+
     if (!attack.pressed)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Processing attack from %s of type %i",
-            attacker.getCellRef().getRefId().c_str(), attack.type);
         LOG_APPEND(Log::LOG_VERBOSE, "- success: %s", attack.success ? "true" : "false");
 
         if (attack.success)
@@ -266,12 +267,16 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             MWWorld::InventoryStore &inventoryStore = attacker.getClass().getInventoryStore(attacker);
             MWWorld::ContainerStoreIterator weaponSlot = inventoryStore.getSlot(
                 MWWorld::InventoryStore::Slot_CarriedRight);
-            MWWorld::ContainerStoreIterator projectileSlot = inventoryStore.getSlot(
-                MWWorld::InventoryStore::Slot_Ammunition);
 
-            // TODO: Fix for when arrows, bolts and throwing weapons have just run out
             weapon = weaponSlot != inventoryStore.end() ? *weaponSlot : MWWorld::Ptr();
-            projectile = projectileSlot != inventoryStore.end() ? *projectileSlot : MWWorld::Ptr();
+
+            if (isRanged)
+            {
+                // TODO: Fix for when arrows, bolts and throwing weapons have just run out
+                MWWorld::ContainerStoreIterator projectileSlot = inventoryStore.getSlot(
+                    MWWorld::InventoryStore::Slot_Ammunition);
+                projectile = projectileSlot != inventoryStore.end() ? *projectileSlot : MWWorld::Ptr();
+            }
 
             if (!weapon.isEmpty() && weapon.getTypeName() != typeid(ESM::Weapon).name())
                 weapon = MWWorld::Ptr();
