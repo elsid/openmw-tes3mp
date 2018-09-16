@@ -1371,6 +1371,22 @@ namespace MWMechanics
         case ESM::MagicEffect::RemoveCurse:
             actor.getClass().getCreatureStats(actor).getSpells().purgeCurses();
             break;
+        /*
+            Start of tes3mp addition
+
+            Don't apply paralysis to DedicatedPlayers and DedicatedActors unilterally on this client
+        */
+        case ESM::MagicEffect::Paralyze:
+        {
+            if (mwmp::PlayerList::isDedicatedPlayer(actor) || mwmp::Main::get().getCellController()->isDedicatedActor(actor))
+            {
+                actor.getClass().getCreatureStats(actor).getActiveSpells().purgeEffect(ESM::MagicEffect::Paralyze);
+                break;
+            }
+        }
+        /*
+            End of tes3mp addition
+        */
         default:
             return false;
         }
