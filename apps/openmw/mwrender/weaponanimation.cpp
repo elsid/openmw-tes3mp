@@ -5,6 +5,16 @@
 #include <components/resource/resourcesystem.hpp>
 #include <components/resource/scenemanager.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/MechanicsHelper.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/world.hpp"
 #include "../mwbase/environment.hpp"
 #include "../mwbase/soundmanager.hpp"
@@ -92,6 +102,33 @@ void WeaponAnimation::attachArrow(MWWorld::Ptr actor)
 
 void WeaponAnimation::releaseArrow(MWWorld::Ptr actor, float attackStrength)
 {
+    /*
+        Start of tes3mp addition
+
+        If this is an attack by a LocalPlayer or LocalActor, record its attackStrength and
+        prepare an attack packet for sending
+
+        If it's an attack by a DedicatedPlayer or DedicatedActor, apply the attackStrength
+        from their latest attack packet
+    */
+    mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(actor);
+
+    if (localAttack)
+    {
+        localAttack->attackStrength = attackStrength;
+        localAttack->shouldSend = true;
+    }
+    else
+    {
+        mwmp::Attack *dedicatedAttack = MechanicsHelper::getDedicatedAttack(actor);
+        
+        if (dedicatedAttack)
+            attackStrength = dedicatedAttack->attackStrength;
+    }
+    /*
+        End of tes3mp addition
+    */
+
     MWWorld::InventoryStore& inv = actor.getClass().getInventoryStore(actor);
     MWWorld::ContainerStoreIterator weapon = inv.getSlot(MWWorld::InventoryStore::Slot_CarriedRight);
     if (weapon == inv.end())

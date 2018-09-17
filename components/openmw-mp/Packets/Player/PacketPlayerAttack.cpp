@@ -44,9 +44,13 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
             RW(player->attack.damage, send);
             RW(player->attack.block, send);
             RW(player->attack.knockdown, send);
-
             RW(player->attack.applyWeaponEnchantment, send);
-            RW(player->attack.applyProjectileEnchantment, send);
+
+            if (player->attack.type == mwmp::Attack::RANGED)
+            {
+                RW(player->attack.applyProjectileEnchantment, send);
+                RW(player->attack.attackStrength, send);
+            }
 
             if (player->attack.success || player->attack.applyWeaponEnchantment || player->attack.applyProjectileEnchantment)
             {

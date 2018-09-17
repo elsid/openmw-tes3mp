@@ -43,9 +43,13 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
             RW(actor.attack.damage, send);
             RW(actor.attack.block, send);
             RW(actor.attack.knockdown, send);
-
             RW(actor.attack.applyWeaponEnchantment, send);
-            RW(actor.attack.applyProjectileEnchantment, send);
+            
+            if (actor.attack.type == mwmp::Attack::RANGED)
+            {
+                RW(actor.attack.applyProjectileEnchantment, send);
+                RW(actor.attack.attackStrength, send);
+            }
 
             if (actor.attack.success || actor.attack.applyWeaponEnchantment || actor.attack.applyProjectileEnchantment)
             {

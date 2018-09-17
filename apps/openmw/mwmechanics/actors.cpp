@@ -1413,7 +1413,12 @@ namespace MWMechanics
                             MechanicsHelper::resetAttack(localAttack);
                             localAttack->type = MechanicsHelper::isUsingRangedWeapon(player) ? mwmp::Attack::RANGED : mwmp::Attack::MELEE;
                             localAttack->pressed = state;
-                            localAttack->shouldSend = true;
+
+                            // Prepare this attack for sending as long as it's not a ranged attack that's being released,
+                            // because we need to get the final attackStrength for that from WeaponAnimation to have the
+                            // correct projectile speed
+                            if (localAttack->type == mwmp::Attack::MELEE || state)
+                                localAttack->shouldSend = true;
                         }
                     }
                 }

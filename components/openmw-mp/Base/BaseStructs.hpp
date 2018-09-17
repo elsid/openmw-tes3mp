@@ -81,6 +81,7 @@ namespace mwmp
         ESM::Position hitPosition;
 
         float damage;
+        float attackStrength;
 
         bool success;
         bool block;
