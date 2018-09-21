@@ -18,6 +18,7 @@ Additional programming
 Community administrators
 ------------------------
 
+    Capostrophic
     Volk Milit (Ja'Virr-Dar)
     Testman
 
@@ -25,9 +26,10 @@ Community administrators
 Community moderators
 --------------------
 
-    Capostrophic
     Michael Fitzmayer (mupf)
-
+    NicholasAH
+    Shnatsel
+    Snapjaw
 
 Art
 ---
