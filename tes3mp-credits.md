@@ -4,8 +4,8 @@ tes3mp Credits
 Programmers
 ----------------
 
-    Stanislav Zhukov (Koncord) - Overall architecture, networking & scripting systems, player sync, server browser
-    David Cernat - World, NPC & quest sync, state saving & loading, general bug fixes
+    Stanislav Zhukov (Koncord) - Overall architecture, networking & scripting systems, player sync, server browser & master server
+    David Cernat - World, NPC & quest sync, player sync improvements, state saving & loading, extensive bug fixes
 
 
 Additional programming
@@ -27,9 +27,11 @@ Community moderators
 --------------------
 
     Michael Fitzmayer (mupf)
+    Nac
     NicholasAH
     Shnatsel
     Snapjaw
+
 
 Art
 ---
@@ -37,17 +39,31 @@ Art
     Texafornian - TES3MP logo
 
 
+Translation
+-----------
+
+    Capostrophic
+    Heinrich
+    MonstraG
+    scorpy
+    Shnatsel
+    urm
+
+
 Super special thanks
 --------------------
 
     Bret Curtis (psi29a)
+    Gabriel Pascu (iGrebla)
+    greetasdf
     Marc Zinnschlag (Zini)
     Mitch (Zaberius)
     scrawl
+    Zaric Zhakaron
 
 
-Special thanks (in alphabetical order)
---------------------------------------
+Special thanks
+--------------
 
     Aesylwinn
     Camul
@@ -56,24 +72,18 @@ Special thanks (in alphabetical order)
     Donovan Ando
     Gluka
     Goodevil
-    greetasdf
     Ignatious
-    iGrebla
     James Wards of Gore Corps LAN Club (www.gorecorps.co.nz)
     Jeremiah
     Lewis Sadlier
     Luc Keating
     Michael Zagar (Zoops)
-    Nac
-    NicholasAH (Jónas Hafthorsson)
     Olaxan
     ppsychrite
     Rhiyo
     Scorcio
-    Shnatsel
     Simon Nemes
     Texafornian
     Zaphida
-    Zaric Zhakaron
     All the developers of OpenMW for creating an amazing open source project
 
