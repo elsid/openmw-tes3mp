@@ -220,7 +220,7 @@ namespace MWMechanics
             Ignore projectiles fired by DedicatedPlayers and DedicatedActors
 
             If fired by LocalPlayers and LocalActors, get the associated LocalAttack and set its type
-            to RANGED
+            to RANGED while also marking it as a hit
         */
         if (mwmp::PlayerList::isDedicatedPlayer(attacker) || mwmp::Main::get().getCellController()->isDedicatedActor(attacker))
             return;
@@ -228,7 +228,10 @@ namespace MWMechanics
         mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
 
         if (localAttack)
+        {
             localAttack->type = mwmp::Attack::RANGED;
+            localAttack->isHit = true;
+        }
         /*
             End of tes3mp addition
         */
@@ -329,7 +332,7 @@ namespace MWMechanics
             appliedEnchantment = applyOnStrikeEnchantment(attacker, victim, projectile, hitPosition, true);
 
             if (localAttack)
-                localAttack->applyProjectileEnchantment = appliedEnchantment;
+                localAttack->applyAmmoEnchantment = appliedEnchantment;
         }
         /*
             End of tes3mp change (minor)

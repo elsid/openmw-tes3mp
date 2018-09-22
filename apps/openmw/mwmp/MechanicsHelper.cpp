@@ -203,11 +203,12 @@ void MechanicsHelper::assignAttackTarget(Attack* attack, const MWWorld::Ptr& tar
 
 void MechanicsHelper::resetAttack(Attack* attack)
 {
+    attack->isHit = false;
     attack->success = false;
     attack->knockdown = false;
     attack->block = false;
     attack->applyWeaponEnchantment = false;
-    attack->applyProjectileEnchantment = false;
+    attack->applyAmmoEnchantment = false;
     attack->hitPosition.pos[0] = attack->hitPosition.pos[1] = attack->hitPosition.pos[2] = 0;
     attack->target.guid = RakNet::RakNetGUID();
     attack->target.refId.clear();
@@ -254,53 +255,85 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             victim = controller->getDedicatedActor(attack.target.refNum, attack.target.mpNum)->getPtr();
     }
 
-    if (attack.type == attack.MELEE || attack.type == attack.RANGED)
+    if (attack.isHit && (attack.type == attack.MELEE || attack.type == attack.RANGED))
     {
         bool isRanged = attack.type == attack.RANGED;
 
-        MWWorld::Ptr weapon;
-        MWWorld::Ptr projectile;
+        MWWorld::Ptr weaponPtr;
+        MWWorld::Ptr ammoPtr;
 
-        // Get the weapon used; if using hand-to-hand, the weapon is equal to inv.end()
+        bool usedTempRangedWeapon = false;
+        bool usedTempRangedAmmo = false;
+
+        // Get the attacker's current weapon
+        //
+        // Note: if using hand-to-hand, the weapon is equal to inv.end()
         if (attacker.getClass().hasInventoryStore(attacker))
         {
             MWWorld::InventoryStore &inventoryStore = attacker.getClass().getInventoryStore(attacker);
             MWWorld::ContainerStoreIterator weaponSlot = inventoryStore.getSlot(
                 MWWorld::InventoryStore::Slot_CarriedRight);
 
-            weapon = weaponSlot != inventoryStore.end() ? *weaponSlot : MWWorld::Ptr();
+            weaponPtr = weaponSlot != inventoryStore.end() ? *weaponSlot : MWWorld::Ptr();
 
+            // Is the currently selected weapon different from the one recorded for this ranged attack?
+            // If so, try to find the correct one in the attacker's inventory and use it here. If it
+            // no longer exists, add it back temporarily.
             if (isRanged)
             {
-                // TODO: Fix for when arrows, bolts and throwing weapons have just run out
-                MWWorld::ContainerStoreIterator projectileSlot = inventoryStore.getSlot(
-                    MWWorld::InventoryStore::Slot_Ammunition);
-                projectile = projectileSlot != inventoryStore.end() ? *projectileSlot : MWWorld::Ptr();
+                if (!weaponPtr || !Misc::StringUtils::ciEqual(weaponPtr.getCellRef().getRefId(), attack.rangedWeaponId))
+                {
+                    weaponPtr = inventoryStore.search(attack.rangedWeaponId);
+
+                    if (!weaponPtr)
+                    {
+                        weaponPtr = *attacker.getClass().getContainerStore(attacker).add(attack.rangedWeaponId, 1, attacker);
+                        usedTempRangedWeapon = true;
+                    }
+                }
+
+                if (!attack.rangedAmmoId.empty())
+                {
+                    MWWorld::ContainerStoreIterator ammoSlot = inventoryStore.getSlot(
+                        MWWorld::InventoryStore::Slot_Ammunition);
+                    ammoPtr = ammoSlot != inventoryStore.end() ? *ammoSlot : MWWorld::Ptr();
+
+                    if (!ammoPtr || !Misc::StringUtils::ciEqual(ammoPtr.getCellRef().getRefId(), attack.rangedAmmoId))
+                    {
+                        ammoPtr = inventoryStore.search(attack.rangedAmmoId);
+
+                        if (!ammoPtr)
+                        {
+                            ammoPtr = *attacker.getClass().getContainerStore(attacker).add(attack.rangedAmmoId, 1, attacker);
+                            usedTempRangedAmmo = true;
+                        }
+                    }
+                }
             }
 
-            if (!weapon.isEmpty() && weapon.getTypeName() != typeid(ESM::Weapon).name())
-                weapon = MWWorld::Ptr();
+            if (!weaponPtr.isEmpty() && weaponPtr.getTypeName() != typeid(ESM::Weapon).name())
+                weaponPtr = MWWorld::Ptr();
         }
 
-        if (!weapon.isEmpty())
+        if (!weaponPtr.isEmpty())
         {
-            LOG_APPEND(Log::LOG_VERBOSE, "- weapon: %s\n- isRanged: %s\n- applyWeaponEnchantment: %s\n- applyProjectileEnchantment: %s",
-                weapon.getCellRef().getRefId().c_str(), isRanged ? "true" : "false", attack.applyWeaponEnchantment ? "true" : "false",
-                attack.applyProjectileEnchantment ? "true" : "false");
+            LOG_APPEND(Log::LOG_VERBOSE, "- weapon: %s\n- isRanged: %s\n- applyWeaponEnchantment: %s\n- applyAmmoEnchantment: %s",
+                weaponPtr.getCellRef().getRefId().c_str(), isRanged ? "true" : "false", attack.applyWeaponEnchantment ? "true" : "false",
+                attack.applyAmmoEnchantment ? "true" : "false");
 
             if (attack.applyWeaponEnchantment)
             {
                 MWMechanics::CastSpell cast(attacker, victim, isRanged);
                 cast.mHitPosition = attack.hitPosition.asVec3();
 
-                cast.cast(weapon, false);
+                cast.cast(weaponPtr, false);
             }
 
-            if (isRanged && !projectile.isEmpty() && attack.applyProjectileEnchantment)
+            if (isRanged && !ammoPtr.isEmpty() && attack.applyAmmoEnchantment)
             {
                 MWMechanics::CastSpell cast(attacker, victim, isRanged);
                 cast.mHitPosition = attack.hitPosition.asVec3();
-                cast.cast(projectile, false);
+                cast.cast(ammoPtr, false);
             }
         }
 
@@ -308,7 +341,7 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
         {
             bool isHealthDamage = true;
 
-            if (weapon.isEmpty())
+            if (weaponPtr.isEmpty())
             {
                 if (attacker.getClass().isBipedal(attacker))
                 {
@@ -318,10 +351,22 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             }
 
             if (!isRanged)
-                MWMechanics::blockMeleeAttack(attacker, victim, weapon, attack.damage, 1);
+                MWMechanics::blockMeleeAttack(attacker, victim, weaponPtr, attack.damage, 1);
 
-            victim.getClass().onHit(victim, attack.damage, isHealthDamage, weapon, attacker, attack.hitPosition.asVec3(),
+            victim.getClass().onHit(victim, attack.damage, isHealthDamage, weaponPtr, attacker, attack.hitPosition.asVec3(),
                 attack.success);
+        }
+
+        // Remove temporary items that may have been added above for ranged attacks
+        if (isRanged && attacker.getClass().hasInventoryStore(attacker))
+        {
+            MWWorld::InventoryStore &inventoryStore = attacker.getClass().getInventoryStore(attacker);
+
+            if (usedTempRangedWeapon)
+                inventoryStore.remove(weaponPtr, 1, attacker);
+            
+            if (usedTempRangedAmmo)
+                inventoryStore.remove(ammoPtr, 1, attacker);
         }
     }
     else if (attack.type == attack.MAGIC)
