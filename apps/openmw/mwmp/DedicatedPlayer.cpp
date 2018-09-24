@@ -309,30 +309,32 @@ void DedicatedPlayer::setEquipment()
     {
         MWWorld::ContainerStoreIterator it = invStore.getSlot(slot);
 
-        const string &dedicItem = equipmentItems[slot].refId;
-        std::string item = "";
+        const string &packetItemId = equipmentItems[slot].refId;
+        std::string ptrItemId = "";
         bool equal = false;
+
         if (it != invStore.end())
         {
-            item = it->getCellRef().getRefId();
-            if (!Misc::StringUtils::ciEqual(item, dedicItem)) // if other item equiped
+            ptrItemId = it->getCellRef().getRefId();
+
+            if (!Misc::StringUtils::ciEqual(ptrItemId, packetItemId)) // if other item is now equipped
             {
                 MWWorld::ContainerStore &store = ptr.getClass().getContainerStore(ptr);
-                store.remove(item, store.count(item), ptr);
+                store.remove(ptrItemId, store.count(ptrItemId), ptr);
             }
             else
                 equal = true;
         }
 
-        if (dedicItem.empty() || equal)
+        if (packetItemId.empty() || equal)
             continue;
 
         const int count = equipmentItems[slot].count;
-        ptr.getClass().getContainerStore(ptr).add(dedicItem, count, ptr);
+        ptr.getClass().getContainerStore(ptr).add(packetItemId, count, ptr);
 
         for (const auto &itemPtr : invStore)
         {
-            if (::Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), dedicItem)) // equip item
+            if (::Misc::StringUtils::ciEqual(itemPtr.getCellRef().getRefId(), packetItemId)) // equip item
             {
                 std::shared_ptr<MWWorld::Action> action = itemPtr.getClass().use(itemPtr);
                 action->execute(ptr);
