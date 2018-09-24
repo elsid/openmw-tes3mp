@@ -44,7 +44,11 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
             RW(player->attack.isHit, send);
 
             if (player->attack.type == mwmp::Attack::RANGED)
+            {
                 RW(player->attack.attackStrength, send);
+                RW(player->attack.rangedWeaponId, send);
+                RW(player->attack.rangedAmmoId, send);
+            }
 
             if (player->attack.isHit)
             {
@@ -54,11 +58,7 @@ void PacketPlayerAttack::Packet(RakNet::BitStream *bs, bool send)
                 RW(player->attack.applyWeaponEnchantment, send);
 
                 if (player->attack.type == mwmp::Attack::RANGED)
-                {
                     RW(player->attack.applyAmmoEnchantment, send);
-                    RW(player->attack.rangedWeaponId, send);
-                    RW(player->attack.rangedAmmoId, send);
-                }
 
                 RW(player->attack.hitPosition.pos[0], send);
                 RW(player->attack.hitPosition.pos[1], send);

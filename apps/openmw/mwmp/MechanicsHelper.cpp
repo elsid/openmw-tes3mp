@@ -325,7 +325,6 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             {
                 MWMechanics::CastSpell cast(attacker, victim, isRanged);
                 cast.mHitPosition = attack.hitPosition.asVec3();
-
                 cast.cast(weaponPtr, false);
             }
 

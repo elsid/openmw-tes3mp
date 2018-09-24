@@ -43,7 +43,11 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
             RW(actor.attack.isHit, send);
 
             if (actor.attack.type == mwmp::Attack::RANGED)
+            {
                 RW(actor.attack.attackStrength, send);
+                RW(actor.attack.rangedWeaponId, send);
+                RW(actor.attack.rangedAmmoId, send);
+            }
 
             if (actor.attack.isHit)
             {
@@ -53,11 +57,7 @@ void PacketActorAttack::Actor(BaseActor &actor, bool send)
                 RW(actor.attack.applyWeaponEnchantment, send);
 
                 if (actor.attack.type == mwmp::Attack::RANGED)
-                {
                     RW(actor.attack.applyAmmoEnchantment, send);
-                    RW(actor.attack.rangedWeaponId, send);
-                    RW(actor.attack.rangedAmmoId, send);
-                }
 
                 RW(actor.attack.hitPosition.pos[0], send);
                 RW(actor.attack.hitPosition.pos[1], send);

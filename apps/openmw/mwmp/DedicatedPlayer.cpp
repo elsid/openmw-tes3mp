@@ -320,7 +320,21 @@ void DedicatedPlayer::setEquipment()
             if (!Misc::StringUtils::ciEqual(ptrItemId, packetItemId)) // if other item is now equipped
             {
                 MWWorld::ContainerStore &store = ptr.getClass().getContainerStore(ptr);
-                store.remove(ptrItemId, store.count(ptrItemId), ptr);
+
+                // Remove the items that are no longer equipped, except for throwing weapons and ranged weapon ammo that
+                // have just run out but still need to be kept briefly so they can be used in attacks about to be released
+                bool shouldRemove = true;
+
+                if (attack.type == mwmp::Attack::RANGED && packetItemId.empty() && !attack.pressed)
+                {
+                    if (slot == MWWorld::InventoryStore::Slot_CarriedRight && Misc::StringUtils::ciEqual(ptrItemId, attack.rangedWeaponId))
+                        shouldRemove = false;
+                    else if (slot == MWWorld::InventoryStore::Slot_Ammunition && Misc::StringUtils::ciEqual(ptrItemId, attack.rangedAmmoId))
+                        shouldRemove = false;
+                }
+                
+                if (shouldRemove)
+                    store.remove(ptrItemId, store.count(ptrItemId), ptr);
             }
             else
                 equal = true;
