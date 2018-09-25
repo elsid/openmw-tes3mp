@@ -5,8 +5,8 @@
 * Synchronization of weather
 * Synchronization of world map exploration
 * Synchronization of spells cast through items
-* Synchronization of "cast on strike" enchantments
 * Synchronization of player reputations
+* Reworked attack synchronization now accounts for "cast on strike" enchantments, knockdowns and projectile speeds
 * Reworked container synchronization that relies on server approval of every container change
 * Reworked object synchronization that relies on server approval of every action on objects and tracks whether actions originated from regular gameplay, the console or from ingame scripts
 * Reworked time synchronization that preserves ingame date and does not allow for any unilateral clientside time changes
