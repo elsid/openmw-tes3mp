@@ -8,11 +8,12 @@
     {"GetInventoryChangesSize",               ItemFunctions::GetInventoryChangesSize},\
     {"GetInventoryChangesAction",             ItemFunctions::GetInventoryChangesAction},\
     \
+    {"SetInventoryChangesAction",             ItemFunctions::SetInventoryChangesAction},\
+    \
     {"EquipItem",                             ItemFunctions::EquipItem},\
     {"UnequipItem",                           ItemFunctions::UnequipItem},\
     \
-    {"AddItem",                               ItemFunctions::AddItem},\
-    {"RemoveItem",                            ItemFunctions::RemoveItem},\
+    {"AddItemChange",                         ItemFunctions::AddItemChange},\
     \
     {"HasItemEquipped",                       ItemFunctions::HasItemEquipped},\
     \
@@ -35,7 +36,9 @@
     \
     {"SendEquipment",                         ItemFunctions::SendEquipment},\
     {"SendInventoryChanges",                  ItemFunctions::SendInventoryChanges},\
-    {"SendItemUse",                           ItemFunctions::SendItemUse}
+    {"SendItemUse",                           ItemFunctions::SendItemUse},\
+    \
+    {"AddItem",                               ItemFunctions::AddItem}
 
 class ItemFunctions
 {
@@ -77,6 +80,15 @@ public:
     static unsigned int GetInventoryChangesAction(unsigned short pid) noexcept;
 
     /**
+    * \brief Set the action type in a player's inventory changes.
+    *
+    * \param pid The player ID whose inventory changes should be used.
+    * \param action The action (0 for SET, 1 for ADD, 2 for REMOVE).
+    * \return void
+    */
+    static void SetInventoryChangesAction(unsigned short pid, unsigned char action) noexcept;
+
+    /**
     * \brief Equip an item in a certain slot of the equipment of a player.
     *
     * \param pid The player ID.
@@ -87,7 +99,8 @@ public:
     * \param enchantmentCharge The enchantment charge of the item.
     * \return void
     */
-    static void EquipItem(unsigned short pid, unsigned short slot, const char* refId, unsigned int count, int charge, double enchantmentCharge = -1) noexcept;
+    static void EquipItem(unsigned short pid, unsigned short slot, const char* refId, unsigned int count, int charge,
+        double enchantmentCharge = -1) noexcept;
     
     /**
     * \brief Unequip the item in a certain slot of the equipment of a player.
@@ -99,9 +112,7 @@ public:
     static void UnequipItem(unsigned short pid, unsigned short slot) noexcept;
 
     /**
-    * \brief Add an item to a player's inventory.
-    *
-    * Note: This will set the ADD action for all of the player's current inventory changes.
+    * \brief Add an item change to a player's inventory changes.
     *
     * \param pid The player ID.
     * \param refId The refId of the item.
@@ -111,20 +122,8 @@ public:
     * \param soul The soul of the item.
     * \return void
     */
-    static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
+    static void AddItemChange(unsigned short pid, const char* refId, unsigned int count, int charge,
         double enchantmentCharge, const char* soul) noexcept;
-
-    /**
-    * \brief Remove an item from a player's inventory.
-    *
-    * Note: This will set the REMOVE action for all of the player's current inventory changes.
-    *
-    * \param pid The player ID.
-    * \param refId The refId of the item.
-    * \param count The count of the item.
-    * \return void
-    */
-    static void RemoveItem(unsigned short pid, const char* refId, unsigned short count) noexcept;
 
     /**
     * \brief Check whether a player has equipped an item with a certain refId in any slot.
@@ -291,6 +290,11 @@ public:
     * \return void
     */
     static void SendItemUse(unsigned short pid) noexcept;
+
+    // All methods below are deprecated versions of methods from above
+
+    static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
+        double enchantmentCharge, const char* soul) noexcept;
 
 private:
 

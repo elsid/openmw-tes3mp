@@ -15,7 +15,6 @@ void ItemFunctions::InitializeInventoryChanges(unsigned short pid) noexcept
     GET_PLAYER(pid, player, );
 
     player->inventoryChanges.items.clear();
-    player->inventoryChanges.action = InventoryChanges::SET;
 }
 
 int ItemFunctions::GetEquipmentSize() noexcept
@@ -37,6 +36,14 @@ unsigned int ItemFunctions::GetInventoryChangesAction(unsigned short pid) noexce
     GET_PLAYER(pid, player, 0);
 
     return player->inventoryChanges.action;
+}
+
+void ItemFunctions::SetInventoryChangesAction(unsigned short pid, unsigned char action) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    player->inventoryChanges.action = action;
 }
 
 void ItemFunctions::EquipItem(unsigned short pid, unsigned short slot, const char *refId, unsigned int count,
@@ -62,7 +69,7 @@ void ItemFunctions::UnequipItem(unsigned short pid, unsigned short slot) noexcep
     ItemFunctions::EquipItem(pid, slot, "", 0, -1, -1);
 }
 
-void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
+void ItemFunctions::AddItemChange(unsigned short pid, const char* refId, unsigned int count, int charge,
     double enchantmentCharge, const char* soul) noexcept
 {
     Player *player;
@@ -76,20 +83,6 @@ void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int 
     item.soul = soul;
 
     player->inventoryChanges.items.push_back(item);
-    player->inventoryChanges.action = InventoryChanges::ADD;
-}
-
-void ItemFunctions::RemoveItem(unsigned short pid, const char* refId, unsigned short count) noexcept
-{
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    Item item;
-    item.refId = refId;
-    item.count = count;
-
-    player->inventoryChanges.items.push_back(item);
-    player->inventoryChanges.action = InventoryChanges::REMOVE;
 }
 
 bool ItemFunctions::HasItemEquipped(unsigned short pid, const char* refId)
@@ -258,4 +251,12 @@ void ItemFunctions::SendItemUse(unsigned short pid) noexcept
     packet->setPlayer(player);
 
     packet->Send(false);
+}
+
+// All methods below are deprecated versions of methods from above
+
+void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
+    double enchantmentCharge, const char* soul) noexcept
+{
+    AddItemChange(pid, refId, count, charge, enchantmentCharge, soul);
 }
