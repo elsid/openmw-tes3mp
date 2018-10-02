@@ -1,7 +1,3 @@
-//
-// Created by koncord on 30.08.16.
-//
-
 #ifndef OPENMW_GUIAPI_HPP
 #define OPENMW_GUIAPI_HPP
 
@@ -12,7 +8,7 @@
     {"PasswordDialog",             GUIFunctions::PasswordDialog},\
     {"ListBox",                    GUIFunctions::ListBox},\
     \
-    {"InitializeQuickKeyChanges",  GUIFunctions::InitializeQuickKeyChanges},\
+    {"ClearQuickKeyChanges",       GUIFunctions::ClearQuickKeyChanges},\
     \
     {"GetQuickKeyChangesSize",     GUIFunctions::GetQuickKeyChangesSize},\
     \
@@ -25,7 +21,9 @@
     {"SendQuickKeyChanges",        GUIFunctions::SendQuickKeyChanges},\
     \
     {"SetMapVisibility",           GUIFunctions::SetMapVisibility},\
-    {"SetMapVisibilityAll",        GUIFunctions::SetMapVisibilityAll}
+    {"SetMapVisibilityAll",        GUIFunctions::SetMapVisibilityAll},\
+    \
+    {"InitializeQuickKeyChanges",  GUIFunctions::InitializeQuickKeyChanges}
 
 class GUIFunctions
 {
@@ -103,7 +101,7 @@ public:
     * \param pid The player ID whose quick key changes should be used.
     * \return void
     */
-    static void InitializeQuickKeyChanges(unsigned short pid) noexcept;
+    static void ClearQuickKeyChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest quick key changes.
@@ -183,6 +181,11 @@ public:
     * \return void
     */
     static void SetMapVisibilityAll(unsigned short targetPid, unsigned short state) noexcept;
+
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeQuickKeyChanges(unsigned short pid) noexcept;
+
 };
 
 #endif //OPENMW_GUIAPI_HPP

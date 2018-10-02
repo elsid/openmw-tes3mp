@@ -2,7 +2,7 @@
 #define OPENMW_FACTIONAPI_HPP
 
 #define FACTIONAPI \
-    {"InitializeFactionChanges", FactionFunctions::InitializeFactionChanges},\
+    {"ClearFactionChanges",      FactionFunctions::ClearFactionChanges},\
     \
     {"GetFactionChangesSize",    FactionFunctions::GetFactionChangesSize},\
     {"GetFactionChangesAction",  FactionFunctions::GetFactionChangesAction},\
@@ -20,7 +20,9 @@
     \
     {"AddFaction",               FactionFunctions::AddFaction},\
     \
-    {"SendFactionChanges",       FactionFunctions::SendFactionChanges}
+    {"SendFactionChanges",       FactionFunctions::SendFactionChanges},\
+    \
+    {"InitializeFactionChanges", FactionFunctions::InitializeFactionChanges}
 
 class FactionFunctions
 {
@@ -34,7 +36,7 @@ public:
     * \param pid The player ID whose faction changes should be used.
     * \return void
     */
-    static void InitializeFactionChanges(unsigned short pid) noexcept;
+    static void ClearFactionChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest faction changes.
@@ -151,7 +153,10 @@ public:
     * \return void
     */
     static void SendFactionChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
-private:
+
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeFactionChanges(unsigned short pid) noexcept;
 
 };
 

@@ -7,12 +7,12 @@
 
 using namespace mwmp;
 
-void BookFunctions::InitializeBookChanges(unsigned short pid) noexcept
+void BookFunctions::ClearBookChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
 
-    return player->bookChanges.books.clear();
+    player->bookChanges.books.clear();
 }
 
 unsigned int BookFunctions::GetBookChangesSize(unsigned short pid) noexcept
@@ -58,4 +58,11 @@ void BookFunctions::SendBookChanges(unsigned short pid, bool sendToOtherPlayers,
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+// All methods below are deprecated versions of methods from above
+
+void BookFunctions::InitializeBookChanges(unsigned short pid) noexcept
+{
+    ClearBookChanges(pid);
 }

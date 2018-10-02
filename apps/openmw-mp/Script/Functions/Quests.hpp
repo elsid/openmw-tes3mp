@@ -2,8 +2,8 @@
 #define OPENMW_QUESTAPI_HPP
 
 #define QUESTAPI \
-    {"InitializeJournalChanges",          QuestFunctions::InitializeJournalChanges},\
-    {"InitializeKillChanges",             QuestFunctions::InitializeKillChanges},\
+    {"ClearJournalChanges",               QuestFunctions::ClearJournalChanges},\
+    {"ClearKillChanges",                  QuestFunctions::ClearKillChanges},\
     \
     {"GetJournalChangesSize",             QuestFunctions::GetJournalChangesSize},\
     {"GetKillChangesSize",                QuestFunctions::GetKillChangesSize},\
@@ -26,7 +26,10 @@
     \
     {"SendJournalChanges",                QuestFunctions::SendJournalChanges},\
     {"SendKillChanges",                   QuestFunctions::SendKillChanges},\
-    {"SendReputation",                    QuestFunctions::SendReputation}
+    {"SendReputation",                    QuestFunctions::SendReputation},\
+    \
+    {"InitializeJournalChanges",          QuestFunctions::InitializeJournalChanges},\
+    {"InitializeKillChanges",             QuestFunctions::InitializeKillChanges}
 
 class QuestFunctions
 {
@@ -40,7 +43,7 @@ public:
     * \param pid The player ID whose journal changes should be used.
     * \return void
     */
-    static void InitializeJournalChanges(unsigned short pid) noexcept;
+    static void ClearJournalChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Clear the last recorded kill count changes for a player.
@@ -50,7 +53,7 @@ public:
     * \param pid The player ID whose kill count changes should be used.
     * \return void
     */
-    static void InitializeKillChanges(unsigned short pid) noexcept;
+    static void ClearKillChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest journal changes.
@@ -224,6 +227,11 @@ public:
     * \return void
     */
     static void SendReputation(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeJournalChanges(unsigned short pid) noexcept;
+    static void InitializeKillChanges(unsigned short pid) noexcept;
 
 private:
 

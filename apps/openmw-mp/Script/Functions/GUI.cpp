@@ -1,7 +1,3 @@
-//
-// Created by koncord on 23.07.16.
-//
-
 #include "GUI.hpp"
 
 #include <components/openmw-mp/NetworkMessages.hpp>
@@ -88,7 +84,7 @@ void GUIFunctions::ListBox(unsigned short pid, int id, const char *label, const 
     packet->Send(false);
 }
 
-void GUIFunctions::InitializeQuickKeyChanges(unsigned short pid) noexcept
+void GUIFunctions::ClearQuickKeyChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -167,4 +163,11 @@ void GUIFunctions::SetMapVisibility(unsigned short targetPid, unsigned short aff
 void GUIFunctions::SetMapVisibilityAll(unsigned short targetPid, unsigned short state) noexcept
 {
     LOG_MESSAGE(Log::LOG_WARN, "stub");
+}
+
+// All methods below are deprecated versions of methods from above
+
+void GUIFunctions::InitializeQuickKeyChanges(unsigned short pid) noexcept
+{
+    ClearQuickKeyChanges(pid);
 }

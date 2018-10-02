@@ -11,7 +11,7 @@ using namespace mwmp;
 Faction tempFaction;
 const Faction emptyFaction = {};
 
-void FactionFunctions::InitializeFactionChanges(unsigned short pid) noexcept
+void FactionFunctions::ClearFactionChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -120,4 +120,11 @@ void FactionFunctions::SendFactionChanges(unsigned short pid, bool sendToOtherPl
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+// All methods below are deprecated versions of methods from above
+
+void FactionFunctions::InitializeFactionChanges(unsigned short pid) noexcept
+{
+    ClearFactionChanges(pid);
 }

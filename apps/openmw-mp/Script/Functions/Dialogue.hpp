@@ -2,7 +2,7 @@
 #define OPENMW_DIALOGUEAPI_HPP
 
 #define DIALOGUEAPI \
-    {"InitializeTopicChanges",  DialogueFunctions::InitializeTopicChanges},\
+    {"ClearTopicChanges",       DialogueFunctions::ClearTopicChanges},\
     \
     {"GetTopicChangesSize",     DialogueFunctions::GetTopicChangesSize},\
     \
@@ -13,7 +13,9 @@
     {"SendTopicChanges",        DialogueFunctions::SendTopicChanges},\
     \
     {"PlayAnimation",           DialogueFunctions::PlayAnimation},\
-    {"PlaySpeech",              DialogueFunctions::PlaySpeech}
+    {"PlaySpeech",              DialogueFunctions::PlaySpeech},\
+    \
+    {"InitializeTopicChanges",  DialogueFunctions::InitializeTopicChanges}
 
 class DialogueFunctions
 {
@@ -27,7 +29,7 @@ public:
     * \param pid The player ID whose topic changes should be used.
     * \return void
     */
-    static void InitializeTopicChanges(unsigned short pid) noexcept;
+    static void ClearTopicChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest topic changes.
@@ -90,7 +92,9 @@ public:
     */
     static void PlaySpeech(unsigned short pid, const char* sound) noexcept;
 
-private:
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeTopicChanges(unsigned short pid) noexcept;
 
 };
 

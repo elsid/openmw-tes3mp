@@ -2,7 +2,7 @@
 #define OPENMW_ITEMAPI_HPP
 
 #define ITEMAPI \
-    {"InitializeInventoryChanges",            ItemFunctions::InitializeInventoryChanges},\
+    {"ClearInventoryChanges",                 ItemFunctions::ClearInventoryChanges},\
     \
     {"GetEquipmentSize",                      ItemFunctions::GetEquipmentSize},\
     {"GetInventoryChangesSize",               ItemFunctions::GetInventoryChangesSize},\
@@ -38,6 +38,7 @@
     {"SendInventoryChanges",                  ItemFunctions::SendInventoryChanges},\
     {"SendItemUse",                           ItemFunctions::SendItemUse},\
     \
+    {"InitializeInventoryChanges",            ItemFunctions::InitializeInventoryChanges},\
     {"AddItem",                               ItemFunctions::AddItem}
 
 class ItemFunctions
@@ -52,7 +53,7 @@ public:
     * \param pid The player ID whose inventory changes should be used.
     * \return void
     */
-    static void InitializeInventoryChanges(unsigned short pid) noexcept;
+    static void ClearInventoryChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of slots used for equipment.
@@ -292,6 +293,8 @@ public:
     static void SendItemUse(unsigned short pid) noexcept;
 
     // All methods below are deprecated versions of methods from above
+
+    static void InitializeInventoryChanges(unsigned short pid) noexcept;
 
     static void AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
         double enchantmentCharge, const char* soul) noexcept;

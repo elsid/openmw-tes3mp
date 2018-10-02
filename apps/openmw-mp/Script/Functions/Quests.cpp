@@ -8,7 +8,7 @@
 
 using namespace mwmp;
 
-void QuestFunctions::InitializeJournalChanges(unsigned short pid) noexcept
+void QuestFunctions::ClearJournalChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -16,7 +16,7 @@ void QuestFunctions::InitializeJournalChanges(unsigned short pid) noexcept
     player->journalChanges.journalItems.clear();
 }
 
-void QuestFunctions::InitializeKillChanges(unsigned short pid) noexcept
+void QuestFunctions::ClearKillChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -210,4 +210,16 @@ void QuestFunctions::SendReputation(unsigned short pid, bool sendToOtherPlayers,
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+// All methods below are deprecated versions of methods from above
+
+void QuestFunctions::InitializeJournalChanges(unsigned short pid) noexcept
+{
+    ClearJournalChanges(pid);
+}
+
+void QuestFunctions::InitializeKillChanges(unsigned short pid) noexcept
+{
+    ClearKillChanges(pid);
 }

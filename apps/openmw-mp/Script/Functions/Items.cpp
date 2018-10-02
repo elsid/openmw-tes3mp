@@ -9,7 +9,7 @@
 
 using namespace mwmp;
 
-void ItemFunctions::InitializeInventoryChanges(unsigned short pid) noexcept
+void ItemFunctions::ClearInventoryChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -254,6 +254,11 @@ void ItemFunctions::SendItemUse(unsigned short pid) noexcept
 }
 
 // All methods below are deprecated versions of methods from above
+
+void ItemFunctions::InitializeInventoryChanges(unsigned short pid) noexcept
+{
+    ClearInventoryChanges(pid);
+}
 
 void ItemFunctions::AddItem(unsigned short pid, const char* refId, unsigned int count, int charge,
     double enchantmentCharge, const char* soul) noexcept

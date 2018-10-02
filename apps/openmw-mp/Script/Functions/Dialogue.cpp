@@ -7,7 +7,7 @@
 
 using namespace mwmp;
 
-void DialogueFunctions::InitializeTopicChanges(unsigned short pid) noexcept
+void DialogueFunctions::ClearTopicChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -88,4 +88,11 @@ void DialogueFunctions::PlaySpeech(unsigned short pid, const char* sound) noexce
 
     packet->Send(false);
     player->sendToLoaded(packet);
+}
+
+// All methods below are deprecated versions of methods from above
+
+void DialogueFunctions::InitializeTopicChanges(unsigned short pid) noexcept
+{
+    ClearTopicChanges(pid);
 }

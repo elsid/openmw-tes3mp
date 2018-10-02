@@ -2,7 +2,7 @@
 #define OPENMW_SPELLAPI_HPP
 
 #define SPELLAPI \
-    {"InitializeSpellbookChanges", SpellFunctions::InitializeSpellbookChanges},\
+    {"ClearSpellbookChanges",      SpellFunctions::ClearSpellbookChanges},\
     \
     {"GetSpellbookChangesSize",    SpellFunctions::GetSpellbookChangesSize},\
     {"GetSpellbookChangesAction",  SpellFunctions::GetSpellbookChangesAction},\
@@ -12,7 +12,9 @@
     \
     {"GetSpellId",                 SpellFunctions::GetSpellId},\
     \
-    {"SendSpellbookChanges",       SpellFunctions::SendSpellbookChanges}
+    {"SendSpellbookChanges",       SpellFunctions::SendSpellbookChanges},\
+    \
+    {"InitializeSpellbookChanges", SpellFunctions::InitializeSpellbookChanges}
 
 class SpellFunctions
 {
@@ -26,7 +28,7 @@ public:
     * \param pid The player ID whose spellbook changes should be used.
     * \return void
     */
-    static void InitializeSpellbookChanges(unsigned short pid) noexcept;
+    static void ClearSpellbookChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest spellbook changes.
@@ -82,6 +84,10 @@ public:
     * \return void
     */
     static void SendSpellbookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeSpellbookChanges(unsigned short pid) noexcept;
 
 private:
 

@@ -8,7 +8,7 @@
 
 using namespace mwmp;
 
-void SpellFunctions::InitializeSpellbookChanges(unsigned short pid) noexcept
+void SpellFunctions::ClearSpellbookChanges(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player, );
@@ -74,4 +74,11 @@ void SpellFunctions::SendSpellbookChanges(unsigned short pid, bool sendToOtherPl
         packet->Send(false);
     if (sendToOtherPlayers)
         packet->Send(true);
+}
+
+// All methods below are deprecated versions of methods from above
+
+void SpellFunctions::InitializeSpellbookChanges(unsigned short pid) noexcept
+{
+    ClearSpellbookChanges(pid);
 }

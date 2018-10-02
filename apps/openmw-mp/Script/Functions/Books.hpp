@@ -2,7 +2,7 @@
 #define OPENMW_BOOKAPI_HPP
 
 #define BOOKAPI \
-    {"InitializeBookChanges",  BookFunctions::InitializeBookChanges},\
+    {"ClearBookChanges",       BookFunctions::ClearBookChanges},\
     \
     {"GetBookChangesSize",     BookFunctions::GetBookChangesSize},\
     \
@@ -10,7 +10,9 @@
     \
     {"GetBookId",              BookFunctions::GetBookId},\
     \
-    {"SendBookChanges",        BookFunctions::SendBookChanges}
+    {"SendBookChanges",        BookFunctions::SendBookChanges},\
+    \
+    {"InitializeBookChanges",  BookFunctions::InitializeBookChanges}
 
 class BookFunctions
 {
@@ -24,7 +26,7 @@ public:
     * \param pid The player ID whose book changes should be used.
     * \return void
     */
-    static void InitializeBookChanges(unsigned short pid) noexcept;
+    static void ClearBookChanges(unsigned short pid) noexcept;
 
     /**
     * \brief Get the number of indexes in a player's latest book changes.
@@ -64,7 +66,9 @@ public:
     */
     static void SendBookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
-private:
+    // All methods below are deprecated versions of methods from above
+
+    static void InitializeBookChanges(unsigned short pid) noexcept;
 
 };
 
