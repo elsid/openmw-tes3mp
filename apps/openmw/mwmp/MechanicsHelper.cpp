@@ -83,7 +83,7 @@ bool MechanicsHelper::isUsingRangedWeapon(const MWWorld::Ptr& ptr)
         MWWorld::ContainerStoreIterator weaponSlot = inventoryStore.getSlot(
             MWWorld::InventoryStore::Slot_CarriedRight);
 
-        if (weaponSlot != inventoryStore.end())
+        if (weaponSlot != inventoryStore.end() && weaponSlot->getTypeName() == typeid(ESM::Weapon).name())
         {
             const ESM::Weapon* weaponRecord = weaponSlot->get<ESM::Weapon>()->mBase;
 
