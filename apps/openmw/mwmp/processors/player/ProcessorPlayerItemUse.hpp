@@ -28,12 +28,9 @@ namespace mwmp
 
             if (!isRequest())
             {
-                // Due to a bug on Linux w/ vsnprintf, we have to append soul as string here instead
-                std::string msgStr = "- refId: %s, count: %i, charge: %f, enchantmentCharge: %f, soul: " + player->usedItem.soul;
-                LOG_APPEND(Log::LOG_INFO, msgStr.c_str(),
+                LOG_APPEND(Log::LOG_INFO, "- refId: %s, count: %i, charge: %i, enchantmentCharge: %f, soul: %s",
                     player->usedItem.refId.c_str(), player->usedItem.count, player->usedItem.charge,
-                    player->usedItem.enchantmentCharge);
-
+                    player->usedItem.enchantmentCharge, player->usedItem.soul.c_str());
 
                 MWWorld::Ptr playerPtr = MWBase::Environment::get().getWorld()->getPlayerPtr();
                 MWWorld::InventoryStore &inventoryStore = playerPtr.getClass().getInventoryStore(playerPtr);
