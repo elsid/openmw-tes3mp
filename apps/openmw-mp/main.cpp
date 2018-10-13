@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
             case RakNet::SOCKET_FAILED_TO_BIND:
             case RakNet::SOCKET_PORT_ALREADY_IN_USE:
             case RakNet::PORT_CANNOT_BE_ZERO:
-                throw runtime_error("Failed to bind port");
+                throw runtime_error("Failed to bind port. Make sure a server isn't already running on that port.");
             case RakNet::SOCKET_FAILED_TEST_SEND:
             case RakNet::SOCKET_FAMILY_NOT_SUPPORTED:
             case RakNet::FAILED_TO_CREATE_NETWORK_THREAD:
