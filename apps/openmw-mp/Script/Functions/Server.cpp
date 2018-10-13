@@ -18,6 +18,8 @@ void ServerFunctions::Kick(unsigned short pid) noexcept
 {
     Player *player;
     GET_PLAYER(pid, player,);
+
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Kicking player %s (%i)", player->npc.mName.c_str(), player->getId());
     mwmp::Networking::getPtr()->kickPlayer(player->guid);
 }
 
