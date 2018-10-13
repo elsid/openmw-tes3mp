@@ -45,7 +45,7 @@ using namespace mwmp;
 string listDiscrepancies(PacketPreInit::PluginContainer checksums, PacketPreInit::PluginContainer checksumsResponse)
 {
     std::ostringstream sstr;
-    sstr << "Your plugins or their load order don't match the server's. A full comparison is included in your client console and latest log file. In short, the following discrepancies have been found:\n\n";
+    sstr << "Your plugins or their load order don't match the server's. A full comparison is included in your debug window and latest log file. In short, the following discrepancies have been found:\n\n";
 
     int discrepancyCount = 0;
 
