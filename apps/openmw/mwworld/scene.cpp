@@ -489,9 +489,9 @@ namespace MWWorld
             Start of tes3mp addition
 
             Send an ID_PLAYER_CELL_STATE packet with all cell states stored in LocalPlayer
-            and then clear them, but only if the player has finished character generation
+            and then clear them, but only if the player is logged in on the server
         */
-        if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen())
+        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
         {
             mwmp::Main::get().getLocalPlayer()->sendCellStates();
             mwmp::Main::get().getLocalPlayer()->clearCellStates();
@@ -631,9 +631,9 @@ namespace MWWorld
             Start of tes3mp addition
 
             Send an ID_PLAYER_CELL_STATE packet with all cell states stored in LocalPlayer
-            and then clear them, but only if the player has finished character generation
+            and then clear them, but only if the player is logged in on the server
         */
-        if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen())
+        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
         {
             mwmp::Main::get().getLocalPlayer()->sendCellStates();
             mwmp::Main::get().getLocalPlayer()->clearCellStates();

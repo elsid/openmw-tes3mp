@@ -613,10 +613,10 @@ namespace MWScript
             Start of tes3mp addition
 
             Send an ID_OBJECT_STATE packet whenever an object is enabled, as long as
-            the player has finished character generation and the object wasn't already
+            the player is logged in on the server and the object wasn't already
             enabled previously
         */
-        if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen())
+        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
         {
             if (ref.isInCell() && !ref.getRefData().isEnabled())
             {
@@ -651,10 +651,10 @@ namespace MWScript
             Start of tes3mp addition
 
             Send an ID_OBJECT_STATE packet whenever an object is disabled, as long as
-            the player has finished character generation and the object wasn't already
+            the player is logged in on the server and the object wasn't already
             disabled previously
         */
-        if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen())
+        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
         {
             if (ref.isInCell() && ref.getRefData().isEnabled())
             {

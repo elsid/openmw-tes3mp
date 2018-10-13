@@ -164,10 +164,10 @@ namespace MWGui
             Start of tes3mp addition
 
             Send a PLAYER_QUICKKEYS packet whenever a key is unassigned, but only if the player
-            has finished character generation, so as to avoid doing anything doing startup when all
+            is logged in on the server, so as to avoid doing anything doing at startup when all
             quick keys get unassigned by default
         */
-        if (mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen() && !mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
+        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() && !mwmp::Main::get().getLocalPlayer()->isReceivingQuickKeys)
         {
             mwmp::Main::get().getLocalPlayer()->sendQuickKey(key->index, Type_Unassigned);
         }

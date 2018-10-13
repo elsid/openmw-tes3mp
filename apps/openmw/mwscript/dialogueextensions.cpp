@@ -63,7 +63,7 @@ namespace MWScript
                             Send an ID_PLAYER_JOURNAL packet every time a new journal entry is added
                             through a script
                         */
-                        if (!MWBase::Environment::get().getJournal()->hasEntry(quest, index))
+                        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() && !MWBase::Environment::get().getJournal()->hasEntry(quest, index))
                             mwmp::Main::get().getLocalPlayer()->sendJournalEntry(quest, index, ptr);
                         /*
                             End of tes3mp addition
@@ -99,7 +99,8 @@ namespace MWScript
                         Send an ID_PLAYER_JOURNAL packet every time a journal index is set
                         through a script
                     */
-                    mwmp::Main::get().getLocalPlayer()->sendJournalIndex(quest, index);
+                    if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                        mwmp::Main::get().getLocalPlayer()->sendJournalIndex(quest, index);
                     /*
                         End of tes3mp addition
                     */
@@ -137,7 +138,8 @@ namespace MWScript
                         Send an ID_PLAYER_TOPIC packet every time a new topic is added
                         through a script
                     */
-                    if (MWBase::Environment::get().getDialogueManager()->isNewTopic(Misc::StringUtils::lowerCase(topic)))
+                    if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() &&
+                        MWBase::Environment::get().getDialogueManager()->isNewTopic(Misc::StringUtils::lowerCase(topic)))
                         mwmp::Main::get().getLocalPlayer()->sendTopic(Misc::StringUtils::lowerCase(topic));
                     /*
                         End of tes3mp addition

@@ -9,6 +9,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
+#include "../mwmp/LocalPlayer.hpp"
 #include "../mwmp/ObjectList.hpp"
 #include "../mwmp/ScriptController.hpp"
 /*
@@ -105,11 +106,14 @@ namespace MWScript
                     Send an ID_VIDEO_PLAY packet every time a video is played
                     through a script
                 */
-                mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
-                objectList->reset();
-                objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
-                objectList->addVideoPlay(name, allowSkipping);
-                objectList->sendVideoPlay();
+                if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                {
+                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                    objectList->reset();
+                    objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                    objectList->addVideoPlay(name, allowSkipping);
+                    objectList->sendVideoPlay();
+                }
                 /*
                     End of tes3mp addition
                 */
@@ -216,11 +220,14 @@ namespace MWScript
                         Send an ID_OBJECT_LOCK packet every time an object is locked
                         through a script
                     */
-                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
-                    objectList->reset();
-                    objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
-                    objectList->addObjectLock(ptr, lockLevel);
-                    objectList->sendObjectLock();
+                    if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                    {
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                        objectList->addObjectLock(ptr, lockLevel);
+                        objectList->sendObjectLock();
+                    }
                     /*
                         End of tes3mp addition
                     */
@@ -266,11 +273,14 @@ namespace MWScript
                         Send an ID_OBJECT_LOCK packet every time an object is unlocked
                         through a script
                     */
-                    mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
-                    objectList->reset();
-                    objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
-                    objectList->addObjectLock(ptr, 0);
-                    objectList->sendObjectLock();
+                    if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                    {
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                        objectList->addObjectLock(ptr, 0);
+                        objectList->sendObjectLock();
+                    }
                     /*
                         End of tes3mp addition
                     */
@@ -770,11 +780,14 @@ namespace MWScript
                             Send an ID_OBJECT_DELETE packet every time an object is deleted
                             through a script
                         */
-                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
-                        objectList->reset();
-                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
-                        objectList->addObjectDelete(ptr);
-                        objectList->sendObjectDelete();
+                        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                        {
+                            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                            objectList->reset();
+                            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                            objectList->addObjectDelete(ptr);
+                            objectList->sendObjectDelete();
+                        }
                         /*
                             End of tes3mp addition
                         */

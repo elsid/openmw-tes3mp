@@ -63,8 +63,7 @@ namespace MWScript
 
                         Prevent players from changing their own scale
 
-                        Send an ID_OBJECT_SCALE every time an object's
-                        scale is changed through a script
+                        Send an ID_OBJECT_SCALE every time an object's scale is changed through a script
                     */
                     if (ptr == MWMechanics::getPlayer())
                     {
@@ -599,19 +598,22 @@ namespace MWScript
                             Send an ID_OBJECT_PLACE or ID_OBJECT_SPAWN packet every time an object is placed
                             in the world through a script
                         */
-                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
-                        objectList->reset();
-                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                        {
+                            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                            objectList->reset();
+                            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
 
-                        if (ptr.getClass().isActor())
-                        {
-                            objectList->addObjectSpawn(ptr);
-                            objectList->sendObjectSpawn();
-                        }
-                        else
-                        {
-                            objectList->addObjectPlace(ptr);
-                            objectList->sendObjectPlace();
+                            if (ptr.getClass().isActor())
+                            {
+                                objectList->addObjectSpawn(ptr);
+                                objectList->sendObjectSpawn();
+                            }
+                            else
+                            {
+                                objectList->addObjectPlace(ptr);
+                                objectList->sendObjectPlace();
+                            }
                         }
                         /*
                             End of tes3mp addition

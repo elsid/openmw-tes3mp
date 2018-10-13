@@ -113,7 +113,8 @@ namespace MWScript
                         Send an ID_CONTAINER packet every time an item is added to a Ptr
                         that doesn't belong to a DedicatedPlayer
                     */
-                    else if (!ptr.getClass().isActor() || !mwmp::PlayerList::isDedicatedPlayer(ptr))
+                    else if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() &&
+                        (!ptr.getClass().isActor() || !mwmp::PlayerList::isDedicatedPlayer(ptr)))
                     {
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();
@@ -240,7 +241,8 @@ namespace MWScript
                         Send an ID_CONTAINER packet every time an item is removed from a Ptr
                         that doesn't belong to a DedicatedPlayer
                     */
-                    else if (!ptr.getClass().isActor() || !mwmp::PlayerList::isDedicatedPlayer(ptr))
+                    else if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() &&
+                        (!ptr.getClass().isActor() || !mwmp::PlayerList::isDedicatedPlayer(ptr)))
                     {
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();

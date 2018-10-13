@@ -1070,9 +1070,9 @@ namespace MWInput
         /*
             Start of tes3mp addition
             
-            Ignore attempts to rest if the player has not finished character generation yet
+            Ignore attempts to rest if the player has not logged in on the server yet
         */
-        if (!mwmp::Main::get().getLocalPlayer()->hasFinishedCharGen())
+        if (!mwmp::Main::get().getLocalPlayer()->isLoggedIn())
             return;
         /*
             End of tes3mp addition

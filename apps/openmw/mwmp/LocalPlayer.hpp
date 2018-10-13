@@ -16,6 +16,7 @@ namespace mwmp
         virtual ~LocalPlayer();
 
         time_t deathTime;
+        bool receivedCharacter;
 
         bool isReceivingInventory;
         bool isReceivingQuickKeys;
@@ -25,7 +26,7 @@ namespace mwmp
         void update();
 
         bool processCharGen();
-        bool hasFinishedCharGen();
+        bool isLoggedIn();
 
         void updateStatsDynamic(bool forceUpdate = false);
         void updateAttributes(bool forceUpdate = false);

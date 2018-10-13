@@ -46,6 +46,7 @@ using namespace std;
 LocalPlayer::LocalPlayer()
 {
     deathTime = time(0);
+    receivedCharacter = false;
 
     charGenState.currentStage = 0;
     charGenState.endStage = 1;
@@ -193,9 +194,12 @@ bool LocalPlayer::processCharGen()
     return true;
 }
 
-bool LocalPlayer::hasFinishedCharGen()
+bool LocalPlayer::isLoggedIn()
 {
-    return charGenState.isFinished;
+    if (charGenState.isFinished && (charGenState.endStage > 1 || receivedCharacter))
+        return true;
+
+    return false;
 }
 
 void LocalPlayer::updateStatsDynamic(bool forceUpdate)
@@ -855,6 +859,8 @@ void LocalPlayer::closeInventoryWindows()
 
 void LocalPlayer::setCharacter()
 {
+    receivedCharacter = true;
+
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     // Ignore invalid races
