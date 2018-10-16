@@ -578,7 +578,7 @@ namespace MWMechanics
                 if (localAttack && localAttack->pressed != true)
                 {
                     MechanicsHelper::resetAttack(localAttack);
-                    localAttack->type = distantCombat ? mwmp::Attack::MELEE : mwmp::Attack::RANGED;
+                    localAttack->type = distantCombat ? mwmp::Attack::RANGED : mwmp::Attack::MELEE;
                     localAttack->pressed = true;
                     localAttack->shouldSend = true;
                 }
