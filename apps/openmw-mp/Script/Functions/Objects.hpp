@@ -85,6 +85,8 @@
     {"SetObjectPosition",                     ObjectFunctions::SetObjectPosition},\
     {"SetObjectRotation",                     ObjectFunctions::SetObjectRotation},\
     \
+    {"SetObjectActivatingPid",                ObjectFunctions::SetObjectActivatingPid},\
+    \
     {"SetObjectDoorState",                    ObjectFunctions::SetObjectDoorState},\
     {"SetObjectDoorTeleportState",            ObjectFunctions::SetObjectDoorTeleportState},\
     {"SetObjectDoorDestinationCell",          ObjectFunctions::SetObjectDoorDestinationCell},\
@@ -775,6 +777,15 @@ public:
     * \return void
     */
     static void SetObjectRotation(double x, double y, double z) noexcept;
+
+    /**
+    * \brief Set the player ID of the player activating the temporary object stored on the
+    *        server. Currently only used for ObjectActivate packets.
+    *
+    * \param pid The pid of the player.
+    * \return void
+    */
+    static void SetObjectActivatingPid(unsigned short pid) noexcept;
 
     /**
     * \brief Set the door state of the temporary object stored on the server.

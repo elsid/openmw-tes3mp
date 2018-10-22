@@ -399,6 +399,15 @@ void ObjectFunctions::SetObjectRotation(double x, double y, double z) noexcept
     tempObject.position.rot[2] = z;
 }
 
+void ObjectFunctions::SetObjectActivatingPid(unsigned short pid) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    tempObject.activatingActor.guid = player->guid;
+    tempObject.activatingActor.isPlayer = true;
+}
+
 void ObjectFunctions::SetObjectDoorState(int doorState) noexcept
 {
     tempObject.doorState = doorState;
