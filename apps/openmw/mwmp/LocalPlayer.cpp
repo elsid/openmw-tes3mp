@@ -225,16 +225,16 @@ void LocalPlayer::updateStatsDynamic(bool forceUpdate)
                                     || abs(oldVal.getCurrent() - newVal.getCurrent()) >= limit);
     };
 
-    if (needUpdate(oldHealth, health, 2))
+    if (forceUpdate || needUpdate(oldHealth, health, 2))
         statsDynamicIndexChanges.push_back(0);
 
-    if (needUpdate(oldMagicka, magicka, 4))
+    if (forceUpdate || needUpdate(oldMagicka, magicka, 4))
         statsDynamicIndexChanges.push_back(1);
 
-    if (needUpdate(oldFatigue, fatigue, 4))
+    if (forceUpdate || needUpdate(oldFatigue, fatigue, 4))
         statsDynamicIndexChanges.push_back(2);
 
-    if (statsDynamicIndexChanges.size() > 0 || forceUpdate)
+    if (forceUpdate || statsDynamicIndexChanges.size() > 0)
     {
         oldHealth = health;
         oldMagicka = magicka;
