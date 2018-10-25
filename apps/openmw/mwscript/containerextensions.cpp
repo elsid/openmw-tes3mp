@@ -80,18 +80,24 @@ namespace MWScript
                     /*
                         Start of tes3mp change (major)
 
-                        Disable unilateral item addition on this client and expect the server's reply to our
-                        packet to do it instead, except for changes to player inventories which still require
-                        the PlayerInventory to be reworked
+                        Allow unilateral item removal on this client from client scripts and dialogue (but not console commands)
+                        to prevent infinite loops in certain mods. Otherwise, expect the server's reply to our packet to do the
+                        removal instead, except for changes to player inventories which still require the PlayerInventory to be
+                        reworked.
                     */
-                    // Spawn a messagebox (only for items added to player's inventory and if player is talking to someone)
-                    if (ptr == MWBase::Environment::get().getWorld ()->getPlayerPtr() )
-                    {
-                        MWWorld::Ptr itemPtr = *ptr.getClass().getContainerStore(ptr).add(item, count, ptr);
+                    unsigned char packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+
+                    MWWorld::Ptr itemPtr;
+
+                    if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr() || packetOrigin != mwmp::CLIENT_CONSOLE)
+                        itemPtr = *ptr.getClass().getContainerStore(ptr).add(item, count, ptr);
                     /*
                         End of tes3mp change (major)
                     */
 
+                    // Spawn a messagebox (only for items added to player's inventory and if player is talking to someone)
+                    if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())
+                    {
                         // The two GMST entries below expand to strings informing the player of what, and how many of it has been added to their inventory
                         std::string msgBox;
                         std::string itemName = itemPtr.getClass().getName(itemPtr);
@@ -118,7 +124,7 @@ namespace MWScript
                     {
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();
-                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                        objectList->packetOrigin = packetOrigin;
                         objectList->cell = *ptr.getCell()->getCell();
                         objectList->action = mwmp::BaseObjectList::ADD;
                         objectList->containerSubAction = mwmp::BaseObjectList::NONE;
@@ -203,13 +209,15 @@ namespace MWScript
                     /*
                         Start of tes3mp change (major)
 
-                        Disable unilateral item removal on this client and expect the server's reply to our
-                        packet to do it instead, except for changes to player inventories which still require
-                        the PlayerInventory to be reworked
+                        Allow unilateral item removal on this client from client scripts and dialogue (but not console commands)
+                        to prevent infinite loops in certain mods. Otherwise, expect the server's reply to our packet to do the
+                        removal instead, except for changes to player inventories which still require the PlayerInventory to be
+                        reworked.
                     */
+                    unsigned char packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                     int numRemoved = 0;
                     
-                    if (ptr == MWMechanics::getPlayer())
+                    if (ptr == MWMechanics::getPlayer() || packetOrigin != mwmp::CLIENT_CONSOLE)
                         numRemoved = store.remove(item, count, ptr);
 
                     // Spawn a messagebox (only for items removed from player's inventory)
@@ -246,7 +254,7 @@ namespace MWScript
                     {
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();
-                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+                        objectList->packetOrigin = packetOrigin;
                         objectList->cell = *ptr.getCell()->getCell();
                         objectList->action = mwmp::BaseObjectList::REMOVE;
                         objectList->containerSubAction = mwmp::BaseObjectList::NONE;
