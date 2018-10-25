@@ -70,7 +70,7 @@ namespace MWScript
                         MWBase::Environment::get().getWindowManager()->
                             messageBox("You can't change your own scale in multiplayer. Only the server can.");
                     }
-                    else if (ptr.isInCell() && ptr.getCellRef().getScale() != scale)
+                    else if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() && ptr.isInCell() && ptr.getCellRef().getScale() != scale)
                     {
                         // Ignore attempts to change another player's scale
                         if (mwmp::PlayerList::isDedicatedPlayer(ptr))
