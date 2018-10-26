@@ -470,18 +470,24 @@ namespace MWScript
                     // make sure a spell with this ID actually exists.
                     MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().find (id);
 
-                    ptr.getClass().getCreatureStats (ptr).getSpells().add (id);
-
                     /*
-                        Start of tes3mp addition
+                        Start of tes3mp change (major)
 
-                        Send an ID_PLAYER_SPELLBOOK packet every time a player gains a spell
-                        through a script
+                        Only add the spell if the target doesn't already have it
+
+                        Send an ID_PLAYER_SPELLBOOK packet every time a player gains a spell here
                     */
-                    if (ptr == MWMechanics::getPlayer())
-                        mwmp::Main::get().getLocalPlayer()->sendSpellChange(id, mwmp::SpellbookChanges::ADD);
+                    MWMechanics::Spells &spells = ptr.getClass().getCreatureStats(ptr).getSpells();
+
+                    if (!spells.hasSpell(id))
+                    {
+                        spells.add(id);
+
+                        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn() && ptr == MWMechanics::getPlayer())
+                            mwmp::Main::get().getLocalPlayer()->sendSpellChange(id, mwmp::SpellbookChanges::ADD);
+                    }
                     /*
-                        End of tes3mp addition
+                        End of tes3mp change (major)
                     */
                 }
         };
@@ -498,26 +504,32 @@ namespace MWScript
                     std::string id = runtime.getStringLiteral (runtime[0].mInteger);
                     runtime.pop();
 
-                    ptr.getClass().getCreatureStats (ptr).getSpells().remove (id);
-
-                    MWBase::WindowManager *wm = MWBase::Environment::get().getWindowManager();
-
-                    if (ptr == MWMechanics::getPlayer() &&
-                        id == wm->getSelectedSpell())
-                    {
-                        wm->unsetSelectedSpell();
-                    }
-
                     /*
-                        Start of tes3mp addition
+                        Start of tes3mp change (major)
 
-                        Send an ID_PLAYER_SPELLBOOK packet every time a player loses a spell
-                        through a script
+                        Only remove the spell if the target has it
+
+                        Send an ID_PLAYER_SPELLBOOK packet every time a player loses a spell here
                     */
-                    if (ptr == MWMechanics::getPlayer())
-                        mwmp::Main::get().getLocalPlayer()->sendSpellChange(id, mwmp::SpellbookChanges::REMOVE);
+                    MWMechanics::Spells &spells = ptr.getClass().getCreatureStats(ptr).getSpells();
+
+                    if (spells.hasSpell(id))
+                    {
+                        ptr.getClass().getCreatureStats(ptr).getSpells().remove(id);
+
+                        if (ptr == MWMechanics::getPlayer())
+                        {
+                            MWBase::WindowManager *wm = MWBase::Environment::get().getWindowManager();
+
+                            if (id == wm->getSelectedSpell())
+                                wm->unsetSelectedSpell();
+
+                            if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                                mwmp::Main::get().getLocalPlayer()->sendSpellChange(id, mwmp::SpellbookChanges::REMOVE);
+                        }
+                    }
                     /*
-                        End of tes3mp addition
+                        End of tes3mp change (major)
                     */
                 }
         };
