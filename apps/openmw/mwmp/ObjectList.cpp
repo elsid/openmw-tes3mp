@@ -333,7 +333,7 @@ void ObjectList::placeObjects(MWWorld::CellStore* cellStore)
 
     for (const auto &baseObject : baseObjects)
     {
-        LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s %i-%i, count: %i, charge: %i, enchantmentCharge: %i, soul: %s",
+        LOG_APPEND(Log::LOG_VERBOSE, "- cellRef: %s %i-%i, count: %i, charge: %i, enchantmentCharge: %.2f, soul: %s",
             baseObject.refId.c_str(), baseObject.refNum, baseObject.mpNum, baseObject.count, baseObject.charge,
             baseObject.enchantmentCharge, baseObject.soul.c_str());
 
