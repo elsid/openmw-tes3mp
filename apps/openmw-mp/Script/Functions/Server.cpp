@@ -21,6 +21,7 @@ void ServerFunctions::Kick(unsigned short pid) noexcept
 
     LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Kicking player %s (%i)", player->npc.mName.c_str(), player->getId());
     mwmp::Networking::getPtr()->kickPlayer(player->guid);
+    player->setLoadState(Player::KICKED);
 }
 
 void ServerFunctions::BanAddress(const char *ipAddress) noexcept

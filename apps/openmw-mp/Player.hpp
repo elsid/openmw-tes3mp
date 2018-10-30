@@ -51,7 +51,8 @@ public:
     {
         NOTLOADED=0,
         LOADED,
-        POSTLOADED
+        POSTLOADED,
+        KICKED
     };
     Player(RakNet::RakNetGUID guid);
 
