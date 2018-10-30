@@ -1,12 +1,5 @@
 project(tes3mp-server)
 
-if(UNIX) #temporarily disabled for non-unix
-    if(NOT (${CMAKE_CXX_COMPILER} MATCHES "aarch64" OR ${CMAKE_CXX_COMPILER} MATCHES "arm"))  #temporarily disabled for arm
-    find_package(CallFF REQUIRED)
-    include_directories(${CallFF_INCLUDES})
-    endif(NOT (${CMAKE_CXX_COMPILER} MATCHES "aarch64" OR ${CMAKE_CXX_COMPILER} MATCHES "arm"))
-endif(UNIX)
-
 option(ENABLE_BREAKPAD "Enable Google Breakpad for Crash reporting" OFF)
 
 if(ENABLE_BREAKPAD)
@@ -80,7 +73,6 @@ set(SERVER_HEADER
         Script/ScriptFunctions.hpp Script/API/TimerAPI.hpp Script/API/PublicFnAPI.hpp
         ${LuaScript_Headers}
         ${NativeScript_Headers}
-        ${CallFF_INCLUDES}
 )
 source_group(tes3mp-server FILES ${SERVER} ${SERVER_HEADER})
 
@@ -171,7 +163,6 @@ target_link_libraries(tes3mp-server
     components
     ${LuaJit_LIBRARIES}
     ${Breakpad_Library}
-    ${CallFF_LIBRARY}
 )
 
 if (UNIX)

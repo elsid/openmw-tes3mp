@@ -6,10 +6,6 @@
 #include <stdexcept>
 #include "ScriptFunction.hpp"
 
-#if !defined(_WIN32) && !defined(__ARM_ARCH) // temporarily disabled
-#include <call.hpp>
-#endif
-
 #if defined (ENABLE_LUA)
 #include "LangLua/LangLua.hpp"
 #endif
@@ -72,46 +68,6 @@ boost::any ScriptFunction::Call(const vector<boost::any> &args)
         }
     }
 #endif
-    else
-    {
-#if !defined(_WIN32) && !defined(__ARM_ARCH) // temporarily disabled
-        string::iterator it;
-        vector<boost::any>::const_iterator it2;
-        vector<intptr_t> data;
-        CallArgs callArgs;
-
-        for (it = def.begin(), it2 = args.begin(); it != def.end(); ++it, ++it2)
-        {
-            switch (*it)
-            {
-                case 'i':
-                    callArgs.push_integer(boost::any_cast<unsigned int>(*it2));
-                    break;
-                case 'q':
-                    callArgs.push_integer(boost::any_cast<signed int>(*it2));
-                    break;
-                case 'f':
-                    callArgs.push_double(boost::any_cast<double>(*it2));
-                    break;
-                case 'd':
-                    callArgs.push_double(boost::any_cast<double*>(*it2));
-                    break;
-                case 's':
-                    callArgs.push_stringPtr(boost::any_cast<const char *>(*it2));
-                    break;
-                case 'v':
-                    result = boost::any();
-                    break;
-                default:
-                    throw runtime_error("C++ call: Unknown argument identifier " + *it);
-            }
-        }
-        Func f = reinterpret_cast<Func>(fCpp);
-        result = ::Call(f, callArgs);
-#else
-        throw runtime_error("C++ call: Windows and ARM not supported yet.");
-#endif
-    }
 
     return result;
 }
