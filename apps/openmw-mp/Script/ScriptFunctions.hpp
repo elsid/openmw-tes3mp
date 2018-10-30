@@ -198,7 +198,7 @@ public:
             {"OnActorDeath",             Function<void, unsigned short, const char*>()},
             {"OnActorCellChange",        Function<void, unsigned short, const char*>()},
             {"OnActorTest",              Function<void, unsigned short, const char*>()},
-            {"OnPlayerSendMessage",      Function<bool, unsigned short, const char*>()},
+            {"OnPlayerSendMessage",      Function<void, unsigned short, const char*>()},
             {"OnPlayerEndCharGen",       Function<void, unsigned short>()},
             {"OnGUIAction",              Function<void, unsigned short, int, const char*>()},
             {"OnWorldKillCount",         Function<void, unsigned short>()},
