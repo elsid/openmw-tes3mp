@@ -133,20 +133,65 @@ boost::any LangLua::Call(const char *name, const char *argl, int buf, ...)
 {
     va_list vargs;
     va_start(vargs, buf);
-    std::vector<boost::any> args;
 
-    ScriptFunctions::GetArguments(args, vargs, argl);
+    int n_args = (int)(strlen(argl));
 
-    return Call(name, argl, args);
+    lua_getglobal(lua, name);
+
+    for (int index = 0; index < n_args; index++)
+    {
+        switch (argl[index])
+        {
+            case 'i':
+                luabridge::Stack<unsigned int>::push(lua,va_arg(vargs, unsigned int));
+                break;
+
+            case 'q':
+                luabridge::Stack<signed int>::push(lua,va_arg(vargs, signed int));
+                break;
+
+            case 'l':
+                luabridge::Stack<unsigned long long>::push(lua, va_arg(vargs, unsigned long long));
+                break;
+
+            case 'w':
+                luabridge::Stack<signed long long>::push(lua, va_arg(vargs, signed long long));
+                break;
+
+            case 'f':
+                luabridge::Stack<double>::push(lua, va_arg(vargs, double));
+                break;
+
+            case 'p':
+                luabridge::Stack<void*>::push(lua, va_arg(vargs, void*));
+                break;
+
+            case 's':
+                luabridge::Stack<const char*>::push(lua, va_arg(vargs, const char*));
+                break;
+
+            case 'b':
+                luabridge::Stack<bool>::push(lua, (bool) va_arg(vargs, int));
+                break;
+
+            default:
+                throw runtime_error("C++ call: Unknown argument identifier " + argl[index]);
+        }
+    }
+
+    va_end(vargs);
+
+    luabridge::LuaException::pcall(lua, n_args, 1);
+    return boost::any(luabridge::LuaRef::fromStack(lua, -1));
 }
 
 boost::any LangLua::Call(const char *name, const char *argl, const std::vector<boost::any> &args)
 {
-    int n_args = (int)(strlen(argl)) ;
+    int n_args = (int)(strlen(argl));
 
-    lua_getglobal (lua, name);
+    lua_getglobal(lua, name);
 
-    for (intptr_t index = 0; index < n_args; index++)
+    for (int index = 0; index < n_args; index++)
     {
         switch (argl[index])
         {
@@ -186,6 +231,6 @@ boost::any LangLua::Call(const char *name, const char *argl, const std::vector<b
         }
     }
 
-    luabridge::LuaException::pcall (lua, n_args, 1);
+    luabridge::LuaException::pcall(lua, n_args, 1);
     return boost::any(luabridge::LuaRef::fromStack(lua, -1));
 }
