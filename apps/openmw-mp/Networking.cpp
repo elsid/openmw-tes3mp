@@ -140,11 +140,10 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
     {
         player->setLoadState(Player::LOADED);
 
-        static constexpr unsigned int ident = Script::CallbackIdentity("OnPlayerConnect");
-        Script::CallBackReturn<ident> result = true;
-        Script::Call<ident>(result, Players::getPlayer(packet->guid)->getId());
+        unsigned short pid = Players::getPlayer(packet->guid)->getId();
+        Script::Call<Script::CallbackIdentity("OnPlayerConnect")>(pid);
 
-        if (!result)
+        if (player->getLoadState() == Player::KICKED) // kicked inside in OnPlayerConnect
         {
             playerPacketController->GetPacket(ID_USER_DISCONNECTED)->setPlayer(Players::getPlayer(packet->guid));
             playerPacketController->GetPacket(ID_USER_DISCONNECTED)->Send(false);

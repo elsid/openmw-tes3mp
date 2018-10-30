@@ -153,7 +153,7 @@ public:
             {"OnServerInit",             Function<void>()},
             {"OnServerPostInit",         Function<void>()},
             {"OnServerExit",             Function<void, bool>()},
-            {"OnPlayerConnect",          Function<bool, unsigned short>()},
+            {"OnPlayerConnect",          Function<void, unsigned short>()},
             {"OnPlayerDisconnect",       Function<void, unsigned short>()},
             {"OnPlayerDeath",            Function<void, unsigned short>()},
             {"OnPlayerResurrect",        Function<void, unsigned short>()},
