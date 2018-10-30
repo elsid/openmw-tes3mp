@@ -62,47 +62,10 @@ public:
         return callbacks[N].index == I ? callbacks[N] : CallBackData(I, N + 1);
     }
 
-    template<unsigned int I>
-    using CallBackReturn = typename CharType<CallBackData(I).callback.ret>::type;
-
     template<size_t N>
     static constexpr unsigned int CallbackIdentity(const char(&str)[N])
     {
         return Utils::hash(str);
-    }
-
-
-    template<unsigned int I, bool B = false, typename... Args>
-    static unsigned int Call(CallBackReturn<I>& result, Args&&... args) {
-        constexpr ScriptCallbackData const& data = CallBackData(I);
-        static_assert(data.callback.matches(TypeString<typename std::remove_reference<Args>::type...>::value),
-                      "Wrong number or types of arguments");
-
-        unsigned int count = 0;
-
-        for (auto& script : scripts)
-        {
-            if (!script->callbacks_.count(I))
-                script->callbacks_.emplace(I, script->GetScript<FunctionEllipsis<void>>(data.name));
-
-            auto callback = script->callbacks_[I];
-
-            if (!callback)
-                continue;
-
-            if (script->script_type == SCRIPT_CPP)
-                result = reinterpret_cast<FunctionEllipsis<CallBackReturn<I>>>(callback)(std::forward<Args>(args)...);
-#if defined (ENABLE_LUA)
-            else if (script->script_type == SCRIPT_LUA)
-            {
-                boost::any any = script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);
-                result = static_cast<CallBackReturn<I>>(boost::any_cast<luabridge::LuaRef>(any).cast<CallBackReturn<I>>());
-            }
-#endif
-            ++count;
-        }
-
-        return count;
     }
 
     template<unsigned int I, bool B = false, typename... Args>
@@ -124,7 +87,7 @@ public:
                 continue;
 
             if (script->script_type == SCRIPT_CPP)
-                reinterpret_cast<FunctionEllipsis<CallBackReturn<I>>>(callback)(std::forward<Args>(args)...);
+                (callback)(std::forward<Args>(args)...);
 #if defined (ENABLE_LUA)
             else if (script->script_type == SCRIPT_LUA)
                 script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);
