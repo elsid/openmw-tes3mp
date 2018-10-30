@@ -22,7 +22,8 @@
     {"SetHostname",         ServerFunctions::SetHostname},\
     {"SetServerPassword",   ServerFunctions::SetServerPassword},\
     {"SetRuleString",       ServerFunctions::SetRuleString},\
-    {"SetRuleValue",        ServerFunctions::SetRuleValue}
+    {"SetRuleValue",        ServerFunctions::SetRuleValue},\
+    {"AddPluginHash",       ServerFunctions::AddPluginHash}
 
 class ServerFunctions
 {
@@ -152,6 +153,13 @@ public:
     * \return void
     */
     static void SetRuleValue(const char *key, double value) noexcept;
+
+    /**
+     * \brief Adds plugins to the internal server structure to validate players.
+     * @param pluginName Name with extension of the plugin or master file.
+     * @param hash Hash string
+     */
+    static void AddPluginHash(const char *pluginName, const char *hash) noexcept;
 };
 
 #endif //OPENMW_SERVERAPI_HPP

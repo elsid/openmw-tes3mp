@@ -105,3 +105,30 @@ void ServerFunctions::SetRuleValue(const char *key, double value) noexcept
     if (mc)
         mc->SetRuleValue(key, value);
 }
+
+void ServerFunctions::AddPluginHash(const char *pluginName, const char *hashStr) noexcept
+{
+    auto &samples = mwmp::Networking::getPtr()->getSamples();
+    auto it = std::find_if(samples.begin(), samples.end(), [&pluginName](mwmp::PacketPreInit::PluginPair &item) {
+        return item.first == pluginName;
+    });
+    if (it != samples.end())
+        it->second.push_back((unsigned) std::stoul(hashStr));
+    else
+    {
+        mwmp::PacketPreInit::HashList hashList;
+
+        unsigned hash = 0;
+
+        if (strlen(hashStr) != 0)
+        {
+            hash = (unsigned) std::stoul(hashStr);
+            hashList.push_back(hash);
+        }
+        samples.emplace_back(pluginName, hashList);
+
+        auto mclient = mwmp::Networking::getPtr()->getMasterClient();
+        if (mclient)
+            mclient->PushPlugin({pluginName, hash});
+    }
+}

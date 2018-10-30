@@ -205,7 +205,7 @@ public:
             {"OnWorldMap",               Function<void, unsigned short>()},
             {"OnWorldWeather",           Function<void, unsigned short>() },
             {"OnMpNumIncrement",         Function<void, int>()},
-            {"OnRequestPluginList",      Function<const char *, unsigned int, unsigned int>()}
+            {"OnRequestPluginList",      Function<void>()}
     };
 };
 

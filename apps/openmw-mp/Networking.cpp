@@ -446,32 +446,6 @@ RakNet::SystemAddress Networking::getSystemAddress(RakNet::RakNetGUID guid)
     return peer->GetSystemAddressFromGuid(guid);
 }
 
-PacketPreInit::PluginContainer Networking::getPluginListSample()
-{
-    PacketPreInit::PluginContainer pls;
-    unsigned id = 0;
-    while (true)
-    {
-        unsigned field = 0;
-        auto name = "";
-        Script::Call<Script::CallbackIdentity("OnRequestPluginList")>(name, id, field++);
-        if (strlen(name) == 0)
-            break;
-        PacketPreInit::HashList hashList;
-        while (true)
-        {
-            auto hash = "";
-            Script::Call<Script::CallbackIdentity("OnRequestPluginList")>(hash, id, field++);
-            if (strlen(hash) == 0)
-                break;
-            hashList.push_back((unsigned)stoul(hash));
-        }
-        pls.push_back({name, hashList});
-        id++;
-    }
-    return pls;
-}
-
 void Networking::stopServer(int code)
 {
     running = false;
@@ -595,15 +569,10 @@ void Networking::InitQuery(std::string queryAddr, unsigned short queryPort)
 void Networking::postInit()
 {
     Script::Call<Script::CallbackIdentity("OnServerPostInit")>();
-    samples = getPluginListSample();
-    if (mclient)
-    {
-        for (auto plugin : samples)
-        {
-            if (!plugin.second.empty())
-                mclient->PushPlugin({plugin.first, plugin.second[0]});
-            else
-                mclient->PushPlugin({plugin.first, 0});
-        }
-    }
+    Script::Call<Script::CallbackIdentity("OnRequestPluginList")>();
+}
+
+PacketPreInit::PluginContainer &Networking::getSamples()
+{
+    return samples;
 }

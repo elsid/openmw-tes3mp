@@ -65,9 +65,10 @@ namespace  mwmp
         static Networking *getPtr();
 
         void postInit();
+
+        PacketPreInit::PluginContainer &getSamples();
     private:
         bool preInit(RakNet::Packet *packet, RakNet::BitStream &bsIn);
-        PacketPreInit::PluginContainer getPluginListSample();
         std::string serverPassword;
         static Networking *sThis;
 
