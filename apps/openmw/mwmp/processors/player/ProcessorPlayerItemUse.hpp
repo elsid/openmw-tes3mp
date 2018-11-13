@@ -36,7 +36,11 @@ namespace mwmp
                 MWWorld::InventoryStore &inventoryStore = playerPtr.getClass().getInventoryStore(playerPtr);
 
                 MWWorld::Ptr itemPtr = MechanicsHelper::getItemPtrFromStore(player->usedItem, inventoryStore);
-                MWBase::Environment::get().getWindowManager()->getInventoryWindow()->useItem(itemPtr);
+
+                if (itemPtr)
+                    MWBase::Environment::get().getWindowManager()->getInventoryWindow()->useItem(itemPtr);
+                else
+                    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Cannot use non-existent item %s", player->usedItem.refId.c_str());
             }
         }
     };

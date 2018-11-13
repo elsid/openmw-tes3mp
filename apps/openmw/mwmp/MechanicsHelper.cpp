@@ -452,17 +452,25 @@ void MechanicsHelper::unequipItemsByEffect(const MWWorld::Ptr& ptr, short enchan
 
 MWWorld::Ptr MechanicsHelper::getItemPtrFromStore(const mwmp::Item& item, MWWorld::ContainerStore& store)
 {
+    MWWorld::Ptr closestPtr;
+
     for (MWWorld::ContainerStoreIterator storeIterator = store.begin(); storeIterator != store.end(); ++storeIterator)
     {
+        // Enchantment charges are often in the process of refilling themselves, so don't check for them here
         if (Misc::StringUtils::ciEqual(item.refId, storeIterator->getCellRef().getRefId()) &&
             item.count == storeIterator->getRefData().getCount() &&
             item.charge == storeIterator->getCellRef().getCharge() &&
-            item.enchantmentCharge == storeIterator->getCellRef().getEnchantmentCharge() &&
             Misc::StringUtils::ciEqual(item.soul, storeIterator->getCellRef().getSoul()))
         {
-            return *storeIterator;
+            // If we have no closestPtr, set it to the Ptr corresponding to this storeIterator; otherwise, make
+            // sure the storeIterator's enchantmentCharge is closer to our goal than that of the previous closestPtr
+            if (!closestPtr || abs(storeIterator->getCellRef().getEnchantmentCharge() - item.enchantmentCharge) <
+                abs(closestPtr.getCellRef().getEnchantmentCharge() - item.enchantmentCharge))
+            {
+                closestPtr = *storeIterator;
+            }
         }
     }
 
-    return 0;
+    return closestPtr;
 }
