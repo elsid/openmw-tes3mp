@@ -90,7 +90,17 @@ public:
                 (callback)(std::forward<Args>(args)...);
 #if defined (ENABLE_LUA)
             else if (script->script_type == SCRIPT_LUA)
-                script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);
+            {
+                try
+                {
+                    script->lang->Call(data.name, data.callback.types, B, std::forward<Args>(args)...);
+                }
+                catch (std::exception &e)
+                {
+                    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, e.what());
+                    throw;
+                }
+            }
 #endif
             ++count;
         }
