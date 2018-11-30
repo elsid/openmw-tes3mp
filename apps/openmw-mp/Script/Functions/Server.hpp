@@ -4,26 +4,28 @@
 #include "../Types.hpp"
 
 #define SERVERAPI \
-    {"StopServer",          ServerFunctions::StopServer},\
+    {"StopServer",                  ServerFunctions::StopServer},\
     \
-    {"Kick",                ServerFunctions::Kick},\
-    {"BanAddress",          ServerFunctions::BanAddress},\
-    {"UnbanAddress",        ServerFunctions::UnbanAddress},\
+    {"Kick",                        ServerFunctions::Kick},\
+    {"BanAddress",                  ServerFunctions::BanAddress},\
+    {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
-    {"GetServerVersion",    ServerFunctions::GetServerVersion},\
-    {"GetProtocolVersion",  ServerFunctions::GetProtocolVersion},\
-    {"GetAvgPing",          ServerFunctions::GetAvgPing},\
-    {"GetIP",               ServerFunctions::GetIP},\
-    {"GetMaxPlayers",       ServerFunctions::GetMaxPlayers},\
-    {"GetPort",             ServerFunctions::GetPort},\
-    {"HasPassword",         ServerFunctions::HasPassword},\
+    {"GetServerVersion",            ServerFunctions::GetServerVersion},\
+    {"GetProtocolVersion",          ServerFunctions::GetProtocolVersion},\
+    {"GetAvgPing",                  ServerFunctions::GetAvgPing},\
+    {"GetIP",                       ServerFunctions::GetIP},\
+    {"GetMaxPlayers",               ServerFunctions::GetMaxPlayers},\
+    {"GetPort",                     ServerFunctions::GetPort},\
+    {"HasPassword",                 ServerFunctions::HasPassword},\
+    {"GetPluginEnforcementState",   ServerFunctions::GetPluginEnforcementState},\
     \
-    {"SetGameMode",         ServerFunctions::SetGameMode},\
-    {"SetHostname",         ServerFunctions::SetHostname},\
-    {"SetServerPassword",   ServerFunctions::SetServerPassword},\
-    {"SetRuleString",       ServerFunctions::SetRuleString},\
-    {"SetRuleValue",        ServerFunctions::SetRuleValue},\
-    {"AddPluginHash",       ServerFunctions::AddPluginHash}
+    {"SetGameMode",                 ServerFunctions::SetGameMode},\
+    {"SetHostname",                 ServerFunctions::SetHostname},\
+    {"SetServerPassword",           ServerFunctions::SetServerPassword},\
+    {"SetPluginEnforcementState",   ServerFunctions::SetPluginEnforcementState},\
+    {"SetRuleString",               ServerFunctions::SetRuleString},\
+    {"SetRuleValue",                ServerFunctions::SetRuleValue},\
+    {"AddPluginHash",               ServerFunctions::AddPluginHash}
 
 class ServerFunctions
 {
@@ -113,6 +115,15 @@ public:
     static bool HasPassword() noexcept;
 
     /**
+    * \brief Get the plugin enforcement state of the server.
+    *
+    * If true, clients are required to use the same plugins as set for the server.
+    *
+    * \return The enforcement state.
+    */
+    static int GetPluginEnforcementState() noexcept;
+
+    /**
     * \brief Set the game mode of the server, as displayed in the server browser.
     *
     * \param name The new game mode.
@@ -134,7 +145,17 @@ public:
     * \param password The password.
     * \return void
     */
-    static void SetServerPassword(const char *passw) noexcept;
+    static void SetServerPassword(const char *password) noexcept;
+
+    /**
+    * \brief Set the plugin enforcement state of the server.
+    *
+    * If true, clients are required to use the same plugins as set for the server.
+    *
+    * \param state The new enforcement state.
+    * \return void
+    */
+    static void SetPluginEnforcementState(bool state) noexcept;
 
     /**
     * \brief Set a rule string for the server details displayed in the server browser.
