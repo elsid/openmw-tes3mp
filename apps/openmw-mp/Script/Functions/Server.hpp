@@ -18,11 +18,13 @@
     {"GetPort",                     ServerFunctions::GetPort},\
     {"HasPassword",                 ServerFunctions::HasPassword},\
     {"GetPluginEnforcementState",   ServerFunctions::GetPluginEnforcementState},\
+    {"GetScriptErrorIgnoringState", ServerFunctions::GetScriptErrorIgnoringState},\
     \
     {"SetGameMode",                 ServerFunctions::SetGameMode},\
     {"SetHostname",                 ServerFunctions::SetHostname},\
     {"SetServerPassword",           ServerFunctions::SetServerPassword},\
     {"SetPluginEnforcementState",   ServerFunctions::SetPluginEnforcementState},\
+    {"SetScriptErrorIgnoringState", ServerFunctions::SetScriptErrorIgnoringState},\
     {"SetRuleString",               ServerFunctions::SetRuleString},\
     {"SetRuleValue",                ServerFunctions::SetRuleValue},\
     {"AddPluginHash",               ServerFunctions::AddPluginHash}
@@ -121,7 +123,16 @@ public:
     *
     * \return The enforcement state.
     */
-    static int GetPluginEnforcementState() noexcept;
+    static bool GetPluginEnforcementState() noexcept;
+
+    /**
+    * \brief Get the script error ignoring state of the server.
+    *
+    * If true, script errors will not crash the server.
+    *
+    * \return The script error ignoring state.
+    */
+    static bool GetScriptErrorIgnoringState() noexcept;
 
     /**
     * \brief Set the game mode of the server, as displayed in the server browser.
@@ -156,6 +167,18 @@ public:
     * \return void
     */
     static void SetPluginEnforcementState(bool state) noexcept;
+
+    /**
+    * \brief Set whether script errors should be ignored or not.
+    *
+    * If true, script errors will not crash the server, but could have any number
+    * of unforeseen consequences, which is why this is a highly experimental
+    * setting.
+    *
+    * \param state The new script error ignoring state.
+    * \return void
+    */
+    static void SetScriptErrorIgnoringState(bool state) noexcept;
 
     /**
     * \brief Set a rule string for the server details displayed in the server browser.

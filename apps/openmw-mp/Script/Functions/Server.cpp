@@ -75,9 +75,14 @@ bool ServerFunctions::HasPassword() noexcept
     return mwmp::Networking::get().isPassworded();
 }
 
-int ServerFunctions::GetPluginEnforcementState() noexcept
+bool ServerFunctions::GetPluginEnforcementState() noexcept
 {
     return mwmp::Networking::getPtr()->getPluginEnforcementState();
+}
+
+bool ServerFunctions::GetScriptErrorIgnoringState() noexcept
+{
+    return mwmp::Networking::getPtr()->getScriptErrorIgnoringState();
 }
 
 void ServerFunctions::SetGameMode(const char *gameMode) noexcept
@@ -100,6 +105,11 @@ void ServerFunctions::SetServerPassword(const char *password) noexcept
 void ServerFunctions::SetPluginEnforcementState(bool state) noexcept
 {
     mwmp::Networking::getPtr()->setPluginEnforcementState(state);
+}
+
+void ServerFunctions::SetScriptErrorIgnoringState(bool state) noexcept
+{
+    mwmp::Networking::getPtr()->setScriptErrorIgnoringState(state);
 }
 
 void ServerFunctions::SetRuleString(const char *key, const char *value) noexcept

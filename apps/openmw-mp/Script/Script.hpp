@@ -4,15 +4,18 @@
 
 #ifndef PLUGINSYSTEM3_SCRIPT_HPP
 #define PLUGINSYSTEM3_SCRIPT_HPP
+
+#include <boost/any.hpp>
+#include <unordered_map>
+#include <memory>
+
 #include "Types.hpp"
 #include "SystemInterface.hpp"
 #include "ScriptFunction.hpp"
 #include "ScriptFunctions.hpp"
 #include "Language.hpp"
 
-#include <boost/any.hpp>
-#include <unordered_map>
-#include <memory>
+#include "Networking.hpp"
 
 class Script : private ScriptFunctions
 {
@@ -98,7 +101,9 @@ public:
                 catch (std::exception &e)
                 {
                     LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, e.what());
-                    throw;
+
+                    if (!mwmp::Networking::getPtr()->getScriptErrorIgnoringState())
+                        throw;
                 }
             }
 #endif

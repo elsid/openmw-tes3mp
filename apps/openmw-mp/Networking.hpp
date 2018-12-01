@@ -56,6 +56,9 @@ namespace  mwmp
         bool getPluginEnforcementState();
         void setPluginEnforcementState(bool state);
 
+        bool getScriptErrorIgnoringState();
+        void setScriptErrorIgnoringState(bool state);
+
         MasterClient *getMasterClient();
         void InitQuery(std::string queryAddr, unsigned short queryPort);
         void setServerPassword(std::string passw) noexcept;

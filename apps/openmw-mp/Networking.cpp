@@ -31,6 +31,7 @@ Networking *Networking::sThis = 0;
 
 static int currentMpNum = 0;
 static bool pluginEnforcementState = true;
+static bool scriptErrorIgnoringState = false;
 
 Networking::Networking(RakNet::RakPeerInterface *peer) : mclient(nullptr)
 {
@@ -428,6 +429,16 @@ bool Networking::getPluginEnforcementState()
 void Networking::setPluginEnforcementState(bool state)
 {
     pluginEnforcementState = state;
+}
+
+bool Networking::getScriptErrorIgnoringState()
+{
+    return scriptErrorIgnoringState;
+}
+
+void Networking::setScriptErrorIgnoringState(bool state)
+{
+    scriptErrorIgnoringState = state;
 }
 
 const Networking &Networking::get()
