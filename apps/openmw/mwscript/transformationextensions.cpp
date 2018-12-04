@@ -503,6 +503,44 @@ namespace MWScript
                         ref.getPtr().getCellRef().setPosition(pos);
                         MWWorld::Ptr placed = MWBase::Environment::get().getWorld()->placeObject(ref.getPtr(),store,pos);
                         placed.getClass().adjustPosition(placed, true);
+
+                        /*
+                            Start of tes3mp addition
+
+                            Send an ID_OBJECT_PLACE or ID_OBJECT_SPAWN packet every time an object is placed
+                            in the world through a script
+                        */
+                        if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                        {
+                            mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                            objectList->reset();
+                            objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+
+                            if (placed.getClass().isActor())
+                            {
+                                objectList->addObjectSpawn(placed);
+                                objectList->sendObjectSpawn();
+                            }
+                            else
+                            {
+                                objectList->addObjectPlace(placed);
+                                objectList->sendObjectPlace();
+                            }
+                        }
+                        /*
+                            End of tes3mp addition
+                        */
+
+                        /*
+                            Start of tes3mp change (major)
+
+                            Instead of actually keeping this object as is, delete it after sending the packet
+                            and wait for the server to send it back with a unique mpNum of its own
+                        */
+                        MWBase::Environment::get().getWorld()->deleteObject(placed);
+                        /*
+                            End of tes3mp change (major)
+                        */
                     }
                 }
         };
@@ -551,6 +589,44 @@ namespace MWScript
                     ref.getPtr().getCellRef().setPosition(pos);
                     MWWorld::Ptr placed = MWBase::Environment::get().getWorld()->placeObject(ref.getPtr(),store,pos);
                     placed.getClass().adjustPosition(placed, true);
+
+                    /*
+                        Start of tes3mp addition
+
+                        Send an ID_OBJECT_PLACE or ID_OBJECT_SPAWN packet every time an object is placed
+                        in the world through a script
+                    */
+                    if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
+                    {
+                        mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
+                        objectList->reset();
+                        objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
+
+                        if (placed.getClass().isActor())
+                        {
+                            objectList->addObjectSpawn(placed);
+                            objectList->sendObjectSpawn();
+                        }
+                        else
+                        {
+                            objectList->addObjectPlace(placed);
+                            objectList->sendObjectPlace();
+                        }
+                    }
+                    /*
+                        End of tes3mp addition
+                    */
+
+                    /*
+                        Start of tes3mp change (major)
+
+                        Instead of actually keeping this object as is, delete it after sending the packet
+                        and wait for the server to send it back with a unique mpNum of its own
+                    */
+                    MWBase::Environment::get().getWorld()->deleteObject(placed);
+                    /*
+                        End of tes3mp change (major)
+                    */
                 }
         };
 
