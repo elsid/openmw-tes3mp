@@ -197,14 +197,15 @@ namespace MWGui
         /*
             Start of tes3mp change (major)
 
-            Avoid running any of the original code for dropping items, to prevent possibilities
-            for item duping or interaction with restricted containers
+            For valid drops, avoid running the original code for the item transfer, to prevent unilateral
+            item duping or interaction on this client
 
-            Instead, finish the drag in a way that removes the items in it
+            Instead, finish the drag in a way that removes the items in it, and let the server's reply handle
+            the rest
         */
-        //if (success)
-        //    mDragAndDrop->drop(mModel, mItemView);
-        mDragAndDrop->finish(true);
+        if (success)
+            // mDragAndDrop->drop(mModel, mItemView);
+            mDragAndDrop->finish(true);
         /*
             End of tes3mp change (major)
         */
