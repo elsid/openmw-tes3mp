@@ -175,7 +175,7 @@ unsigned int ::Utils::crc32Checksum(const std::string &file)
     return crc32.checksum();
 }
 
-std::string Utils::getOperatingSystem()
+std::string Utils::getOperatingSystemType()
 {
 #if defined(_WIN32)
     return "Windows";
@@ -188,25 +188,28 @@ std::string Utils::getOperatingSystem()
 #endif
 }
 
+std::string Utils::getArchitectureType()
+{
+#if defined(__x86_64__) || defined(_M_X64)
+    return "64-bit";
+#elif defined(__i386__) || defined(_M_I86)
+    return "32-bit";
+#elif defined(__ARM_ARCH)
+    return "ARMv" + __ARM_ARCH;
+#ifdef __aarch64__
+    return "64-bit";
+#else
+    return "32-bit";
+#endif
+#else
+    return "Unknown architecture";
+#endif
+}
+
 void Utils::printVersion(std::string appName, std::string version, std::string commitHash, int protocol)
 {
     cout << appName << " " << version;
-    cout << " (" << getOperatingSystem() << " ";
-#if defined(__x86_64__) || defined(_M_X64)
-    cout << "64-bit";
-#elif defined(__i386__) || defined(_M_I86)
-    cout << "32-bit";
-#elif defined(__ARM_ARCH)
-    cout << "ARMv" << __ARM_ARCH << " ";
-#ifdef __aarch64__
-    cout << "64-bit";
-#else
-    cout << "32-bit";
-#endif
-#else
-    cout << "Unknown architecture";
-#endif
-    cout << ")" << endl;
+    cout << " (" << getOperatingSystemType() << " " << getArchitectureType() << ")" << endl;
     cout << "Protocol version: " << protocol << endl;
     cout << "Commit hash: " << commitHash.substr(0, 10) << endl;
 

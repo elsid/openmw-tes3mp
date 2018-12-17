@@ -60,7 +60,8 @@ namespace Utils
 
     unsigned int crc32Checksum(const std::string &file);
 
-    std::string getOperatingSystem();
+    std::string getOperatingSystemType();
+    std::string getArchitectureType();
 
     void printVersion(std::string appName, std::string version, std::string commitHash, int protocol);
 
