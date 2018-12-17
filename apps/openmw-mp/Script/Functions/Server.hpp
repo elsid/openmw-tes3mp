@@ -10,6 +10,7 @@
     {"BanAddress",                  ServerFunctions::BanAddress},\
     {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
+    {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
     {"GetServerVersion",            ServerFunctions::GetServerVersion},\
     {"GetProtocolVersion",          ServerFunctions::GetProtocolVersion},\
     {"GetAvgPing",                  ServerFunctions::GetAvgPing},\
@@ -64,6 +65,15 @@ public:
     * \return void
     */
     static void UnbanAddress(const char *ipAddress) noexcept;
+
+    /**
+    * \brief Get the type of the operating system used by the server.
+    *
+    * Note: Currently, the type can be "Windows", "Linux", "OS X" or "Unknown OS".
+    *
+    * \return The type of the operating system.
+    */
+    static const char *GetOperatingSystemType() noexcept;
 
     /**
     * \brief Get the TES3MP version of the server.

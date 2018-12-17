@@ -34,6 +34,11 @@ void ServerFunctions::UnbanAddress(const char *ipAddress) noexcept
     mwmp::Networking::getPtr()->unbanAddress(ipAddress);
 }
 
+const char *ServerFunctions::GetOperatingSystemType() noexcept
+{
+    return Utils::getOperatingSystem().c_str();
+}
+
 const char *ServerFunctions::GetServerVersion() noexcept
 {
     return TES3MP_VERSION;
