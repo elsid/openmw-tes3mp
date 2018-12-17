@@ -117,7 +117,7 @@ std::string Utils::toString(int num)
     return stream.str();
 }
 
-string Utils::replaceString(const string& source, const char* find, const char* replace)
+std::string Utils::replaceString(const string& source, const char* find, const char* replace)
 {
     unsigned int find_len = strlen(find);
     unsigned int replace_len = strlen(replace);
@@ -175,20 +175,23 @@ unsigned int ::Utils::crc32Checksum(const std::string &file)
     return crc32.checksum();
 }
 
+std::string Utils::getOperatingSystem()
+{
+#if defined(_WIN32)
+    return "Windows";
+#elif defined(__linux)
+    return "Linux";
+#elif defined(__APPLE__)
+    return "OS X";
+#else
+    return "Unknown OS";
+#endif
+}
+
 void Utils::printVersion(std::string appName, std::string version, std::string commitHash, int protocol)
 {
     cout << appName << " " << version;
-    cout << " (";
-#if defined(_WIN32)
-    cout << "Windows";
-#elif defined(__linux)
-    cout << "Linux";
-#elif defined(__APPLE__)
-    cout << "OS X";
-#else
-    cout << "Unknown OS";
-#endif
-    cout << " ";
+    cout << " (" << getOperatingSystem() << " ";
 #if defined(__x86_64__) || defined(_M_X64)
     cout << "64-bit";
 #elif defined(__i386__) || defined(_M_I86)

@@ -60,6 +60,8 @@ namespace Utils
 
     unsigned int crc32Checksum(const std::string &file);
 
+    std::string getOperatingSystem();
+
     void printVersion(std::string appName, std::string version, std::string commitHash, int protocol);
 
     void printWithWidth(std::ostringstream &sstr, std::string str, size_t width);
