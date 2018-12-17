@@ -11,6 +11,7 @@
     {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
     {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
+    {"GetArchitectureType",         ServerFunctions::GetArchitectureType},\
     {"GetServerVersion",            ServerFunctions::GetServerVersion},\
     {"GetProtocolVersion",          ServerFunctions::GetProtocolVersion},\
     {"GetAvgPing",                  ServerFunctions::GetAvgPing},\
@@ -74,6 +75,15 @@ public:
     * \return The type of the operating system.
     */
     static const char *GetOperatingSystemType() noexcept;
+
+    /**
+    * \brief Get the architecture type used by the server.
+    *
+    * Note: Currently, the type can be "64-bit", "32-bit", "ARMv#" or "Unknown architecture".
+    *
+    * \return The architecture type.
+    */
+    static const char *GetArchitectureType() noexcept;
 
     /**
     * \brief Get the TES3MP version of the server.

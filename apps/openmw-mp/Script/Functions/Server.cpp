@@ -36,7 +36,12 @@ void ServerFunctions::UnbanAddress(const char *ipAddress) noexcept
 
 const char *ServerFunctions::GetOperatingSystemType() noexcept
 {
-    return Utils::getOperatingSystem().c_str();
+    return Utils::getOperatingSystemType().c_str();
+}
+
+const char *ServerFunctions::GetArchitectureType() noexcept
+{
+    return Utils::getArchitectureType().c_str();
 }
 
 const char *ServerFunctions::GetServerVersion() noexcept
