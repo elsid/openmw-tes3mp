@@ -240,7 +240,21 @@ namespace MWMechanics
 
             // Set the soul on just one of the gems, not the whole stack
             gem->getContainerStore()->unstack(*gem, caster);
+
+            /*
+                Start of tes3mp change (minor)
+
+                Send PlayerInventory packets that replace the original gem with the new one
+            */
+            mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
+            localPlayer->sendItemChange(*gem, 1, mwmp::InventoryChanges::REMOVE);
+
             gem->getCellRef().setSoul(mCreature.getCellRef().getRefId());
+
+            localPlayer->sendItemChange(*gem, 1, mwmp::InventoryChanges::ADD);
+            /*
+                End of tes3mp change (minor)
+            */
 
             // Restack the gem with other gems with the same soul
             gem->getContainerStore()->restack(*gem);
