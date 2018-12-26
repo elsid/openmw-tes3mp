@@ -675,6 +675,7 @@ void LocalPlayer::updateAnimFlags(bool forceUpdate)
 void LocalPlayer::addItems()
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
+    const MWWorld::ESMStore &esmStore = MWBase::Environment::get().getWorld()->getStore();
     MWWorld::ContainerStore &ptrStore = ptrPlayer.getClass().getContainerStore(ptrPlayer);
 
     for (const auto &item : inventoryChanges.items)
@@ -685,7 +686,9 @@ void LocalPlayer::addItems()
 
         try
         {
-            MWWorld::Ptr itemPtr = *ptrStore.add(item.refId, item.count, ptrPlayer);
+            MWWorld::ManualRef itemRef(esmStore, item.refId, item.count);
+            MWWorld::Ptr itemPtr = itemRef.getPtr();
+
             if (item.charge != -1)
                 itemPtr.getCellRef().setCharge(item.charge);
 
@@ -694,6 +697,8 @@ void LocalPlayer::addItems()
 
             if (!item.soul.empty())
                 itemPtr.getCellRef().setSoul(item.soul);
+
+            ptrStore.add(itemPtr, item.count, ptrPlayer);
         }
         catch (std::exception&)
         {
