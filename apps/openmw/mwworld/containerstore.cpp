@@ -194,6 +194,25 @@ MWWorld::ContainerStoreIterator MWWorld::ContainerStore::unstack(const Ptr &ptr,
     if (ptr.getRefData().getCount() <= count)
         return end();
     MWWorld::ContainerStoreIterator it = addNewStack(ptr, ptr.getRefData().getCount()-count);
+
+    /*
+        Start of tes3mp addition
+
+        Send an ID_PLAYER_INVENTORY packet every time an item stack gets added for a player here
+    */
+    Ptr player = MWBase::Environment::get().getWorld()->getPlayerPtr();
+
+    if (container == player && this == &player.getClass().getContainerStore(player))
+    {
+        mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
+
+        if (!localPlayer->isReceivingInventory)
+            localPlayer->sendItemChange(ptr, ptr.getRefData().getCount() - count, mwmp::InventoryChanges::ADD);
+    }
+    /*
+        End of tes3mp addition
+    */
+
     const std::string script = it->getClass().getScript(*it);
     if (!script.empty())
         MWBase::Environment::get().getWorld()->getLocalScripts().add(script, *it);
