@@ -102,10 +102,10 @@ struct CallbackIdentity
 
 struct ScriptFunctionPointer : public ScriptIdentity
 {
-    Function<void> addr;
+    void *addr;
 
     template<typename R, typename... Types>
-    constexpr ScriptFunctionPointer(Function<R, Types...> addr) : ScriptIdentity(addr), addr(reinterpret_cast<Function<void>>(addr)) {}
+    constexpr ScriptFunctionPointer(Function<R, Types...> addr) : ScriptIdentity(addr), addr(addr) {}
 };
 
 struct ScriptFunctionData

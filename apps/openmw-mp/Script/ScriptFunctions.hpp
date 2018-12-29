@@ -30,6 +30,10 @@
 
 #include <components/openmw-mp/Log.hpp>
 
+#ifndef __PRETTY_FUNCTION__
+#define __PRETTY_FUNCTION__ __FUNCTION__
+#endif
+
 #define GET_PLAYER(pid, pl, retvalue) \
      pl = Players::getPlayer(pid); \
      if (player == 0) {\
@@ -116,9 +120,9 @@ public:
 
     static constexpr ScriptFunctionData functions[]{
             {"CreateTimer",         ScriptFunctions::CreateTimer},
-            {"CreateTimerEx",       reinterpret_cast<Function<void>>(ScriptFunctions::CreateTimerEx)},
+            {"CreateTimerEx",       ScriptFunctions::CreateTimerEx},
             {"MakePublic",          ScriptFunctions::MakePublic},
-            {"CallPublic",          reinterpret_cast<Function<void>>(ScriptFunctions::CallPublic)},
+            {"CallPublic",          ScriptFunctions::CallPublic},
 
             {"StartTimer",          ScriptFunctions::StartTimer},
             {"StopTimer",           ScriptFunctions::StopTimer},

@@ -29,7 +29,7 @@ if(BUILD_WITH_LUA)
             Script/LangLua/LangLua.hpp)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_LUA")
-    include_directories(${LuaJit_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
+    include_directories(SYSTEM ${LuaJit_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
 endif(BUILD_WITH_LUA)
 
 set(NativeScript_Sources
@@ -152,7 +152,17 @@ add_executable(tes3mp-server
         ${PROCESSORS_ACTOR} ${PROCESSORS_PLAYER} ${PROCESSORS_OBJECT} ${PROCESSORS_WORLDSTATE} ${PROCESSORS}
         ${APPLE_BUNDLE_RESOURCES}
         )
-add_definitions(-std=gnu++14 -Wno-ignored-qualifiers)
+
+target_compile_options(tes3mp-server PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
+set_target_properties(tes3mp-server PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS YES
+)
+
+if (UNIX)
+	target_compile_options(tes3mp-server PRIVATE -Wno-ignored-qualifiers)
+endif()
 
 target_link_libraries(tes3mp-server
     #${Boost_SYSTEM_LIBRARY}
