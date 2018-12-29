@@ -110,10 +110,10 @@ template<> struct F_<3> { static constexpr LuaFuctionData F{"CallPublic", LangLu
 template<unsigned int I>
 struct C
 {
-    constexpr C(LuaFuctionData *functions_)
+    constexpr static void Fn(LuaFuctionData *functions_)
     {
         functions_[I] = F_<I>::F;
-        C<I - 1>::C(functions_);
+        C<I - 1>::Fn(functions_);
     }
 };
 
@@ -121,7 +121,7 @@ struct C
 template<>
 struct C<0>
 {
-    constexpr C(LuaFuctionData *functions_)
+    constexpr static void Fn(LuaFuctionData *functions_)
     {
         functions_[0] = F_<0>::F;
     }
@@ -132,7 +132,7 @@ LuaFuctionData *functions()
 {
 
     static LuaFuctionData functions_[LastI];
-    C<LastI - 1>::C(functions_);
+    C<LastI - 1>::Fn(functions_);
 
     static_assert(
         sizeof(functions_) / sizeof(functions_[0]) ==
