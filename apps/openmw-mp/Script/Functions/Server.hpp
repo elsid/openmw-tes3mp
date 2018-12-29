@@ -29,7 +29,8 @@
     {"SetScriptErrorIgnoringState", ServerFunctions::SetScriptErrorIgnoringState},\
     {"SetRuleString",               ServerFunctions::SetRuleString},\
     {"SetRuleValue",                ServerFunctions::SetRuleValue},\
-    {"AddPluginHash",               ServerFunctions::AddPluginHash}
+    {"AddPluginHash",               ServerFunctions::AddPluginHash},\
+    {"GetModDir",                   ServerFunctions::GetModDir}
 
 class ServerFunctions
 {
@@ -224,6 +225,8 @@ public:
      * @param hash Hash string
      */
     static void AddPluginHash(const char *pluginName, const char *hash) noexcept;
+
+    static const char *GetModDir() noexcept;
 };
 
 #endif //OPENMW_SERVERAPI_HPP

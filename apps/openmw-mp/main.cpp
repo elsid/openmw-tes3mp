@@ -221,17 +221,18 @@ int main(int argc, char *argv[])
         LOG_APPEND(Log::LOG_FATAL, "- %s", TES3MP_CREDITS_ERROR);
         return 1;
     }
+    
+    Script::SetModDir(moddir);
 
-    setenv("MOD_DIR", moddir.c_str(), 1); // hack for lua
-
-    setenv("LUA_PATH", Utils::convertPath(plugin_home + "/scripts/?.lua" + ";"
-                                          + plugin_home + "/scripts/?.t" + ";"
-                                          + plugin_home + "/lib/lua/?.lua" + ";"
-                                          + plugin_home + "/lib/lua/?.t").c_str(), 1);
+#ifdef ENABLE_LUA
+    LangLua::AddPackagePath(Utils::convertPath(plugin_home + "/scripts/?.lua" + ";"
+        + plugin_home + "/lib/lua/?.lua" + ";"));
 #ifdef _WIN32
-    setenv("LUA_CPATH", Utils::convertPath(plugin_home + "/lib/?.dll").c_str(), 1);
+    LangLua::AddPackageCPath(Utils::convertPath(plugin_home + "/lib/?.dll"));
 #else
-    setenv("LUA_CPATH", Utils::convertPath(plugin_home + "/lib/?.so").c_str(), 1);
+    LangLua::AddPackageCPath(Utils::convertPath(plugin_home + "/lib/?.so"));
+#endif
+
 #endif
 
     int code;

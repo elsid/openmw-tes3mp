@@ -12,6 +12,7 @@
 using namespace std;
 
 Script::ScriptList Script::scripts;
+std::string Script::moddir;
 
 Script::Script(const char *path)
 {
@@ -93,4 +94,15 @@ void Script::LoadScript(const char *script, const char *base)
     char path[4096];
     snprintf(path, sizeof(path), Utils::convertPath("%s/%s/%s").c_str(), base, "scripts", script);
     Script::scripts.emplace_back(new Script(path));
+}
+
+void Script::SetModDir(const std::string &moddir)
+{
+    if (Script::moddir.empty()) // do not allow to change in runtime
+        Script::moddir = moddir;
+}
+
+const char* Script::GetModDir()
+{
+    return moddir.c_str();
 }

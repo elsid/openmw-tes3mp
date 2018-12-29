@@ -9,6 +9,24 @@
 
 using namespace std;
 
+std::set<std::string> LangLua::packagePath;
+std::set<std::string> LangLua::packageCPath;
+
+void setLuaPath(lua_State* L, const char* path, bool cpath = false)
+{
+    string field = cpath ? "cpath" : "path";
+    lua_getglobal(L, "package");
+
+    lua_getfield(L, -1, field.c_str());
+    std::string cur_path = lua_tostring(L, -1);
+    cur_path.append(";");
+    cur_path.append(path);
+    lua_pop(L, 1);
+    lua_pushstring(L, cur_path.c_str());
+    lua_setfield(L, -2, field.c_str());
+    lua_pop(L, 1);
+}
+
 lib_t LangLua::GetInterface()
 {
     return reinterpret_cast<lib_t>(lua);
@@ -23,6 +41,17 @@ LangLua::LangLua()
 {
     lua = luaL_newstate();
     luaL_openlibs(lua); // load all lua std libs
+
+    std::string p, cp;
+    for (auto& path : packagePath)
+        p += path + ';';
+
+    for (auto& path : packageCPath)
+        cp += path + ';';
+
+    setLuaPath(lua, p.c_str());
+    setLuaPath(lua, cp.c_str(), true);
+
 }
 
 LangLua::~LangLua()
@@ -233,4 +262,14 @@ boost::any LangLua::Call(const char *name, const char *argl, const std::vector<b
 
     luabridge::LuaException::pcall(lua, n_args, 1);
     return boost::any(luabridge::LuaRef::fromStack(lua, -1));
+}
+
+void LangLua::AddPackagePath(const std::string& path)
+{
+    packagePath.emplace(path);
+}
+
+void LangLua::AddPackageCPath(const std::string& path)
+{
+    packageCPath.emplace(path);
 }

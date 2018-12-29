@@ -9,6 +9,7 @@
 
 #include <extern/LuaBridge/LuaBridge.h>
 #include <LuaBridge.h>
+#include <set>
 
 #include <boost/any.hpp>
 #include "../ScriptFunction.hpp"
@@ -41,6 +42,10 @@ public:
     LangLua();
     LangLua(lua_State *lua);
     ~LangLua();
+
+    static void AddPackagePath(const std::string &path);
+    static void AddPackageCPath(const std::string &path);
+
     static int MakePublic(lua_State *lua) noexcept;
     static int CallPublic(lua_State *lua);
 
@@ -52,6 +57,9 @@ public:
     virtual bool IsCallbackPresent(const char *name) override;
     virtual boost::any Call(const char *name, const char *argl, int buf, ...) override;
     virtual boost::any Call(const char *name, const char *argl, const std::vector<boost::any> &args) override;
+private:
+    static std::set<std::string> packageCPath;
+    static std::set<std::string> packagePath;
 };
 
 

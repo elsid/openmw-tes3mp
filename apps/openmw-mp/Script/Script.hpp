@@ -54,12 +54,16 @@ private:
     Script(const Script&) = delete;
     Script& operator=(const Script&) = delete;
 
+protected:
+    static std::string moddir;
 public:
     ~Script();
 
     static void LoadScript(const char *script, const char* base);
     static void LoadScripts(char* scripts, const char* base);
     static void UnloadScripts();
+    static void SetModDir(const std::string &moddir);
+    static const char* GetModDir();
 
     static constexpr ScriptCallbackData const& CallBackData(const unsigned int I, const unsigned int N = 0) {
         return callbacks[N].index == I ? callbacks[N] : CallBackData(I, N + 1);

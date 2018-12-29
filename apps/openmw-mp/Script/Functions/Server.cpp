@@ -7,6 +7,7 @@
 #include <apps/openmw-mp/Script/ScriptFunctions.hpp>
 #include <apps/openmw-mp/Networking.hpp>
 #include <apps/openmw-mp/MasterClient.hpp>
+#include <Script/Script.hpp>
 
 
 void ServerFunctions::StopServer(int code) noexcept
@@ -161,4 +162,9 @@ void ServerFunctions::AddPluginHash(const char *pluginName, const char *hashStr)
         if (mclient)
             mclient->PushPlugin({pluginName, hash});
     }
+}
+
+const char* ServerFunctions::GetModDir() noexcept
+{
+    return Script::GetModDir();
 }
