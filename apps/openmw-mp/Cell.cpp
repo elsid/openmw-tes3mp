@@ -53,18 +53,21 @@ void Cell::addPlayer(Player *player)
     players.push_back(player);
 }
 
-void Cell::removePlayer(Player *player)
+void Cell::removePlayer(Player *player, bool cleanPlayer)
 {
     for (Iterator it = begin(); it != end(); it++)
     {
         if (*it == player)
         {
-            auto it2 = find(player->cells.begin(), player->cells.end(), this);
-            if (it2 != player->cells.end())
+            if (cleanPlayer)
             {
-                LOG_APPEND(Log::LOG_INFO, "- Removing %s from Player %s", getDescription().c_str(), player->npc.mName.c_str());
+                auto it2 = find(player->cells.begin(), player->cells.end(), this);
+                if (it2 != player->cells.end())
+                {
+                    LOG_APPEND(Log::LOG_INFO, "- Removing %s from Player %s", getDescription().c_str(), player->npc.mName.c_str());
 
-                player->cells.erase(it2);
+                    player->cells.erase(it2);
+                }
             }
 
             LOG_APPEND(Log::LOG_INFO, "- Removing %s from Cell %s", player->npc.mName.c_str(), getDescription().c_str());

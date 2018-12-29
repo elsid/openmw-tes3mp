@@ -136,26 +136,38 @@ void CellController::removeCell(Cell *cell)
 
 void CellController::removePlayer(Cell *cell, Player *player)
 {
-    cell->removePlayer(player);
-
-    if (cell->players.empty())
-    {
-        LOG_APPEND(Log::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
-        removeCell(cell);
-    }
+    //cell->removePlayer(player);
 }
 
 void CellController::deletePlayer(Player *player)
 {
     LOG_APPEND(Log::LOG_INFO, "- Iterating through Cells from Player %s", player->npc.mName.c_str());
 
-    for (auto it = player->getCells()->begin(); player->getCells()->size() != 0; ++it)
-        removePlayer(*it, player);
+    std::vector<Cell*> toDelete;
+
+    auto it = player->getCells()->begin();
+    const auto endIter = player->getCells()->end();
+
+    for (; it != endIter; ++it)
+    {
+        Cell *c = *it;
+        c->removePlayer(player, false);
+        if (c->players.empty())
+            toDelete.push_back(c);
+    }
+
+    for (auto &&cell : toDelete)
+    {
+        LOG_APPEND(Log::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
+        removeCell(cell);
+    }
 }
 
 void CellController::update(Player *player)
 {
-    for (auto cell : player->cellStateChanges.cellStates)
+    std::vector<Cell*> toDelete;
+
+    for (auto &&cell : player->cellStateChanges.cellStates)
     {
         if (cell.type == mwmp::CellState::LOAD)
         {
@@ -171,7 +183,16 @@ void CellController::update(Player *player)
                 c = getCellByXY(cell.cell.getGridX(), cell.cell.getGridY());
 
             if (c != nullptr)
-                removePlayer(c, player);
+            {
+                c->removePlayer(player);
+                if (c->players.empty())
+                    toDelete.push_back(c);
+            }
         }
+    }
+    for (auto &&cell : toDelete)
+    {
+        LOG_APPEND(Log::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
+        removeCell(cell);
     }
 }

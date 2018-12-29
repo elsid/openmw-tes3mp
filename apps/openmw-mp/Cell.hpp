@@ -28,7 +28,7 @@ public:
     Iterator end() const;
 
     void addPlayer(Player *player);
-    void removePlayer(Player *player);
+    void removePlayer(Player *player, bool cleanPlayer = true);
 
     void readActorList(unsigned char packetID, const mwmp::BaseActorList *newActorList);
     bool containsActor(int refNum, int mpNum);
