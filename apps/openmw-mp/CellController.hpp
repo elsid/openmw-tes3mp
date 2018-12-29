@@ -30,7 +30,6 @@ public:
     Cell * addCell(ESM::Cell cell);
     void removeCell(Cell *);
 
-    void removePlayer(Cell *cell, Player *player);
     void deletePlayer(Player *player);
 
     Cell *getCell(ESM::Cell *esmCell);

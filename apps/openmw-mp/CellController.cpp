@@ -134,11 +134,6 @@ void CellController::removeCell(Cell *cell)
     }
 }
 
-void CellController::removePlayer(Cell *cell, Player *player)
-{
-    //cell->removePlayer(player);
-}
-
 void CellController::deletePlayer(Player *player)
 {
     LOG_APPEND(Log::LOG_INFO, "- Iterating through Cells from Player %s", player->npc.mName.c_str());
