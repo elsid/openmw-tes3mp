@@ -154,6 +154,11 @@ add_executable(tes3mp-server
         )
 
 target_compile_options(tes3mp-server PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
+
+if (OPENMW_MP_BUILD)
+	target_compile_options(tes3mp-server PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MP>)
+endif()
+
 set_target_properties(tes3mp-server PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED YES
