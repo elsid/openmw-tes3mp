@@ -9,6 +9,18 @@
 
 #include <components/misc/rng.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/world.hpp"
 #include "../mwbase/environment.hpp"
 #include "../mwbase/windowmanager.hpp"
@@ -163,8 +175,22 @@ void Recharge::onItemClicked(MyGUI::Widget *sender, const MWWorld::Ptr& item)
 
         const ESM::Enchantment* enchantment = MWBase::Environment::get().getWorld()->getStore().get<ESM::Enchantment>().find(
                     item.getClass().getEnchantment(item));
+
+        /*
+            Start of tes3mp change (minor)
+
+            Send PlayerInventory packets that replace the original item with the new one
+        */
+        mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
+        localPlayer->sendItemChange(item, 1, mwmp::InventoryChanges::REMOVE);
+
         item.getCellRef().setEnchantmentCharge(
             std::min(item.getCellRef().getEnchantmentCharge() + restored, static_cast<float>(enchantment->mData.mCharge)));
+
+        localPlayer->sendItemChange(item, 1, mwmp::InventoryChanges::ADD);
+        /*
+            End of tes3mp change (minor)
+        */
 
         MWBase::Environment::get().getWindowManager()->playSound("Enchant Success");
 
