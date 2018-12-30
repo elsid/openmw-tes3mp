@@ -4,6 +4,18 @@
 
 #include <components/misc/rng.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/Networking.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/world.hpp"
 #include "../mwbase/environment.hpp"
 #include "../mwbase/mechanicsmanager.hpp"
@@ -57,7 +69,21 @@ void Repair::repair(const MWWorld::Ptr &itemToRepair)
         // repair by 'y' points
         int charge = itemToRepair.getClass().getItemHealth(itemToRepair);
         charge = std::min(charge + y, itemToRepair.getClass().getItemMaxHealth(itemToRepair));
+
+        /*
+            Start of tes3mp change (minor)
+
+            Send PlayerInventory packets that replace the original item with the new one
+        */
+        mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
+        localPlayer->sendItemChange(itemToRepair, 1, mwmp::InventoryChanges::REMOVE);
+
         itemToRepair.getCellRef().setCharge(charge);
+
+        localPlayer->sendItemChange(itemToRepair, 1, mwmp::InventoryChanges::ADD);
+        /*
+            End of tes3mp change (minor)
+        */
 
         // attempt to re-stack item, in case it was fully repaired
         MWWorld::ContainerStoreIterator stacked = player.getClass().getContainerStore(player).restack(itemToRepair);
