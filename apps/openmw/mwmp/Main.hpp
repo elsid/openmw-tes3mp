@@ -39,8 +39,8 @@ namespace mwmp
 
     private:
         static std::string resourceDir;
-        static std::string addr;
-        static std::string passw;
+        static std::string address;
+        static std::string serverPassword;
         Main (const Main&);
         ///< not implemented
         Main& operator= (const Main&);

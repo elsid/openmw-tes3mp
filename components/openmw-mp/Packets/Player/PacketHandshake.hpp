@@ -16,8 +16,8 @@ namespace mwmp
 
         virtual void Packet(RakNet::BitStream *bs, bool send);
 
-        const static uint32_t maxNameLen = 256;
-        const static uint32_t maxPasswLen = 256;
+        const static uint32_t maxNameLength = 256;
+        const static uint32_t maxPasswordLength = 256;
     };
 }
 

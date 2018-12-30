@@ -232,6 +232,8 @@ namespace mwmp
         }
 
         RakNet::RakNetGUID guid;
+        std::string serverPassword;
+
         GUIMessageBox guiMessageBox;
 
         // Track only the indexes of the attributes that have been changed,
@@ -295,7 +297,6 @@ namespace mwmp
         std::string birthsign;
         std::string chatMessage;
         CharGenState charGenState;
-        std::string passw;
 
         std::string sound;
         Animation animation;

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 28.04.16.
-//
-
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include "PacketHandshake.hpp"
 
@@ -17,8 +13,8 @@ void PacketHandshake::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-    if (!RW(player->npc.mName, send, true, maxNameLen) ||
-        !RW(player->passw, send, true, maxPasswLen))
+    if (!RW(player->npc.mName, send, true, maxNameLength) ||
+        !RW(player->serverPassword, send, true, maxPasswordLength))
     {
         packetValid = false;
         return;

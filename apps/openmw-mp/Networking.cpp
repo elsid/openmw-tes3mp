@@ -75,9 +75,9 @@ Networking::~Networking()
     delete worldstatePacketController;
 }
 
-void Networking::setServerPassword(std::string passw) noexcept
+void Networking::setServerPassword(std::string password) noexcept
 {
-    serverPassword = passw.empty() ? TES3MP_DEFAULT_PASSW : passw;
+    serverPassword = password.empty() ? TES3MP_DEFAULT_PASSW : password;
 }
 
 bool Networking::isPassworded() const
@@ -111,10 +111,10 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
             return;
         }
 
-        if (player->passw != serverPassword)
+        if (player->serverPassword != serverPassword)
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong server password for player %d, name: %s (pass: %s)",
-                               player->getId(), player->npc.mName.c_str(), player->passw.c_str());
+                               player->getId(), player->npc.mName.c_str(), player->serverPassword.c_str());
             kickPlayer(player->guid);
             return;
         }

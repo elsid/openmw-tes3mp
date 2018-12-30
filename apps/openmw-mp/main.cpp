@@ -190,15 +190,15 @@ int main(int argc, char *argv[])
     LOG_INIT(logLevel);
 
     int players = mgr.getInt("maximumPlayers", "General");
-    string addr = mgr.getString("localAddress", "General");
+    string address = mgr.getString("localAddress", "General");
     int port = mgr.getInt("port", "General");
 
-    string passw = mgr.getString("password", "General");
+    string password = mgr.getString("password", "General");
 
-    string plugin_home = mgr.getString("home", "Plugins");
-    string moddir = Utils::convertPath(plugin_home + "/data");
+    string pluginHome = mgr.getString("home", "Plugins");
+    string dataDirectory = Utils::convertPath(pluginHome + "/data");
 
-    vector<string> plugins (Utils::split(mgr.getString("plugins", "Plugins"), ','));
+    vector<string> plugins(Utils::split(mgr.getString("plugins", "Plugins"), ','));
 
     Utils::printVersion("TES3MP dedicated server", TES3MP_VERSION, version.mCommitHash, TES3MP_PROTO_VERSION);
 
@@ -222,13 +222,13 @@ int main(int argc, char *argv[])
         return 1;
     }
     
-    Script::SetModDir(moddir);
+    Script::SetModDir(dataDirectory);
 
 #ifdef ENABLE_LUA
-    LangLua::AddPackagePath(Utils::convertPath(plugin_home + "/scripts/?.lua" + ";"
-        + plugin_home + "/lib/lua/?.lua" + ";"));
+    LangLua::AddPackagePath(Utils::convertPath(pluginHome + "/scripts/?.lua" + ";"
+        + pluginHome + "/lib/lua/?.lua" + ";"));
 #ifdef _WIN32
-    LangLua::AddPackageCPath(Utils::convertPath(plugin_home + "/lib/?.dll"));
+    LangLua::AddPackageCPath(Utils::convertPath(pluginHome + "/lib/?.dll"));
 #else
     LangLua::AddPackageCPath(Utils::convertPath(plugin_home + "/lib/?.so"));
 #endif
@@ -246,18 +246,18 @@ int main(int argc, char *argv[])
 
     peer->SetIncomingPassword(sstr.str().c_str(), (int) sstr.str().size());
 
-    if (RakNet::NonNumericHostString(addr.c_str()))
+    if (RakNet::NonNumericHostString(address.c_str()))
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "You cannot use non-numeric addresses for the server.");
         return 1;
     }
 
-    RakNet::SocketDescriptor sd((unsigned short) port, addr.c_str());
+    RakNet::SocketDescriptor sd((unsigned short) port, address.c_str());
 
     try
     {
         for (auto plugin : plugins)
-            Script::LoadScript(plugin.c_str(), plugin_home.c_str());
+            Script::LoadScript(plugin.c_str(), pluginHome.c_str());
 
         switch (peer->Startup((unsigned) players, &sd, 1))
         {
@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
         peer->SetMaximumIncomingConnections((unsigned short) (players));
 
         Networking networking(peer);
-        networking.setServerPassword(passw);
+        networking.setServerPassword(password);
 
         if (mgr.getBool("enabled", "MasterServer"))
         {

@@ -51,8 +51,8 @@ using namespace mwmp;
 using namespace std;
 
 Main *Main::pMain = 0;
-std::string Main::addr = "";
-std::string Main::passw = TES3MP_DEFAULT_PASSW;
+std::string Main::address = "";
+std::string Main::serverPassword = TES3MP_DEFAULT_PASSW;
 std::string Main::resourceDir = "";
 
 std::string Main::getResDir()
@@ -118,8 +118,8 @@ void Main::optionsDesc(boost::program_options::options_description *desc)
 
 void Main::configure(const boost::program_options::variables_map &variables)
 {
-    Main::addr = variables["connect"].as<string>();
-    Main::passw = variables["password"].as<string>();
+    Main::address = variables["connect"].as<string>();
+    Main::serverPassword = variables["password"].as<string>();
     resourceDir = variables["resources"].as<Files::EscapeHashString>().toStdString();
 }
 
@@ -155,22 +155,22 @@ bool Main::init(std::vector<std::string> &content, Files::Collections &collectio
 
     int logLevel = mgr.getInt("logLevel", "General");
     Log::SetLevel(logLevel);
-    if (addr.empty())
+    if (address.empty())
     {
         pMain->server = mgr.getString("destinationAddress", "General");
         pMain->port = (unsigned short) mgr.getInt("port", "General");
 
-        passw = mgr.getString("password", "General");
-        if (passw.empty())
-            passw = TES3MP_DEFAULT_PASSW;
+        serverPassword = mgr.getString("password", "General");
+        if (serverPassword.empty())
+            serverPassword = TES3MP_DEFAULT_PASSW;
     }
     else
     {
-        size_t delim_pos = addr.find(':');
-        pMain->server = addr.substr(0, delim_pos);
-        pMain->port = atoi(addr.substr(delim_pos + 1).c_str());
+        size_t delimPos = address.find(':');
+        pMain->server = address.substr(0, delimPos);
+        pMain->port = atoi(address.substr(delimPos + 1).c_str());
     }
-    get().mLocalPlayer->passw = passw;
+    get().mLocalPlayer->serverPassword = serverPassword;
 
     pMain->mNetworking->connect(pMain->server, pMain->port, content, collections);
     RestoreMgr(mgr);
