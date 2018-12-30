@@ -98,23 +98,22 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
 
         if (!myPacket->isPacketValid())
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Invalid handshake packet from %d", player->getId());
+            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Invalid handshake packet from client at %s", packet->systemAddress.ToString());
             kickPlayer(player->guid);
             return;
         }
 
         if (player->isHandshaked())
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong handshake with player %d, name: %s", player->getId(),
-                               player->npc.mName.c_str());
+            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong handshake with client at %s", packet->systemAddress.ToString());
             kickPlayer(player->guid);
             return;
         }
 
         if (player->serverPassword != serverPassword)
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong server password for player %d, name: %s (pass: %s)",
-                               player->getId(), player->npc.mName.c_str(), player->serverPassword.c_str());
+            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong server password %s used by client at %s",
+                player->serverPassword.c_str(), packet->systemAddress.ToString());
             kickPlayer(player->guid);
             return;
         }
@@ -125,9 +124,8 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
     if (!player->isHandshaked())
     {
         player->incrementHandshakeAttempts();
-        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Have not completed handshake with player %d", player->getId());
-
-        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Attempts so far: %i", player->getHandshakeAttempts());
+        LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Have not completed handshake with client at %s", packet->systemAddress.ToString());
+        LOG_APPEND(Log::LOG_WARN, "- Attempts so far: %i", player->getHandshakeAttempts());
 
         if (player->getHandshakeAttempts() > 20)
             kickPlayer(player->guid, false);
