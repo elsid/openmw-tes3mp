@@ -842,6 +842,22 @@ namespace MWMechanics
 
                     if (isDamageEffect)
                     {
+                        /*
+                            Start of tes3mp addition
+
+                            If the victim was a LocalActor who died, record the caster as the killer
+                        */
+                        if (mwmp::Main::get().getCellController()->isLocalActor(ptr))
+                        {
+                            bool isSuicide = ptr == caster || caster.isEmpty();
+
+                            mwmp::Main::get().getCellController()->getLocalActor(ptr)->killer = isSuicide ?
+                                MechanicsHelper::getTarget(ptr) : MechanicsHelper::getTarget(caster);
+                        }
+                        /*
+                            End of tes3mp addition
+                        */
+
                         if (caster == player || playerFollowers.find(caster) != playerFollowers.end())
                         {
                             if (caster.getClass().getNpcStats(caster).isWerewolf())

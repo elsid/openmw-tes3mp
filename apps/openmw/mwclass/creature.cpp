@@ -553,9 +553,10 @@ namespace MWClass
         /*
             Start of tes3mp addition
 
-            If the attacker was the LocalPlayer or LocalActor, record their target and send a packet with it
+            If the attacker was the LocalPlayer or LocalActor, record their target and send a
+            packet with it
 
-            If the victim was a LocalActor who died, record their attacker as the deathReason
+            If the victim was a LocalActor who died, record their attacker as the killer
         */
         mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(attacker);
 

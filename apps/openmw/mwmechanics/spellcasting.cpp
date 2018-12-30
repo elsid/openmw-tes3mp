@@ -537,7 +537,7 @@ namespace MWMechanics
                         /*
                             Start of tes3mp addition
 
-                            If the victim was a LocalPlayer or LocalActor who died, record their attacker as the deathReason
+                            If the victim was a LocalPlayer or LocalActor who died, record the caster as the killer
                         */
                         if (!wasDead && isDead)
                         {
