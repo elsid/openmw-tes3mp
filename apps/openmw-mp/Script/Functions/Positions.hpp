@@ -4,7 +4,6 @@
 #include "../Types.hpp"
 
 #define POSITIONAPI \
-    {"GetPos",              PositionFunctions::GetPos},\
     {"GetPosX",             PositionFunctions::GetPosX},\
     {"GetPosY",             PositionFunctions::GetPosY},\
     {"GetPosZ",             PositionFunctions::GetPosZ},\
@@ -13,7 +12,6 @@
     {"GetPreviousCellPosY", PositionFunctions::GetPreviousCellPosY},\
     {"GetPreviousCellPosZ", PositionFunctions::GetPreviousCellPosZ},\
     \
-    {"GetRot",              PositionFunctions::GetRot},\
     {"GetRotX",             PositionFunctions::GetRotX},\
     {"GetRotZ",             PositionFunctions::GetRotZ},\
     \
@@ -28,18 +26,6 @@
 class PositionFunctions
 {
 public:
-
-    /**
-    * \brief Assign the player's positional coordinate values to the variables passed as
-    * parameters.
-    *
-    * \param pid The player ID.
-    * \param x The variable for the X position.
-    * \param y The variable for the Y position.
-    * \param z The variable for the Z position.
-    * \return void
-    */
-    static void GetPos(unsigned short pid, float *x, float *y, float *z) noexcept;
 
     /**
     * \brief Get the X position of a player.
@@ -88,18 +74,6 @@ public:
     * \return The Z position.
     */
     static double GetPreviousCellPosZ(unsigned short pid) noexcept;
-
-    /**
-    * \brief Assign the player's rotational coordinate values to the variables passed as
-    * parameters.
-    *
-    * \param pid The player ID.
-    * \param x The variable for the X rotation.
-    * \param y The variable for the Y rotation.
-    * \param z The variable for the Z rotation.
-    * \return void
-    */
-    static void GetRot(unsigned short pid, float *x, float *y, float *z) noexcept;
 
     /**
     * \brief Get the X rotation of a player.

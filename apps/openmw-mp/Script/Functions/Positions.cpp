@@ -7,20 +7,6 @@
 #include <iostream>
 using namespace std;
 
-void PositionFunctions::GetPos(unsigned short pid, float *x, float *y, float *z) noexcept
-{
-    *x = 0.00;
-    *y = 0.00;
-    *z = 0.00;
-
-    Player *player;
-    GET_PLAYER(pid, player,);
-
-    *x = player->position.pos[0];
-    *y = player->position.pos[1];
-    *z = player->position.pos[2];
-}
-
 double PositionFunctions::GetPosX(unsigned short pid) noexcept
 {
     Player *player;
@@ -67,20 +53,6 @@ double PositionFunctions::GetPreviousCellPosZ(unsigned short pid) noexcept
     GET_PLAYER(pid, player, 0.0f);
 
     return player->previousCellPosition.pos[2];
-}
-
-void PositionFunctions::GetRot(unsigned short pid, float *x, float *y, float *z) noexcept
-{
-    *x = 0.00;
-    *y = 0.00;
-    *z = 0.00;
-
-    Player *player;
-    GET_PLAYER(pid, player, );
-
-    *x = player->position.rot[0];
-    *y = player->position.rot[1];
-    *z = player->position.rot[2];
 }
 
 double PositionFunctions::GetRotX(unsigned short pid) noexcept
