@@ -54,5 +54,5 @@ void ScriptFunctions::FreeTimer(int timerId) noexcept
 
 bool ScriptFunctions::IsTimerElapsed(int timerId) noexcept
 {
-    return TimerAPI::IsEndTimer(timerId);
+    return TimerAPI::IsTimerElapsed(timerId);
 }

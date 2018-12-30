@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.03.16.
-//
-
 #ifndef OPENMW_TIMERAPI_HPP
 #define OPENMW_TIMERAPI_HPP
 
@@ -27,7 +23,7 @@ namespace mwmp
 #endif
         void Tick();
 
-        bool IsEnd();
+        bool IsEnded();
         void Stop();
         void Start();
         void Restart(int msec);
@@ -36,7 +32,7 @@ namespace mwmp
         std::string publ, arg_types;
         std::vector<boost::any> args;
         Script *scr;
-        bool end;
+        bool isEnded;
     };
 
     class TimerAPI
@@ -50,7 +46,7 @@ namespace mwmp
         static void ResetTimer(int timerid, long msec);
         static void StartTimer(int timerid);
         static void StopTimer(int timerid);
-        static bool IsEndTimer(int timerid);
+        static bool IsTimerElapsed(int timerid);
 
         static void Terminate();
 

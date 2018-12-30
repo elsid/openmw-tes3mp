@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.03.16.
-//
-
 #include "TimerAPI.hpp"
 
 #include <chrono>
@@ -14,7 +10,7 @@ Timer::Timer(ScriptFunc callback, long msec, const std::string& def, std::vector
 {
     targetMsec = msec;
     this->args = args;
-    end = true;
+    isEnded = true;
 }
 
 #if defined(ENABLE_LUA)
@@ -22,13 +18,13 @@ Timer::Timer(lua_State *lua, ScriptFuncLua callback, long msec, const std::strin
 {
     targetMsec = msec;
     this->args = args;
-    end = true;
+    isEnded = true;
 }
 #endif
 
 void Timer::Tick()
 {
-    if (end)
+    if (isEnded)
         return;
 
     const auto duration = chrono::system_clock::now().time_since_epoch();
@@ -36,19 +32,19 @@ void Timer::Tick()
 
     if (time - startTime >= targetMsec)
     {
-        end = true;
+        isEnded = true;
         Call(args);
     }
 }
 
-bool Timer::IsEnd()
+bool Timer::IsEnded()
 {
-    return end;
+    return isEnded;
 }
 
 void Timer::Stop()
 {
-    end = true;
+    isEnded = true;
 }
 
 void Timer::Restart(int msec)
@@ -59,7 +55,7 @@ void Timer::Restart(int msec)
 
 void Timer::Start()
 {
-    end = false;
+    isEnded = false;
 
     const auto duration = chrono::system_clock::now().time_since_epoch();
     const auto msec = chrono::duration_cast<chrono::milliseconds>(duration).count();
@@ -172,12 +168,12 @@ void TimerAPI::StopTimer(int timerid)
     }
 }
 
-bool TimerAPI::IsEndTimer(int timerid)
+bool TimerAPI::IsTimerElapsed(int timerid)
 {
     bool ret = false;
     try
     {
-        ret = timers.at(timerid)->IsEnd();
+        ret = timers.at(timerid)->IsEnded();
     }
     catch(...)
     {
