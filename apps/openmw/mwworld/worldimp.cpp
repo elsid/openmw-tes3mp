@@ -3258,10 +3258,11 @@ namespace MWWorld
 
                 If this actor is a LocalPlayer or LocalActor, get their Attack and prepare
                 it for sending
+
+                Set the attack details before going through with the casting, in case it's
+                a one use item that would get removed through the casting (like a scroll)
             */
             {
-                cast.cast(*inv.getSelectedEnchantItem());
-
                 mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(actor);
 
                 if (localAttack)
@@ -3271,6 +3272,8 @@ namespace MWWorld
                     localAttack->itemId = inv.getSelectedEnchantItem()->getCellRef().getRefId();
                     localAttack->shouldSend = true;
                 }
+
+                cast.cast(*inv.getSelectedEnchantItem());
             }
             /*
                 End of tes3mp addition
