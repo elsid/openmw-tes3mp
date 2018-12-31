@@ -393,18 +393,14 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
                 break;
         }
 
-        if (it != inventoryStore.end())
-        {
-            inventoryStore.setSelectedEnchantItem(it);
-            LOG_APPEND(Log::LOG_VERBOSE, "- itemId: %s", attack.itemId.c_str());
-            MWBase::Environment::get().getWorld()->castSpell(attacker);
-            inventoryStore.setSelectedEnchantItem(inventoryStore.end());
-        }
-        else
-        {
-            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Could not find item %s used by %s to cast item spell!",
-                attack.itemId.c_str(), attacker.getCellRef().getRefId().c_str());
-        }
+        // Add the item if it's missing
+        if (it == inventoryStore.end())
+            it = attacker.getClass().getContainerStore(attacker).add(attack.itemId, 1, attacker);
+
+        inventoryStore.setSelectedEnchantItem(it);
+        LOG_APPEND(Log::LOG_VERBOSE, "- itemId: %s", attack.itemId.c_str());
+        MWBase::Environment::get().getWorld()->castSpell(attacker);
+        inventoryStore.setSelectedEnchantItem(inventoryStore.end());
     }
 }
 
