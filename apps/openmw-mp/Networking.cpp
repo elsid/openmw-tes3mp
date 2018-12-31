@@ -112,10 +112,18 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
 
         if (player->serverPassword != serverPassword)
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong server password %s used by client at %s",
-                player->serverPassword.c_str(), packet->systemAddress.ToString());
-            kickPlayer(player->guid);
-            return;
+            if (isPassworded())
+            {
+                LOG_MESSAGE_SIMPLE(Log::LOG_WARN, "Wrong server password %s used by client at %s",
+                    player->serverPassword.c_str(), packet->systemAddress.ToString());
+                kickPlayer(player->guid);
+                return;
+            }
+            else
+            {
+                LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Client at %s tried to join using password, despite the server not being passworded",
+                    packet->systemAddress.ToString());
+            }
         }
         player->setHandshake();
         return;
