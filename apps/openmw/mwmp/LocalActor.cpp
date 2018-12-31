@@ -22,6 +22,7 @@ using namespace std;
 
 LocalActor::LocalActor()
 {
+    hasSentData = false;
     posWasChanged = false;
     equipmentChanged = false;
 
@@ -61,6 +62,8 @@ void LocalActor::update(bool forceUpdate)
         updateSpeech();
         updateAttack();
     }
+
+    hasSentData = true;
 }
 
 void LocalActor::updateCell()
