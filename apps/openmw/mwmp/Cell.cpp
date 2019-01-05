@@ -399,6 +399,9 @@ void Cell::readCellChange(ActorList& actorList)
 
 void Cell::initializeLocalActor(const MWWorld::Ptr& ptr)
 {
+    std::string mapIndex = Main::get().getCellController()->generateMapIndex(ptr);
+    LOG_APPEND(Log::LOG_VERBOSE, "- Initializing LocalActor %s in %s", mapIndex.c_str(), getDescription().c_str());
+
     LocalActor *actor = new LocalActor();
     actor->cell = *store->getCell();
     actor->setPtr(ptr);
@@ -408,16 +411,17 @@ void Cell::initializeLocalActor(const MWWorld::Ptr& ptr)
     if (ptr.getClass().getCreatureStats(ptr).isDead())
         actor->wasDead = true;
 
-    std::string mapIndex = Main::get().getCellController()->generateMapIndex(ptr);
     localActors[mapIndex] = actor;
 
     Main::get().getCellController()->setLocalActorRecord(mapIndex, getDescription());
 
-    LOG_APPEND(Log::LOG_VERBOSE, "- Initialized LocalActor %s in %s", mapIndex.c_str(), getDescription().c_str());
+    LOG_APPEND(Log::LOG_VERBOSE, "- Successfully initialized LocalActor %s in %s", mapIndex.c_str(), getDescription().c_str());
 }
 
 void Cell::initializeLocalActors()
 {
+    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Initializing LocalActors in %s", getDescription().c_str());
+
     for (const auto &mergedRef : store->getMergedRefs())
     {
         if (mergedRef->mClass->isActor())
@@ -434,20 +438,24 @@ void Cell::initializeLocalActors()
                 initializeLocalActor(ptr);
         }
     }
+
+    LOG_APPEND(Log::LOG_VERBOSE, "- Successfully initialized LocalActors in %s", getDescription().c_str());
 }
 
 void Cell::initializeDedicatedActor(const MWWorld::Ptr& ptr)
 {
+    std::string mapIndex = Main::get().getCellController()->generateMapIndex(ptr);
+    LOG_APPEND(Log::LOG_VERBOSE, "- Initializing DedicatedActor %s in %s", mapIndex.c_str(), getDescription().c_str());
+
     DedicatedActor *actor = new DedicatedActor();
     actor->cell = *store->getCell();
     actor->setPtr(ptr);
 
-    std::string mapIndex = Main::get().getCellController()->generateMapIndex(ptr);
     dedicatedActors[mapIndex] = actor;
 
     Main::get().getCellController()->setDedicatedActorRecord(mapIndex, getDescription());
 
-    LOG_APPEND(Log::LOG_VERBOSE, "- Initialized DedicatedActor %s in %s", mapIndex.c_str(), getDescription().c_str());
+    LOG_APPEND(Log::LOG_VERBOSE, "- Successfully initialized DedicatedActor %s in %s", mapIndex.c_str(), getDescription().c_str());
 }
 
 void Cell::initializeDedicatedActors(ActorList& actorList)

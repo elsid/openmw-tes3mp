@@ -77,6 +77,8 @@ void CellController::initializeCell(const ESM::Cell& cell)
     // If this key doesn't exist, create it
     if (cellsInitialized.count(mapIndex) == 0)
     {
+        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Initializing mwmp::Cell %s", cell.getDescription().c_str());
+
         MWWorld::CellStore *cellStore = getCellStore(cell);
 
         if (!cellStore) return;
@@ -84,7 +86,7 @@ void CellController::initializeCell(const ESM::Cell& cell)
         mwmp::Cell *mpCell = new mwmp::Cell(cellStore);
         cellsInitialized[mapIndex] = mpCell;
 
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "- Initialized mwmp::Cell %s", mpCell->getDescription().c_str());
+        LOG_APPEND(Log::LOG_VERBOSE, "- Successfully initialized mwmp::Cell %s", cell.getDescription().c_str());
     }
 }
 
