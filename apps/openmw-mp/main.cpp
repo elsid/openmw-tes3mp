@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
     LangLua::AddPackageCPath(Utils::convertPath(pluginHome + "/lib/?.dll"));
 #else
-    LangLua::AddPackageCPath(Utils::convertPath(plugin_home + "/lib/?.so"));
+    LangLua::AddPackageCPath(Utils::convertPath(pluginHome + "/lib/?.so"));
 #endif
 
 #endif
