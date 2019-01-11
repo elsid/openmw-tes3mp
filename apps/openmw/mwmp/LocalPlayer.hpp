@@ -77,6 +77,7 @@ namespace mwmp
 
         void sendClass();
         void sendInventory();
+        void sendItemChange(const mwmp::Item& item, unsigned int action);
         void sendItemChange(const MWWorld::Ptr& itemPtr, int count, unsigned int action);
         void sendItemChange(const std::string& refId, int count, unsigned int action);
         void sendSpellbook();

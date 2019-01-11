@@ -1403,31 +1403,23 @@ void LocalPlayer::sendInventory()
     getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->Send();
 }
 
+void LocalPlayer::sendItemChange(const mwmp::Item& item, unsigned int action)
+{
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending item change for %s with action %i, count %i",
+        item.refId.c_str(), action, item.count);
+
+    inventoryChanges.items.clear();
+    inventoryChanges.items.push_back(item);
+    inventoryChanges.action = action;
+
+    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->setPlayer(this);
+    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->Send();
+}
 
 void LocalPlayer::sendItemChange(const MWWorld::Ptr& itemPtr, int count, unsigned int action)
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending item change for %s with action %i, count %i",
-        itemPtr.getCellRef().getRefId().c_str(), action, count);
-
-    inventoryChanges.items.clear();
-
-    mwmp::Item item;
-
-    if (itemPtr.getClass().isGold(itemPtr))
-        item.refId = MWWorld::ContainerStore::sGoldId;
-    else
-        item.refId = itemPtr.getCellRef().getRefId();
-
-    item.count = count;
-    item.charge = itemPtr.getCellRef().getCharge();
-    item.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
-    item.soul = itemPtr.getCellRef().getSoul();
-
-    inventoryChanges.items.push_back(item);
-
-    inventoryChanges.action = action;
-    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_PLAYER_INVENTORY)->Send();
+    mwmp::Item item = MechanicsHelper::getItem(itemPtr, count);
+    sendItemChange(item, action);
 }
 
 void LocalPlayer::sendItemChange(const std::string& refId, int count, unsigned int action)
