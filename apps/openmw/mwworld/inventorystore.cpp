@@ -13,6 +13,7 @@
 
     Include additional headers for multiplayer purposes
 */
+#include <components/openmw-mp/Log.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/CellController.hpp"
 #include "../mwmp/PlayerList.hpp"
@@ -251,7 +252,19 @@ MWWorld::ContainerStoreIterator MWWorld::InventoryStore::findSlot (int slot) con
     {
         // Object has been deleted
         // This should no longer happen, since the new remove function will unequip first
-        throw std::runtime_error("Invalid slot, make sure you are not calling RefData::setCount for a container object");
+
+        /*
+            Start of tes3mp change (major)
+
+            Instead of throwing an error, display an error log message with information about
+            the item
+        */
+        //throw std::runtime_error("Invalid slot, make sure you are not calling RefData::setCount for a container object");
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Invalid slot, make sure you are not calling RefData::setCount for a container object\n- item was %s",
+            mSlots[slot]->getCellRef().getRefId().c_str());
+        /*
+            End of tes3mp change (major)
+        */
     }
 
     return mSlots[slot];
