@@ -17,6 +17,7 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/MechanicsHelper.hpp"
 /*
     End of tes3mp addition
 */
@@ -182,12 +183,15 @@ void Recharge::onItemClicked(MyGUI::Widget *sender, const MWWorld::Ptr& item)
             Send PlayerInventory packets that replace the original item with the new one
         */
         mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
-        localPlayer->sendItemChange(item, 1, mwmp::InventoryChanges::REMOVE);
+        mwmp::Item removedItem = MechanicsHelper::getItem(item, 1);
 
         item.getCellRef().setEnchantmentCharge(
             std::min(item.getCellRef().getEnchantmentCharge() + restored, static_cast<float>(enchantment->mData.mCharge)));
 
-        localPlayer->sendItemChange(item, 1, mwmp::InventoryChanges::ADD);
+        mwmp::Item addedItem = MechanicsHelper::getItem(item, 1);
+
+        localPlayer->sendItemChange(addedItem, mwmp::InventoryChanges::ADD);
+        localPlayer->sendItemChange(removedItem, mwmp::InventoryChanges::REMOVE);
         /*
             End of tes3mp change (minor)
         */

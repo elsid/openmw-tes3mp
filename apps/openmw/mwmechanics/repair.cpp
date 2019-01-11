@@ -12,6 +12,7 @@
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/MechanicsHelper.hpp"
 /*
     End of tes3mp addition
 */
@@ -76,11 +77,14 @@ void Repair::repair(const MWWorld::Ptr &itemToRepair)
             Send PlayerInventory packets that replace the original item with the new one
         */
         mwmp::LocalPlayer *localPlayer = mwmp::Main::get().getLocalPlayer();
-        localPlayer->sendItemChange(itemToRepair, 1, mwmp::InventoryChanges::REMOVE);
+        mwmp::Item removedItem = MechanicsHelper::getItem(itemToRepair, 1);
 
         itemToRepair.getCellRef().setCharge(charge);
 
-        localPlayer->sendItemChange(itemToRepair, 1, mwmp::InventoryChanges::ADD);
+        mwmp::Item addedItem = MechanicsHelper::getItem(itemToRepair, 1);
+
+        localPlayer->sendItemChange(addedItem, mwmp::InventoryChanges::ADD);
+        localPlayer->sendItemChange(removedItem, mwmp::InventoryChanges::REMOVE);
         /*
             End of tes3mp change (minor)
         */
