@@ -920,7 +920,7 @@ void LocalPlayer::setAttributes()
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
 
-    MWMechanics::CreatureStats *ptrCreatureStats = &ptrPlayer.getClass().getCreatureStats(ptrPlayer);
+    MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
     MWMechanics::AttributeValue attributeValue;
 
     for (int attributeIndex = 0; attributeIndex < 8; ++attributeIndex)
@@ -928,14 +928,14 @@ void LocalPlayer::setAttributes()
         // If the server wants to clear our attribute's non-zero modifier, we need to remove
         // the spell effect causing it, to avoid an infinite loop where the effect keeps resetting
         // the modifier
-        if (creatureStats.mAttributes[attributeIndex].mMod == 0 && ptrCreatureStats->getAttribute(attributeIndex).getModifier() > 0)
+        if (creatureStats.mAttributes[attributeIndex].mMod == 0 && ptrNpcStats->getAttribute(attributeIndex).getModifier() > 0)
         {
-            ptrCreatureStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifyAttribute, attributeIndex);
+            ptrNpcStats->getActiveSpells().purgeEffectByArg(ESM::MagicEffect::FortifyAttribute, attributeIndex);
             MWBase::Environment::get().getMechanicsManager()->updateMagicEffects(ptrPlayer);
 
             // Is the modifier for this attribute still higher than 0? If so, unequip items that
             // fortify the attribute
-            if (ptrCreatureStats->getAttribute(attributeIndex).getModifier() > 0)
+            if (ptrNpcStats->getAttribute(attributeIndex).getModifier() > 0)
             {
                 MechanicsHelper::unequipItemsByEffect(ptrPlayer, ESM::Enchantment::ConstantEffect, ESM::MagicEffect::FortifyAttribute, attributeIndex, -1);
                 mwmp::Main::get().getGUIController()->refreshGuiMode(MWGui::GM_Inventory);
@@ -943,7 +943,9 @@ void LocalPlayer::setAttributes()
         }
 
         attributeValue.readState(creatureStats.mAttributes[attributeIndex]);
-        ptrCreatureStats->setAttribute(attributeIndex, attributeValue);
+        ptrNpcStats->setAttribute(attributeIndex, attributeValue);
+
+        ptrNpcStats->setSkillIncrease(attributeIndex, npcStats.mSkillIncrease[attributeIndex]);
     }
 }
 
@@ -976,11 +978,6 @@ void LocalPlayer::setSkills()
         skillValue.readState(npcStats.mSkills[skillIndex]);
         ptrNpcStats->setSkill(skillIndex, skillValue);
     }
-
-    for (int attributeIndex = 0; attributeIndex < 8; ++attributeIndex)
-        ptrNpcStats->setSkillIncrease(attributeIndex, npcStats.mSkillIncrease[attributeIndex]);
-
-    ptrNpcStats->setLevelProgress(npcStats.mLevelProgress);
 }
 
 void LocalPlayer::setLevel()
@@ -988,8 +985,9 @@ void LocalPlayer::setLevel()
     MWBase::World *world = MWBase::Environment::get().getWorld();
     MWWorld::Ptr ptrPlayer = world->getPlayerPtr();
 
-    MWMechanics::CreatureStats *ptrCreatureStats = &ptrPlayer.getClass().getCreatureStats(ptrPlayer);
-    ptrCreatureStats->setLevel(creatureStats.mLevel);
+    MWMechanics::NpcStats *ptrNpcStats = &ptrPlayer.getClass().getNpcStats(ptrPlayer);
+    ptrNpcStats->setLevel(creatureStats.mLevel);
+    ptrNpcStats->setLevelProgress(npcStats.mLevelProgress);
 }
 
 void LocalPlayer::setBounty()
