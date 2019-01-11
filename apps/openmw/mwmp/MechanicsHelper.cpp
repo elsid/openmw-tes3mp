@@ -125,6 +125,23 @@ MWWorld::Ptr MechanicsHelper::getPlayerPtr(const Target& target)
     return nullptr;
 }
 
+mwmp::Item MechanicsHelper::getItem(const MWWorld::Ptr& itemPtr, int count)
+{
+    mwmp::Item item;
+
+    if (itemPtr.getClass().isGold(itemPtr))
+        item.refId = MWWorld::ContainerStore::sGoldId;
+    else
+        item.refId = itemPtr.getCellRef().getRefId();
+
+    item.count = count;
+    item.charge = itemPtr.getCellRef().getCharge();
+    item.enchantmentCharge = itemPtr.getCellRef().getEnchantmentCharge();
+    item.soul = itemPtr.getCellRef().getSoul();
+
+    return item;
+}
+
 mwmp::Target MechanicsHelper::getTarget(const MWWorld::Ptr& ptr)
 {
     mwmp::Target target;

@@ -22,6 +22,7 @@ namespace MechanicsHelper
 
     MWWorld::Ptr getPlayerPtr(const mwmp::Target& target);
 
+    mwmp::Item getItem(const MWWorld::Ptr& itemPtr, int count);
     mwmp::Target getTarget(const MWWorld::Ptr& ptr);
     void clearTarget(mwmp::Target& target);
     bool isEmptyTarget(const mwmp::Target& target);
