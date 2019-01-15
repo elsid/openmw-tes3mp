@@ -613,13 +613,17 @@ namespace MWScript
             Start of tes3mp addition
 
             Send an ID_OBJECT_STATE packet whenever an object is enabled, as long as
-            the player is logged in on the server and the object wasn't already
-            enabled previously
+            the player is logged in on the server, the object is still disabled, and our last
+            packet regarding its state did not already attempt to enable it (to prevent
+            packet spam)
         */
         if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
         {
-            if (ref.isInCell() && !ref.getRefData().isEnabled())
+            if (ref.isInCell() && !ref.getRefData().isEnabled() &&
+                ref.getRefData().getLastCommunicatedState() != MWWorld::RefData::StateCommunication::Enabled)
             {
+                ref.getRefData().setLastCommunicatedState(MWWorld::RefData::StateCommunication::Enabled);
+
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
                 objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
@@ -650,14 +654,18 @@ namespace MWScript
         /*
             Start of tes3mp addition
 
-            Send an ID_OBJECT_STATE packet whenever an object is disabled, as long as
-            the player is logged in on the server and the object wasn't already
-            disabled previously
+            Send an ID_OBJECT_STATE packet whenever an object should be disabled, as long as
+            the player is logged in on the server, the object is still enabled, and our last
+            packet regarding its state did not already attempt to disable it (to prevent
+            packet spam)
         */
         if (mwmp::Main::get().getLocalPlayer()->isLoggedIn())
         {
-            if (ref.isInCell() && ref.getRefData().isEnabled())
+            if (ref.isInCell() && ref.getRefData().isEnabled() &&
+                ref.getRefData().getLastCommunicatedState() != MWWorld::RefData::StateCommunication::Disabled)
             {
+                ref.getRefData().setLastCommunicatedState(MWWorld::RefData::StateCommunication::Disabled);
+
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
                 objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(getContextType());
