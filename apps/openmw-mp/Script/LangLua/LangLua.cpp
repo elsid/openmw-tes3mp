@@ -107,6 +107,32 @@ template<> struct F_<1> { static constexpr LuaFuctionData F{"CreateTimerEx", Lan
 template<> struct F_<2> { static constexpr LuaFuctionData F{"MakePublic", LangLua::MakePublic}; };
 template<> struct F_<3> { static constexpr LuaFuctionData F{"CallPublic", LangLua::CallPublic}; };
 
+#ifdef __arm__
+template<std::size_t... Is>
+struct indices {};
+template<std::size_t N, std::size_t... Is>
+struct build_indices : build_indices<N-1, N-1, Is...> {};
+template<std::size_t... Is>
+struct build_indices<0, Is...> : indices<Is...> {};
+template<std::size_t N>
+using IndicesFor = build_indices<N>;
+
+template<size_t... Indices>
+LuaFuctionData *functions(indices<Indices...>)
+{
+
+    static LuaFuctionData functions_[sizeof...(Indices)]{
+            F_<Indices>::F...
+    };
+
+    static_assert(
+            sizeof(functions_) / sizeof(functions_[0]) ==
+            sizeof(ScriptFunctions::functions) / sizeof(ScriptFunctions::functions[0]),
+            "Not all functions have been mapped to Lua");
+
+    return functions_;
+}
+#else
 template<unsigned int I>
 struct C
 {
@@ -116,7 +142,6 @@ struct C
         C<I - 1>::Fn(functions_);
     }
 };
-
 
 template<>
 struct C<0>
@@ -141,6 +166,7 @@ LuaFuctionData *functions()
 
     return functions_;
 }
+#endif
 
 void LangLua::LoadProgram(const char *filename)
 {
@@ -152,8 +178,11 @@ void LangLua::LoadProgram(const char *filename)
 
     constexpr auto functions_n = sizeof(ScriptFunctions::functions) / sizeof(ScriptFunctions::functions[0]);
 
+#if __arm__
+    LuaFuctionData *functions_ = functions(IndicesFor<functions_n>{});
+#else
     LuaFuctionData *functions_ = functions<sizeof(ScriptFunctions::functions) / sizeof(ScriptFunctions::functions[0])>();
-
+#endif
     luabridge::Namespace tes3mp = luabridge::getGlobalNamespace(lua).beginNamespace("tes3mp");
 
     for (unsigned i = 0; i < functions_n; i++)
