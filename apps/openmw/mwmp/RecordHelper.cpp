@@ -287,7 +287,6 @@ void RecordHelper::overrideEnchantmentRecord(const mwmp::EnchantmentRecord& reco
         return;
     }
 
-    bool isExistingId = doesEnchantmentRecordExist(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
@@ -419,9 +418,6 @@ void RecordHelper::overrideSpellRecord(const mwmp::SpellRecord& record)
 
         world->getModifiableStore().overrideRecord(finalData);
     }
-
-    if (isExistingId)
-        world->updatePtrsWithRefId(recordData.mId);
 }
 
 void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
