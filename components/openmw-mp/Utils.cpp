@@ -211,7 +211,7 @@ void Utils::printVersion(std::string appName, std::string version, std::string c
     cout << appName << " " << version;
     cout << " (" << getOperatingSystemType() << " " << getArchitectureType() << ")" << endl;
     cout << "Protocol version: " << protocol << endl;
-    cout << "Commit hash: " << commitHash.substr(0, 10) << endl;
+    cout << "Oldest compatible commit hash: " << commitHash.substr(0, 10) << endl;
 
     cout << "------------------------------------------------------------" << endl;
 }
