@@ -26,6 +26,7 @@ Community administrators
 Community moderators
 --------------------
 
+    Lysol
     Michael Fitzmayer (mupf)
     Nac
     NicholasAH
@@ -53,6 +54,7 @@ Translation
 Super special thanks
 --------------------
 
+    Alexander Ovsyannikov
     Bret Curtis (psi29a)
     Gabriel Pascu (iGrebla)
     greetasdf
@@ -84,6 +86,7 @@ Special thanks
     Scorcio
     Simon Nemes
     Texafornian
+    Thrud
     Zaphida
     All the developers of OpenMW for creating an amazing open source project
 
