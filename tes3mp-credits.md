@@ -4,14 +4,14 @@ tes3mp Credits
 Programmers
 ----------------
 
-    Stanislav Zhukov (Koncord) - Overall architecture, networking & scripting systems, player sync, server browser & master server
+    Stanislav Zhukov (Koncord) - Architecture, networking & scripting systems, player sync, server browser & master server
     David Cernat - World, NPC & quest sync, player sync improvements, state saving & loading, extensive bug fixes
 
 
 Additional programming
 ----------------------
 
-    Grim Kriegor - Lua teleportation commands, early script fixes
+    Grim Kriegor - Linux deployment scripts, Lua teleportation commands, early script fixes
     Battlerax - Various small fixes
 
 
@@ -75,8 +75,9 @@ Special thanks
     Gluka
     Goodevil
     Ignatious
-    James Wards of Gore Corps LAN Club (www.gorecorps.co.nz)
+    James Wards of Gore Corps LAN Club (gorecorps.co.nz)
     Jeremiah
+    Kyle Willey of Loreshaper Games (steempeak.com/@loreshapergames)
     Lewis Sadlier
     Luc Keating
     Michael Zagar (Zoops)
