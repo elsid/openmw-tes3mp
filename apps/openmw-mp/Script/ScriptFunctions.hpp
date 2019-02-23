@@ -47,7 +47,6 @@ class ScriptFunctions
 {
 public:
 
-    static void GetArguments(std::vector<boost::any> &params, va_list args, const std::string &def);
     static void MakePublic(ScriptFunc _public, const char *name, char ret_type, const char *def) noexcept;
     static boost::any CallPublic(const char *name, va_list args) noexcept;
 
