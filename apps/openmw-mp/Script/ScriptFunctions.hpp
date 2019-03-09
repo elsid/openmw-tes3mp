@@ -156,6 +156,7 @@ public:
             {"OnServerInit",             Callback<>()},
             {"OnServerPostInit",         Callback<>()},
             {"OnServerExit",             Callback<bool>()},
+            {"OnServerScriptCrash",      Callback<>()},
             {"OnPlayerConnect",          Callback<unsigned short>()},
             {"OnPlayerDisconnect",       Callback<unsigned short>()},
             {"OnPlayerDeath",            Callback<unsigned short>()},
