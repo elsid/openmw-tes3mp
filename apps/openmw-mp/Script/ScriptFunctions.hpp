@@ -209,7 +209,7 @@ public:
             {"OnWorldMap",               Callback<unsigned short>()},
             {"OnWorldWeather",           Callback<unsigned short>() },
             {"OnMpNumIncrement",         Callback<int>()},
-            {"OnRequestPluginList",      Callback<>()}
+            {"OnRequestDataFileList",    Callback<>()}
     };
 };
 
