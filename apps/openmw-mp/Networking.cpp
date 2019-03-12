@@ -585,8 +585,8 @@ void Networking::InitQuery(std::string queryAddr, unsigned short queryPort)
 
 void Networking::postInit()
 {
-    Script::Call<Script::CallbackIdentity("OnServerPostInit")>();
     Script::Call<Script::CallbackIdentity("OnRequestDataFileList")>();
+    Script::Call<Script::CallbackIdentity("OnServerPostInit")>();
 }
 
 PacketPreInit::PluginContainer &Networking::getSamples()
