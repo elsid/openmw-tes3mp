@@ -35,6 +35,11 @@ void ServerFunctions::UnbanAddress(const char *ipAddress) noexcept
     mwmp::Networking::getPtr()->unbanAddress(ipAddress);
 }
 
+const char* ServerFunctions::GetDataPath() noexcept
+{
+    return Script::GetModDir();
+}
+
 const char *ServerFunctions::GetOperatingSystemType() noexcept
 {
     return Utils::getOperatingSystemType().c_str();
@@ -137,34 +142,41 @@ void ServerFunctions::SetRuleValue(const char *key, double value) noexcept
         mc->SetRuleValue(key, value);
 }
 
-void ServerFunctions::AddPluginHash(const char *pluginName, const char *hashStr) noexcept
+void ServerFunctions::AddDataFileRequirement(const char *dataFilename, const char *checksumString) noexcept
 {
     auto &samples = mwmp::Networking::getPtr()->getSamples();
-    auto it = std::find_if(samples.begin(), samples.end(), [&pluginName](mwmp::PacketPreInit::PluginPair &item) {
-        return item.first == pluginName;
+    auto it = std::find_if(samples.begin(), samples.end(), [&dataFilename](mwmp::PacketPreInit::PluginPair &item) {
+        return item.first == dataFilename;
     });
     if (it != samples.end())
-        it->second.push_back((unsigned) std::stoul(hashStr));
+        it->second.push_back((unsigned) std::stoul(checksumString));
     else
     {
-        mwmp::PacketPreInit::HashList hashList;
+        mwmp::PacketPreInit::HashList checksumList;
 
-        unsigned hash = 0;
+        unsigned checksum = 0;
 
-        if (strlen(hashStr) != 0)
+        if (strlen(checksumString) != 0)
         {
-            hash = (unsigned) std::stoul(hashStr);
-            hashList.push_back(hash);
+            checksum = (unsigned) std::stoul(checksumString);
+            checksumList.push_back(checksum);
         }
-        samples.emplace_back(pluginName, hashList);
+        samples.emplace_back(dataFilename, checksumList);
 
         auto mclient = mwmp::Networking::getPtr()->getMasterClient();
         if (mclient)
-            mclient->PushPlugin({pluginName, hash});
+            mclient->PushPlugin({dataFilename, checksum});
     }
 }
 
+// All methods below are deprecated versions of methods from above
+
 const char* ServerFunctions::GetModDir() noexcept
 {
-    return Script::GetModDir();
+    return GetDataPath();
+}
+
+void ServerFunctions::AddPluginHash(const char *pluginName, const char *checksumString) noexcept
+{
+    AddDataFileRequirement(pluginName, checksumString);
 }

@@ -10,6 +10,7 @@
     {"BanAddress",                  ServerFunctions::BanAddress},\
     {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
+    {"GetDataPath",                 ServerFunctions::GetDataPath},\
     {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
     {"GetArchitectureType",         ServerFunctions::GetArchitectureType},\
     {"GetServerVersion",            ServerFunctions::GetServerVersion},\
@@ -29,8 +30,11 @@
     {"SetScriptErrorIgnoringState", ServerFunctions::SetScriptErrorIgnoringState},\
     {"SetRuleString",               ServerFunctions::SetRuleString},\
     {"SetRuleValue",                ServerFunctions::SetRuleValue},\
-    {"AddPluginHash",               ServerFunctions::AddPluginHash},\
-    {"GetModDir",                   ServerFunctions::GetModDir}
+    \
+    {"AddDataFileRequirement",      ServerFunctions::AddDataFileRequirement},\
+    \
+    {"GetModDir",                   ServerFunctions::GetModDir},\
+    {"AddPluginHash",               ServerFunctions::AddPluginHash}
 
 class ServerFunctions
 {
@@ -67,6 +71,13 @@ public:
     * \return void
     */
     static void UnbanAddress(const char *ipAddress) noexcept;
+
+    /**
+    * \brief Get the path of the server's data folder.
+    *
+    * \return The data path.
+    */
+    static const char *GetDataPath() noexcept;
 
     /**
     * \brief Get the type of the operating system used by the server.
@@ -119,7 +130,7 @@ public:
     /**
      * \brief Get the port used by the server.
      *
-     * \return Port
+     * \return The port.
      */
     static unsigned short GetPort() noexcept;
 
@@ -220,13 +231,23 @@ public:
     static void SetRuleValue(const char *key, double value) noexcept;
 
     /**
-     * \brief Adds plugins to the internal server structure to validate players.
-     * @param pluginName Name with extension of the plugin or master file.
-     * @param hash Hash string
+     * \brief Add a data file and a corresponding CRC32 checksum to the data file loadout
+     *        that connecting clients need to match.
+     *
+     * It can be used multiple times to set multiple checksums for the same data file.
+     *
+     * Note: If an empty string is provided for the checksum, a checksum will not be
+     *       required for that data file.
+     *
+     * @param dataFilename The filename of the data file.
+     * @param checksumString A string with the CRC32 checksum required.
      */
-    static void AddPluginHash(const char *pluginName, const char *hash) noexcept;
+    static void AddDataFileRequirement(const char *dataFilename, const char *checksumString) noexcept;
+
+    // All methods below are deprecated versions of methods from above
 
     static const char *GetModDir() noexcept;
+    static void AddPluginHash(const char *pluginName, const char *checksumString) noexcept;
 };
 
 #endif //OPENMW_SERVERAPI_HPP
