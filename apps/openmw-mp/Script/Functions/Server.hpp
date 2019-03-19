@@ -4,12 +4,17 @@
 #include "../Types.hpp"
 
 #define SERVERAPI \
+    {"LogMessage",                  ServerFunctions::LogMessage},\
+    {"LogAppend",                   ServerFunctions::LogAppend},\
+    \
     {"StopServer",                  ServerFunctions::StopServer},\
     \
     {"Kick",                        ServerFunctions::Kick},\
     {"BanAddress",                  ServerFunctions::BanAddress},\
     {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
+    {"DoesFileExist",               ServerFunctions::DoesFileExist},\
+    {"GetCaseInsensitiveFilename",  ServerFunctions::GetCaseInsensitiveFilename},\
     {"GetDataPath",                 ServerFunctions::GetDataPath},\
     {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
     {"GetArchitectureType",         ServerFunctions::GetArchitectureType},\
@@ -39,6 +44,30 @@
 class ServerFunctions
 {
 public:
+
+    /**
+    * \brief Write a log message with its own timestamp.
+    *
+    * It will have "[Script]:" prepended to it so as to mark it as a script-generated log message.
+    *
+    * \param level The logging level used (0 for LOG_VERBOSE, 1 for LOG_INFO, 2 for LOG_WARN,
+    *              3 for LOG_ERROR, 4 for LOG_FATAL).
+    * \param message The message logged.
+    * \return void
+    */
+    static void LogMessage(unsigned short level, const char *message) noexcept;
+
+    /**
+    * \brief Write a log message without its own timestamp.
+    *
+    * It will have "[Script]:" prepended to it so as to mark it as a script-generated log message.
+    *
+    * \param level The logging level used (0 for LOG_VERBOSE, 1 for LOG_INFO, 2 for LOG_WARN,
+    *              3 for LOG_ERROR, 4 for LOG_FATAL).
+    * \param message The message logged.
+    * \return void
+    */
+    static void LogAppend(unsigned short level, const char *message) noexcept;
 
     /**
     * \brief Shut down the server.
@@ -71,6 +100,27 @@ public:
     * \return void
     */
     static void UnbanAddress(const char *ipAddress) noexcept;
+
+    /**
+    * \brief Check whether a certain file exists.
+    *
+    * This will be a case sensitive check on case sensitive filesystems.
+    *
+    * Whenever you want to enforce case insensitivity, use GetCaseInsensitiveFilename() instead.
+    *
+    * \return Whether the file exists or not.
+    */
+    static bool DoesFileExist(const char *filePath) noexcept;
+
+    /**
+    * \brief Get the first filename in a folder that has a case insensitive match with the filename
+    * argument.
+    *
+    * This is used to retain case insensitivity when opening data files on Linux.
+    *
+    * \return The filename that matches.
+    */
+    static const char *GetCaseInsensitiveFilename(const char *folderPath, const char *filename) noexcept;
 
     /**
     * \brief Get the path of the server's data folder.
