@@ -47,7 +47,7 @@ void ServerFunctions::UnbanAddress(const char *ipAddress) noexcept
     mwmp::Networking::getPtr()->unbanAddress(ipAddress);
 }
 
-bool ServerFunctions::DoesFileExist(const char *filePath) noexcept
+bool ServerFunctions::DoesFilePathExist(const char *filePath) noexcept
 {
     return boost::filesystem::exists(filePath);
 }
@@ -204,6 +204,11 @@ void ServerFunctions::AddDataFileRequirement(const char *dataFilename, const cha
 }
 
 // All methods below are deprecated versions of methods from above
+
+bool ServerFunctions::DoesFileExist(const char *filePath) noexcept
+{
+    return DoesFilePathExist(filePath);
+}
 
 const char* ServerFunctions::GetModDir() noexcept
 {

@@ -13,7 +13,7 @@
     {"BanAddress",                  ServerFunctions::BanAddress},\
     {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
-    {"DoesFileExist",               ServerFunctions::DoesFileExist},\
+    {"DoesFilePathExist",           ServerFunctions::DoesFilePathExist},\
     {"GetCaseInsensitiveFilename",  ServerFunctions::GetCaseInsensitiveFilename},\
     {"GetDataPath",                 ServerFunctions::GetDataPath},\
     {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
@@ -38,6 +38,7 @@
     \
     {"AddDataFileRequirement",      ServerFunctions::AddDataFileRequirement},\
     \
+    {"DoesFileExist",               ServerFunctions::DoesFileExist},\
     {"GetModDir",                   ServerFunctions::GetModDir},\
     {"AddPluginHash",               ServerFunctions::AddPluginHash}
 
@@ -102,7 +103,7 @@ public:
     static void UnbanAddress(const char *ipAddress) noexcept;
 
     /**
-    * \brief Check whether a certain file exists.
+    * \brief Check whether a certain file path exists.
     *
     * This will be a case sensitive check on case sensitive filesystems.
     *
@@ -110,7 +111,7 @@ public:
     *
     * \return Whether the file exists or not.
     */
-    static bool DoesFileExist(const char *filePath) noexcept;
+    static bool DoesFilePathExist(const char *filePath) noexcept;
 
     /**
     * \brief Get the first filename in a folder that has a case insensitive match with the filename
@@ -296,6 +297,7 @@ public:
 
     // All methods below are deprecated versions of methods from above
 
+    static bool DoesFileExist(const char *filePath) noexcept;
     static const char *GetModDir() noexcept;
     static void AddPluginHash(const char *pluginName, const char *checksumString) noexcept;
 };
