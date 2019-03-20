@@ -4,12 +4,18 @@
 #include "../Types.hpp"
 
 #define SERVERAPI \
+    {"LogMessage",                  ServerFunctions::LogMessage},\
+    {"LogAppend",                   ServerFunctions::LogAppend},\
+    \
     {"StopServer",                  ServerFunctions::StopServer},\
     \
     {"Kick",                        ServerFunctions::Kick},\
     {"BanAddress",                  ServerFunctions::BanAddress},\
     {"UnbanAddress",                ServerFunctions::UnbanAddress},\
     \
+    {"DoesFilePathExist",           ServerFunctions::DoesFilePathExist},\
+    {"GetCaseInsensitiveFilename",  ServerFunctions::GetCaseInsensitiveFilename},\
+    {"GetDataPath",                 ServerFunctions::GetDataPath},\
     {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
     {"GetArchitectureType",         ServerFunctions::GetArchitectureType},\
     {"GetServerVersion",            ServerFunctions::GetServerVersion},\
@@ -29,12 +35,40 @@
     {"SetScriptErrorIgnoringState", ServerFunctions::SetScriptErrorIgnoringState},\
     {"SetRuleString",               ServerFunctions::SetRuleString},\
     {"SetRuleValue",                ServerFunctions::SetRuleValue},\
-    {"AddPluginHash",               ServerFunctions::AddPluginHash},\
-    {"GetModDir",                   ServerFunctions::GetModDir}
+    \
+    {"AddDataFileRequirement",      ServerFunctions::AddDataFileRequirement},\
+    \
+    {"DoesFileExist",               ServerFunctions::DoesFileExist},\
+    {"GetModDir",                   ServerFunctions::GetModDir},\
+    {"AddPluginHash",               ServerFunctions::AddPluginHash}
 
 class ServerFunctions
 {
 public:
+
+    /**
+    * \brief Write a log message with its own timestamp.
+    *
+    * It will have "[Script]:" prepended to it so as to mark it as a script-generated log message.
+    *
+    * \param level The logging level used (0 for LOG_VERBOSE, 1 for LOG_INFO, 2 for LOG_WARN,
+    *              3 for LOG_ERROR, 4 for LOG_FATAL).
+    * \param message The message logged.
+    * \return void
+    */
+    static void LogMessage(unsigned short level, const char *message) noexcept;
+
+    /**
+    * \brief Write a log message without its own timestamp.
+    *
+    * It will have "[Script]:" prepended to it so as to mark it as a script-generated log message.
+    *
+    * \param level The logging level used (0 for LOG_VERBOSE, 1 for LOG_INFO, 2 for LOG_WARN,
+    *              3 for LOG_ERROR, 4 for LOG_FATAL).
+    * \param message The message logged.
+    * \return void
+    */
+    static void LogAppend(unsigned short level, const char *message) noexcept;
 
     /**
     * \brief Shut down the server.
@@ -67,6 +101,34 @@ public:
     * \return void
     */
     static void UnbanAddress(const char *ipAddress) noexcept;
+
+    /**
+    * \brief Check whether a certain file path exists.
+    *
+    * This will be a case sensitive check on case sensitive filesystems.
+    *
+    * Whenever you want to enforce case insensitivity, use GetCaseInsensitiveFilename() instead.
+    *
+    * \return Whether the file exists or not.
+    */
+    static bool DoesFilePathExist(const char *filePath) noexcept;
+
+    /**
+    * \brief Get the first filename in a folder that has a case insensitive match with the filename
+    * argument.
+    *
+    * This is used to retain case insensitivity when opening data files on Linux.
+    *
+    * \return The filename that matches.
+    */
+    static const char *GetCaseInsensitiveFilename(const char *folderPath, const char *filename) noexcept;
+
+    /**
+    * \brief Get the path of the server's data folder.
+    *
+    * \return The data path.
+    */
+    static const char *GetDataPath() noexcept;
 
     /**
     * \brief Get the type of the operating system used by the server.
@@ -119,7 +181,7 @@ public:
     /**
      * \brief Get the port used by the server.
      *
-     * \return Port
+     * \return The port.
      */
     static unsigned short GetPort() noexcept;
 
@@ -220,13 +282,24 @@ public:
     static void SetRuleValue(const char *key, double value) noexcept;
 
     /**
-     * \brief Adds plugins to the internal server structure to validate players.
-     * @param pluginName Name with extension of the plugin or master file.
-     * @param hash Hash string
+     * \brief Add a data file and a corresponding CRC32 checksum to the data file loadout
+     *        that connecting clients need to match.
+     *
+     * It can be used multiple times to set multiple checksums for the same data file.
+     *
+     * Note: If an empty string is provided for the checksum, a checksum will not be
+     *       required for that data file.
+     *
+     * @param dataFilename The filename of the data file.
+     * @param checksumString A string with the CRC32 checksum required.
      */
-    static void AddPluginHash(const char *pluginName, const char *hash) noexcept;
+    static void AddDataFileRequirement(const char *dataFilename, const char *checksumString) noexcept;
 
+    // All methods below are deprecated versions of methods from above
+
+    static bool DoesFileExist(const char *filePath) noexcept;
     static const char *GetModDir() noexcept;
+    static void AddPluginHash(const char *pluginName, const char *checksumString) noexcept;
 };
 
 #endif //OPENMW_SERVERAPI_HPP
