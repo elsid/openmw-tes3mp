@@ -4,43 +4,44 @@
 #include "../Types.hpp"
 
 #define SERVERAPI \
-    {"LogMessage",                  ServerFunctions::LogMessage},\
-    {"LogAppend",                   ServerFunctions::LogAppend},\
+    {"LogMessage",                      ServerFunctions::LogMessage},\
+    {"LogAppend",                       ServerFunctions::LogAppend},\
     \
-    {"StopServer",                  ServerFunctions::StopServer},\
+    {"StopServer",                      ServerFunctions::StopServer},\
     \
-    {"Kick",                        ServerFunctions::Kick},\
-    {"BanAddress",                  ServerFunctions::BanAddress},\
-    {"UnbanAddress",                ServerFunctions::UnbanAddress},\
+    {"Kick",                            ServerFunctions::Kick},\
+    {"BanAddress",                      ServerFunctions::BanAddress},\
+    {"UnbanAddress",                    ServerFunctions::UnbanAddress},\
     \
-    {"DoesFilePathExist",           ServerFunctions::DoesFilePathExist},\
-    {"GetCaseInsensitiveFilename",  ServerFunctions::GetCaseInsensitiveFilename},\
-    {"GetDataPath",                 ServerFunctions::GetDataPath},\
-    {"GetOperatingSystemType",      ServerFunctions::GetOperatingSystemType},\
-    {"GetArchitectureType",         ServerFunctions::GetArchitectureType},\
-    {"GetServerVersion",            ServerFunctions::GetServerVersion},\
-    {"GetProtocolVersion",          ServerFunctions::GetProtocolVersion},\
-    {"GetAvgPing",                  ServerFunctions::GetAvgPing},\
-    {"GetIP",                       ServerFunctions::GetIP},\
-    {"GetMaxPlayers",               ServerFunctions::GetMaxPlayers},\
-    {"GetPort",                     ServerFunctions::GetPort},\
-    {"HasPassword",                 ServerFunctions::HasPassword},\
-    {"GetPluginEnforcementState",   ServerFunctions::GetPluginEnforcementState},\
-    {"GetScriptErrorIgnoringState", ServerFunctions::GetScriptErrorIgnoringState},\
+    {"DoesFilePathExist",               ServerFunctions::DoesFilePathExist},\
+    {"GetCaseInsensitiveFilename",      ServerFunctions::GetCaseInsensitiveFilename},\
+    {"GetDataPath",                     ServerFunctions::GetDataPath},\
+    {"GetMillisecondsSinceServerStart", ServerFunctions::GetMillisecondsSinceServerStart},\
+    {"GetOperatingSystemType",          ServerFunctions::GetOperatingSystemType},\
+    {"GetArchitectureType",             ServerFunctions::GetArchitectureType},\
+    {"GetServerVersion",                ServerFunctions::GetServerVersion},\
+    {"GetProtocolVersion",              ServerFunctions::GetProtocolVersion},\
+    {"GetAvgPing",                      ServerFunctions::GetAvgPing},\
+    {"GetIP",                           ServerFunctions::GetIP},\
+    {"GetMaxPlayers",                   ServerFunctions::GetMaxPlayers},\
+    {"GetPort",                         ServerFunctions::GetPort},\
+    {"HasPassword",                     ServerFunctions::HasPassword},\
+    {"GetPluginEnforcementState",       ServerFunctions::GetPluginEnforcementState},\
+    {"GetScriptErrorIgnoringState",     ServerFunctions::GetScriptErrorIgnoringState},\
     \
-    {"SetGameMode",                 ServerFunctions::SetGameMode},\
-    {"SetHostname",                 ServerFunctions::SetHostname},\
-    {"SetServerPassword",           ServerFunctions::SetServerPassword},\
-    {"SetPluginEnforcementState",   ServerFunctions::SetPluginEnforcementState},\
-    {"SetScriptErrorIgnoringState", ServerFunctions::SetScriptErrorIgnoringState},\
-    {"SetRuleString",               ServerFunctions::SetRuleString},\
-    {"SetRuleValue",                ServerFunctions::SetRuleValue},\
+    {"SetGameMode",                     ServerFunctions::SetGameMode},\
+    {"SetHostname",                     ServerFunctions::SetHostname},\
+    {"SetServerPassword",               ServerFunctions::SetServerPassword},\
+    {"SetPluginEnforcementState",       ServerFunctions::SetPluginEnforcementState},\
+    {"SetScriptErrorIgnoringState",     ServerFunctions::SetScriptErrorIgnoringState},\
+    {"SetRuleString",                   ServerFunctions::SetRuleString},\
+    {"SetRuleValue",                    ServerFunctions::SetRuleValue},\
     \
-    {"AddDataFileRequirement",      ServerFunctions::AddDataFileRequirement},\
+    {"AddDataFileRequirement",          ServerFunctions::AddDataFileRequirement},\
     \
-    {"DoesFileExist",               ServerFunctions::DoesFileExist},\
-    {"GetModDir",                   ServerFunctions::GetModDir},\
-    {"AddPluginHash",               ServerFunctions::AddPluginHash}
+    {"DoesFileExist",                   ServerFunctions::DoesFileExist},\
+    {"GetModDir",                       ServerFunctions::GetModDir},\
+    {"AddPluginHash",                   ServerFunctions::AddPluginHash}
 
 class ServerFunctions
 {
@@ -129,6 +130,13 @@ public:
     * \return The data path.
     */
     static const char *GetDataPath() noexcept;
+
+    /**
+    * \brief Get the milliseconds elapsed since the server was started.
+    *
+    * \return The time since the server's startup in milliseconds.
+    */
+    static unsigned int GetMillisecondsSinceServerStart() noexcept;
 
     /**
     * \brief Get the type of the operating system used by the server.

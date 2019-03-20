@@ -11,6 +11,7 @@
 #include <Script/Script.hpp>
 
 static std::string tempFilename;
+static std::chrono::high_resolution_clock::time_point startupTime = std::chrono::high_resolution_clock::now();
 
 void ServerFunctions::LogMessage(unsigned short level, const char *message) noexcept
 {
@@ -72,6 +73,13 @@ const char *ServerFunctions::GetCaseInsensitiveFilename(const char *folderPath, 
 const char* ServerFunctions::GetDataPath() noexcept
 {
     return Script::GetModDir();
+}
+
+unsigned int ServerFunctions::GetMillisecondsSinceServerStart() noexcept
+{
+    std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startupTime);
+    return milliseconds.count();
 }
 
 const char *ServerFunctions::GetOperatingSystemType() noexcept
