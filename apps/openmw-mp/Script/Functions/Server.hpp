@@ -26,13 +26,13 @@
     {"GetMaxPlayers",                   ServerFunctions::GetMaxPlayers},\
     {"GetPort",                         ServerFunctions::GetPort},\
     {"HasPassword",                     ServerFunctions::HasPassword},\
-    {"GetPluginEnforcementState",       ServerFunctions::GetPluginEnforcementState},\
+    {"GetDataFileEnforcementState",     ServerFunctions::GetDataFileEnforcementState},\
     {"GetScriptErrorIgnoringState",     ServerFunctions::GetScriptErrorIgnoringState},\
     \
     {"SetGameMode",                     ServerFunctions::SetGameMode},\
     {"SetHostname",                     ServerFunctions::SetHostname},\
     {"SetServerPassword",               ServerFunctions::SetServerPassword},\
-    {"SetPluginEnforcementState",       ServerFunctions::SetPluginEnforcementState},\
+    {"SetDataFileEnforcementState",     ServerFunctions::SetDataFileEnforcementState},\
     {"SetScriptErrorIgnoringState",     ServerFunctions::SetScriptErrorIgnoringState},\
     {"SetRuleString",                   ServerFunctions::SetRuleString},\
     {"SetRuleValue",                    ServerFunctions::SetRuleValue},\
@@ -41,6 +41,8 @@
     \
     {"DoesFileExist",                   ServerFunctions::DoesFileExist},\
     {"GetModDir",                       ServerFunctions::GetModDir},\
+    {"GetPluginEnforcementState",       ServerFunctions::GetPluginEnforcementState},\
+    {"SetPluginEnforcementState",       ServerFunctions::SetPluginEnforcementState},\
     {"AddPluginHash",                   ServerFunctions::AddPluginHash}
 
 class ServerFunctions
@@ -208,13 +210,13 @@ public:
     static bool HasPassword() noexcept;
 
     /**
-    * \brief Get the plugin enforcement state of the server.
+    * \brief Get the data file enforcement state of the server.
     *
-    * If true, clients are required to use the same plugins as set for the server.
+    * If true, clients are required to use the same data files as set for the server.
     *
     * \return The enforcement state.
     */
-    static bool GetPluginEnforcementState() noexcept;
+    static bool GetDataFileEnforcementState() noexcept;
 
     /**
     * \brief Get the script error ignoring state of the server.
@@ -250,14 +252,14 @@ public:
     static void SetServerPassword(const char *password) noexcept;
 
     /**
-    * \brief Set the plugin enforcement state of the server.
+    * \brief Set the data file enforcement state of the server.
     *
-    * If true, clients are required to use the same plugins as set for the server.
+    * If true, clients are required to use the same data files as set for the server.
     *
     * \param state The new enforcement state.
     * \return void
     */
-    static void SetPluginEnforcementState(bool state) noexcept;
+    static void SetDataFileEnforcementState(bool state) noexcept;
 
     /**
     * \brief Set whether script errors should be ignored or not.
@@ -307,6 +309,8 @@ public:
 
     static bool DoesFileExist(const char *filePath) noexcept;
     static const char *GetModDir() noexcept;
+    static bool GetPluginEnforcementState() noexcept;
+    static void SetPluginEnforcementState(bool state) noexcept;
     static void AddPluginHash(const char *pluginName, const char *checksumString) noexcept;
 };
 

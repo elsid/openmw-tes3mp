@@ -133,9 +133,9 @@ bool ServerFunctions::HasPassword() noexcept
     return mwmp::Networking::get().isPassworded();
 }
 
-bool ServerFunctions::GetPluginEnforcementState() noexcept
+bool ServerFunctions::GetDataFileEnforcementState() noexcept
 {
-    return mwmp::Networking::getPtr()->getPluginEnforcementState();
+    return mwmp::Networking::getPtr()->getDataFileEnforcementState();
 }
 
 bool ServerFunctions::GetScriptErrorIgnoringState() noexcept
@@ -160,9 +160,9 @@ void ServerFunctions::SetServerPassword(const char *password) noexcept
     mwmp::Networking::getPtr()->setServerPassword(password);
 }
 
-void ServerFunctions::SetPluginEnforcementState(bool state) noexcept
+void ServerFunctions::SetDataFileEnforcementState(bool state) noexcept
 {
-    mwmp::Networking::getPtr()->setPluginEnforcementState(state);
+    mwmp::Networking::getPtr()->setDataFileEnforcementState(state);
 }
 
 void ServerFunctions::SetScriptErrorIgnoringState(bool state) noexcept
@@ -221,6 +221,16 @@ bool ServerFunctions::DoesFileExist(const char *filePath) noexcept
 const char* ServerFunctions::GetModDir() noexcept
 {
     return GetDataPath();
+}
+
+bool ServerFunctions::GetPluginEnforcementState() noexcept
+{
+    return mwmp::Networking::getPtr()->getDataFileEnforcementState();
+}
+
+void ServerFunctions::SetPluginEnforcementState(bool state) noexcept
+{
+    SetDataFileEnforcementState(state);
 }
 
 void ServerFunctions::AddPluginHash(const char *pluginName, const char *checksumString) noexcept
