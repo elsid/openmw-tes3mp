@@ -84,12 +84,14 @@ unsigned int ServerFunctions::GetMillisecondsSinceServerStart() noexcept
 
 const char *ServerFunctions::GetOperatingSystemType() noexcept
 {
-    return Utils::getOperatingSystemType().c_str();
+    static const std::string operatingSystemType = Utils::getOperatingSystemType();
+    return operatingSystemType.c_str();
 }
 
 const char *ServerFunctions::GetArchitectureType() noexcept
 {
-    return Utils::getArchitectureType().c_str();
+    static const std::string architectureType = Utils::getArchitectureType();
+    return architectureType.c_str();
 }
 
 const char *ServerFunctions::GetServerVersion() noexcept
