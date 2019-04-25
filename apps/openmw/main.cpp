@@ -226,9 +226,8 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
         change the checksum below
     */
 #ifdef _WIN32
-    boost::filesystem::path folderPath(boost::filesystem::initial_path<boost::filesystem::path>());
-    folderPath = boost::filesystem::system_complete(boost::filesystem::path(argv[0])).remove_filename();
-    std::string creditsPath = folderPath.string() + "/tes3mp-credits";
+
+    std::string creditsPath = (cfgMgr.getLocalPath() / "tes3mp-credits").string();
 
     unsigned int expectedChecksumInt = Utils::hexStrToInt(TES3MP_CREDITS_CHECKSUM);
     bool hasValidCredits = Utils::doesFileHaveChecksum(creditsPath + ".md", expectedChecksumInt);
