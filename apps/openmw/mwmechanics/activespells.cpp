@@ -331,7 +331,7 @@ namespace MWMechanics
             if (sourceId.compare(it->first) == 0)
             {
                 for (std::vector<ActiveEffect>::iterator effectIt = it->second.mEffects.begin();
-                    effectIt != it->second.mEffects.end(); it++)
+                    effectIt != it->second.mEffects.end(); ++effectIt)
                 {
                     if (effectIt->mEffectId == effectId)
                         return effectIt->mDuration;
