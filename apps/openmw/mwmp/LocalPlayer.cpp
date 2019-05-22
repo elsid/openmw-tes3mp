@@ -1305,8 +1305,23 @@ void LocalPlayer::setFactions()
 
 void LocalPlayer::setKills()
 {
+    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_WORLD_KILL_COUNT with the following kill counts:");
+    std::string debugMessage = "";
+
     for (const auto &kill : killChanges.kills)
+    {
+        if (Log::GetLevel() <= Log::LOG_INFO)
+        {
+            if (!debugMessage.empty())
+                debugMessage += ", ";
+
+            debugMessage += kill.refId + ": " + std::to_string(kill.number);
+        }
+
         MWBase::Environment::get().getMechanicsManager()->setDeaths(kill.refId, kill.number);
+    }
+
+    LOG_APPEND(Log::LOG_INFO, "- %s", debugMessage.c_str());
 }
 
 void LocalPlayer::setBooks()
