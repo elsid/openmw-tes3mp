@@ -708,7 +708,7 @@ void LocalPlayer::addItems()
         }
     }
 
-    MWBase::Environment::get().getWindowManager()->getInventoryWindow()->updateItemView();
+    updateInventoryWindow();
 }
 
 void LocalPlayer::addSpells()
@@ -862,6 +862,11 @@ void LocalPlayer::closeInventoryWindows()
         MWBase::Environment::get().getWindowManager()->popGuiMode();
 
     MWBase::Environment::get().getWindowManager()->finishDragDrop();
+}
+
+void LocalPlayer::updateInventoryWindow()
+{
+    MWBase::Environment::get().getWindowManager()->getInventoryWindow()->updateItemView();
 }
 
 void LocalPlayer::setCharacter()
