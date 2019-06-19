@@ -258,14 +258,10 @@ void DedicatedPlayer::setAnimFlags()
         cast.cast("Levitate");
     }
 
-    if (drawState == 0)
-        ptr.getClass().getCreatureStats(ptr).setDrawState(DrawState_Nothing);
-    else if (drawState == 1)
-        ptr.getClass().getCreatureStats(ptr).setDrawState(DrawState_Weapon);
-    else if (drawState == 2)
-        ptr.getClass().getCreatureStats(ptr).setDrawState(DrawState_Spell);
-
     MWMechanics::CreatureStats *ptrCreatureStats = &ptr.getClass().getCreatureStats(ptr);
+
+    ptrCreatureStats->setDrawState(static_cast<MWMechanics::DrawState_>(drawState));
+
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_Run, (movementFlags & CreatureStats::Flag_Run) != 0);
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_Sneak, (movementFlags & CreatureStats::Flag_Sneak) != 0);
     ptrCreatureStats->setMovementFlag(CreatureStats::Flag_ForceJump, (movementFlags & CreatureStats::Flag_ForceJump) != 0);

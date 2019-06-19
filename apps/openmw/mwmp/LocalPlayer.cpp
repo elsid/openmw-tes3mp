@@ -629,12 +629,12 @@ void LocalPlayer::updateAnimFlags(bool forceUpdate)
     static bool wasJumping = false;
     static bool wasFlying = false;
 
-    MWMechanics::DrawState_ currentDrawState = ptrPlayer.getClass().getNpcStats(ptrPlayer).getDrawState();
-    static MWMechanics::DrawState_ lastDrawState = ptrPlayer.getClass().getNpcStats(ptrPlayer).getDrawState();
+    drawState = ptrPlayer.getClass().getNpcStats(ptrPlayer).getDrawState();
+    static char lastDrawState = ptrPlayer.getClass().getNpcStats(ptrPlayer).getDrawState();
 
     if (wasRunning != isRunning ||
         wasSneaking != isSneaking || wasForceJumping != isForceJumping ||
-        wasForceMoveJumping != isForceMoveJumping || lastDrawState != currentDrawState ||
+        wasForceMoveJumping != isForceMoveJumping || lastDrawState != drawState ||
         wasJumping || isJumping || wasFlying != isFlying ||
         forceUpdate)
     {
@@ -642,7 +642,7 @@ void LocalPlayer::updateAnimFlags(bool forceUpdate)
         wasRunning = isRunning;
         wasForceJumping = isForceJumping;
         wasForceMoveJumping = isForceMoveJumping;
-        lastDrawState = currentDrawState;
+        lastDrawState = drawState;
         
         wasFlying = isFlying;
         wasJumping = isJumping;
@@ -658,13 +658,6 @@ void LocalPlayer::updateAnimFlags(bool forceUpdate)
         movementFlags = __SETFLAG(CreatureStats::Flag_ForceMoveJump, isForceMoveJumping);
 
 #undef __SETFLAG
-
-        if (currentDrawState == MWMechanics::DrawState_Nothing)
-            drawState = 0;
-        else if (currentDrawState == MWMechanics::DrawState_Weapon)
-            drawState = 1;
-        else if (currentDrawState == MWMechanics::DrawState_Spell)
-            drawState = 2;
 
         if (isJumping)
             updatePosition(true); // fix position after jump;
