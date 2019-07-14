@@ -384,7 +384,9 @@ void DedicatedPlayer::setCell()
         removeMarker();
     // Otherwise, update their marker so the player shows up in the right cell on the world map
     else
-        updateMarker();
+    {
+        enableMarker();
+    }
 
     // If this player is now in a cell that we are the local authority over, we should send them all
     // NPC data in that cell
@@ -408,7 +410,9 @@ void DedicatedPlayer::setCell()
 void DedicatedPlayer::updateMarker()
 {
     if (!markerEnabled)
+    {
         return;
+    }
 
     GUIController *gui = Main::get().getGUIController();
 
@@ -419,7 +423,15 @@ void DedicatedPlayer::updateMarker()
         gui->mPlayerMarkers.addMarker(marker);
     }
     else
+    {
         gui->mPlayerMarkers.addMarker(marker, true);
+    }
+}
+
+void DedicatedPlayer::enableMarker()
+{
+    markerEnabled = true;
+    updateMarker();
 }
 
 void DedicatedPlayer::removeMarker()
@@ -431,18 +443,9 @@ void DedicatedPlayer::removeMarker()
     GUIController *gui = Main::get().getGUIController();
 
     if (gui->mPlayerMarkers.contains(marker))
-        Main::get().getGUIController()->mPlayerMarkers.deleteMarker(marker);
-}
-
-void DedicatedPlayer::setMarkerState(bool state)
-{
-    if (state)
     {
-        markerEnabled = true;
-        updateMarker();
+        Main::get().getGUIController()->mPlayerMarkers.deleteMarker(marker);
     }
-    else
-        removeMarker();
 }
 
 void DedicatedPlayer::playAnimation()
@@ -472,7 +475,7 @@ void DedicatedPlayer::createReference(const std::string& recId)
 
     ESM::CustomMarker mEditingMarker = Main::get().getGUIController()->createMarker(guid);
     marker = mEditingMarker;
-    setMarkerState(true);
+    enableMarker();
 }
 
 void DedicatedPlayer::deleteReference()
