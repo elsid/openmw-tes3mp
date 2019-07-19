@@ -6,6 +6,7 @@ using namespace mwmp;
 PacketConsoleCommand::PacketConsoleCommand(RakNet::RakPeerInterface *peer) : ObjectPacket(peer)
 {
     packetID = ID_CONSOLE_COMMAND;
+    hasCellData = true;
 }
 
 void PacketConsoleCommand::Packet(RakNet::BitStream *bs, bool send)
