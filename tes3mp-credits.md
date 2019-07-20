@@ -11,6 +11,7 @@ Programmers
 Additional programming
 ----------------------
 
+    urm - Event and command hook system for scripts
     Grim Kriegor - Linux deployment scripts, Lua teleportation commands, early script fixes
     Battlerax - Various small fixes
 
