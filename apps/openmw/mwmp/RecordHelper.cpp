@@ -90,6 +90,20 @@ bool RecordHelper::doesWeaponRecordExist(const std::string& id)
     return world->getStore().get<ESM::Weapon>().search(id);
 }
 
+bool RecordHelper::doesContainerRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Container>().search(id);
+}
+
+bool RecordHelper::doesDoorRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Door>().search(id);
+}
+
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -843,6 +857,109 @@ void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
+void RecordHelper::overrideContainerRecord(const mwmp::ContainerRecord& record)
+{
+    const ESM::Container &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesContainerRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesContainerRecordExist(record.baseId))
+    {
+        const ESM::Container *baseData = world->getStore().get<ESM::Container>().search(record.baseId);
+        ESM::Container finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasWeight)
+            finalData.mWeight = recordData.mWeight;
+
+        if (record.baseOverrides.hasFlags)
+            finalData.mFlags = recordData.mFlags;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        if (record.baseOverrides.hasInventory)
+            finalData.mInventory.mList = recordData.mInventory.mList;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
+void RecordHelper::overrideDoorRecord(const mwmp::DoorRecord& record)
+{
+    const ESM::Door &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesDoorRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesDoorRecordExist(record.baseId))
+    {
+        const ESM::Door *baseData = world->getStore().get<ESM::Door>().search(record.baseId);
+        ESM::Door finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+        
+        if (record.baseOverrides.hasOpenSound)
+            finalData.mOpenSound = recordData.mOpenSound;
+
+        if (record.baseOverrides.hasCloseSound)
+            finalData.mCloseSound = recordData.mCloseSound;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
 void RecordHelper::overrideCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -907,6 +1024,20 @@ void RecordHelper::overrideMiscellaneousRecord(const ESM::Miscellaneous& record)
 }
 
 void RecordHelper::overrideWeaponRecord(const ESM::Weapon& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideContainerRecord(const ESM::Container& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideDoorRecord(const ESM::Door& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 

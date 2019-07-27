@@ -7,7 +7,9 @@
 #include <components/esm/loadarmo.hpp>
 #include <components/esm/loadbook.hpp>
 #include <components/esm/loadclot.hpp>
+#include <components/esm/loadcont.hpp>
 #include <components/esm/loadcrea.hpp>
+#include <components/esm/loaddoor.hpp>
 #include <components/esm/loadench.hpp>
 #include <components/esm/loadmisc.hpp>
 #include <components/esm/loadnpc.hpp>
@@ -31,7 +33,9 @@ namespace mwmp
         NPC,
         POTION,
         SPELL,
-        WEAPON
+        WEAPON,
+        CONTAINER,
+        DOOR
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -91,6 +95,9 @@ namespace mwmp
         bool hasMagicka = false;
         bool hasFatigue = false;
         bool hasAiFight = false;
+
+        bool hasOpenSound = false;
+        bool hasCloseSound = false;
     };
 
     struct ArmorRecord
@@ -114,12 +121,27 @@ namespace mwmp
         BaseOverrides baseOverrides;
     };
 
+    struct ContainerRecord
+    {
+        ESM::Container data;
+        std::string baseId;
+        std::vector<mwmp::Item> inventory;
+        BaseOverrides baseOverrides;
+    };
+
     struct CreatureRecord
     {
         ESM::Creature data;
         std::string baseId;
         std::string inventoryBaseId;
         std::vector<mwmp::Item> inventory;
+        BaseOverrides baseOverrides;
+    };
+
+    struct DoorRecord
+    {
+        ESM::Door data;
+        std::string baseId;
         BaseOverrides baseOverrides;
     };
 
@@ -224,7 +246,9 @@ namespace mwmp
         std::vector<ArmorRecord> armorRecords;
         std::vector<BookRecord> bookRecords;
         std::vector<ClothingRecord> clothingRecords;
+        std::vector<ContainerRecord> containerRecords;
         std::vector<CreatureRecord> creatureRecords;
+        std::vector<DoorRecord> doorRecords;
         std::vector<EnchantmentRecord> enchantmentRecords;
         std::vector<MiscellaneousRecord> miscellaneousRecords;
         std::vector<NpcRecord> npcRecords;

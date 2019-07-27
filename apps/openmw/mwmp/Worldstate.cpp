@@ -158,6 +158,30 @@ void Worldstate::addRecords()
             RecordHelper::overrideWeaponRecord(record);
         }
     }
+    else if (recordsType == mwmp::RECORD_TYPE::CONTAINER)
+    {
+        for (auto &&record : containerRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- container record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideContainerRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::DOOR)
+    {
+        for (auto &&record : doorRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- door record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideDoorRecord(record);
+        }
+    }
 }
 
 bool Worldstate::containsExploredMapTile(int cellX, int cellY)

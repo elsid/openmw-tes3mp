@@ -84,6 +84,9 @@
     {"SetRecordFatigue",                        RecordsDynamicFunctions::SetRecordFatigue},\
     {"SetRecordAIFight",                        RecordsDynamicFunctions::SetRecordAIFight},\
     \
+    {"SetRecordOpenSound",                      RecordsDynamicFunctions::SetRecordOpenSound},\
+    {"SetRecordCloseSound",                     RecordsDynamicFunctions::SetRecordCloseSound},\
+    \
     {"SetRecordIdByIndex",                      RecordsDynamicFunctions::SetRecordIdByIndex},\
     {"SetRecordEnchantmentIdByIndex",           RecordsDynamicFunctions::SetRecordEnchantmentIdByIndex},\
     \
@@ -711,6 +714,24 @@ public:
     * \return void
     */
     static void SetRecordAIFight(int aiFight) noexcept;
+
+    /**
+    * \brief Set the opening sound of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param sound The opening sound of the record.
+    * \return void
+    */
+    static void SetRecordOpenSound(const char* sound) noexcept;
+
+    /**
+    * \brief Set the closing sound of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param sound The closing sound of the record.
+    * \return void
+    */
+    static void SetRecordCloseSound(const char* sound) noexcept;
 
     /**
     * \brief Set the id of the record at a certain index in the records stored on the server.

@@ -40,6 +40,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->miscellaneousRecords);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::WEAPON)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->weaponRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::CONTAINER)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->containerRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::DOOR)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->doorRecords);
         else
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
@@ -80,6 +84,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             Utils::resetVector(worldstate->miscellaneousRecords, worldstate->recordsCount);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::WEAPON)
             Utils::resetVector(worldstate->weaponRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::CONTAINER)
+            Utils::resetVector(worldstate->containerRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::DOOR)
+            Utils::resetVector(worldstate->doorRecords, worldstate->recordsCount);
     }
 
     if (worldstate->recordsType == mwmp::RECORD_TYPE::SPELL)
@@ -434,6 +442,58 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasFlags, send);
                 RW(overrides.hasEnchantmentCharge, send);
                 RW(overrides.hasEnchantmentId, send);
+                RW(overrides.hasScript, send);
+            }
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::CONTAINER)
+    {
+        for (auto &&record : worldstate->containerRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mName, send, true);
+            RW(recordData.mModel, send, true);
+            RW(recordData.mWeight, send);
+            RW(recordData.mFlags, send);
+            RW(recordData.mScript, send, true);
+            ProcessInventoryList(record.inventory, recordData.mInventory, send);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasName, send);
+                RW(overrides.hasModel, send);
+                RW(overrides.hasWeight, send);
+                RW(overrides.hasFlags, send);
+                RW(overrides.hasScript, send);
+                RW(overrides.hasInventory, send);
+            }
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::DOOR)
+    {
+        for (auto &&record : worldstate->doorRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mName, send, true);
+            RW(recordData.mModel, send, true);
+            RW(recordData.mOpenSound, send, true);
+            RW(recordData.mCloseSound, send, true);
+            RW(recordData.mScript, send, true);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasName, send);
+                RW(overrides.hasModel, send);
+                RW(overrides.hasOpenSound, send);
+                RW(overrides.hasCloseSound, send);
                 RW(overrides.hasScript, send);
             }
         }
