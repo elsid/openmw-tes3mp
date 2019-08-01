@@ -61,6 +61,10 @@ void RecordsDynamicFunctions::ClearRecords() noexcept
     WorldstateFunctions::writeWorldstate.clothingRecords.clear();
     WorldstateFunctions::writeWorldstate.miscellaneousRecords.clear();
     WorldstateFunctions::writeWorldstate.weaponRecords.clear();
+    WorldstateFunctions::writeWorldstate.containerRecords.clear();
+    WorldstateFunctions::writeWorldstate.doorRecords.clear();
+    WorldstateFunctions::writeWorldstate.activatorRecords.clear();
+    WorldstateFunctions::writeWorldstate.staticRecords.clear();
 }
 
 unsigned short RecordsDynamicFunctions::GetRecordType() noexcept
