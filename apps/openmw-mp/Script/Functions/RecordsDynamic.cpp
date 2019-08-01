@@ -680,6 +680,8 @@ void RecordsDynamicFunctions::SetRecordFlags(int flags) noexcept
         tempNpc.data.mFlags = flags;
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         tempWeapon.data.mData.mFlags = flags;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::CONTAINER)
+        tempContainer.data.mFlags = flags;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set flags for record type %i which lacks that property", writeRecordsType);
