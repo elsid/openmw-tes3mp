@@ -44,6 +44,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->containerRecords);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::DOOR)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->doorRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->activatorRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::STATIC)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->staticRecords);
         else
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
@@ -88,6 +92,10 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             Utils::resetVector(worldstate->containerRecords, worldstate->recordsCount);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::DOOR)
             Utils::resetVector(worldstate->doorRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+            Utils::resetVector(worldstate->activatorRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::STATIC)
+            Utils::resetVector(worldstate->staticRecords, worldstate->recordsCount);
     }
 
     if (worldstate->recordsType == mwmp::RECORD_TYPE::SPELL)
@@ -495,6 +503,44 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasOpenSound, send);
                 RW(overrides.hasCloseSound, send);
                 RW(overrides.hasScript, send);
+            }
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+    {
+        for (auto &&record : worldstate->activatorRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mName, send, true);
+            RW(recordData.mModel, send, true);
+            RW(recordData.mScript, send, true);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasName, send);
+                RW(overrides.hasModel, send);
+                RW(overrides.hasScript, send);
+            }
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::STATIC)
+    {
+        for (auto &&record : worldstate->staticRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mModel, send, true);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasModel, send);
             }
         }
     }

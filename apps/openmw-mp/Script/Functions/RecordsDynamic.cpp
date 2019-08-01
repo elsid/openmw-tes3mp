@@ -24,6 +24,8 @@ MiscellaneousRecord tempMiscellaneous;
 WeaponRecord tempWeapon;
 ContainerRecord tempContainer;
 DoorRecord tempDoor;
+ActivatorRecord tempActivator;
+StaticRecord tempStatic;
 
 BaseOverrides tempOverrides;
 
@@ -343,6 +345,10 @@ void RecordsDynamicFunctions::SetRecordId(const char* id) noexcept
         tempContainer.data.mId = id;
     else if (writeRecordsType == mwmp::RECORD_TYPE::DOOR)
         tempDoor.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+        tempActivator.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
+        tempStatic.data.mId = id;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
@@ -375,6 +381,10 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
         tempContainer.baseId = baseId;
     else if (writeRecordsType == mwmp::RECORD_TYPE::DOOR)
         tempDoor.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+        tempActivator.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
+        tempStatic.baseId = baseId;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
@@ -442,6 +452,8 @@ void RecordsDynamicFunctions::SetRecordName(const char* name) noexcept
         tempContainer.data.mName = name;
     else if (writeRecordsType == mwmp::RECORD_TYPE::DOOR)
         tempDoor.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+        tempActivator.data.mName = name;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
@@ -475,6 +487,10 @@ void RecordsDynamicFunctions::SetRecordModel(const char* model) noexcept
         tempContainer.data.mModel = model;
     else if (writeRecordsType == mwmp::RECORD_TYPE::DOOR)
         tempDoor.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+        tempActivator.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
+        tempStatic.data.mModel = model;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set model for record type %i which lacks that property", writeRecordsType);
@@ -533,6 +549,8 @@ void RecordsDynamicFunctions::SetRecordScript(const char* script) noexcept
         tempContainer.data.mScript = script;
     else if (writeRecordsType == mwmp::RECORD_TYPE::DOOR)
         tempDoor.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+        tempActivator.data.mScript = script;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set script for record type %i which lacks that property", writeRecordsType);
@@ -1257,6 +1275,18 @@ void RecordsDynamicFunctions::AddRecord() noexcept
         tempDoor.baseOverrides = tempOverrides;
         WorldstateFunctions::writeWorldstate.doorRecords.push_back(tempDoor);
         tempDoor = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+    {
+        tempActivator.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.activatorRecords.push_back(tempActivator);
+        tempActivator = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
+    {
+        tempStatic.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.staticRecords.push_back(tempStatic);
+        tempStatic = {};
     }
 
     tempOverrides = {};

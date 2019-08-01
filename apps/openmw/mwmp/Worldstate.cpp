@@ -182,6 +182,30 @@ void Worldstate::addRecords()
             RecordHelper::overrideDoorRecord(record);
         }
     }
+    else if (recordsType == mwmp::RECORD_TYPE::ACTIVATOR)
+    {
+        for (auto &&record : activatorRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- activator record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideActivatorRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::STATIC)
+    {
+        for (auto &&record : staticRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- static record %s\n-- baseId is %s", record.data.mId.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideStaticRecord(record);
+        }
+    }
 }
 
 bool Worldstate::containsExploredMapTile(int cellX, int cellY)

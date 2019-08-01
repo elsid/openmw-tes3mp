@@ -104,6 +104,20 @@ bool RecordHelper::doesDoorRecordExist(const std::string& id)
     return world->getStore().get<ESM::Door>().search(id);
 }
 
+bool RecordHelper::doesActivatorRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Activator>().search(id);
+}
+
+bool RecordHelper::doesStaticRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Static>().search(id);
+}
+
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -960,6 +974,88 @@ void RecordHelper::overrideDoorRecord(const mwmp::DoorRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
+void RecordHelper::overrideActivatorRecord(const mwmp::ActivatorRecord& record)
+{
+    const ESM::Activator &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesActivatorRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesActivatorRecordExist(record.baseId))
+    {
+        const ESM::Activator *baseData = world->getStore().get<ESM::Activator>().search(record.baseId);
+        ESM::Activator finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
+void RecordHelper::overrideStaticRecord(const mwmp::StaticRecord& record)
+{
+    const ESM::Static &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesStaticRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesStaticRecordExist(record.baseId))
+    {
+        const ESM::Static *baseData = world->getStore().get<ESM::Static>().search(record.baseId);
+        ESM::Static finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
 void RecordHelper::overrideCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1038,6 +1134,20 @@ void RecordHelper::overrideContainerRecord(const ESM::Container& record)
 }
 
 void RecordHelper::overrideDoorRecord(const ESM::Door& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideActivatorRecord(const ESM::Activator& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideStaticRecord(const ESM::Static& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 

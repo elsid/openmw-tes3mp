@@ -27,6 +27,9 @@ namespace RecordHelper
     bool doesContainerRecordExist(const std::string& id);
     bool doesDoorRecordExist(const std::string& id);
 
+    bool doesActivatorRecordExist(const std::string& id);
+    bool doesStaticRecordExist(const std::string& id);
+
     std::string createCreatureRecord(const ESM::Creature& record);
     std::string createNpcRecord(const ESM::NPC& record);
 
@@ -46,6 +49,9 @@ namespace RecordHelper
     void overrideContainerRecord(const mwmp::ContainerRecord& record);
     void overrideDoorRecord(const mwmp::DoorRecord& record);
 
+    void overrideActivatorRecord(const mwmp::ActivatorRecord& record);
+    void overrideStaticRecord(const mwmp::StaticRecord& record);
+
     void overrideCreatureRecord(const ESM::Creature& record);
     void overrideNpcRecord(const ESM::NPC& record);
 
@@ -61,6 +67,9 @@ namespace RecordHelper
 
     void overrideContainerRecord(const ESM::Container& record);
     void overrideDoorRecord(const ESM::Door& record);
+
+    void overrideActivatorRecord(const ESM::Activator& record);
+    void overrideStaticRecord(const ESM::Static& record);
 }
 
 

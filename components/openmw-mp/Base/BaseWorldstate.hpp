@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include <components/esm/loadacti.hpp>
 #include <components/esm/loadalch.hpp>
 #include <components/esm/loadarmo.hpp>
 #include <components/esm/loadbook.hpp>
@@ -14,6 +15,7 @@
 #include <components/esm/loadmisc.hpp>
 #include <components/esm/loadnpc.hpp>
 #include <components/esm/loadspel.hpp>
+#include <components/esm/loadstat.hpp>
 #include <components/esm/loadweap.hpp>
 
 #include <components/openmw-mp/Base/BaseStructs.hpp>
@@ -35,7 +37,9 @@ namespace mwmp
         SPELL,
         WEAPON,
         CONTAINER,
-        DOOR
+        DOOR,
+        ACTIVATOR,
+        STATIC
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -98,6 +102,13 @@ namespace mwmp
 
         bool hasOpenSound = false;
         bool hasCloseSound = false;
+    };
+
+    struct ActivatorRecord
+    {
+        ESM::Activator data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
     };
 
     struct ArmorRecord
@@ -182,6 +193,13 @@ namespace mwmp
         BaseOverrides baseOverrides;
     };
 
+    struct StaticRecord
+    {
+        ESM::Static data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
     struct WeaponRecord
     {
         ESM::Weapon data;
@@ -243,6 +261,7 @@ namespace mwmp
         unsigned short recordsType;
         unsigned int recordsCount;
 
+        std::vector<ActivatorRecord> activatorRecords;
         std::vector<ArmorRecord> armorRecords;
         std::vector<BookRecord> bookRecords;
         std::vector<ClothingRecord> clothingRecords;
@@ -254,6 +273,7 @@ namespace mwmp
         std::vector<NpcRecord> npcRecords;
         std::vector<PotionRecord> potionRecords;
         std::vector<SpellRecord> spellRecords;
+        std::vector<StaticRecord> staticRecords;
         std::vector<WeaponRecord> weaponRecords;
 
         bool isValid;
