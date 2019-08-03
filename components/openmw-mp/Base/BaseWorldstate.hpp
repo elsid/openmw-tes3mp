@@ -12,6 +12,7 @@
 #include <components/esm/loadcrea.hpp>
 #include <components/esm/loaddoor.hpp>
 #include <components/esm/loadench.hpp>
+#include <components/esm/loadingr.hpp>
 #include <components/esm/loadmisc.hpp>
 #include <components/esm/loadnpc.hpp>
 #include <components/esm/loadspel.hpp>
@@ -39,7 +40,8 @@ namespace mwmp
         CONTAINER,
         DOOR,
         ACTIVATOR,
-        STATIC
+        STATIC,
+        INGREDIENT
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -163,6 +165,13 @@ namespace mwmp
         BaseOverrides baseOverrides;
     };
 
+    struct IngredientRecord
+    {
+        ESM::Ingredient data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
     struct MiscellaneousRecord
     {
         ESM::Miscellaneous data;
@@ -269,6 +278,7 @@ namespace mwmp
         std::vector<CreatureRecord> creatureRecords;
         std::vector<DoorRecord> doorRecords;
         std::vector<EnchantmentRecord> enchantmentRecords;
+        std::vector<IngredientRecord> ingredientRecords;
         std::vector<MiscellaneousRecord> miscellaneousRecords;
         std::vector<NpcRecord> npcRecords;
         std::vector<PotionRecord> potionRecords;

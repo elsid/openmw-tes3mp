@@ -30,6 +30,8 @@ namespace RecordHelper
     bool doesActivatorRecordExist(const std::string& id);
     bool doesStaticRecordExist(const std::string& id);
 
+    bool doesIngredientRecordExist(const std::string& id);
+
     std::string createCreatureRecord(const ESM::Creature& record);
     std::string createNpcRecord(const ESM::NPC& record);
 
@@ -52,6 +54,8 @@ namespace RecordHelper
     void overrideActivatorRecord(const mwmp::ActivatorRecord& record);
     void overrideStaticRecord(const mwmp::StaticRecord& record);
 
+    void overrideIngredientRecord(const mwmp::IngredientRecord& record);
+
     void overrideCreatureRecord(const ESM::Creature& record);
     void overrideNpcRecord(const ESM::NPC& record);
 
@@ -70,6 +74,8 @@ namespace RecordHelper
 
     void overrideActivatorRecord(const ESM::Activator& record);
     void overrideStaticRecord(const ESM::Static& record);
+
+    void overrideIngredientRecord(const ESM::Ingredient& record);
 }
 
 

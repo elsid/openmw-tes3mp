@@ -26,9 +26,11 @@ ContainerRecord tempContainer;
 DoorRecord tempDoor;
 ActivatorRecord tempActivator;
 StaticRecord tempStatic;
+IngredientRecord tempIngredient;
 
 BaseOverrides tempOverrides;
 
+unsigned int effectCount = 0;
 ESM::ENAMstruct tempEffect;
 ESM::PartReference tempBodyPart;
 mwmp::Item tempInventoryItem;
@@ -65,6 +67,7 @@ void RecordsDynamicFunctions::ClearRecords() noexcept
     WorldstateFunctions::writeWorldstate.doorRecords.clear();
     WorldstateFunctions::writeWorldstate.activatorRecords.clear();
     WorldstateFunctions::writeWorldstate.staticRecords.clear();
+    WorldstateFunctions::writeWorldstate.ingredientRecords.clear();
 }
 
 unsigned short RecordsDynamicFunctions::GetRecordType() noexcept
@@ -353,6 +356,8 @@ void RecordsDynamicFunctions::SetRecordId(const char* id) noexcept
         tempActivator.data.mId = id;
     else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
         tempStatic.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mId = id;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
@@ -389,6 +394,8 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
         tempActivator.baseId = baseId;
     else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
         tempStatic.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.baseId = baseId;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
@@ -458,6 +465,8 @@ void RecordsDynamicFunctions::SetRecordName(const char* name) noexcept
         tempDoor.data.mName = name;
     else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
         tempActivator.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mName = name;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
@@ -495,6 +504,8 @@ void RecordsDynamicFunctions::SetRecordModel(const char* model) noexcept
         tempActivator.data.mModel = model;
     else if (writeRecordsType == mwmp::RECORD_TYPE::STATIC)
         tempStatic.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mModel = model;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set model for record type %i which lacks that property", writeRecordsType);
@@ -520,6 +531,8 @@ void RecordsDynamicFunctions::SetRecordIcon(const char* icon) noexcept
         tempMiscellaneous.data.mIcon = icon;
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         tempWeapon.data.mIcon = icon;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mIcon = icon;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set icon for record type %i which lacks that property", writeRecordsType);
@@ -555,6 +568,8 @@ void RecordsDynamicFunctions::SetRecordScript(const char* script) noexcept
         tempDoor.data.mScript = script;
     else if (writeRecordsType == mwmp::RECORD_TYPE::ACTIVATOR)
         tempActivator.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mScript = script;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set script for record type %i which lacks that property", writeRecordsType);
@@ -707,6 +722,8 @@ void RecordsDynamicFunctions::SetRecordValue(int value) noexcept
         tempMiscellaneous.data.mData.mValue = value;
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         tempWeapon.data.mData.mValue = value;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mData.mValue = value;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
@@ -734,6 +751,8 @@ void RecordsDynamicFunctions::SetRecordWeight(double weight) noexcept
         tempWeapon.data.mData.mWeight = weight;
     else if (writeRecordsType == mwmp::RECORD_TYPE::CONTAINER)
         tempContainer.data.mWeight = weight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+        tempIngredient.data.mData.mWeight = weight;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set weight for record type %i which lacks that property", writeRecordsType);
@@ -1294,7 +1313,14 @@ void RecordsDynamicFunctions::AddRecord() noexcept
         WorldstateFunctions::writeWorldstate.staticRecords.push_back(tempStatic);
         tempStatic = {};
     }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+    {
+        tempIngredient.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.ingredientRecords.push_back(tempIngredient);
+        tempIngredient = {};
+    }
 
+    effectCount = 0;
     tempOverrides = {};
 }
 
@@ -1308,8 +1334,25 @@ void RecordsDynamicFunctions::AddRecordEffect() noexcept
         tempPotion.data.mEffects.mList.push_back(tempEffect);
     else if (writeRecordsType == mwmp::RECORD_TYPE::ENCHANTMENT)
         tempEnchantment.data.mEffects.mList.push_back(tempEffect);
+    else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
+    {
+        const static unsigned int effectCap = sizeof(tempIngredient.data.mData.mEffectID) / sizeof(tempIngredient.data.mData.mEffectID[0]);
+
+        if (effectCount < effectCap)
+        {
+            tempIngredient.data.mData.mEffectID[effectCount] = tempEffect.mEffectID;
+            tempIngredient.data.mData.mAttributes[effectCount] = tempEffect.mAttribute;
+            tempIngredient.data.mData.mSkills[effectCount] = tempEffect.mSkill;
+        }
+        else
+        {
+            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Could not add record effect to temporary ingredient record because the cap of %i effects has been reached",
+                effectCap);
+        }
+    }
 
     tempOverrides.hasEffects = true;
+    effectCount++;
     tempEffect = {};
 }
 

@@ -206,6 +206,18 @@ void Worldstate::addRecords()
             RecordHelper::overrideStaticRecord(record);
         }
     }
+    else if (recordsType == mwmp::RECORD_TYPE::INGREDIENT)
+    {
+        for (auto &&record : ingredientRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- ingredient record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideIngredientRecord(record);
+        }
+    }
 }
 
 bool Worldstate::containsExploredMapTile(int cellX, int cellY)

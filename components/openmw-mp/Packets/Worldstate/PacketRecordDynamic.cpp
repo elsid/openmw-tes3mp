@@ -48,6 +48,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->activatorRecords);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::STATIC)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->staticRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::INGREDIENT)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->ingredientRecords);
         else
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
@@ -96,6 +98,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             Utils::resetVector(worldstate->activatorRecords, worldstate->recordsCount);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::STATIC)
             Utils::resetVector(worldstate->staticRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::INGREDIENT)
+            Utils::resetVector(worldstate->ingredientRecords, worldstate->recordsCount);
     }
 
     if (worldstate->recordsType == mwmp::RECORD_TYPE::SPELL)
@@ -541,6 +545,37 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             {
                 auto &&overrides = record.baseOverrides;
                 RW(overrides.hasModel, send);
+            }
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::INGREDIENT)
+    {
+        for (auto &&record : worldstate->ingredientRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mName, send, true);
+            RW(recordData.mModel, send, true);
+            RW(recordData.mIcon, send, true);
+            RW(recordData.mData.mWeight, send);
+            RW(recordData.mData.mValue, send);
+            RW(recordData.mData.mEffectID, send);
+            RW(recordData.mData.mAttributes, send);
+            RW(recordData.mData.mSkills, send);
+            RW(recordData.mScript, send, true);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasName, send);
+                RW(overrides.hasModel, send);
+                RW(overrides.hasIcon, send);
+                RW(overrides.hasWeight, send);
+                RW(overrides.hasValue, send);
+                RW(overrides.hasEffects, send);
+                RW(overrides.hasScript, send);
             }
         }
     }

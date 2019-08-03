@@ -118,6 +118,13 @@ bool RecordHelper::doesStaticRecordExist(const std::string& id)
     return world->getStore().get<ESM::Static>().search(id);
 }
 
+bool RecordHelper::doesIngredientRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Ingredient>().search(id);
+}
+
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1056,6 +1063,71 @@ void RecordHelper::overrideStaticRecord(const mwmp::StaticRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
+void RecordHelper::overrideIngredientRecord(const mwmp::IngredientRecord& record)
+{
+    const ESM::Ingredient &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesIngredientRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesIngredientRecordExist(record.baseId))
+    {
+        const ESM::Ingredient *baseData = world->getStore().get<ESM::Ingredient>().search(record.baseId);
+        ESM::Ingredient finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasIcon)
+            finalData.mIcon = recordData.mIcon;
+
+        if (record.baseOverrides.hasWeight)
+            finalData.mData.mWeight = recordData.mData.mWeight;
+
+        if (record.baseOverrides.hasValue)
+            finalData.mData.mValue = recordData.mData.mValue;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        if (record.baseOverrides.hasEffects)
+        {
+            const static unsigned int effectCap = sizeof(recordData.mData.mEffectID) / sizeof(recordData.mData.mEffectID[0]);
+
+            for (int effectIndex = 0; effectIndex < effectCap; effectIndex++)
+            {
+                finalData.mData.mEffectID[effectIndex] = recordData.mData.mEffectID[effectIndex];
+                finalData.mData.mAttributes[effectIndex] = recordData.mData.mAttributes[effectIndex];
+                finalData.mData.mSkills[effectIndex] = recordData.mData.mSkills[effectIndex];
+            }
+        }
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
 void RecordHelper::overrideCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1148,6 +1220,13 @@ void RecordHelper::overrideActivatorRecord(const ESM::Activator& record)
 }
 
 void RecordHelper::overrideStaticRecord(const ESM::Static& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideIngredientRecord(const ESM::Ingredient& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
