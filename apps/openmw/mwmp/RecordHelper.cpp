@@ -125,6 +125,34 @@ bool RecordHelper::doesIngredientRecordExist(const std::string& id)
     return world->getStore().get<ESM::Ingredient>().search(id);
 }
 
+bool RecordHelper::doesApparatusRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Apparatus>().search(id);
+}
+
+bool RecordHelper::doesLockpickRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Lockpick>().search(id);
+}
+
+bool RecordHelper::doesProbeRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Probe>().search(id);
+}
+
+bool RecordHelper::doesRepairRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Repair>().search(id);
+}
+
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1128,6 +1156,242 @@ void RecordHelper::overrideIngredientRecord(const mwmp::IngredientRecord& record
         world->updatePtrsWithRefId(recordData.mId);
 }
 
+void RecordHelper::overrideApparatusRecord(const mwmp::ApparatusRecord& record)
+{
+    const ESM::Apparatus &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesApparatusRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesApparatusRecordExist(record.baseId))
+    {
+        const ESM::Apparatus *baseData = world->getStore().get<ESM::Apparatus>().search(record.baseId);
+        ESM::Apparatus finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasIcon)
+            finalData.mIcon = recordData.mIcon;
+
+        if (record.baseOverrides.hasSubtype)
+            finalData.mData.mType = recordData.mData.mType;
+
+        if (record.baseOverrides.hasWeight)
+            finalData.mData.mWeight = recordData.mData.mWeight;
+
+        if (record.baseOverrides.hasValue)
+            finalData.mData.mValue = recordData.mData.mValue;
+
+        if (record.baseOverrides.hasQuality)
+            finalData.mData.mQuality = recordData.mData.mQuality;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
+void RecordHelper::overrideLockpickRecord(const mwmp::LockpickRecord& record)
+{
+    const ESM::Lockpick &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesLockpickRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesLockpickRecordExist(record.baseId))
+    {
+        const ESM::Lockpick *baseData = world->getStore().get<ESM::Lockpick>().search(record.baseId);
+        ESM::Lockpick finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasIcon)
+            finalData.mIcon = recordData.mIcon;
+
+        if (record.baseOverrides.hasWeight)
+            finalData.mData.mWeight = recordData.mData.mWeight;
+
+        if (record.baseOverrides.hasValue)
+            finalData.mData.mValue = recordData.mData.mValue;
+
+        if (record.baseOverrides.hasQuality)
+            finalData.mData.mQuality = recordData.mData.mQuality;
+
+        if (record.baseOverrides.hasUses)
+            finalData.mData.mUses = recordData.mData.mUses;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
+void RecordHelper::overrideProbeRecord(const mwmp::ProbeRecord& record)
+{
+    const ESM::Probe &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesProbeRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesProbeRecordExist(record.baseId))
+    {
+        const ESM::Probe *baseData = world->getStore().get<ESM::Probe>().search(record.baseId);
+        ESM::Probe finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasIcon)
+            finalData.mIcon = recordData.mIcon;
+
+        if (record.baseOverrides.hasWeight)
+            finalData.mData.mWeight = recordData.mData.mWeight;
+
+        if (record.baseOverrides.hasValue)
+            finalData.mData.mValue = recordData.mData.mValue;
+
+        if (record.baseOverrides.hasQuality)
+            finalData.mData.mQuality = recordData.mData.mQuality;
+
+        if (record.baseOverrides.hasUses)
+            finalData.mData.mUses = recordData.mData.mUses;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
+void RecordHelper::overrideRepairRecord(const mwmp::RepairRecord& record)
+{
+    const ESM::Repair &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    bool isExistingId = doesRepairRecordExist(recordData.mId);
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesRepairRecordExist(record.baseId))
+    {
+        const ESM::Repair *baseData = world->getStore().get<ESM::Repair>().search(record.baseId);
+        ESM::Repair finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasName)
+            finalData.mName = recordData.mName;
+
+        if (record.baseOverrides.hasModel)
+            finalData.mModel = recordData.mModel;
+
+        if (record.baseOverrides.hasIcon)
+            finalData.mIcon = recordData.mIcon;
+
+        if (record.baseOverrides.hasWeight)
+            finalData.mData.mWeight = recordData.mData.mWeight;
+
+        if (record.baseOverrides.hasValue)
+            finalData.mData.mValue = recordData.mData.mValue;
+
+        if (record.baseOverrides.hasQuality)
+            finalData.mData.mQuality = recordData.mData.mQuality;
+
+        if (record.baseOverrides.hasUses)
+            finalData.mData.mUses = recordData.mData.mUses;
+
+        if (record.baseOverrides.hasScript)
+            finalData.mScript = recordData.mScript;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(Log::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isExistingId)
+        world->updatePtrsWithRefId(recordData.mId);
+}
+
 void RecordHelper::overrideCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1227,6 +1491,34 @@ void RecordHelper::overrideStaticRecord(const ESM::Static& record)
 }
 
 void RecordHelper::overrideIngredientRecord(const ESM::Ingredient& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideApparatusRecord(const ESM::Apparatus& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideLockpickRecord(const ESM::Lockpick& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideProbeRecord(const ESM::Probe& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideRepairRecord(const ESM::Repair& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 

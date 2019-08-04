@@ -5,6 +5,7 @@
 
 #include <components/esm/loadacti.hpp>
 #include <components/esm/loadalch.hpp>
+#include <components/esm/loadappa.hpp>
 #include <components/esm/loadarmo.hpp>
 #include <components/esm/loadbook.hpp>
 #include <components/esm/loadclot.hpp>
@@ -13,8 +14,11 @@
 #include <components/esm/loaddoor.hpp>
 #include <components/esm/loadench.hpp>
 #include <components/esm/loadingr.hpp>
+#include <components/esm/loadlock.hpp>
 #include <components/esm/loadmisc.hpp>
 #include <components/esm/loadnpc.hpp>
+#include <components/esm/loadprob.hpp>
+#include <components/esm/loadrepa.hpp>
 #include <components/esm/loadspel.hpp>
 #include <components/esm/loadstat.hpp>
 #include <components/esm/loadweap.hpp>
@@ -41,7 +45,11 @@ namespace mwmp
         DOOR,
         ACTIVATOR,
         STATIC,
-        INGREDIENT
+        INGREDIENT,
+        APPARATUS,
+        LOCKPICK,
+        PROBE,
+        REPAIR
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -77,6 +85,8 @@ namespace mwmp
         bool hasFlags = false;
         bool hasValue = false;
         bool hasWeight = false;
+        bool hasQuality = false;
+        bool hasUses = false;
 
         bool hasArmorRating = false;
         bool hasHealth = false;
@@ -109,6 +119,13 @@ namespace mwmp
     struct ActivatorRecord
     {
         ESM::Activator data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
+    struct ApparatusRecord
+    {
+        ESM::Apparatus data;
         std::string baseId;
         BaseOverrides baseOverrides;
     };
@@ -172,6 +189,13 @@ namespace mwmp
         BaseOverrides baseOverrides;
     };
 
+    struct LockpickRecord
+    {
+        ESM::Lockpick data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
     struct MiscellaneousRecord
     {
         ESM::Miscellaneous data;
@@ -191,6 +215,20 @@ namespace mwmp
     struct PotionRecord
     {
         ESM::Potion data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
+    struct ProbeRecord
+    {
+        ESM::Probe data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
+    struct RepairRecord
+    {
+        ESM::Repair data;
         std::string baseId;
         BaseOverrides baseOverrides;
     };
@@ -271,6 +309,7 @@ namespace mwmp
         unsigned int recordsCount;
 
         std::vector<ActivatorRecord> activatorRecords;
+        std::vector<ApparatusRecord> apparatusRecords;
         std::vector<ArmorRecord> armorRecords;
         std::vector<BookRecord> bookRecords;
         std::vector<ClothingRecord> clothingRecords;
@@ -279,9 +318,12 @@ namespace mwmp
         std::vector<DoorRecord> doorRecords;
         std::vector<EnchantmentRecord> enchantmentRecords;
         std::vector<IngredientRecord> ingredientRecords;
+        std::vector<LockpickRecord> lockpickRecords;
         std::vector<MiscellaneousRecord> miscellaneousRecords;
         std::vector<NpcRecord> npcRecords;
         std::vector<PotionRecord> potionRecords;
+        std::vector<ProbeRecord> probeRecords;
+        std::vector<RepairRecord> repairRecords;
         std::vector<SpellRecord> spellRecords;
         std::vector<StaticRecord> staticRecords;
         std::vector<WeaponRecord> weaponRecords;

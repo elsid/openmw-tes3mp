@@ -27,6 +27,10 @@ DoorRecord tempDoor;
 ActivatorRecord tempActivator;
 StaticRecord tempStatic;
 IngredientRecord tempIngredient;
+ApparatusRecord tempApparatus;
+LockpickRecord tempLockpick;
+ProbeRecord tempProbe;
+RepairRecord tempRepair;
 
 BaseOverrides tempOverrides;
 
@@ -68,6 +72,10 @@ void RecordsDynamicFunctions::ClearRecords() noexcept
     WorldstateFunctions::writeWorldstate.activatorRecords.clear();
     WorldstateFunctions::writeWorldstate.staticRecords.clear();
     WorldstateFunctions::writeWorldstate.ingredientRecords.clear();
+    WorldstateFunctions::writeWorldstate.apparatusRecords.clear();
+    WorldstateFunctions::writeWorldstate.lockpickRecords.clear();
+    WorldstateFunctions::writeWorldstate.probeRecords.clear();
+    WorldstateFunctions::writeWorldstate.repairRecords.clear();
 }
 
 unsigned short RecordsDynamicFunctions::GetRecordType() noexcept
@@ -358,6 +366,14 @@ void RecordsDynamicFunctions::SetRecordId(const char* id) noexcept
         tempStatic.data.mId = id;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mId = id;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
@@ -396,6 +412,14 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
         tempStatic.baseId = baseId;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.baseId = baseId;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
@@ -428,6 +452,8 @@ void RecordsDynamicFunctions::SetRecordSubtype(unsigned int subtype) noexcept
         tempClothing.data.mData.mType = subtype;
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         tempWeapon.data.mData.mType = subtype;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mData.mType = subtype;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set subtype for record type %i which lacks that property", writeRecordsType);
@@ -467,6 +493,14 @@ void RecordsDynamicFunctions::SetRecordName(const char* name) noexcept
         tempActivator.data.mName = name;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mName = name;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
@@ -506,6 +540,14 @@ void RecordsDynamicFunctions::SetRecordModel(const char* model) noexcept
         tempStatic.data.mModel = model;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mModel = model;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set model for record type %i which lacks that property", writeRecordsType);
@@ -533,6 +575,14 @@ void RecordsDynamicFunctions::SetRecordIcon(const char* icon) noexcept
         tempWeapon.data.mIcon = icon;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mIcon = icon;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mIcon = icon;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mIcon = icon;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mIcon = icon;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mIcon = icon;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set icon for record type %i which lacks that property", writeRecordsType);
@@ -570,6 +620,14 @@ void RecordsDynamicFunctions::SetRecordScript(const char* script) noexcept
         tempActivator.data.mScript = script;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mScript = script;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set script for record type %i which lacks that property", writeRecordsType);
@@ -724,6 +782,14 @@ void RecordsDynamicFunctions::SetRecordValue(int value) noexcept
         tempWeapon.data.mData.mValue = value;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mData.mValue = value;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mData.mValue = value;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mData.mValue = value;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mData.mValue = value;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mData.mValue = value;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
@@ -753,6 +819,14 @@ void RecordsDynamicFunctions::SetRecordWeight(double weight) noexcept
         tempContainer.data.mWeight = weight;
     else if (writeRecordsType == mwmp::RECORD_TYPE::INGREDIENT)
         tempIngredient.data.mData.mWeight = weight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mData.mWeight = weight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mData.mWeight = weight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mData.mWeight = weight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mData.mWeight = weight;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set weight for record type %i which lacks that property", writeRecordsType);
@@ -760,6 +834,46 @@ void RecordsDynamicFunctions::SetRecordWeight(double weight) noexcept
     }
 
     tempOverrides.hasWeight = true;
+}
+
+void RecordsDynamicFunctions::SetRecordQuality(double quality) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+        tempApparatus.data.mData.mQuality = quality;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mData.mQuality = quality;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mData.mQuality = quality;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mData.mQuality = quality;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set quality for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasQuality = true;
+}
+
+void RecordsDynamicFunctions::SetRecordUses(int uses) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+        tempLockpick.data.mData.mUses = uses;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+        tempProbe.data.mData.mUses = uses;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+        tempRepair.data.mData.mUses = uses;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasUses = true;
 }
 
 void RecordsDynamicFunctions::SetRecordArmorRating(int armorRating) noexcept
@@ -1318,6 +1432,30 @@ void RecordsDynamicFunctions::AddRecord() noexcept
         tempIngredient.baseOverrides = tempOverrides;
         WorldstateFunctions::writeWorldstate.ingredientRecords.push_back(tempIngredient);
         tempIngredient = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::APPARATUS)
+    {
+        tempApparatus.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.apparatusRecords.push_back(tempApparatus);
+        tempApparatus = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LOCKPICK)
+    {
+        tempLockpick.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.lockpickRecords.push_back(tempLockpick);
+        tempLockpick = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::PROBE)
+    {
+        tempProbe.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.probeRecords.push_back(tempProbe);
+        tempProbe = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
+    {
+        tempRepair.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.repairRecords.push_back(tempRepair);
+        tempRepair = {};
     }
 
     effectCount = 0;

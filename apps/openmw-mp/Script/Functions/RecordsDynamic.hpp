@@ -57,6 +57,8 @@
     {"SetRecordFlags",                          RecordsDynamicFunctions::SetRecordFlags},\
     {"SetRecordValue",                          RecordsDynamicFunctions::SetRecordValue},\
     {"SetRecordWeight",                         RecordsDynamicFunctions::SetRecordWeight},\
+    {"SetRecordQuality",                        RecordsDynamicFunctions::SetRecordQuality},\
+    {"SetRecordUses",                           RecordsDynamicFunctions::SetRecordUses},\
     \
     {"SetRecordArmorRating",                    RecordsDynamicFunctions::SetRecordArmorRating},\
     {"SetRecordHealth",                         RecordsDynamicFunctions::SetRecordHealth},\
@@ -518,6 +520,24 @@ public:
     * \return void
     */
     static void SetRecordWeight(double weight) noexcept;
+
+    /**
+    * \brief Set the item quality of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param weight The weight of the record.
+    * \return void
+    */
+    static void SetRecordQuality(double quality) noexcept;
+
+    /**
+    * \brief Set the number of uses of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param uses The number of uses of the record.
+    * \return void
+    */
+    static void SetRecordUses(int uses) noexcept;
 
     /**
     * \brief Set the armor rating of the temporary record stored on the server

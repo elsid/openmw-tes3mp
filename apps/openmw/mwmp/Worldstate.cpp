@@ -218,6 +218,54 @@ void Worldstate::addRecords()
             RecordHelper::overrideIngredientRecord(record);
         }
     }
+    else if (recordsType == mwmp::RECORD_TYPE::APPARATUS)
+    {
+        for (auto &&record : apparatusRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- apparatus record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideApparatusRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::LOCKPICK)
+    {
+        for (auto &&record : lockpickRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- lockpick record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideLockpickRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::PROBE)
+    {
+        for (auto &&record : probeRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- probe record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideProbeRecord(record);
+        }
+    }
+    else if (recordsType == mwmp::RECORD_TYPE::REPAIR)
+    {
+        for (auto &&record : repairRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- repair record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideRepairRecord(record);
+        }
+    }
 }
 
 bool Worldstate::containsExploredMapTile(int cellX, int cellY)
