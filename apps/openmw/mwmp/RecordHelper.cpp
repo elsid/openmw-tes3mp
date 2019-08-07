@@ -214,6 +214,9 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         if (record.baseOverrides.hasAiFight)
             finalData.mAiData.mFight = recordData.mAiData.mFight;
 
+        if (record.baseOverrides.hasAiServices)
+            finalData.mAiData.mServices = recordData.mAiData.mServices;
+
         if (record.baseOverrides.hasFlags)
             finalData.mFlags = recordData.mFlags;
 
@@ -319,6 +322,9 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
 
         if (record.baseOverrides.hasAiFight)
             finalData.mAiData.mFight = recordData.mAiData.mFight;
+
+        if (record.baseOverrides.hasAiServices)
+            finalData.mAiData.mServices = recordData.mAiData.mServices;
 
         if (record.baseOverrides.hasFlags)
             finalData.mFlags = recordData.mFlags;

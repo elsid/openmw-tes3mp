@@ -110,7 +110,9 @@ namespace mwmp
         bool hasLevel = false;
         bool hasMagicka = false;
         bool hasFatigue = false;
+
         bool hasAiFight = false;
+        bool hasAiServices = false;
 
         bool hasOpenSound = false;
         bool hasCloseSound = false;

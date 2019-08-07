@@ -1206,6 +1206,23 @@ void RecordsDynamicFunctions::SetRecordAIFight(int aiFight) noexcept
     tempOverrides.hasAiFight = true;
 }
 
+void RecordsDynamicFunctions::SetRecordAIServices(int aiServices) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mAiData.mServices = aiServices;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mAiData.mServices = aiServices;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI services for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasAiServices = true;
+}
+
 void RecordsDynamicFunctions::SetRecordOpenSound(const char* sound) noexcept
 {
     unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;

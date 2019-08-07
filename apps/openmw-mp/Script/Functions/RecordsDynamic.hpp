@@ -84,7 +84,9 @@
     {"SetRecordLevel",                          RecordsDynamicFunctions::SetRecordLevel},\
     {"SetRecordMagicka",                        RecordsDynamicFunctions::SetRecordMagicka},\
     {"SetRecordFatigue",                        RecordsDynamicFunctions::SetRecordFatigue},\
+    \
     {"SetRecordAIFight",                        RecordsDynamicFunctions::SetRecordAIFight},\
+    {"SetRecordAIServices",                     RecordsDynamicFunctions::SetRecordAIServices},\
     \
     {"SetRecordOpenSound",                      RecordsDynamicFunctions::SetRecordOpenSound},\
     {"SetRecordCloseSound",                     RecordsDynamicFunctions::SetRecordCloseSound},\
@@ -734,6 +736,15 @@ public:
     * \return void
     */
     static void SetRecordAIFight(int aiFight) noexcept;
+
+    /**
+    * \brief Set the AI services value of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param aiServices The AI services value of the record.
+    * \return void
+    */
+    static void SetRecordAIServices(int aiServices) noexcept;
 
     /**
     * \brief Set the opening sound of the temporary record stored on the server for the
