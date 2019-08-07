@@ -214,6 +214,12 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         if (record.baseOverrides.hasAiFight)
             finalData.mAiData.mFight = recordData.mAiData.mFight;
 
+        if (record.baseOverrides.hasAiFlee)
+            finalData.mAiData.mFlee = recordData.mAiData.mFlee;
+
+        if (record.baseOverrides.hasAiAlarm)
+            finalData.mAiData.mAlarm = recordData.mAiData.mAlarm;
+
         if (record.baseOverrides.hasAiServices)
             finalData.mAiData.mServices = recordData.mAiData.mServices;
 
@@ -322,6 +328,12 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
 
         if (record.baseOverrides.hasAiFight)
             finalData.mAiData.mFight = recordData.mAiData.mFight;
+
+        if (record.baseOverrides.hasAiFlee)
+            finalData.mAiData.mFlee = recordData.mAiData.mFlee;
+
+        if (record.baseOverrides.hasAiAlarm)
+            finalData.mAiData.mAlarm = recordData.mAiData.mAlarm;
 
         if (record.baseOverrides.hasAiServices)
             finalData.mAiData.mServices = recordData.mAiData.mServices;

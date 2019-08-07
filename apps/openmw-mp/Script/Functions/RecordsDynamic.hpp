@@ -86,6 +86,8 @@
     {"SetRecordFatigue",                        RecordsDynamicFunctions::SetRecordFatigue},\
     \
     {"SetRecordAIFight",                        RecordsDynamicFunctions::SetRecordAIFight},\
+    {"SetRecordAIFlee",                         RecordsDynamicFunctions::SetRecordAIFlee},\
+    {"SetRecordAIAlarm",                        RecordsDynamicFunctions::SetRecordAIAlarm},\
     {"SetRecordAIServices",                     RecordsDynamicFunctions::SetRecordAIServices},\
     \
     {"SetRecordOpenSound",                      RecordsDynamicFunctions::SetRecordOpenSound},\
@@ -736,6 +738,24 @@ public:
     * \return void
     */
     static void SetRecordAIFight(int aiFight) noexcept;
+
+    /**
+    * \brief Set the AI flee value of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param aiFlee The AI flee value of the record.
+    * \return void
+    */
+    static void SetRecordAIFlee(int aiFlee) noexcept;
+
+    /**
+    * \brief Set the AI alarm value of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param aiAlarm The AI alarm value of the record.
+    * \return void
+    */
+    static void SetRecordAIAlarm(int aiAlarm) noexcept;
 
     /**
     * \brief Set the AI services value of the temporary record stored on the server for the

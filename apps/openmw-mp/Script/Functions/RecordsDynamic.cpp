@@ -1206,6 +1206,40 @@ void RecordsDynamicFunctions::SetRecordAIFight(int aiFight) noexcept
     tempOverrides.hasAiFight = true;
 }
 
+void RecordsDynamicFunctions::SetRecordAIFlee(int aiFlee) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mAiData.mFlee = aiFlee;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mAiData.mFlee = aiFlee;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasAiFlee = true;
+}
+
+void RecordsDynamicFunctions::SetRecordAIAlarm(int aiAlarm) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mAiData.mAlarm = aiAlarm;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
+        tempNpc.data.mAiData.mAlarm = aiAlarm;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasAiAlarm = true;
+}
+
 void RecordsDynamicFunctions::SetRecordAIServices(int aiServices) noexcept
 {
     unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;

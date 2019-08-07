@@ -216,6 +216,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             RW(recordData.mData.mMana, send);
             RW(recordData.mData.mFatigue, send);
             RW(recordData.mAiData.mFight, send);
+            RW(recordData.mAiData.mFlee, send);
+            RW(recordData.mAiData.mAlarm, send);
             RW(recordData.mAiData.mServices, send);
             RW(recordData.mFlags, send);
             RW(recordData.mScript, send, true);
@@ -232,6 +234,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasMagicka, send);
                 RW(overrides.hasFatigue, send);
                 RW(overrides.hasAiFight, send);
+                RW(overrides.hasAiFlee, send);
+                RW(overrides.hasAiAlarm, send);
                 RW(overrides.hasAiServices, send);
                 RW(overrides.hasFlags, send);
                 RW(overrides.hasScript, send);
@@ -262,6 +266,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             RW(recordData.mNpdt.mMana, send);
             RW(recordData.mNpdt.mFatigue, send);
             RW(recordData.mAiData.mFight, send);
+            RW(recordData.mAiData.mFlee, send);
+            RW(recordData.mAiData.mAlarm, send);
             RW(recordData.mAiData.mServices, send);
 
             RW(recordData.mNpdtType, send);
@@ -283,6 +289,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasMagicka, send);
                 RW(overrides.hasFatigue, send);
                 RW(overrides.hasAiFight, send);
+                RW(overrides.hasAiFlee, send);
+                RW(overrides.hasAiAlarm, send);
                 RW(overrides.hasAiServices, send);
                 RW(overrides.hasAutoCalc, send);
                 RW(overrides.hasInventory, send);

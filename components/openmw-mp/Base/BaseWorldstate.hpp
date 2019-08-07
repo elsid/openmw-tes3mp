@@ -112,6 +112,8 @@ namespace mwmp
         bool hasFatigue = false;
 
         bool hasAiFight = false;
+        bool hasAiFlee = false;
+        bool hasAiAlarm = false;
         bool hasAiServices = false;
 
         bool hasOpenSound = false;
