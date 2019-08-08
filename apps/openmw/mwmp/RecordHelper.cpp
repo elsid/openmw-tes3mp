@@ -583,7 +583,7 @@ void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(Log::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -665,7 +665,7 @@ void RecordHelper::overrideBookRecord(const mwmp::BookRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(Log::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -738,7 +738,7 @@ void RecordHelper::overrideClothingRecord(const mwmp::ClothingRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(Log::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -900,7 +900,7 @@ void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(Log::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
