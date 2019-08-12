@@ -624,8 +624,21 @@ namespace MWMechanics
                     std::map<CreatureStats::SummonKey, int>::iterator findCreature = targetStats.getSummonedCreatureMap().find(std::make_pair(effectIt->mEffectID, mId));
                     if (findCreature != targetStats.getSummonedCreatureMap().end())
                     {
-                        MWBase::Environment::get().getMechanicsManager()->cleanupSummonedCreature(target, findCreature->second);
-                        targetStats.getSummonedCreatureMap().erase(findCreature);
+                        /*
+                            Start of tes3mp change (major)
+
+                            Don't clean up placeholder summoned creatures still awaiting a spawn
+                            packet from the server, because that would make the packet create permanent
+                            spawns instead
+                        */
+                        if (findCreature->second != -1)
+                        {
+                            MWBase::Environment::get().getMechanicsManager()->cleanupSummonedCreature(target, findCreature->second);
+                            targetStats.getSummonedCreatureMap().erase(findCreature);
+                        }
+                        /*
+                            End of tes3mp change (major)
+                        */
                     }
                 }
 
