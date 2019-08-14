@@ -266,6 +266,18 @@ void Worldstate::addRecords()
             RecordHelper::overrideRepairRecord(record);
         }
     }
+    else if (recordsType == mwmp::RECORD_TYPE::LIGHT)
+    {
+        for (auto &&record : lightRecords)
+        {
+            bool hasBaseId = !record.baseId.empty();
+
+            LOG_APPEND(Log::LOG_INFO, "- light record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
+                hasBaseId ? record.baseId.c_str() : "empty");
+
+            RecordHelper::overrideLightRecord(record);
+        }
+    }
 }
 
 bool Worldstate::containsExploredMapTile(int cellX, int cellY)

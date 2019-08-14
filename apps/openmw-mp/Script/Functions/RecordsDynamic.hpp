@@ -59,6 +59,9 @@
     {"SetRecordWeight",                         RecordsDynamicFunctions::SetRecordWeight},\
     {"SetRecordQuality",                        RecordsDynamicFunctions::SetRecordQuality},\
     {"SetRecordUses",                           RecordsDynamicFunctions::SetRecordUses},\
+    {"SetRecordTime",                           RecordsDynamicFunctions::SetRecordTime},\
+    {"SetRecordRadius",                         RecordsDynamicFunctions::SetRecordRadius},\
+    {"SetRecordColor",                          RecordsDynamicFunctions::SetRecordColor},\
     \
     {"SetRecordArmorRating",                    RecordsDynamicFunctions::SetRecordArmorRating},\
     {"SetRecordHealth",                         RecordsDynamicFunctions::SetRecordHealth},\
@@ -90,6 +93,7 @@
     {"SetRecordAIAlarm",                        RecordsDynamicFunctions::SetRecordAIAlarm},\
     {"SetRecordAIServices",                     RecordsDynamicFunctions::SetRecordAIServices},\
     \
+    {"SetRecordSound",                          RecordsDynamicFunctions::SetRecordSound},\
     {"SetRecordOpenSound",                      RecordsDynamicFunctions::SetRecordOpenSound},\
     {"SetRecordCloseSound",                     RecordsDynamicFunctions::SetRecordCloseSound},\
     \
@@ -544,6 +548,33 @@ public:
     static void SetRecordUses(int uses) noexcept;
 
     /**
+    * \brief Set the time of the temporary record stored on the server for the currently
+    * specified record type.
+    *
+    * \param time The time of the record.
+    * \return void
+    */
+    static void SetRecordTime(int time) noexcept;
+
+    /**
+    * \brief Set the radius of the temporary record stored on the server for the currently
+    * specified record type.
+    *
+    * \param uses The radius of the record.
+    * \return void
+    */
+    static void SetRecordRadius(int radius) noexcept;
+
+    /**
+    * \brief Set the color of the temporary record stored on the server for the currently
+    * specified record type.
+    *
+    * \param color The color of the record.
+    * \return void
+    */
+    static void SetRecordColor(unsigned int red, unsigned int green, unsigned int blue) noexcept;
+
+    /**
     * \brief Set the armor rating of the temporary record stored on the server
     * for the currently specified record type.
     *
@@ -765,6 +796,15 @@ public:
     * \return void
     */
     static void SetRecordAIServices(int aiServices) noexcept;
+
+    /**
+    * \brief Set the sound of the temporary record stored on the server for the currently
+    * specified record type.
+    *
+    * \param sound The sound of the record.
+    * \return void
+    */
+    static void SetRecordSound(const char* sound) noexcept;
 
     /**
     * \brief Set the opening sound of the temporary record stored on the server for the

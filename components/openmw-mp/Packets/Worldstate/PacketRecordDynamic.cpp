@@ -58,6 +58,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->probeRecords);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::REPAIR)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->repairRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::LIGHT)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->lightRecords);
         else
         {
             LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
@@ -116,6 +118,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             Utils::resetVector(worldstate->probeRecords, worldstate->recordsCount);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::REPAIR)
             Utils::resetVector(worldstate->repairRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::LIGHT)
+            Utils::resetVector(worldstate->lightRecords, worldstate->recordsCount);
     }
 
     if (worldstate->recordsType == mwmp::RECORD_TYPE::SPELL)
@@ -728,6 +732,43 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 RW(overrides.hasValue, send);
                 RW(overrides.hasQuality, send);
                 RW(overrides.hasUses, send);
+                RW(overrides.hasScript, send);
+            }
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::LIGHT)
+    {
+        for (auto &&record : worldstate->lightRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mName, send, true);
+            RW(recordData.mModel, send, true);
+            RW(recordData.mIcon, send, true);
+            RW(recordData.mSound, send, true);
+            RW(recordData.mData.mWeight, send, true);
+            RW(recordData.mData.mValue, send, true);
+            RW(recordData.mData.mTime, send, true);
+            RW(recordData.mData.mRadius, send, true);
+            RW(recordData.mData.mColor, send, true);
+            RW(recordData.mData.mFlags, send, true);
+            RW(recordData.mScript, send, true);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasName, send);
+                RW(overrides.hasModel, send);
+                RW(overrides.hasIcon, send);
+                RW(overrides.hasSound, send);
+                RW(overrides.hasWeight, send);
+                RW(overrides.hasValue, send);
+                RW(overrides.hasTime, send);
+                RW(overrides.hasRadius, send);
+                RW(overrides.hasColor, send);
+                RW(overrides.hasFlags, send);
                 RW(overrides.hasScript, send);
             }
         }

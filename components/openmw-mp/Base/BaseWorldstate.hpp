@@ -14,6 +14,7 @@
 #include <components/esm/loaddoor.hpp>
 #include <components/esm/loadench.hpp>
 #include <components/esm/loadingr.hpp>
+#include <components/esm/loadligh.hpp>
 #include <components/esm/loadlock.hpp>
 #include <components/esm/loadmisc.hpp>
 #include <components/esm/loadnpc.hpp>
@@ -49,7 +50,8 @@ namespace mwmp
         APPARATUS,
         LOCKPICK,
         PROBE,
-        REPAIR
+        REPAIR,
+        LIGHT
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -87,6 +89,9 @@ namespace mwmp
         bool hasWeight = false;
         bool hasQuality = false;
         bool hasUses = false;
+        bool hasTime = false;
+        bool hasRadius = false;
+        bool hasColor = false;
 
         bool hasArmorRating = false;
         bool hasHealth = false;
@@ -116,6 +121,7 @@ namespace mwmp
         bool hasAiAlarm = false;
         bool hasAiServices = false;
 
+        bool hasSound = false;
         bool hasOpenSound = false;
         bool hasCloseSound = false;
     };
@@ -189,6 +195,13 @@ namespace mwmp
     struct IngredientRecord
     {
         ESM::Ingredient data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
+    struct LightRecord
+    {
+        ESM::Light data;
         std::string baseId;
         BaseOverrides baseOverrides;
     };
@@ -322,6 +335,7 @@ namespace mwmp
         std::vector<DoorRecord> doorRecords;
         std::vector<EnchantmentRecord> enchantmentRecords;
         std::vector<IngredientRecord> ingredientRecords;
+        std::vector<LightRecord> lightRecords;
         std::vector<LockpickRecord> lockpickRecords;
         std::vector<MiscellaneousRecord> miscellaneousRecords;
         std::vector<NpcRecord> npcRecords;

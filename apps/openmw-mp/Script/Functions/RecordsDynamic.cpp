@@ -31,6 +31,7 @@ ApparatusRecord tempApparatus;
 LockpickRecord tempLockpick;
 ProbeRecord tempProbe;
 RepairRecord tempRepair;
+LightRecord tempLight;
 
 BaseOverrides tempOverrides;
 
@@ -76,6 +77,7 @@ void RecordsDynamicFunctions::ClearRecords() noexcept
     WorldstateFunctions::writeWorldstate.lockpickRecords.clear();
     WorldstateFunctions::writeWorldstate.probeRecords.clear();
     WorldstateFunctions::writeWorldstate.repairRecords.clear();
+    WorldstateFunctions::writeWorldstate.lightRecords.clear();
 }
 
 unsigned short RecordsDynamicFunctions::GetRecordType() noexcept
@@ -374,6 +376,8 @@ void RecordsDynamicFunctions::SetRecordId(const char* id) noexcept
         tempProbe.data.mId = id;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mId = id;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
@@ -420,6 +424,8 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
         tempProbe.baseId = baseId;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.baseId = baseId;
     else
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
@@ -501,6 +507,8 @@ void RecordsDynamicFunctions::SetRecordName(const char* name) noexcept
         tempProbe.data.mName = name;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mName = name;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
@@ -548,6 +556,8 @@ void RecordsDynamicFunctions::SetRecordModel(const char* model) noexcept
         tempProbe.data.mModel = model;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mModel = model;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mModel = model;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set model for record type %i which lacks that property", writeRecordsType);
@@ -583,6 +593,8 @@ void RecordsDynamicFunctions::SetRecordIcon(const char* icon) noexcept
         tempProbe.data.mIcon = icon;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mIcon = icon;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mIcon = icon;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set icon for record type %i which lacks that property", writeRecordsType);
@@ -628,6 +640,8 @@ void RecordsDynamicFunctions::SetRecordScript(const char* script) noexcept
         tempProbe.data.mScript = script;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mScript = script;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mScript = script;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set script for record type %i which lacks that property", writeRecordsType);
@@ -755,6 +769,8 @@ void RecordsDynamicFunctions::SetRecordFlags(int flags) noexcept
         tempWeapon.data.mData.mFlags = flags;
     else if (writeRecordsType == mwmp::RECORD_TYPE::CONTAINER)
         tempContainer.data.mFlags = flags;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mData.mFlags = flags;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set flags for record type %i which lacks that property", writeRecordsType);
@@ -790,6 +806,8 @@ void RecordsDynamicFunctions::SetRecordValue(int value) noexcept
         tempProbe.data.mData.mValue = value;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mData.mValue = value;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mData.mValue = value;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
@@ -827,6 +845,8 @@ void RecordsDynamicFunctions::SetRecordWeight(double weight) noexcept
         tempProbe.data.mData.mWeight = weight;
     else if (writeRecordsType == mwmp::RECORD_TYPE::REPAIR)
         tempRepair.data.mData.mWeight = weight;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mData.mWeight = weight;
     else
     {
         LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set weight for record type %i which lacks that property", writeRecordsType);
@@ -869,11 +889,56 @@ void RecordsDynamicFunctions::SetRecordUses(int uses) noexcept
         tempRepair.data.mData.mUses = uses;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set number of uses for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
     tempOverrides.hasUses = true;
+}
+
+void RecordsDynamicFunctions::SetRecordTime(int time) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mData.mTime = time;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set time for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasTime = true;
+}
+
+void RecordsDynamicFunctions::SetRecordRadius(int radius) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mData.mRadius = radius;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set radius for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasRadius = true;
+}
+
+void RecordsDynamicFunctions::SetRecordColor(unsigned int red, unsigned int green, unsigned int blue) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mData.mColor = red + (green << 8) + (blue << 16);
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set color for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasColor = true;
 }
 
 void RecordsDynamicFunctions::SetRecordArmorRating(int armorRating) noexcept
@@ -1257,6 +1322,21 @@ void RecordsDynamicFunctions::SetRecordAIServices(int aiServices) noexcept
     tempOverrides.hasAiServices = true;
 }
 
+void RecordsDynamicFunctions::SetRecordSound(const char* sound) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+        tempLight.data.mSound = sound;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set sound for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasSound = true;
+}
+
 void RecordsDynamicFunctions::SetRecordOpenSound(const char* sound) noexcept
 {
     unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
@@ -1507,6 +1587,12 @@ void RecordsDynamicFunctions::AddRecord() noexcept
         tempRepair.baseOverrides = tempOverrides;
         WorldstateFunctions::writeWorldstate.repairRecords.push_back(tempRepair);
         tempRepair = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
+    {
+        tempLight.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.lightRecords.push_back(tempLight);
+        tempLight = {};
     }
 
     effectCount = 0;
