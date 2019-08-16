@@ -38,7 +38,24 @@ namespace mwmp
                 MWWorld::Ptr itemPtr = MechanicsHelper::getItemPtrFromStore(player->usedItem, inventoryStore);
 
                 if (itemPtr)
+                {
                     MWBase::Environment::get().getWindowManager()->getInventoryWindow()->useItem(itemPtr);
+
+                    if (player->usingItemMagic)
+                    {
+                        MWWorld::ContainerStoreIterator storeIterator = inventoryStore.begin();
+                        for (; storeIterator != inventoryStore.end(); ++storeIterator)
+                        {
+                            if (*storeIterator == itemPtr)
+                                break;
+                        }
+
+                        inventoryStore.setSelectedEnchantItem(storeIterator);
+                    }
+
+                    if (player->itemUseDrawState != MWMechanics::DrawState_Nothing)
+                        playerPtr.getClass().getNpcStats(playerPtr).setDrawState(static_cast<MWMechanics::DrawState_>(player->itemUseDrawState));
+                }
                 else
                     LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Cannot use non-existent item %s", player->usedItem.refId.c_str());
             }

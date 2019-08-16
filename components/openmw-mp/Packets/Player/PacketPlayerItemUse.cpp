@@ -12,10 +12,12 @@ void PacketPlayerItemUse::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
-
     RW(player->usedItem.refId, send, true);
     RW(player->usedItem.count, send);
     RW(player->usedItem.charge, send);
     RW(player->usedItem.enchantmentCharge, send);
     RW(player->usedItem.soul, send, true);
+
+    RW(player->usingItemMagic, send);
+    RW(player->itemUseDrawState, send);
 }

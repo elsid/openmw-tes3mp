@@ -463,6 +463,14 @@ namespace MWGui
                     return;
                 }
 
+                /*
+                    Start of tes3mp change (major)
+
+                    Instead of unilaterally using an item, send an ID_PLAYER_ITEM_USE packet and let the server
+                    decide if the item actually gets used
+                */
+
+                /*
                 MWBase::Environment::get().getWindowManager()->useItem(item);
                 MWWorld::ConstContainerStoreIterator rightHand = store.getSlot(MWWorld::InventoryStore::Slot_CarriedRight);
                 // change draw state only if the item is in player's right hand
@@ -470,21 +478,43 @@ namespace MWGui
                 {
                     MWBase::Environment::get().getWorld()->getPlayer().setDrawState(MWMechanics::DrawState_Weapon);
                 }
+                */
+
+                bool shouldDraw = isWeapon || isTool;
+                mwmp::Main::get().getLocalPlayer()->sendItemUse(item, false, shouldDraw ? MWMechanics::DrawState_Weapon : MWMechanics::DrawState_Nothing);
+                /*
+                    End of tes3mp change (major)
+                */
             }
             else if (key->type == Type_MagicItem)
             {
                 // equip, if it can be equipped
+
+                /*
+                    Start of tes3mp change (major)
+
+                    Instead of unilaterally using an item, send an ID_PLAYER_ITEM_USE packet and let the server
+                    decide if the item actually gets used
+                */
                 if (!item.getClass().getEquipmentSlots(item).first.empty())
                 {
+
+                    /*
                     MWBase::Environment::get().getWindowManager()->useItem(item);
 
                     // make sure that item was successfully equipped
                     if (!store.isEquipped(item))
                         return;
-                }
+                    */
 
-                store.setSelectedEnchantItem(it);
-                MWBase::Environment::get().getWorld()->getPlayer().setDrawState(MWMechanics::DrawState_Spell);
+                    mwmp::Main::get().getLocalPlayer()->sendItemUse(item, true, MWMechanics::DrawState_Spell);
+                }
+                
+                //store.setSelectedEnchantItem(it);
+                //MWBase::Environment::get().getWorld()->getPlayer().setDrawState(MWMechanics::DrawState_Spell);
+                /*
+                    End of tes3mp change (major)
+                */
             }
         }
         else if (key->type == Type_Magic)

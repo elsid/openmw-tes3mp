@@ -326,6 +326,8 @@ namespace mwmp
         std::string selectedSpellId;
 
         mwmp::Item usedItem;
+        bool usingItemMagic;
+        char itemUseDrawState;
     };
 }
 
