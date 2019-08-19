@@ -16,7 +16,7 @@
 
     Include additional headers for multiplayer purposes
 */
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/Networking.hpp"
 #include "../mwmp/LocalPlayer.hpp"
@@ -1239,7 +1239,7 @@ namespace MWMechanics
 
                         npcStats.setCrimeId(-1);
                         npcStats.setCrimeTime(time(0));
-                        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "NPC %s %i-%i has forgiven player's crimes after the player's death",
+                        LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "NPC %s %i-%i has forgiven player's crimes after the player's death",
                             ptr.getCellRef().getRefId().c_str(), ptr.getCellRef().getRefNum().mIndex, ptr.getCellRef().getMpNum());
                     }
                 }

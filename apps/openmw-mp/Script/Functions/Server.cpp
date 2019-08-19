@@ -2,7 +2,7 @@
 
 #include <components/misc/stringops.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/Version.hpp>
 
 #include <apps/openmw-mp/Script/ScriptFunctions.hpp>
@@ -33,7 +33,7 @@ void ServerFunctions::Kick(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player,);
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Kicking player %s (%i)", player->npc.mName.c_str(), player->getId());
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Kicking player %s (%i)", player->npc.mName.c_str(), player->getId());
     mwmp::Networking::getPtr()->kickPlayer(player->guid);
     player->setLoadState(Player::KICKED);
 }

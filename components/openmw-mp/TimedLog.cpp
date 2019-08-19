@@ -10,45 +10,45 @@
 #include <sstream>
 #include <vector>
 #include <boost/lexical_cast.hpp>
-#include "Log.hpp"
+#include "TimedLog.hpp"
 
 using namespace std;
 
-Log *Log::sLog = nullptr;
+TimedLog *TimedLog::sTimedLog = nullptr;
 
-Log::Log(int logLevel) : logLevel(logLevel)
+TimedLog::TimedLog(int logLevel) : logLevel(logLevel)
 {
 
 }
 
-void Log::Create(int logLevel)
+void TimedLog::Create(int logLevel)
 {
-    if (sLog != nullptr)
+    if (sTimedLog != nullptr)
         return;
-    sLog = new Log(logLevel);
+    sTimedLog = new TimedLog(logLevel);
 }
 
-void Log::Delete()
+void TimedLog::Delete()
 {
-    if (sLog == nullptr)
+    if (sTimedLog == nullptr)
         return;
-    delete sLog;
-    sLog = nullptr;
+    delete sTimedLog;
+    sTimedLog = nullptr;
 }
 
-const Log &Log::Get()
+const TimedLog &TimedLog::Get()
 {
-    return *sLog;
+    return *sTimedLog;
 }
 
-int Log::GetLevel()
+int TimedLog::GetLevel()
 {
-    return sLog->logLevel;
+    return sTimedLog->logLevel;
 }
 
-void Log::SetLevel(int level)
+void TimedLog::SetLevel(int level)
 {
-    sLog->logLevel = level;
+    sTimedLog->logLevel = level;
 }
 
 const char* getTime()
@@ -62,7 +62,7 @@ const char* getTime()
     return result;
 }
 
-void Log::print(int level, bool hasPrefix, const char *file, int line, const char *message, ...) const
+void TimedLog::print(int level, bool hasPrefix, const char *file, int line, const char *message, ...) const
 {
     if (level < logLevel) return;
     std::stringstream sstr;
@@ -111,7 +111,7 @@ void Log::print(int level, bool hasPrefix, const char *file, int line, const cha
     cout << buf.data() << flush;
 }
 
-string Log::getFilenameTimestamp()
+string TimedLog::getFilenameTimestamp()
 {
     time_t rawtime = time(0);
     struct tm *timeinfo = localtime(&rawtime);

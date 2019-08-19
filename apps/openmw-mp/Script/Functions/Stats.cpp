@@ -5,7 +5,7 @@
 #include <components/esm/attr.hpp>
 #include <components/esm/loadskil.hpp>
 #include <components/misc/stringops.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 
 #include <apps/openmw-mp/Networking.hpp>
@@ -294,7 +294,7 @@ void StatsFunctions::SetRace(unsigned short pid, const char *race) noexcept
     if (player->npc.mRace == race)
         return;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Setting race for %s: %s -> %s", player->npc.mName.c_str(),
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_VERBOSE, "Setting race for %s: %s -> %s", player->npc.mName.c_str(),
                        player->npc.mRace.c_str(), race);
 
     player->npc.mRace = race;

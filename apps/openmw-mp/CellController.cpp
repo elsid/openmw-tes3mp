@@ -57,7 +57,7 @@ Cell *CellController::getCellByXY(int x, int y)
 
     if (it == cells.end())
     {
-        LOG_APPEND(Log::LOG_INFO, "- Attempt to get Cell at %i, %i failed!", x, y);
+        LOG_APPEND(TimedLog::LOG_INFO, "- Attempt to get Cell at %i, %i failed!", x, y);
         return nullptr;
     }
 
@@ -73,7 +73,7 @@ Cell *CellController::getCellByName(std::string cellName)
 
     if (it == cells.end())
     {
-        LOG_APPEND(Log::LOG_INFO, "- Attempt to get Cell at %s failed!", cellName.c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Attempt to get Cell at %s failed!", cellName.c_str());
         return nullptr;
     }
 
@@ -82,7 +82,7 @@ Cell *CellController::getCellByName(std::string cellName)
 
 Cell *CellController::addCell(ESM::Cell cellData)
 {
-    LOG_APPEND(Log::LOG_INFO, "- Loaded cells: %d", cells.size());
+    LOG_APPEND(TimedLog::LOG_INFO, "- Loaded cells: %d", cells.size());
     auto it = find_if(cells.begin(), cells.end(), [cellData](const Cell *c) {
         // Currently we cannot compare because plugin lists can be loaded in different order
         //return c->cell.sRecordId == cellData.sRecordId;
@@ -100,14 +100,14 @@ Cell *CellController::addCell(ESM::Cell cellData)
     Cell *cell;
     if (it == cells.end())
     {
-        LOG_APPEND(Log::LOG_INFO, "- Adding %s to CellController", cellData.getDescription().c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Adding %s to CellController", cellData.getDescription().c_str());
 
         cell = new Cell(cellData);
         cells.push_back(cell);
     }
     else
     {
-        LOG_APPEND(Log::LOG_INFO, "- Found %s in CellController", cellData.getDescription().c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Found %s in CellController", cellData.getDescription().c_str());
         cell = *it;
     }
 
@@ -124,7 +124,7 @@ void CellController::removeCell(Cell *cell)
         if (*it != nullptr && *it == cell)
         {
             Script::Call<Script::CallbackIdentity("OnCellDeletion")>(cell->getDescription().c_str());
-            LOG_APPEND(Log::LOG_INFO, "- Removing %s from CellController", cell->getDescription().c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Removing %s from CellController", cell->getDescription().c_str());
 
             delete *it;
             it = cells.erase(it);
@@ -136,7 +136,7 @@ void CellController::removeCell(Cell *cell)
 
 void CellController::deletePlayer(Player *player)
 {
-    LOG_APPEND(Log::LOG_INFO, "- Iterating through Cells from Player %s", player->npc.mName.c_str());
+    LOG_APPEND(TimedLog::LOG_INFO, "- Iterating through Cells from Player %s", player->npc.mName.c_str());
 
     std::vector<Cell*> toDelete;
 
@@ -153,7 +153,7 @@ void CellController::deletePlayer(Player *player)
 
     for (auto &&cell : toDelete)
     {
-        LOG_APPEND(Log::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
         removeCell(cell);
     }
 }
@@ -187,7 +187,7 @@ void CellController::update(Player *player)
     }
     for (auto &&cell : toDelete)
     {
-        LOG_APPEND(Log::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Cell %s has no players left", cell->getDescription().c_str());
         removeCell(cell);
     }
 }

@@ -146,7 +146,7 @@ add_component_dir (version
     )
 
 add_component_dir (openmw-mp
-        Log Utils ErrorMessages NetworkMessages Version
+        TimedLog Utils ErrorMessages NetworkMessages Version
         )
 
 add_component_dir (openmw-mp/Base

@@ -9,7 +9,7 @@
 
     Include additional headers for multiplayer purposes
 */
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/MechanicsHelper.hpp"
 #include "../mwgui/windowmanagerimp.hpp"

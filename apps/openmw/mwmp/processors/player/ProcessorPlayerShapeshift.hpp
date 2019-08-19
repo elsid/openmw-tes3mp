@@ -15,11 +15,11 @@ namespace mwmp
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_SHAPESHIFT from server");
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_PLAYER_SHAPESHIFT from server");
 
             if (isLocal())
             {
-                LOG_APPEND(Log::LOG_INFO, "- Packet was about LocalPlayer");
+                LOG_APPEND(TimedLog::LOG_INFO, "- Packet was about LocalPlayer");
 
                 static_cast<LocalPlayer *>(player)->setShapeshift();
             }

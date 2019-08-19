@@ -1,5 +1,5 @@
 #include <boost/algorithm/clamp.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include <apps/openmw/mwmechanics/steering.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -193,14 +193,14 @@ void DedicatedPlayer::setShapeshift()
             creature.mScript = "";
             if (!displayCreatureName)
                 creature.mName = npc.mName;
-            LOG_APPEND(Log::LOG_INFO, "- %s is disguised as %s", npc.mName.c_str(), creatureRefId.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- %s is disguised as %s", npc.mName.c_str(), creatureRefId.c_str());
 
             // Is this our first time creating a creature record id for this player? If so, keep it around
             // and reuse it
             if (creatureRecordId.empty())
             {
                 creature.mId = creatureRecordId = RecordHelper::createCreatureRecord(creature);
-                LOG_APPEND(Log::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
+                LOG_APPEND(TimedLog::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
             }
             else
             {
@@ -208,7 +208,7 @@ void DedicatedPlayer::setShapeshift()
                 RecordHelper::overrideCreatureRecord(creature);
             }
 
-            LOG_APPEND(Log::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
             createReference(creature.mId);
         }
         // This player was already a creature, but the new creature refId was empty or
@@ -361,14 +361,14 @@ void DedicatedPlayer::setCell()
 
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Server says DedicatedPlayer %s moved to %s",
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Server says DedicatedPlayer %s moved to %s",
         npc.mName.c_str(), cell.getDescription().c_str());
 
     MWWorld::CellStore *cellStore = Main::get().getCellController()->getCellStore(cell);
 
     if (!cellStore)
     {
-        LOG_APPEND(Log::LOG_INFO, "%s", "- Cell doesn't exist on this client");
+        LOG_APPEND(TimedLog::LOG_INFO, "%s", "- Cell doesn't exist on this client");
         world->disable(getPtr());
         return;
     }
@@ -469,7 +469,7 @@ void DedicatedPlayer::createReference(const std::string& recId)
 
     reference = new MWWorld::ManualRef(world->getStore(), recId, 1);
 
-    LOG_APPEND(Log::LOG_INFO, "- Creating new reference pointer for %s", npc.mName.c_str());
+    LOG_APPEND(TimedLog::LOG_INFO, "- Creating new reference pointer for %s", npc.mName.c_str());
 
     ptr = world->placeObject(reference->getPtr(), Main::get().getCellController()->getCellStore(cell), position);
 
@@ -482,7 +482,7 @@ void DedicatedPlayer::deleteReference()
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
-    LOG_APPEND(Log::LOG_INFO, "- Deleting reference");
+    LOG_APPEND(TimedLog::LOG_INFO, "- Deleting reference");
     world->deleteObject(ptr);
     delete reference;
     reference = nullptr;

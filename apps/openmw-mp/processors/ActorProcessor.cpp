@@ -34,7 +34,7 @@ bool ActorProcessor::Process(RakNet::Packet &packet, BaseActorList &actorList) n
             if (actorList.isValid)
                 processor.second->Do(*myPacket, *player, actorList);
             else
-                LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Received %s that failed integrity check and was ignored!", processor.second->strPacketID.c_str());
+                LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Received %s that failed integrity check and was ignored!", processor.second->strPacketID.c_str());
 
             return true;
         }

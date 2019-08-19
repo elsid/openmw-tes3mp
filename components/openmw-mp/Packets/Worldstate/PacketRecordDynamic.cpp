@@ -1,6 +1,6 @@
 #include "PacketRecordDynamic.hpp"
 
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <components/openmw-mp/Utils.hpp>
 
@@ -62,7 +62,7 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->lightRecords);
         else
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
                 worldstate->recordsType);
             return;
         }
@@ -72,9 +72,9 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
 
     if (worldstate->recordsCount > maxRecords)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet with %i records, above the maximum of %i",
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet with %i records, above the maximum of %i",
             worldstate->recordsCount, maxRecords);
-        LOG_APPEND(Log::LOG_ERROR, "- The packet was ignored after that point");
+        LOG_APPEND(TimedLog::LOG_ERROR, "- The packet was ignored after that point");
         return;
     }
 

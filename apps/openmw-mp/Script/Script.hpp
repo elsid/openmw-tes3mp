@@ -104,7 +104,7 @@ public:
                 }
                 catch (std::exception &e)
                 {
-                    LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, e.what());
+                    LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, e.what());
                     Script::Call<Script::CallbackIdentity("OnServerScriptCrash")>(e.what());
 
                     if (!mwmp::Networking::getPtr()->getScriptErrorIgnoringState())

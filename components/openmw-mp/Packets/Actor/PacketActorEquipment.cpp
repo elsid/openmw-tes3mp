@@ -1,5 +1,5 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include "PacketActorEquipment.hpp"
 
 using namespace mwmp;

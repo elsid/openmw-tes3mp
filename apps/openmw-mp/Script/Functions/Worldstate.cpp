@@ -186,7 +186,7 @@ void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char*
 
     if (mapTile.imageData.size() > mwmp::maxImageDataSize)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Error loading image file for map tile: "
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Error loading image file for map tile: "
             "%s has a size of %i, which is over the maximum allowed of %i!",
             filePath, mapTile.imageData.size(), mwmp::maxImageDataSize);
     }

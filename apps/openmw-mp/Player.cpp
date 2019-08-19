@@ -12,13 +12,13 @@ using namespace std;
 
 void Players::deletePlayer(RakNet::RakNetGUID guid)
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Deleting player with guid %lu", guid.g);
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Deleting player with guid %lu", guid.g);
 
     if (players[guid] != 0)
     {
         CellController::get()->deletePlayer(players[guid]);
 
-        LOG_APPEND(Log::LOG_INFO, "- Emptying slot %i", players[guid]->getId());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Emptying slot %i", players[guid]->getId());
 
         slots[players[guid]->getId()] = 0;
         delete players[guid];
@@ -28,7 +28,7 @@ void Players::deletePlayer(RakNet::RakNetGUID guid)
 
 void Players::newPlayer(RakNet::RakNetGUID guid)
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Creating new player with guid %lu", guid.g);
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Creating new player with guid %lu", guid.g);
 
     players[guid] = new Player(guid);
     players[guid]->cell.blank();
@@ -43,7 +43,7 @@ void Players::newPlayer(RakNet::RakNetGUID guid)
     {
         if (slots[i] == 0)
         {
-            LOG_APPEND(Log::LOG_INFO, "- Storing in slot %i", i);
+            LOG_APPEND(TimedLog::LOG_INFO, "- Storing in slot %i", i);
 
             slots[i] = players[guid];
             slots[i]->setId(i);

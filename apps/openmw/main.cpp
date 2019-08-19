@@ -39,7 +39,7 @@
     Include additional headers for multiplayer purposes
 */
 #include <components/openmw-mp/ErrorMessages.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/Utils.hpp>
 #include <components/openmw-mp/Version.hpp>
 /*
@@ -237,8 +237,8 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
 
     if (!hasValidCredits)
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_FATAL, "The client is shutting down");
-        LOG_APPEND(Log::LOG_FATAL, "- %s", TES3MP_CREDITS_ERROR);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_FATAL, "The client is shutting down");
+        LOG_APPEND(TimedLog::LOG_FATAL, "- %s", TES3MP_CREDITS_ERROR);
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "tes3mp", TES3MP_CREDITS_ERROR, 0);
         return false;
     }
@@ -362,7 +362,7 @@ int main(int argc, char**argv)
         Instead of logging information in openmw.log, use a more descriptive filename
         that includes a timestamp
     */
-    return wrapApplication(&runApplication, argc, argv, "/tes3mp-client-" + Log::getFilenameTimestamp() + ".log");
+    return wrapApplication(&runApplication, argc, argv, "/tes3mp-client-" + TimedLog::getFilenameTimestamp() + ".log");
     /*
         End of tes3mp change (major)
     */

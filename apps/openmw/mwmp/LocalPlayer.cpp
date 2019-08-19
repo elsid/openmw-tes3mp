@@ -1,5 +1,5 @@
 #include <components/esm/esmwriter.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/Utils.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -170,7 +170,7 @@ bool LocalPlayer::processCharGen()
         npc = *ptrPlayer.get<ESM::NPC>()->mBase;
         birthsign = world->getPlayer().getBirthSign();
 
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_BASEINFO to server with my CharGen info");
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_BASEINFO to server with my CharGen info");
         getNetworking()->getPlayerPacket(ID_PLAYER_BASEINFO)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_BASEINFO)->Send();
 
@@ -258,7 +258,7 @@ void LocalPlayer::updateStatsDynamic(bool forceUpdate)
             if (MechanicsHelper::isEmptyTarget(killer))
                 killer = MechanicsHelper::getTarget(getPlayerPtr());
 
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_DEATH about myself to server");
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_DEATH about myself to server");
             getNetworking()->getPlayerPacket(ID_PLAYER_DEATH)->setPlayer(this);
             getNetworking()->getPlayerPacket(ID_PLAYER_DEATH)->Send();
 
@@ -439,14 +439,14 @@ void LocalPlayer::updateCell(bool forceUpdate)
     // If the LocalPlayer's Ptr cell is different from the LocalPlayer's packet cell, proceed
     if (forceUpdate || !Main::get().getCellController()->isSameCell(*ptrCell, cell))
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_CELL_CHANGE about LocalPlayer to server");
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_CELL_CHANGE about LocalPlayer to server");
 
-        LOG_APPEND(Log::LOG_INFO, "- Moved from %s to %s", cell.getDescription().c_str(),
+        LOG_APPEND(TimedLog::LOG_INFO, "- Moved from %s to %s", cell.getDescription().c_str(),
                    ptrCell->getDescription().c_str());
 
         if (!Misc::StringUtils::ciEqual(cell.mRegion, ptrCell->mRegion))
         {
-            LOG_APPEND(Log::LOG_INFO, "- Changed region from %s to %s",
+            LOG_APPEND(TimedLog::LOG_INFO, "- Changed region from %s to %s",
                 cell.mRegion.empty() ? "none" : cell.mRegion.c_str(),
                 ptrCell->mRegion.empty() ? "none" : ptrCell->mRegion.c_str());
 
@@ -705,7 +705,7 @@ void LocalPlayer::addItems()
         }
         catch (std::exception&)
         {
-            LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid inventory item %s", item.refId.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Ignored addition of invalid inventory item %s", item.refId.c_str());
         }
     }
 
@@ -722,7 +722,7 @@ void LocalPlayer::addSpells()
         if (MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().search(spell.mId))
             ptrSpells.add(spell.mId);
         else
-            LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid spell %s", spell.mId.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Ignored addition of invalid spell %s", spell.mId.c_str());
 }
 
 void LocalPlayer::addJournalItems()
@@ -758,7 +758,7 @@ void LocalPlayer::addJournalItems()
         }
         catch (std::exception&)
         {
-            LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid journal quest %s", journalItem.quest.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Ignored addition of invalid journal quest %s", journalItem.quest.c_str());
         }
     }
 }
@@ -837,7 +837,7 @@ void LocalPlayer::resurrect()
 
     deathTime = time(0);
 
-    LOG_APPEND(Log::LOG_INFO, "- diedSinceArrestAttempt is now true");
+    LOG_APPEND(TimedLog::LOG_INFO, "- diedSinceArrestAttempt is now true");
 
     // Record that we are no longer a known werewolf, to avoid being attacked infinitely
     MWBase::Environment::get().getWorld()->setGlobalInt("pcknownwerewolf", 0);
@@ -903,7 +903,7 @@ void LocalPlayer::setCharacter()
     }
     else
     {
-        LOG_APPEND(Log::LOG_INFO, "- Character update was ignored due to invalid race %s", npc.mRace.c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- Character update was ignored due to invalid race %s", npc.mRace.c_str());
     }
 }
 
@@ -1087,7 +1087,7 @@ void LocalPlayer::setCell()
         // packet about our position in that cell
         catch (std::exception&)
         {
-            LOG_APPEND(Log::LOG_INFO, "%s", "- Cell doesn't exist on this client");
+            LOG_APPEND(TimedLog::LOG_INFO, "%s", "- Cell doesn't exist on this client");
             ignorePosPacket = true;
         }
     }
@@ -1097,7 +1097,7 @@ void LocalPlayer::setCell()
 
 void LocalPlayer::setClass()
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_CLASS from server");
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_PLAYER_CLASS from server");
 
     if (charClass.mId.empty()) // custom class
     {
@@ -1115,7 +1115,7 @@ void LocalPlayer::setClass()
             MWBase::Environment::get().getWindowManager()->setPlayerClass(charClass);
         }
         else
-            LOG_APPEND(Log::LOG_INFO, "- Ignored invalid default class %s", charClass.mId.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Ignored invalid default class %s", charClass.mId.c_str());
     }
 }
 
@@ -1148,7 +1148,7 @@ void LocalPlayer::setEquipment()
                     }
                     catch (std::exception&)
                     {
-                        LOG_APPEND(Log::LOG_INFO, "- Ignored addition of invalid equipment item %s", currentItem.refId.c_str());
+                        LOG_APPEND(TimedLog::LOG_INFO, "- Ignored addition of invalid equipment item %s", currentItem.refId.c_str());
                     }
                 }
             }
@@ -1217,11 +1217,11 @@ void LocalPlayer::setQuickKeys()
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_QUICKKEYS from server");
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_PLAYER_QUICKKEYS from server");
 
     for (const auto &quickKey : quickKeyChanges.quickKeys)
     {
-        LOG_APPEND(Log::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
+        LOG_APPEND(TimedLog::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
 
         if (quickKey.type == QuickKey::ITEM || quickKey.type == QuickKey::ITEM_MAGIC)
         {
@@ -1263,7 +1263,7 @@ void LocalPlayer::setFactions()
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_FACTION from server\n- action: %i", factionChanges.action);
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_PLAYER_FACTION from server\n- action: %i", factionChanges.action);
 
     for (const auto &faction : factionChanges.factions)
     {
@@ -1271,7 +1271,7 @@ void LocalPlayer::setFactions()
 
         if (!esmFaction)
         {
-            LOG_APPEND(Log::LOG_INFO, "- Ignored invalid faction %s", faction.factionId.c_str());
+            LOG_APPEND(TimedLog::LOG_INFO, "- Ignored invalid faction %s", faction.factionId.c_str());
             continue;
         }
 
@@ -1311,12 +1311,12 @@ void LocalPlayer::setFactions()
 
 void LocalPlayer::setKills()
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_WORLD_KILL_COUNT with the following kill counts:");
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_WORLD_KILL_COUNT with the following kill counts:");
     std::string debugMessage = "";
 
     for (const auto &kill : killChanges.kills)
     {
-        if (Log::GetLevel() <= Log::LOG_INFO)
+        if (TimedLog::GetLevel() <= TimedLog::LOG_INFO)
         {
             if (!debugMessage.empty())
                 debugMessage += ", ";
@@ -1327,7 +1327,7 @@ void LocalPlayer::setKills()
         MWBase::Environment::get().getMechanicsManager()->setDeaths(kill.refId, kill.number);
     }
 
-    LOG_APPEND(Log::LOG_INFO, "- %s", debugMessage.c_str());
+    LOG_APPEND(TimedLog::LOG_INFO, "- %s", debugMessage.c_str());
 }
 
 void LocalPlayer::setBooks()
@@ -1391,7 +1391,7 @@ void LocalPlayer::sendClass()
 
 void LocalPlayer::sendInventory()
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending entire inventory to server");
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending entire inventory to server");
 
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     MWWorld::InventoryStore &ptrInventory = ptrPlayer.getClass().getInventoryStore(ptrPlayer);
@@ -1426,7 +1426,7 @@ void LocalPlayer::sendInventory()
 
 void LocalPlayer::sendItemChange(const mwmp::Item& item, unsigned int action)
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending item change for %s with action %i, count %i",
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending item change for %s with action %i, count %i",
         item.refId.c_str(), action, item.count);
 
     inventoryChanges.items.clear();
@@ -1445,7 +1445,7 @@ void LocalPlayer::sendItemChange(const MWWorld::Ptr& itemPtr, int count, unsigne
 
 void LocalPlayer::sendItemChange(const std::string& refId, int count, unsigned int action)
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending item change for %s with action %i, count %i",
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending item change for %s with action %i, count %i",
         refId.c_str(), action, count);
 
     inventoryChanges.items.clear();
@@ -1509,8 +1509,8 @@ void LocalPlayer::sendQuickKey(unsigned short slot, int type, const std::string&
     quickKey.type = type;
     quickKey.itemId = itemId;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_QUICKKEYS", itemId.c_str());
-    LOG_APPEND(Log::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_QUICKKEYS", itemId.c_str());
+    LOG_APPEND(TimedLog::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
 
     quickKeyChanges.quickKeys.push_back(quickKey);
 
@@ -1607,7 +1607,7 @@ void LocalPlayer::sendTopic(const std::string& topicId)
     else
         topic.topicId = topicId;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_TOPIC with topic %s", topic.topicId.c_str());
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_TOPIC with topic %s", topic.topicId.c_str());
 
     topicChanges.topics.push_back(topic);
 
@@ -1623,7 +1623,7 @@ void LocalPlayer::sendKill(const std::string& refId, int number)
     kill.refId = refId;
     kill.number = number;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_WORLD_KILL_COUNT with refId %s, number %i", refId.c_str(), number);
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_WORLD_KILL_COUNT with refId %s, number %i", refId.c_str(), number);
 
     killChanges.kills.push_back(kill);
 
@@ -1638,7 +1638,7 @@ void LocalPlayer::sendBook(const std::string& bookId)
     mwmp::Book book;
     book.bookId = bookId;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_BOOK with book %s", book.bookId.c_str());
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_BOOK with book %s", book.bookId.c_str());
 
     bookChanges.books.push_back(book);
 
@@ -1650,7 +1650,7 @@ void LocalPlayer::sendWerewolfState(bool werewolfState)
 {
     isWerewolf = werewolfState;
 
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_SHAPESHIFT with isWerewolf of %s", isWerewolf ? "true" : "false");
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_SHAPESHIFT with isWerewolf of %s", isWerewolf ? "true" : "false");
 
     getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_SHAPESHIFT)->Send();
@@ -1692,7 +1692,7 @@ void LocalPlayer::sendItemUse(const MWWorld::Ptr& itemPtr, bool itemMagicState, 
 
 void LocalPlayer::sendCellStates()
 {
-    LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Sending ID_PLAYER_CELL_STATE to server");
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_CELL_STATE to server");
     getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_CELL_STATE)->Send();
 }

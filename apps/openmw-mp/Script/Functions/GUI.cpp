@@ -157,12 +157,12 @@ void GUIFunctions::SendQuickKeyChanges(unsigned short pid) noexcept
 
 void GUIFunctions::SetMapVisibility(unsigned short targetPid, unsigned short affectedPid, unsigned short state) noexcept
 {
-    LOG_MESSAGE(Log::LOG_WARN, "stub");
+    LOG_MESSAGE(TimedLog::LOG_WARN, "stub");
 }
 
 void GUIFunctions::SetMapVisibilityAll(unsigned short targetPid, unsigned short state) noexcept
 {
-    LOG_MESSAGE(Log::LOG_WARN, "stub");
+    LOG_MESSAGE(TimedLog::LOG_WARN, "stub");
 }
 
 // All methods below are deprecated versions of methods from above

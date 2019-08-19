@@ -1,5 +1,5 @@
 #include <components/openmw-mp/NetworkMessages.hpp>
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include "PacketWorldMap.hpp"
 
 using namespace std;
@@ -41,9 +41,9 @@ void PacketWorldMap::Packet(RakNet::BitStream *bs, bool send)
 
         if (imageDataSize > mwmp::maxImageDataSize)
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Processed invalid ID_WORLD_MAP packet where tile %i, %i had an imageDataSize of %i",
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Processed invalid ID_WORLD_MAP packet where tile %i, %i had an imageDataSize of %i",
                 mapTile.x, mapTile.y, imageDataSize);
-            LOG_APPEND(Log::LOG_ERROR, "- The packet was ignored after that point");
+            LOG_APPEND(TimedLog::LOG_ERROR, "- The packet was ignored after that point");
             return;
         }
 

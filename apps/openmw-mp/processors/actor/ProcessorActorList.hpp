@@ -15,7 +15,7 @@ namespace mwmp
 
         void Do(ActorPacket &packet, Player &player, BaseActorList &actorList) override
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received %s from %s", strPacketID.c_str(), player.npc.mName.c_str());
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received %s from %s", strPacketID.c_str(), player.npc.mName.c_str());
             
             // Send only to players who have the cell loaded
             Cell *serverCell = CellController::get()->getCell(&actorList.cell);

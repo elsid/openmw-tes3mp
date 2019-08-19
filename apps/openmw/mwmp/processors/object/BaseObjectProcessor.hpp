@@ -21,7 +21,7 @@ namespace mwmp
 
             if (!ptrCellStore) return;
 
-            LOG_MESSAGE_SIMPLE(Log::LOG_VERBOSE, "Received %s about %s", strPacketID.c_str(), objectList.cell.getDescription().c_str());
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_VERBOSE, "Received %s about %s", strPacketID.c_str(), objectList.cell.getDescription().c_str());
         }
     protected:
         MWWorld::CellStore *ptrCellStore;

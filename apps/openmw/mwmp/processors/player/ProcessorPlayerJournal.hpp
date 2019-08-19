@@ -15,7 +15,7 @@ namespace mwmp
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_INFO, "Received ID_PLAYER_JOURNAL from server");
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_PLAYER_JOURNAL from server");
 
             if (isRequest())
             {

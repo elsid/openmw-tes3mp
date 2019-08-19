@@ -379,7 +379,7 @@ void RecordsDynamicFunctions::SetRecordId(const char* id) noexcept
     else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
         tempLight.data.mId = id;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
@@ -427,7 +427,7 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
     else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
         tempLight.baseId = baseId;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordInventoryBaseId(const char* inventoryBaseId) noexcept
@@ -439,7 +439,7 @@ void RecordsDynamicFunctions::SetRecordInventoryBaseId(const char* inventoryBase
     else if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
         tempNpc.inventoryBaseId = inventoryBaseId;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set inventoryBaseId for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set inventoryBaseId for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordSubtype(unsigned int subtype) noexcept
@@ -462,7 +462,7 @@ void RecordsDynamicFunctions::SetRecordSubtype(unsigned int subtype) noexcept
         tempApparatus.data.mData.mType = subtype;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set subtype for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set subtype for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -511,7 +511,7 @@ void RecordsDynamicFunctions::SetRecordName(const char* name) noexcept
         tempLight.data.mName = name;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -560,7 +560,7 @@ void RecordsDynamicFunctions::SetRecordModel(const char* model) noexcept
         tempLight.data.mModel = model;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set model for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set model for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -597,7 +597,7 @@ void RecordsDynamicFunctions::SetRecordIcon(const char* icon) noexcept
         tempLight.data.mIcon = icon;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set icon for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set icon for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -644,7 +644,7 @@ void RecordsDynamicFunctions::SetRecordScript(const char* script) noexcept
         tempLight.data.mScript = script;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set script for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set script for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -665,7 +665,7 @@ void RecordsDynamicFunctions::SetRecordEnchantmentId(const char* enchantmentId) 
         tempWeapon.data.mEnchant = enchantmentId;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set enchantment id for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set enchantment id for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -686,7 +686,7 @@ void RecordsDynamicFunctions::SetRecordEnchantmentCharge(int enchantmentCharge) 
         tempWeapon.data.mData.mEnchant = enchantmentCharge;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set enchantment charge for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set enchantment charge for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -716,7 +716,7 @@ void RecordsDynamicFunctions::SetRecordAutoCalc(int autoCalc) noexcept
     }
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set autoCalc for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set autoCalc for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -731,7 +731,7 @@ void RecordsDynamicFunctions::SetRecordCharge(int charge) noexcept
         tempEnchantment.data.mData.mCharge = charge;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set charge for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set charge for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -748,7 +748,7 @@ void RecordsDynamicFunctions::SetRecordCost(int cost) noexcept
         tempEnchantment.data.mData.mCost = cost;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set cost for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set cost for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -773,7 +773,7 @@ void RecordsDynamicFunctions::SetRecordFlags(int flags) noexcept
         tempLight.data.mData.mFlags = flags;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set flags for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set flags for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -810,7 +810,7 @@ void RecordsDynamicFunctions::SetRecordValue(int value) noexcept
         tempLight.data.mData.mValue = value;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set value for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -849,7 +849,7 @@ void RecordsDynamicFunctions::SetRecordWeight(double weight) noexcept
         tempLight.data.mData.mWeight = weight;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set weight for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set weight for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -870,7 +870,7 @@ void RecordsDynamicFunctions::SetRecordQuality(double quality) noexcept
         tempRepair.data.mData.mQuality = quality;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set quality for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set quality for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -889,7 +889,7 @@ void RecordsDynamicFunctions::SetRecordUses(int uses) noexcept
         tempRepair.data.mData.mUses = uses;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set number of uses for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set number of uses for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -904,7 +904,7 @@ void RecordsDynamicFunctions::SetRecordTime(int time) noexcept
         tempLight.data.mData.mTime = time;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set time for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set time for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -919,7 +919,7 @@ void RecordsDynamicFunctions::SetRecordRadius(int radius) noexcept
         tempLight.data.mData.mRadius = radius;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set radius for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set radius for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -934,7 +934,7 @@ void RecordsDynamicFunctions::SetRecordColor(unsigned int red, unsigned int gree
         tempLight.data.mData.mColor = red + (green << 8) + (blue << 16);
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set color for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set color for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -949,7 +949,7 @@ void RecordsDynamicFunctions::SetRecordArmorRating(int armorRating) noexcept
         tempArmor.data.mData.mArmor = armorRating;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set armor rating for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set armor rating for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -970,7 +970,7 @@ void RecordsDynamicFunctions::SetRecordHealth(int health) noexcept
         tempNpc.data.mNpdt.mHealth = health;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set health for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set health for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -988,7 +988,7 @@ void RecordsDynamicFunctions::SetRecordDamageChop(unsigned int minDamage, unsign
     }
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set chop damage for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set chop damage for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1006,7 +1006,7 @@ void RecordsDynamicFunctions::SetRecordDamageSlash(unsigned int minDamage, unsig
     }
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set slash damage for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set slash damage for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1024,7 +1024,7 @@ void RecordsDynamicFunctions::SetRecordDamageThrust(unsigned int minDamage, unsi
     }
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set thrust damage for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set thrust damage for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1039,7 +1039,7 @@ void RecordsDynamicFunctions::SetRecordReach(double reach) noexcept
         tempWeapon.data.mData.mReach = reach;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set reach for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set reach for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1054,7 +1054,7 @@ void RecordsDynamicFunctions::SetRecordSpeed(double speed) noexcept
         tempWeapon.data.mData.mSpeed = speed;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set speed for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set speed for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1069,7 +1069,7 @@ void RecordsDynamicFunctions::SetRecordKeyState(bool keyState) noexcept
         tempMiscellaneous.data.mData.mIsKey = keyState;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set key state for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set key state for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1084,7 +1084,7 @@ void RecordsDynamicFunctions::SetRecordScrollState(bool scrollState) noexcept
         tempBook.data.mData.mIsScroll = scrollState;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set scroll state for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set scroll state for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1099,7 +1099,7 @@ void RecordsDynamicFunctions::SetRecordSkillId(int skillId) noexcept
         tempBook.data.mData.mSkillId = skillId;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set skill id for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set skill id for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1114,7 +1114,7 @@ void RecordsDynamicFunctions::SetRecordText(const char* text) noexcept
         tempBook.data.mText = text;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set text for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set text for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1129,7 +1129,7 @@ void RecordsDynamicFunctions::SetRecordHair(const char* hair) noexcept
         tempNpc.data.mHair = hair;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set hair for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set hair for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1144,7 +1144,7 @@ void RecordsDynamicFunctions::SetRecordHead(const char* head) noexcept
         tempNpc.data.mHead = head;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set head for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set head for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1161,7 +1161,7 @@ void RecordsDynamicFunctions::SetRecordGender(unsigned int gender) noexcept
     }
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set gender for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set gender for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1175,7 +1175,7 @@ void RecordsDynamicFunctions::SetRecordRace(const char* race) noexcept
     if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
         tempNpc.data.mRace = race;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set race for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set race for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordClass(const char* charClass) noexcept
@@ -1185,7 +1185,7 @@ void RecordsDynamicFunctions::SetRecordClass(const char* charClass) noexcept
     if (writeRecordsType == mwmp::RECORD_TYPE::NPC)
         tempNpc.data.mClass = charClass;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set character class for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set character class for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordFaction(const char* faction) noexcept
@@ -1196,7 +1196,7 @@ void RecordsDynamicFunctions::SetRecordFaction(const char* faction) noexcept
         tempNpc.data.mFaction = faction;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set faction for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set faction for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1213,7 +1213,7 @@ void RecordsDynamicFunctions::SetRecordLevel(int level) noexcept
         tempNpc.data.mNpdt.mLevel = level;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set level for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set level for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1230,7 +1230,7 @@ void RecordsDynamicFunctions::SetRecordMagicka(int magicka) noexcept
         tempNpc.data.mNpdt.mMana = magicka;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set magicka for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set magicka for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1247,7 +1247,7 @@ void RecordsDynamicFunctions::SetRecordFatigue(int fatigue) noexcept
         tempNpc.data.mNpdt.mFatigue = fatigue;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set fatigue for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set fatigue for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1264,7 +1264,7 @@ void RecordsDynamicFunctions::SetRecordAIFight(int aiFight) noexcept
         tempNpc.data.mAiData.mFight = aiFight;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1281,7 +1281,7 @@ void RecordsDynamicFunctions::SetRecordAIFlee(int aiFlee) noexcept
         tempNpc.data.mAiData.mFlee = aiFlee;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1298,7 +1298,7 @@ void RecordsDynamicFunctions::SetRecordAIAlarm(int aiAlarm) noexcept
         tempNpc.data.mAiData.mAlarm = aiAlarm;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set AI fight for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1315,7 +1315,7 @@ void RecordsDynamicFunctions::SetRecordAIServices(int aiServices) noexcept
         tempNpc.data.mAiData.mServices = aiServices;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set AI services for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set AI services for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1330,7 +1330,7 @@ void RecordsDynamicFunctions::SetRecordSound(const char* sound) noexcept
         tempLight.data.mSound = sound;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set sound for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set sound for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1345,7 +1345,7 @@ void RecordsDynamicFunctions::SetRecordOpenSound(const char* sound) noexcept
         tempDoor.data.mOpenSound = sound;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set open sound for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set open sound for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1360,7 +1360,7 @@ void RecordsDynamicFunctions::SetRecordCloseSound(const char* sound) noexcept
         tempDoor.data.mCloseSound = sound;
     else
     {
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set close sound for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set close sound for record type %i which lacks that property", writeRecordsType);
         return;
     }
 
@@ -1386,7 +1386,7 @@ void RecordsDynamicFunctions::SetRecordIdByIndex(unsigned int index, const char*
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         WorldstateFunctions::writeWorldstate.weaponRecords.at(index).data.mId = id;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordEnchantmentIdByIndex(unsigned int index, const char* enchantmentId) noexcept
@@ -1402,7 +1402,7 @@ void RecordsDynamicFunctions::SetRecordEnchantmentIdByIndex(unsigned int index, 
     else if (writeRecordsType == mwmp::RECORD_TYPE::WEAPON)
         WorldstateFunctions::writeWorldstate.weaponRecords.at(index).data.mEnchant = enchantmentId;
     else
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Tried to set enchantmentId for record type %i which lacks that property", writeRecordsType);
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set enchantmentId for record type %i which lacks that property", writeRecordsType);
 }
 
 void RecordsDynamicFunctions::SetRecordEffectId(unsigned int effectId) noexcept
@@ -1621,7 +1621,7 @@ void RecordsDynamicFunctions::AddRecordEffect() noexcept
         }
         else
         {
-            LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Could not add record effect to temporary ingredient record because the cap of %i effects has been reached",
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Could not add record effect to temporary ingredient record because the cap of %i effects has been reached",
                 effectCap);
         }
     }

@@ -13,7 +13,7 @@
 
     Include additional headers for multiplayer purposes
 */
-#include <components/openmw-mp/Log.hpp>
+#include <components/openmw-mp/TimedLog.hpp>
 #include "../mwmp/Main.hpp"
 #include "../mwmp/CellController.hpp"
 #include "../mwmp/PlayerList.hpp"
@@ -260,7 +260,7 @@ MWWorld::ContainerStoreIterator MWWorld::InventoryStore::findSlot (int slot) con
             the item
         */
         //throw std::runtime_error("Invalid slot, make sure you are not calling RefData::setCount for a container object");
-        LOG_MESSAGE_SIMPLE(Log::LOG_ERROR, "Invalid slot, make sure you are not calling RefData::setCount for a container object\n- item was %s",
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Invalid slot, make sure you are not calling RefData::setCount for a container object\n- item was %s",
             mSlots[slot]->getCellRef().getRefId().c_str());
         /*
             End of tes3mp change (major)
