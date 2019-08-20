@@ -1,8 +1,8 @@
 #include "aisequence.hpp"
 
 #include <limits>
-#include <iostream>
 
+#include <components/debug/debuglog.hpp>
 #include <components/esm/aisequence.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -19,6 +19,7 @@
 #include "aicombataction.hpp"
 #include "aipursue.hpp"
 #include "actorutil.hpp"
+#include "../mwworld/class.hpp"
 
 namespace MWMechanics
 {
@@ -118,6 +119,20 @@ bool AiSequence::isInCombat() const
     {
         if ((*it)->getTypeId() == AiPackage::TypeIdCombat)
             return true;
+    }
+    return false;
+}
+
+bool AiSequence::isEngagedWithActor() const
+{
+    for (std::list<AiPackage *>::const_iterator it = mPackages.begin(); it != mPackages.end(); ++it)
+    {
+        if ((*it)->getTypeId() == AiPackage::TypeIdCombat)
+        {
+            MWWorld::Ptr target2 = (*it)->getTarget();
+            if (!target2.isEmpty() && target2.getClass().isNpc())
+                return true;
+        }
     }
     return false;
 }
@@ -282,7 +297,7 @@ void AiSequence::execute (const MWWorld::Ptr& actor, CharacterController& charac
         }
         catch (std::exception& e)
         {
-            std::cerr << "Error during AiSequence::execute: " << e.what() << std::endl;
+            Log(Debug::Error) << "Error during AiSequence::execute: " << e.what();
         }
     }
 }

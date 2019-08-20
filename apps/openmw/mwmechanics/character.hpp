@@ -224,6 +224,9 @@ class CharacterController : public MWRender::Animation::TextKeyListener
     bool updateCreatureState();
     void updateIdleStormState(bool inwater);
 
+    std::string chooseRandomAttackAnimation() const;
+    bool isRandomAttackAnimation(const std::string& group) const;
+
     bool isPersistentAnimPlaying();
 
     void updateAnimQueue();
@@ -278,7 +281,7 @@ public:
 
     void forceStateUpdate();
     
-    bool isAttackPrepairing() const;
+    bool isAttackPreparing() const;
     bool isCastingSpell() const;
     bool isReadyToBlock() const;
     bool isKnockedDown() const;

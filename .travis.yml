@@ -27,8 +27,6 @@ addons:
       # Dev
       cmake, clang-6.0, libunshield-dev, libtinyxml-dev,
       g++-8,
-      # Tests
-      libgtest-dev, google-mock,
       # Boost
       libboost-filesystem1.61-dev, libboost-program-options1.61-dev, libboost-system1.61-dev,
       # FFmpeg

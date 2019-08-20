@@ -6,6 +6,7 @@
 
 #include <osg/Texture2D>
 
+#include <components/debug/debuglog.hpp>
 #include <components/myguiplatform/myguitexture.hpp>
 
 #include "../mwworld/esmstore.hpp"
@@ -351,7 +352,7 @@ namespace MWGui
         }
         catch (std::exception& e)
         {
-            std::cerr << "Error creating preview: " << e.what() << std::endl;
+            Log(Debug::Error) << "Error creating preview: " << e.what();
         }
     }
 

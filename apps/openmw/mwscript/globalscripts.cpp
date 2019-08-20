@@ -1,8 +1,8 @@
 #include "globalscripts.hpp"
 
 #include <cassert>
-#include <iostream>
 
+#include <components/debug/debuglog.hpp>
 #include <components/misc/stringops.hpp>
 #include <components/esm/esmwriter.hpp>
 #include <components/esm/globalscript.hpp>
@@ -125,9 +125,9 @@ namespace MWScript
             }
             catch (const std::exception& exception)
             {
-                std::cerr
+                Log(Debug::Error)
                     << "Failed to add start script " << *iter << " because an exception has "
-                    << "been thrown: " << exception.what() << std::endl;
+                    << "been thrown: " << exception.what();
             }
         }
     }
@@ -181,10 +181,9 @@ namespace MWScript
                     }
                     catch (const std::exception& exception)
                     {
-                        std::cerr
+                        Log(Debug::Error)
                             << "Failed to add start script " << script.mId
-                            << " because an exception has been thrown: " << exception.what()
-                            << std::endl;
+                            << " because an exception has been thrown: " << exception.what();
 
                         return true;
                     }

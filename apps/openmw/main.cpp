@@ -1,11 +1,8 @@
-#include <iostream>
-
 #include <components/version/version.hpp>
-#include <components/crashcatcher/crashcatcher.hpp>
 #include <components/files/configurationmanager.hpp>
 #include <components/files/escape.hpp>
 #include <components/fallback/validate.hpp>
-#include <components/misc/debugging.hpp>
+#include <components/debug/debugging.hpp>
 
 #include "engine.hpp"
 
@@ -284,8 +281,8 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
     StringsVector content = variables["content"].as<Files::EscapeStringVector>().toStdStringVector();
     if (content.empty())
     {
-      std::cout << "No content file given (esm/esp, nor omwgame/omwaddon). Aborting..." << std::endl;
-      return false;
+        Log(Debug::Error) << "No content file given (esm/esp, nor omwgame/omwaddon). Aborting...";
+        return false;
     }
 
     StringsVector::const_iterator it(content.begin());
@@ -299,7 +296,7 @@ bool parseOptions (int argc, char** argv, OMW::Engine& engine, Files::Configurat
     engine.setCell(variables["start"].as<Files::EscapeHashString>().toStdString());
     engine.setSkipMenu (variables["skip-menu"].as<bool>(), variables["new-game"].as<bool>());
     if (!variables["skip-menu"].as<bool>() && variables["new-game"].as<bool>())
-        std::cerr << "Warning: new-game used without skip-menu -> ignoring it" << std::endl;
+        Log(Debug::Warning) << "Warning: new-game used without skip-menu -> ignoring it";
 
     // scripts
     engine.setCompileAll(variables["script-all"].as<bool>());
@@ -357,12 +354,22 @@ int main(int argc, char**argv)
 #endif
 {
     /*
+        Start of tes3mp addition
+
+        Initialize the logger added for multiplayer
+    */
+    LOG_INIT(TimedLog::LOG_INFO);
+    /*
+        End of tes3mp addition
+    */
+
+    /*
         Start of tes3mp change (major)
 
         Instead of logging information in openmw.log, use a more descriptive filename
         that includes a timestamp
     */
-    return wrapApplication(&runApplication, argc, argv, "/tes3mp-client-" + TimedLog::getFilenameTimestamp() + ".log");
+    return wrapApplication(&runApplication, argc, argv, "/tes3mp-client-" + TimedLog::getFilenameTimestamp());
     /*
         End of tes3mp change (major)
     */

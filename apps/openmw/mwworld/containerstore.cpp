@@ -16,6 +16,7 @@
     End of tes3mp addition
 */
 
+#include <components/debug/debuglog.hpp>
 #include <components/esm/inventorystate.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -596,7 +597,7 @@ void MWWorld::ContainerStore::addInitialItem (const std::string& id, const std::
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Warning: MWWorld::ContainerStore::addInitialItem: " << e.what() << std::endl;
+        Log(Debug::Warning) << "Warning: MWWorld::ContainerStore::addInitialItem: " << e.what();
     }
 
 }
@@ -920,10 +921,10 @@ void MWWorld::ContainerStore::readState (const ESM::InventoryState& inventory)
             case ESM::REC_WEAP: readEquipmentState (getState (weapons, state), thisIndex, inventory); break;
             case ESM::REC_LIGH: readEquipmentState (getState (lights, state), thisIndex, inventory); break;
             case 0:
-                std::cerr << "Dropping inventory reference to '" << state.mRef.mRefID << "' (object no longer exists)" << std::endl;
+                Log(Debug::Warning) << "Dropping inventory reference to '" << state.mRef.mRefID << "' (object no longer exists)";
                 break;
             default:
-                std::cerr << "Warning: Invalid item type in inventory state, refid " << state.mRef.mRefID << std::endl;
+                Log(Debug::Warning) << "Warning: Invalid item type in inventory state, refid " << state.mRef.mRefID;
                 break;
         }
     }

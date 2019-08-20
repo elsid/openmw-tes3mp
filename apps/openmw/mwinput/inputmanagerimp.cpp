@@ -10,6 +10,7 @@
 
 #include <SDL_version.h>
 
+#include <components/debug/debuglog.hpp>
 #include <components/sdlutil/sdlinputwrapper.hpp>
 #include <components/sdlutil/sdlvideowrapper.hpp>
 
@@ -132,11 +133,11 @@ namespace MWInput
                 SDL_ControllerDeviceEvent evt;
                 evt.which = i;
                 controllerAdded(mFakeDeviceID, evt);
-                std::cout << "Detected game controller: " << SDL_GameControllerNameForIndex(i) << std::endl;
+                Log(Debug::Info) << "Detected game controller: " << SDL_GameControllerNameForIndex(i);
             }
             else
             {
-                std::cout << "Detected unusable controller: " << SDL_JoystickNameForIndex(i) << std::endl;
+                Log(Debug::Info) << "Detected unusable controller: " << SDL_JoystickNameForIndex(i);
             }
         }
 
@@ -1040,9 +1041,9 @@ namespace MWInput
         if (!mControlSwitch["playerfighting"] || !mControlSwitch["playercontrols"])
             return;
 
-        // We want to interrupt animation only if attack is prepairing, but still is not triggered
+        // We want to interrupt animation only if attack is preparing, but still is not triggered
         // Otherwise we will get a "speedshooting" exploit, when player can skip reload animation by hitting "Toggle Weapon" key twice
-        if (MWBase::Environment::get().getMechanicsManager()->isAttackPrepairing(mPlayer->getPlayer()))
+        if (MWBase::Environment::get().getMechanicsManager()->isAttackPreparing(mPlayer->getPlayer()))
             mPlayer->setAttackingOrSpell(false);
         else if (MWBase::Environment::get().getMechanicsManager()->isAttackingOrSpell(mPlayer->getPlayer()))
             return;

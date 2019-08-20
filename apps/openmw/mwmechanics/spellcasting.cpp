@@ -41,6 +41,7 @@
 #include "../mwworld/inventorystore.hpp"
 
 #include "../mwrender/animation.hpp"
+#include "../mwrender/vismask.hpp"
 
 #include "npcstats.hpp"
 #include "actorutil.hpp"
@@ -344,16 +345,19 @@ namespace MWMechanics
     }
 
     void CastSpell::launchMagicBolt ()
-    {        
-        osg::Vec3f fallbackDirection (0,1,0);     
+    {
+        osg::Vec3f fallbackDirection(0, 1, 0);
+        osg::Vec3f offset(0, 0, 0);
+        if (!mTarget.isEmpty() && mTarget.getClass().isActor())
+            offset.z() = MWBase::Environment::get().getWorld()->getHalfExtents(mTarget).z();
 
         // Fall back to a "caster to target" direction if we have no other means of determining it
         // (e.g. when cast by a non-actor)
         if (!mTarget.isEmpty())
             fallbackDirection =
-                osg::Vec3f(mTarget.getRefData().getPosition().asVec3())-
-                osg::Vec3f(mCaster.getRefData().getPosition().asVec3());
-            
+                (mTarget.getRefData().getPosition().asVec3() + offset) -
+                (mCaster.getRefData().getPosition().asVec3());
+
         MWBase::Environment::get().getWorld()->launchMagicBolt(mId, mCaster, fallbackDirection);
     }
 
@@ -526,9 +530,18 @@ namespace MWMechanics
                 }
                 else // target.getClass().isActor() == true
                 {
+                    ActiveSpells::ActiveEffect effect;
+                    effect.mEffectId = effectIt->mEffectID;
+                    effect.mArg = MWMechanics::EffectKey(*effectIt).mArg;
+                    effect.mMagnitude = magnitude;
+
                     bool hasDuration = !(magicEffect->mData.mFlags & ESM::MagicEffect::NoDuration);
                     if (hasDuration && effectIt->mDuration == 0)
                     {
+                        // We still should add effect to list to allow GetSpellEffects to detect this spell
+                        effect.mDuration = 0.f;
+                        appliedLastingEffects.push_back(effect);
+
                         // duration 0 means apply full magnitude instantly
                         bool wasDead = target.getClass().getCreatureStats(target).isDead();
                         effectTick(target.getClass().getCreatureStats(target), target, EffectKey(*effectIt), magnitude);
@@ -563,18 +576,15 @@ namespace MWMechanics
                     }
                     else
                     {
-                        // add to list of active effects, to apply in next frame
-                        ActiveSpells::ActiveEffect effect;
-                        effect.mEffectId = effectIt->mEffectID;
-                        effect.mArg = MWMechanics::EffectKey(*effectIt).mArg;
+
                         if (!hasDuration)
                             effect.mDuration = 1.0f;
                         else
                             effect.mDuration = static_cast<float>(effectIt->mDuration);
-                        effect.mMagnitude = magnitude;
 
                         targetEffects.add(MWMechanics::EffectKey(*effectIt), MWMechanics::EffectParam(effect.mMagnitude));
 
+                        // add to list of active effects, to apply in next frame
                         appliedLastingEffects.push_back(effect);
 
                         // Unequip all items, if a spell with the ExtraSpell effect was casted
@@ -1123,10 +1133,12 @@ namespace MWMechanics
         return true;
     }
 
-    void CastSpell::playSpellCastingEffects(const std::string &spellid){
-       
+    void CastSpell::playSpellCastingEffects(const std::string &spellid)
+    {
         const MWWorld::ESMStore& store = MWBase::Environment::get().getWorld()->getStore();
         const ESM::Spell *spell = store.get<ESM::Spell>().find(spellid);
+
+        std::vector<std::string> addedEffects;
 
         for (std::vector<ESM::ENAMstruct>::const_iterator iter = spell->mEffects.mList.begin();
             iter != spell->mEffects.mList.end(); ++iter)
@@ -1136,18 +1148,56 @@ namespace MWMechanics
 
             MWRender::Animation* animation = MWBase::Environment::get().getWorld()->getAnimation(mCaster);
 
-            if (animation && mCaster.getClass().isActor()) // TODO: Non-actors should also create a spell cast vfx even if they are disabled (animation == NULL)
+            const ESM::Static* castStatic;
+
+            if (!effect->mCasting.empty())
+                castStatic = store.get<ESM::Static>().find (effect->mCasting);
+            else
+                castStatic = store.get<ESM::Static>().find ("VFX_DefaultCast");
+
+            // check if the effect was already added
+            if (std::find(addedEffects.begin(), addedEffects.end(), "meshes\\" + castStatic->mModel) != addedEffects.end())
+                continue;
+
+            std::string texture = effect->mParticle;
+
+            float scale = 1.0f;
+            osg::Vec3f pos (mCaster.getRefData().getPosition().asVec3());
+
+            if (animation && mCaster.getClass().isNpc())
             {
-                const ESM::Static* castStatic;
+                // For NPC we should take race height as scaling factor
+                const ESM::NPC *npc = mCaster.get<ESM::NPC>()->mBase;
+                const MWWorld::ESMStore &esmStore =
+                    MWBase::Environment::get().getWorld()->getStore();
 
-                if (!effect->mCasting.empty())
-                    castStatic = store.get<ESM::Static>().find (effect->mCasting);
-                else
-                    castStatic = store.get<ESM::Static>().find ("VFX_DefaultCast");
+                const ESM::Race *race =
+                    esmStore.get<ESM::Race>().find(npc->mRace);
 
-                std::string texture = effect->mParticle;
+                scale = npc->isMale() ? race->mData.mHeight.mMale : race->mData.mHeight.mFemale;
+            }
+            else
+            {
+                osg::Vec3f halfExtents = MWBase::Environment::get().getWorld()->getHalfExtents(mCaster);
 
-                animation->addEffect("meshes\\" + castStatic->mModel, effect->mIndex, false, "", texture);
+                // TODO: take a size of particle or NPC with height and weight = 1.0 as scale = 1.0
+                float scaleX = halfExtents.x() * 2 / 60.f;
+                float scaleY = halfExtents.y() * 2 / 60.f;
+                float scaleZ = halfExtents.z() * 2 / 120.f;
+
+                scale = std::max({ scaleX, scaleY, scaleZ });
+            }
+
+            // If the caster has no animation, add the effect directly to the effectManager
+            if (animation)
+            {
+                animation->addEffect("meshes\\" + castStatic->mModel, effect->mIndex, false, "", texture, scale);
+            }
+            else
+            {
+                // We should set scale for effect manager manually
+                float meshScale = !mCaster.getClass().isActor() ? mCaster.getCellRef().getScale() : 1.0f;
+                MWBase::Environment::get().getWorld()->spawnEffect("meshes\\" + castStatic->mModel, effect->mParticle, pos, scale * meshScale);
             }
 
             if (animation && !mCaster.getClass().isActor())
@@ -1156,6 +1206,8 @@ namespace MWMechanics
             static const std::string schools[] = {
                 "alteration", "conjuration", "destruction", "illusion", "mysticism", "restoration"
             };
+
+            addedEffects.push_back("meshes\\" + castStatic->mModel);
 
             MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
             if(!effect->mCastSound.empty())

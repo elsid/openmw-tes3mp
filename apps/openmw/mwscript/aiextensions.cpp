@@ -1,7 +1,8 @@
 #include "aiextensions.hpp"
 
 #include <stdexcept>
-#include <iostream>
+
+#include <components/debug/debuglog.hpp>
 
 /*
     Start of tes3mp addition
@@ -64,7 +65,7 @@ namespace MWScript
 
                     MWMechanics::AiActivate activatePackage(objectID);
                     ptr.getClass().getCreatureStats (ptr).getAiSequence().stack(activatePackage, ptr);
-                    std::cout << "AiActivate" << std::endl;
+                    Log(Debug::Info) << "AiActivate";
                 }
         };
 
@@ -92,7 +93,7 @@ namespace MWScript
                     MWMechanics::AiTravel travelPackage(x, y, z);
                     ptr.getClass().getCreatureStats (ptr).getAiSequence().stack(travelPackage, ptr);
 
-                    std::cout << "AiTravel: " << x << ", " << y << ", " << z << std::endl;
+                    Log(Debug::Info) << "AiTravel: " << x << ", " << y << ", " << z;
                 }
         };
 
@@ -126,8 +127,7 @@ namespace MWScript
                     MWMechanics::AiEscort escortPackage(actorID, static_cast<int>(duration), x, y, z);
                     ptr.getClass().getCreatureStats (ptr).getAiSequence().stack(escortPackage, ptr);
 
-                    std::cout << "AiEscort: " << x << ", " << y << ", " << z << ", " << duration
-                        << std::endl;
+                    Log(Debug::Info) << "AiEscort: " << x << ", " << y << ", " << z << ", " << duration;
                 }
         };
 
@@ -169,8 +169,7 @@ namespace MWScript
                     MWMechanics::AiEscort escortPackage(actorID, cellID, static_cast<int>(duration), x, y, z);
                     ptr.getClass().getCreatureStats (ptr).getAiSequence().stack(escortPackage, ptr);
 
-                    std::cout << "AiEscort: " << x << ", " << y << ", " << z << ", " << duration
-                        << std::endl;
+                    Log(Debug::Info) << "AiEscort: " << x << ", " << y << ", " << z << ", " << duration;
                 }
         };
 
@@ -349,8 +348,7 @@ namespace MWScript
                     MWMechanics::AiFollow followPackage(actorID, duration, x, y ,z);
                     ptr.getClass().getCreatureStats (ptr).getAiSequence().stack(followPackage, ptr);
 
-                    std::cout << "AiFollow: " << actorID << ", " << x << ", " << y << ", " << z << ", " << duration
-                        << std::endl;
+                    Log(Debug::Info) << "AiFollow: " << actorID << ", " << x << ", " << y << ", " << z << ", " << duration;
 
                     /*
                         Start of tes3mp addition
@@ -407,8 +405,7 @@ namespace MWScript
 
                     MWMechanics::AiFollow followPackage(actorID, cellID, duration, x, y ,z);
                     ptr.getClass().getCreatureStats (ptr).getAiSequence().stack(followPackage, ptr);
-                    std::cout << "AiFollow: " << actorID << ", " << x << ", " << y << ", " << z << ", " << duration
-                        << std::endl;
+                    Log(Debug::Info) << "AiFollow: " << actorID << ", " << x << ", " << y << ", " << z << ", " << duration;
                 }
         };
 
