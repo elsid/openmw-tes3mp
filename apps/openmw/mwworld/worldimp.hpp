@@ -684,7 +684,7 @@ namespace MWWorld
                 End of tes3mp addition
             */
 
-            void getActorsStandingOn (const MWWorld::ConstPtr& object, std::vector<MWWorld::Ptr> &actors); ///< get a list of actors standing on \a object
+            void getActorsStandingOn (const MWWorld::ConstPtr& object, std::vector<MWWorld::Ptr> &actors) override; ///< get a list of actors standing on \a object
             bool getPlayerStandingOn (const MWWorld::ConstPtr& object) override; ///< @return true if the player is standing on \a object
             bool getActorStandingOn (const MWWorld::ConstPtr& object) override; ///< @return true if any actor is standing on \a object
             bool getPlayerCollidingWith(const MWWorld::ConstPtr& object) override; ///< @return true if the player is colliding with \a object

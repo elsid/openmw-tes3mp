@@ -539,35 +539,42 @@ namespace MWGui
 
     WindowManager::~WindowManager()
     {
-        mKeyboardNavigation.reset();
+        try
+        {
+            mKeyboardNavigation.reset();
 
-        MyGUI::LanguageManager::getInstance().eventRequestTag.clear();
-        MyGUI::PointerManager::getInstance().eventChangeMousePointer.clear();
-        MyGUI::InputManager::getInstance().eventChangeKeyFocus.clear();
-        MyGUI::ClipboardManager::getInstance().eventClipboardChanged.clear();
-        MyGUI::ClipboardManager::getInstance().eventClipboardRequested.clear();
+            MyGUI::LanguageManager::getInstance().eventRequestTag.clear();
+            MyGUI::PointerManager::getInstance().eventChangeMousePointer.clear();
+            MyGUI::InputManager::getInstance().eventChangeKeyFocus.clear();
+            MyGUI::ClipboardManager::getInstance().eventClipboardChanged.clear();
+            MyGUI::ClipboardManager::getInstance().eventClipboardRequested.clear();
 
-        for (WindowBase* window : mWindows)
-            delete window;
-        mWindows.clear();
+            for (WindowBase* window : mWindows)
+                delete window;
+            mWindows.clear();
 
-        delete mMessageBoxManager;
-        delete mLocalMapRender;
-        delete mCharGen;
-        delete mDragAndDrop;
-        delete mSoulgemDialog;
-        delete mCursorManager;
-        delete mToolTips;
+            delete mMessageBoxManager;
+            delete mLocalMapRender;
+            delete mCharGen;
+            delete mDragAndDrop;
+            delete mSoulgemDialog;
+            delete mCursorManager;
+            delete mToolTips;
 
-        cleanupGarbage();
+            cleanupGarbage();
 
-        mFontLoader.reset();
+            mFontLoader.reset();
 
-        mGui->shutdown();
-        delete mGui;
+            mGui->shutdown();
+            delete mGui;
 
-        mGuiPlatform->shutdown();
-        delete mGuiPlatform;
+            mGuiPlatform->shutdown();
+            delete mGuiPlatform;
+        }
+        catch(const MyGUI::Exception& e)
+        {
+            Log(Debug::Error) << "Error in the destructor: " << e.what();
+        }
     }
 
     void WindowManager::setStore(const MWWorld::ESMStore &store)
@@ -2218,9 +2225,9 @@ namespace MWGui
         return mTextColours;
     }
 
-    bool WindowManager::injectKeyPress(MyGUI::KeyCode key, unsigned int text)
+    bool WindowManager::injectKeyPress(MyGUI::KeyCode key, unsigned int text, bool repeat)
     {
-        if (!mKeyboardNavigation->injectKeyPress(key, text))
+        if (!mKeyboardNavigation->injectKeyPress(key, text, repeat))
         {
             MyGUI::Widget* focus = MyGUI::InputManager::getInstance().getKeyFocusWidget();
             bool widgetActive = MyGUI::InputManager::getInstance().injectKeyPress(key, text);
@@ -2247,6 +2254,11 @@ namespace MWGui
         }
         else
             return true;
+    }
+
+    bool WindowManager::injectKeyRelease(MyGUI::KeyCode key)
+    {
+        return MyGUI::InputManager::getInstance().injectKeyRelease(key);
     }
 
     void WindowManager::GuiModeState::update(bool visible)

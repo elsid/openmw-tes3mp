@@ -45,6 +45,7 @@
     Bug #4230: AiTravel package issues break some Tribunal quests
     Bug #4231: Infected rats from the "Crimson Plague" quest rendered unconscious by change in Drain Fatigue functionality
     Bug #4251: Stationary NPCs do not return to their position after combat
+    Bug #4260: Keyboard navigation makes persuasion exploitable
     Bug #4271: Scamp flickers when attacking
     Bug #4274: Pre-0.43 death animations are not forward-compatible with 0.43+
     Bug #4286: Scripted animations can be interrupted
@@ -54,6 +55,7 @@
     Bug #4307: World cleanup should remove dead bodies only if death animation is finished
     Bug #4311: OpenMW does not handle RootCollisionNode correctly
     Bug #4327: Missing animations during spell/weapon stance switching
+    Bug #4333: Keyboard navigation in containers is not intuitive
     Bug #4358: Running animation is interrupted when magic mode is toggled
     Bug #4368: Settings window ok button doesn't have key focus by default
     Bug #4378: On-self absorb spells restore stats
@@ -92,6 +94,7 @@
     Bug #4519: Knockdown does not discard movement in the 1st-person mode
     Bug #4531: Movement does not reset idle animations
     Bug #4539: Paper Doll is affected by GUI scaling
+    Bug #4543: Picking cursed items through inventory (menumode) makes it disappear
     Bug #4545: Creatures flee from werewolves
     Bug #4551: Replace 0 sound range with default range separately
     Bug #4553: Forcegreeting on non-actor opens a dialogue window which cannot be closed
@@ -109,10 +112,15 @@
     Bug #4604: Picking up gold from the ground only makes 1 grabbed
     Bug #4607: Scaling for animated collision shapes is applied twice
     Bug #4608: Falling damage is applied twice
+    Bug #4611: Instant magic effects have 0 duration in custom spell cost calculations unlike vanilla
+    Bug #4614: Crash due to division by zero when FlipController has no textures
     Bug #4615: Flicker effects for light sources are handled incorrectly
     Bug #4617: First person sneaking offset is not applied while the character is in air
     Bug #4618: Sneaking is possible while the character is flying
     Bug #4622: Recharging enchanted items with Soul Gems does not award experience if it fails
+    Bug #4628: NPC record reputation, disposition and faction rank should have unsigned char type
+    Bug #4633: Sneaking stance affects speed even if the actor is not able to crouch
+    Feature #912: Editor: Add missing icons to UniversalId tables
     Feature #1645: Casting effects from objects
     Feature #2606: Editor: Implemented (optional) case sensitive global search
     Feature #3083: Play animation when NPC is casting spell via script
@@ -136,6 +144,11 @@
     Feature #4550: Weapon priority: make ranged weapon bonus more sensible
     Feature #4579: Add option for applying Strength into hand to hand damage
     Feature #4581: Use proper logging system
+    Feature #4624: Spell priority: don't cast hit chance-affecting spells if the enemy is not in respective stance at the moment
+    Feature #4625: Weapon priority: use weighted mean for melee damage rating
+    Feature #4626: Weapon priority: account for weapon speed
+    Feature #4632: AI priority: utilize vanilla AI GMSTs for priority rating
+    Feature #4636: Use sTo GMST in spellmaking menu
     Task #2490: Don't open command prompt window on Release-mode builds automatically
     Task #4545: Enable is_pod string test
     Task #4605: Optimize skinning

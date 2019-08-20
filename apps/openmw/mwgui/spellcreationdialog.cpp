@@ -159,7 +159,9 @@ namespace MWGui
 
         mDurationValue->setCaption("1");
         mMagnitudeMinValue->setCaption("1");
-        mMagnitudeMaxValue->setCaption("- 1");
+        const std::string to = MWBase::Environment::get().getWindowManager()->getGameSettingString("sTo", "-");
+
+        mMagnitudeMaxValue->setCaption(to + " 1");
         mAreaValue->setCaption("0");
 
         setVisible(true);
@@ -324,8 +326,9 @@ namespace MWGui
         }
 
         mEffect.mMagnMax = pos+1;
+        const std::string to = MWBase::Environment::get().getWindowManager()->getGameSettingString("sTo", "-");
 
-        mMagnitudeMaxValue->setCaption("- " + MyGUI::utility::toString(pos+1));
+        mMagnitudeMaxValue->setCaption(to + " " + MyGUI::utility::toString(pos+1));
 
         eventEffectModified(mEffect);
     }
@@ -446,6 +449,9 @@ namespace MWGui
     void SpellCreationDialog::onAccept(MyGUI::EditBox *sender)
     {
         onBuyButtonClicked(sender);
+
+        // To do not spam onAccept() again and again
+        MWBase::Environment::get().getWindowManager()->injectKeyRelease(MyGUI::KeyCode::None);
     }
 
     void SpellCreationDialog::onOpen()

@@ -297,6 +297,8 @@ namespace MWGui
         if(mDragAndDrop != NULL && mDragAndDrop->mIsOnDragAndDrop)
             return;
 
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mCloseButton);
+
         /*
             Start of tes3mp addition
 
@@ -375,6 +377,8 @@ namespace MWGui
     {
         if(mDragAndDrop == NULL || !mDragAndDrop->mIsOnDragAndDrop)
         {
+            MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mCloseButton);
+
             onTakeAllButtonClicked(mTakeButton);
             
             if (mPtr.getClass().isPersistent(mPtr))
