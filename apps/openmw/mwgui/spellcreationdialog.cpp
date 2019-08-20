@@ -44,8 +44,8 @@ namespace
         const MWWorld::Store<ESM::GameSetting> &gmst =
             MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>();
 
-        return gmst.find(ESM::MagicEffect::effectIdToString (id1))->getString()
-                < gmst.find(ESM::MagicEffect::effectIdToString  (id2))->getString();
+        return gmst.find(ESM::MagicEffect::effectIdToString (id1))->mValue.getString()
+                < gmst.find(ESM::MagicEffect::effectIdToString  (id2))->mValue.getString();
     }
 
     void init(ESM::ENAMstruct& effect)
@@ -495,7 +495,7 @@ namespace MWGui
         mMagickaCost->setCaption(MyGUI::utility::toString(int(y)));
 
         float fSpellMakingValueMult =
-            store.get<ESM::GameSetting>().find("fSpellMakingValueMult")->getFloat();
+            store.get<ESM::GameSetting>().find("fSpellMakingValueMult")->mValue.getFloat();
 
         int price = MWBase::Environment::get().getMechanicsManager()->getBarterOffer(mPtr, static_cast<int>(y * fSpellMakingValueMult),true);
 
@@ -573,7 +573,7 @@ namespace MWGui
         for (std::vector<short>::const_iterator it = knownEffects.begin(); it != knownEffects.end(); ++it)
         {
             mAvailableEffectsList->addItem(MWBase::Environment::get().getWorld ()->getStore ().get<ESM::GameSetting>().find(
-                                               ESM::MagicEffect::effectIdToString  (*it))->getString());
+                                               ESM::MagicEffect::effectIdToString  (*it))->mValue.getString());
             mButtonMapping[i] = *it;
             ++i;
         }
@@ -583,7 +583,7 @@ namespace MWGui
         for (std::vector<short>::const_iterator it = knownEffects.begin(); it != knownEffects.end(); ++it)
         {
             std::string name = MWBase::Environment::get().getWorld ()->getStore ().get<ESM::GameSetting>().find(
-                                               ESM::MagicEffect::effectIdToString  (*it))->getString();
+                                               ESM::MagicEffect::effectIdToString  (*it))->mValue.getString();
             MyGUI::Widget* w = mAvailableEffectsList->getItemWidget(name);
 
             ToolTips::createMagicEffectToolTip (w, *it);

@@ -29,6 +29,9 @@ namespace MWMechanics
         if (type != -1 && weapon->mData.mType != type)
             return 0.f;
 
+        if (type == -1 && (weapon->mData.mType == ESM::Weapon::Arrow || weapon->mData.mType == ESM::Weapon::Bolt))
+            return 0.f;
+
         float rating=0.f;
         float rangedMult=1.f;
 
@@ -108,11 +111,19 @@ namespace MWMechanics
             }
         }
 
-        int skill = item.getClass().getEquipmentSkill(item);
-        if (skill != -1)
+        if (actor.getClass().isNpc())
         {
-            int value = actor.getClass().getSkill(actor, skill);
-            rating *= MWMechanics::getHitChance(actor, enemy, value) / 100.f;
+            int skill = item.getClass().getEquipmentSkill(item);
+            if (skill != -1)
+            {
+               int value = actor.getClass().getSkill(actor, skill);
+               rating *= MWMechanics::getHitChance(actor, enemy, value) / 100.f;
+            }
+        }
+        else
+        {
+            MWWorld::LiveCellRef<ESM::Creature> *ref = actor.get<ESM::Creature>();
+            rating *= MWMechanics::getHitChance(actor, enemy, ref->mBase->mData.mCombat) / 100.f;
         }
 
         return rating * rangedMult;
@@ -149,9 +160,9 @@ namespace MWMechanics
     {
         const MWWorld::Store<ESM::GameSetting>& gmst = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>();
 
-        static const float fAIMeleeWeaponMult = gmst.find("fAIMeleeWeaponMult")->getFloat();
-        static const float fAIMeleeArmorMult = gmst.find("fAIMeleeArmorMult")->getFloat();
-        static const float fAIRangeMeleeWeaponMult = gmst.find("fAIRangeMeleeWeaponMult")->getFloat();
+        static const float fAIMeleeWeaponMult = gmst.find("fAIMeleeWeaponMult")->mValue.getFloat();
+        static const float fAIMeleeArmorMult = gmst.find("fAIMeleeArmorMult")->mValue.getFloat();
+        static const float fAIRangeMeleeWeaponMult = gmst.find("fAIRangeMeleeWeaponMult")->mValue.getFloat();
 
         if (weapon.isEmpty())
             return 0.f;

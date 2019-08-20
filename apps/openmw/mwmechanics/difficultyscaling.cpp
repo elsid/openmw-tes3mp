@@ -38,7 +38,7 @@ float scaleDamage(float damage, const MWWorld::Ptr& attacker, const MWWorld::Ptr
         End of tes3mp change (major)
     */
 
-    static const float fDifficultyMult = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>().find("fDifficultyMult")->getFloat();
+    static const float fDifficultyMult = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>().find("fDifficultyMult")->mValue.getFloat();
 
     float difficultyTerm = 0.01f * difficultySetting;
 

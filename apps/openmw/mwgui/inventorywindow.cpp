@@ -82,6 +82,7 @@ namespace MWGui
         , mPreview(new MWRender::InventoryPreview(parent, resourceSystem, MWMechanics::getPlayer()))
         , mTrading(false)
         , mScaleFactor(1.0f)
+        , mUpdateTimer(0.f)
     {
         float uiScale = Settings::Manager::getFloat("scaling factor", "GUI");
         if (uiScale > 1.0)
@@ -655,6 +656,22 @@ namespace MWGui
     void InventoryWindow::onFrame(float dt)
     {
         updateEncumbranceBar();
+
+        if (mPinned)
+        {
+            mUpdateTimer += dt;
+            if (0.1f < mUpdateTimer)
+            {
+                mUpdateTimer = 0;
+
+                // Update pinned inventory in-game
+                if (!MWBase::Environment::get().getWindowManager()->isGuiMode())
+                {
+                    mItemView->update();
+                    notifyContentChanged();
+                }
+            }
+        }
     }
 
     void InventoryWindow::setTrading(bool trading)
@@ -705,6 +722,8 @@ namespace MWGui
             return;
 
         int count = object.getRefData().getCount();
+        if (object.getClass().isGold(object))
+            count *= object.getClass().getValue(object);
 
         MWWorld::Ptr player = MWMechanics::getPlayer();
         MWBase::Environment::get().getWorld()->breakInvisibility(player);

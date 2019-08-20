@@ -515,8 +515,6 @@ namespace MWMechanics
                 return 0.f;
         }
 
-        const ESM::MagicEffect* magicEffect = MWBase::Environment::get().getWorld()->getStore().get<ESM::MagicEffect>().find(effect.mEffectID);
-
         // Underwater casting not possible
         if (effect.mRange == ESM::RT_Target)
         {
@@ -530,6 +528,7 @@ namespace MWMechanics
                 return 0.f;
         }
 
+        const ESM::MagicEffect* magicEffect = MWBase::Environment::get().getWorld()->getStore().get<ESM::MagicEffect>().find(effect.mEffectID);
         if (magicEffect->mData.mFlags & ESM::MagicEffect::Harmful)
         {
             rating *= -1.f;
@@ -565,7 +564,7 @@ namespace MWMechanics
             }
         }
 
-        rating *= calcEffectCost(effect);
+        rating *= calcEffectCost(effect, magicEffect);
 
         // Currently treating all "on target" or "on touch" effects to target the enemy actor.
         // Combat AI is egoistic, so doesn't consider applying positive effects to friendly actors.
@@ -593,8 +592,8 @@ namespace MWMechanics
     {
         const MWWorld::Store<ESM::GameSetting>& gmst = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>();
 
-        static const float fAIMagicSpellMult = gmst.find("fAIMagicSpellMult")->getFloat();
-        static const float fAIRangeMagicSpellMult = gmst.find("fAIRangeMagicSpellMult")->getFloat();
+        static const float fAIMagicSpellMult = gmst.find("fAIMagicSpellMult")->mValue.getFloat();
+        static const float fAIRangeMagicSpellMult = gmst.find("fAIRangeMagicSpellMult")->mValue.getFloat();
 
         float mult = fAIMagicSpellMult;
 

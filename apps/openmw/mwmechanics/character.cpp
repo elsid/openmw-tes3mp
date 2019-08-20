@@ -139,16 +139,16 @@ float getFallDamage(const MWWorld::Ptr& ptr, float fallHeight)
     MWBase::World *world = MWBase::Environment::get().getWorld();
     const MWWorld::Store<ESM::GameSetting> &store = world->getStore().get<ESM::GameSetting>();
 
-    const float fallDistanceMin = store.find("fFallDamageDistanceMin")->getFloat();
+    const float fallDistanceMin = store.find("fFallDamageDistanceMin")->mValue.getFloat();
 
     if (fallHeight >= fallDistanceMin)
     {
         const float acrobaticsSkill = static_cast<float>(ptr.getClass().getSkill(ptr, ESM::Skill::Acrobatics));
         const float jumpSpellBonus = ptr.getClass().getCreatureStats(ptr).getMagicEffects().get(ESM::MagicEffect::Jump).getMagnitude();
-        const float fallAcroBase = store.find("fFallAcroBase")->getFloat();
-        const float fallAcroMult = store.find("fFallAcroMult")->getFloat();
-        const float fallDistanceBase = store.find("fFallDistanceBase")->getFloat();
-        const float fallDistanceMult = store.find("fFallDistanceMult")->getFloat();
+        const float fallAcroBase = store.find("fFallAcroBase")->mValue.getFloat();
+        const float fallAcroMult = store.find("fFallAcroMult")->mValue.getFloat();
+        const float fallDistanceBase = store.find("fFallDistanceBase")->mValue.getFloat();
+        const float fallDistanceMult = store.find("fFallDistanceMult")->mValue.getFloat();
 
         float x = fallHeight - fallDistanceMin;
         x -= (1.5f * acrobaticsSkill) + jumpSpellBonus;
@@ -968,11 +968,14 @@ void CharacterController::handleTextKey(const std::string &groupname, const std:
             }
         }
 
+        if (soundgen == "land") // Morrowind ignores land soundgen for some reason
+            return;
+
         std::string sound = mPtr.getClass().getSoundIdFromSndGen(mPtr, soundgen);
         if(!sound.empty())
         {
             MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
-            if(evt.compare(10, evt.size()-10, "left") == 0 || evt.compare(10, evt.size()-10, "right") == 0 || evt.compare(10, evt.size()-10, "land") == 0)
+            if(soundgen == "left" || soundgen == "right")
             {
                 // Don't make foot sounds local for the player, it makes sense to keep them
                 // positioned on the ground.
@@ -1910,10 +1913,11 @@ void CharacterController::update(float duration)
     else if(!cls.getCreatureStats(mPtr).isDead())
     {
         bool onground = world->isOnGround(mPtr);
+        bool incapacitated = (cls.getCreatureStats(mPtr).isParalyzed() || cls.getCreatureStats(mPtr).getKnockedDown());
         bool inwater = world->isSwimming(mPtr);
-        bool sneak = cls.getCreatureStats(mPtr).getStance(MWMechanics::CreatureStats::Stance_Sneak);
         bool flying = world->isFlying(mPtr);
-        // Can't run while flying (see speed formula in Npc/Creature::getSpeed)
+        // Can't run and sneak while flying (see speed formula in Npc/Creature::getSpeed)
+        bool sneak = cls.getCreatureStats(mPtr).getStance(MWMechanics::CreatureStats::Stance_Sneak) && !flying;
         bool isrunning = cls.getCreatureStats(mPtr).getStance(MWMechanics::CreatureStats::Stance_Run) && !flying;
         CreatureStats &stats = cls.getCreatureStats(mPtr);
 
@@ -2025,14 +2029,14 @@ void CharacterController::update(float duration)
         // reduce fatigue
         const MWWorld::Store<ESM::GameSetting> &gmst = world->getStore().get<ESM::GameSetting>();
         float fatigueLoss = 0;
-        static const float fFatigueRunBase = gmst.find("fFatigueRunBase")->getFloat();
-        static const float fFatigueRunMult = gmst.find("fFatigueRunMult")->getFloat();
-        static const float fFatigueSwimWalkBase = gmst.find("fFatigueSwimWalkBase")->getFloat();
-        static const float fFatigueSwimRunBase = gmst.find("fFatigueSwimRunBase")->getFloat();
-        static const float fFatigueSwimWalkMult = gmst.find("fFatigueSwimWalkMult")->getFloat();
-        static const float fFatigueSwimRunMult = gmst.find("fFatigueSwimRunMult")->getFloat();
-        static const float fFatigueSneakBase = gmst.find("fFatigueSneakBase")->getFloat();
-        static const float fFatigueSneakMult = gmst.find("fFatigueSneakMult")->getFloat();
+        static const float fFatigueRunBase = gmst.find("fFatigueRunBase")->mValue.getFloat();
+        static const float fFatigueRunMult = gmst.find("fFatigueRunMult")->mValue.getFloat();
+        static const float fFatigueSwimWalkBase = gmst.find("fFatigueSwimWalkBase")->mValue.getFloat();
+        static const float fFatigueSwimRunBase = gmst.find("fFatigueSwimRunBase")->mValue.getFloat();
+        static const float fFatigueSwimWalkMult = gmst.find("fFatigueSwimWalkMult")->mValue.getFloat();
+        static const float fFatigueSwimRunMult = gmst.find("fFatigueSwimRunMult")->mValue.getFloat();
+        static const float fFatigueSneakBase = gmst.find("fFatigueSneakBase")->mValue.getFloat();
+        static const float fFatigueSneakMult = gmst.find("fFatigueSneakMult")->mValue.getFloat();
 
         if (cls.getEncumbrance(mPtr) <= cls.getCapacity(mPtr))
         {
@@ -2061,7 +2065,7 @@ void CharacterController::update(float duration)
             cls.getCreatureStats(mPtr).setFatigue(fatigue);
         }
 
-        if(sneak || inwater || flying)
+        if(sneak || inwater || flying || incapacitated)
             vec.z() = 0.0f;
 
         bool inJump = true;
@@ -2072,8 +2076,8 @@ void CharacterController::update(float duration)
             forcestateupdate = (mJumpState != JumpState_InAir);
             jumpstate = JumpState_InAir;
 
-            static const float fJumpMoveBase = gmst.find("fJumpMoveBase")->getFloat();
-            static const float fJumpMoveMult = gmst.find("fJumpMoveMult")->getFloat();
+            static const float fJumpMoveBase = gmst.find("fJumpMoveBase")->mValue.getFloat();
+            static const float fJumpMoveMult = gmst.find("fJumpMoveMult")->mValue.getFloat();
             float factor = fJumpMoveBase + fJumpMoveMult * mPtr.getClass().getSkill(mPtr, ESM::Skill::Acrobatics)/100.f;
             factor = std::min(1.f, factor);
             vec.x() *= factor;
@@ -2100,8 +2104,8 @@ void CharacterController::update(float duration)
                     cls.skillUsageSucceeded(mPtr, ESM::Skill::Acrobatics, 0);
 
                 // decrease fatigue
-                const float fatigueJumpBase = gmst.find("fFatigueJumpBase")->getFloat();
-                const float fatigueJumpMult = gmst.find("fFatigueJumpMult")->getFloat();
+                const float fatigueJumpBase = gmst.find("fFatigueJumpBase")->mValue.getFloat();
+                const float fatigueJumpMult = gmst.find("fFatigueJumpMult")->mValue.getFloat();
                 float normalizedEncumbrance = mPtr.getClass().getNormalizedEncumbrance(mPtr);
                 if (normalizedEncumbrance > 1)
                     normalizedEncumbrance = 1;
@@ -2130,17 +2134,15 @@ void CharacterController::update(float duration)
                 // inflict fall damages
                 if (!godmode)
                 {
-                    DynamicStat<float> health = cls.getCreatureStats(mPtr).getHealth();
                     float realHealthLost = static_cast<float>(healthLost * (1.0f - 0.25f * fatigueTerm));
-                    health.setCurrent(health.getCurrent() - realHealthLost);
-                    cls.getCreatureStats(mPtr).setHealth(health);
                     cls.onHit(mPtr, realHealthLost, true, MWWorld::Ptr(), MWWorld::Ptr(), osg::Vec3f(), true);
                 }
 
                 const int acrobaticsSkill = cls.getSkill(mPtr, ESM::Skill::Acrobatics);
                 if (healthLost > (acrobaticsSkill * fatigueTerm))
                 {
-                    cls.getCreatureStats(mPtr).setKnockedDown(true);
+                    if (!godmode)
+                        cls.getCreatureStats(mPtr).setKnockedDown(true);
                 }
                 else
                 {
@@ -2149,6 +2151,12 @@ void CharacterController::update(float duration)
                         cls.skillUsageSucceeded(mPtr, ESM::Skill::Acrobatics, 1);
                 }
             }
+
+            // Play landing sound
+            MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
+            std::string sound = cls.getSoundIdFromSndGen(mPtr, "land");
+            if (!sound.empty())
+                sndMgr->playSound3D(mPtr, sound, 1.f, 1.f, MWSound::Type::Foot, MWSound::PlayMode::NoPlayerLocal);
         }
         else
         {
@@ -2157,6 +2165,12 @@ void CharacterController::update(float duration)
             vec.z() = 0.0f;
 
             inJump = false;
+
+            // Do not play turning animation for player if rotation speed is very slow.
+            // Actual threshold should take framerate in account.
+            float rotationThreshold = 0;
+            if (mPtr == getPlayer())
+                rotationThreshold = 0.015 * 60 * duration;
 
             if(std::abs(vec.x()/2.0f) > std::abs(vec.y()))
             {
@@ -2182,9 +2196,9 @@ void CharacterController::update(float duration)
             }
             else if(rot.z() != 0.0f && !sneak && !(mPtr == getPlayer() && MWBase::Environment::get().getWorld()->isFirstPerson()))
             {
-                if(rot.z() > 0.0f)
+                if(rot.z() > rotationThreshold)
                     movestate = inwater ? CharState_SwimTurnRight : CharState_TurnRight;
-                else if(rot.z() < 0.0f)
+                else if(rot.z() < -rotationThreshold)
                     movestate = inwater ? CharState_SwimTurnLeft : CharState_TurnLeft;
             }
         }
@@ -2334,9 +2348,6 @@ void CharacterController::update(float duration)
         if (newLength > 0)
             moved *= (l / newLength);
     }
-
-    if (mSkipAnim)
-        mAnimation->updateEffects(duration);
 
     if (mFloatToSurface && cls.isActor() && cls.getCreatureStats(mPtr).isDead() && cls.canSwim(mPtr))
         moved.z() = 1.0;
