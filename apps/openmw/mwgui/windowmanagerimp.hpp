@@ -131,14 +131,15 @@ namespace MWGui
     typedef std::vector<Faction> FactionList;
 
     WindowManager(osgViewer::Viewer* viewer, osg::Group* guiRoot, Resource::ResourceSystem* resourceSystem, SceneUtil::WorkQueue* workQueue,
-                  const std::string& logpath, const std::string& cacheDir, bool consoleOnlyScripts,
-                  Translation::Storage& translationDataStorage, ToUTF8::FromType encoding, bool exportFonts, const std::map<std::string,std::string>& fallbackMap, const std::string& versionDescription);
+                  const std::string& logpath, const std::string& cacheDir, bool consoleOnlyScripts, Translation::Storage& translationDataStorage,
+                  ToUTF8::FromType encoding, bool exportFonts, const std::map<std::string,std::string>& fallbackMap, const std::string& versionDescription, const std::string& localPath);
     virtual ~WindowManager();
 
     /// Set the ESMStore to use for retrieving of GUI-related strings.
     void setStore (const MWWorld::ESMStore& store);
 
     void initUI();
+    virtual void loadUserFonts();
 
     virtual Loading::Listener* getLoadingScreen();
 
@@ -312,6 +313,7 @@ namespace MWGui
     virtual const MWWorld::Ptr& getSelectedEnchantItem() const;
     virtual void setSelectedWeapon(const MWWorld::Ptr& item);
     virtual const MWWorld::Ptr& getSelectedWeapon() const;
+    virtual int getFontHeight() const;
     virtual void unsetSelectedSpell();
     virtual void unsetSelectedWeapon();
 
@@ -400,6 +402,8 @@ namespace MWGui
 
     virtual void setEnemy (const MWWorld::Ptr& enemy);
 
+    virtual int getMessagesCount() const;
+
     virtual const Translation::Storage& getTranslationDataStorage() const;
 
     void onSoulgemDialogButtonPressed (int button);
@@ -487,6 +491,8 @@ namespace MWGui
     std::string mSelectedSpell;
     MWWorld::Ptr mSelectedEnchantItem;
     MWWorld::Ptr mSelectedWeapon;
+
+    void loadFontDelegate(MyGUI::xml::ElementPtr _node, const std::string& _file, MyGUI::Version _version);
 
     std::vector<WindowModal*> mCurrentModals;
 
@@ -610,6 +616,8 @@ namespace MWGui
     int mShowOwned;
 
     ToUTF8::FromType mEncoding;
+
+    int mFontHeight;
 
     std::string mVersionDescription;
 

@@ -42,13 +42,14 @@ namespace MWWorld
     Player::Player (const ESM::NPC *player)
       : mCellStore(0),
         mLastKnownExteriorPosition(0,0,0),
-        mMarkedCell(NULL),
+        mMarkedCell(nullptr),
         mAutoMove(false),
         mForwardBackward(0),
         mTeleported(false),
         mCurrentCrimeId(-1),
         mPaidCrimeId(-1),
-        mAttackingOrSpell(false)
+        mAttackingOrSpell(false),
+        mJumping(false)
     {
         ESM::CellRef cellRef;
         cellRef.blank();
@@ -290,6 +291,16 @@ namespace MWWorld
         return mAttackingOrSpell;
     }
 
+    void Player::setJumping(bool jumping)
+    {
+        mJumping = jumping;
+    }
+
+    bool Player::getJumping() const
+    {
+        return mJumping;
+    }
+
     bool Player::isInCombat() {
         return MWBase::Environment::get().getMechanicsManager()->getActorsFighting(getPlayer()).size() != 0;
     }
@@ -321,6 +332,7 @@ namespace MWWorld
         mForwardBackward = 0;
         mTeleported = false;
         mAttackingOrSpell = false;
+        mJumping = false;
         mCurrentCrimeId = -1;
         mPaidCrimeId = -1;
         mPreviousItems.clear();
@@ -429,7 +441,7 @@ namespace MWWorld
             {
                 Log(Debug::Warning) << "Warning: Player cell '" << player.mCellId.mWorldspace << "' no longer exists";
                 // Cell no longer exists. The loader will have to choose a default cell.
-                mCellStore = NULL;
+                mCellStore = nullptr;
             }
 
             if (!player.mBirthsign.empty())

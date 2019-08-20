@@ -285,6 +285,7 @@ namespace MWBase
             virtual const MWWorld::Ptr& getSelectedEnchantItem() const = 0;
             virtual void setSelectedWeapon(const MWWorld::Ptr& item) = 0;
             virtual const MWWorld::Ptr& getSelectedWeapon() const = 0;
+            virtual int getFontHeight() const = 0;
             virtual void unsetSelectedSpell() = 0;
             virtual void unsetSelectedWeapon() = 0;
 
@@ -370,10 +371,14 @@ namespace MWBase
 
             virtual void setEnemy (const MWWorld::Ptr& enemy) = 0;
 
+            virtual int getMessagesCount() const = 0;
+
             virtual const Translation::Storage& getTranslationDataStorage() const = 0;
 
             /// Warning: do not use MyGUI::InputManager::setKeyFocusWidget directly. Instead use this.
             virtual void setKeyFocusWidget (MyGUI::Widget* widget) = 0;
+
+            virtual void loadUserFonts() = 0;
 
             virtual Loading::Listener* getLoadingScreen() = 0;
 

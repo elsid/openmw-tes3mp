@@ -96,7 +96,7 @@ namespace MWGui
             Log(Debug::Warning) << "Warning: no splash screens found!";
     }
 
-    void LoadingScreen::setLabel(const std::string &label, bool important)
+    void LoadingScreen::setLabel(const std::string &label, bool important, bool center)
     {
         mImportantLabel = important;
 
@@ -105,7 +105,11 @@ namespace MWGui
         MyGUI::IntSize size(mLoadingText->getTextSize().width+padding, mLoadingBox->getHeight());
         size.width = std::max(300, size.width);
         mLoadingBox->setSize(size);
-        mLoadingBox->setPosition(mMainWidget->getWidth()/2 - mLoadingBox->getWidth()/2, mLoadingBox->getTop());
+
+        if (center)
+            mLoadingBox->setPosition(mMainWidget->getWidth()/2 - mLoadingBox->getWidth()/2, mMainWidget->getHeight()/2 - mLoadingBox->getHeight()/2);
+        else
+            mLoadingBox->setPosition(mMainWidget->getWidth()/2 - mLoadingBox->getWidth()/2, mMainWidget->getHeight() - mLoadingBox->getHeight() - 8);
     }
 
     void LoadingScreen::setVisible(bool visible)
@@ -140,7 +144,7 @@ namespace MWGui
 
             // Callback removes itself when done
             if (renderInfo.getCurrentCamera())
-                renderInfo.getCurrentCamera()->setInitialDrawCallback(NULL);
+                renderInfo.getCurrentCamera()->setInitialDrawCallback(nullptr);
         }
 
     private:
@@ -169,19 +173,18 @@ namespace MWGui
         // We are already using node masks to avoid the scene from being updated/rendered, but node masks don't work for computeBound()
         mViewer->getSceneData()->setComputeBoundingSphereCallback(new DontComputeBoundCallback);
 
-        mShowWallpaper = visible && (MWBase::Environment::get().getStateManager()->getState()
-                == MWBase::StateManager::State_NoGame);
+        mVisible = visible;
+        mLoadingBox->setVisible(mVisible);
+        setVisible(true);
 
-        if (!visible)
+        if (!mVisible)
         {
+            mShowWallpaper = false;
             draw();
             return;
         }
 
-        mVisible = visible;
-        mLoadingBox->setVisible(mVisible);
-
-        setVisible(true);
+        mShowWallpaper = MWBase::Environment::get().getStateManager()->getState() == MWBase::StateManager::State_NoGame;
 
         if (mShowWallpaper)
         {
@@ -208,7 +211,7 @@ namespace MWGui
         else
             mImportantLabel = false; // label was already shown on loading screen
 
-        mViewer->getSceneData()->setComputeBoundingSphereCallback(NULL);
+        mViewer->getSceneData()->setComputeBoundingSphereCallback(nullptr);
         mViewer->getSceneData()->dirtyBound();
 
         //std::cout << "loading took " << mTimer.time_m() - mLoadingOnTime << std::endl;

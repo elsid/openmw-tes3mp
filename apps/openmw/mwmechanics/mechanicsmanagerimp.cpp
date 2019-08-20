@@ -30,6 +30,7 @@
 #include "../mwworld/ptr.hpp"
 
 #include "../mwbase/environment.hpp"
+#include "../mwbase/statemanager.hpp"
 #include "../mwbase/world.hpp"
 #include "../mwbase/windowmanager.hpp"
 #include "../mwbase/dialoguemanager.hpp"
@@ -216,7 +217,7 @@ namespace MWMechanics
         }
 
         // F_PCStart spells
-        const ESM::Race* race = NULL;
+        const ESM::Race* race = nullptr;
         if (mRaceSelected)
             race = esmStore.get<ESM::Race>().find(player->mRace);
 
@@ -444,6 +445,29 @@ namespace MWMechanics
         mObjects.update(duration, paused);
     }
 
+    void MechanicsManager::processChangedSettings(const Settings::CategorySettingVector &changed)
+    {
+        for (Settings::CategorySettingVector::const_iterator it = changed.begin(); it != changed.end(); ++it)
+        {
+            if (it->first == "Game" && it->second == "actors processing range")
+            {
+                int state = MWBase::Environment::get().getStateManager()->getState();
+                if (state != MWBase::StateManager::State_Running)
+                    continue;
+
+                mActors.updateProcessingRange();
+
+                // Update mechanics for new processing range immediately
+                update(0.f, false);
+            }
+        }
+    }
+
+    float MechanicsManager::getActorsProcessingRange() const
+    {
+        return mActors.getProcessingRange();
+    }
+
     bool MechanicsManager::isActorDetected(const MWWorld::Ptr& actor, const MWWorld::Ptr& observer)
     {
         return mActors.isActorDetected(actor, observer);
@@ -466,7 +490,15 @@ namespace MWMechanics
 
     void MechanicsManager::rest(bool sleep)
     {
+        if (sleep)
+            MWBase::Environment::get().getWorld()->rest();
+
         mActors.rest(sleep);
+    }
+
+    void MechanicsManager::restoreDynamicStats(MWWorld::Ptr actor, bool sleep)
+    {
+        mActors.restoreDynamicStats(actor, sleep);
     }
 
     int MechanicsManager::getHoursToRest() const
@@ -644,10 +676,10 @@ namespace MWMechanics
         // I suppose the temporary disposition change (second param to getDerivedDisposition()) _has_ to be considered here,
         // otherwise one would get different prices when exiting and re-entering the dialogue window...
         int clampedDisposition = getDerivedDisposition(ptr);
-        float a = static_cast<float>(std::min(playerStats.getSkill(ESM::Skill::Mercantile).getModified(), 100));
+        float a = static_cast<float>(std::min(playerPtr.getClass().getSkill(playerPtr, ESM::Skill::Mercantile), 100));
         float b = std::min(0.1f * playerStats.getAttribute(ESM::Attribute::Luck).getModified(), 10.f);
         float c = std::min(0.2f * playerStats.getAttribute(ESM::Attribute::Personality).getModified(), 10.f);
-        float d = static_cast<float>(std::min(sellerStats.getSkill(ESM::Skill::Mercantile).getModified(), 100));
+        float d = static_cast<float>(std::min(ptr.getClass().getSkill(ptr, ESM::Skill::Mercantile), 100));
         float e = std::min(0.1f * sellerStats.getAttribute(ESM::Attribute::Luck).getModified(), 10.f);
         float f = std::min(0.2f * sellerStats.getAttribute(ESM::Attribute::Personality).getModified(), 10.f);
         float pcTerm = (clampedDisposition - 50 + a + b + c) * playerStats.getFatigueTerm();

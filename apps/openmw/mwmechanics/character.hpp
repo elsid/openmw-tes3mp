@@ -214,7 +214,7 @@ class CharacterController : public MWRender::Animation::TextKeyListener
 
     void refreshCurrentAnims(CharacterState idle, CharacterState movement, JumpingState jump, bool force=false);
     void refreshHitRecoilAnims(CharacterState& idle);
-    void refreshJumpAnims(const WeaponInfo* weap, JumpingState jump, CharacterState& idle, bool force=false);
+    void refreshJumpAnims(const WeaponInfo* weap, JumpingState jump, CharacterState& idle, CharacterState& movement, bool force=false);
     void refreshMovementAnims(const WeaponInfo* weap, CharacterState movement, CharacterState& idle, bool force=false);
     void refreshIdleAnims(const WeaponInfo* weap, CharacterState idle, bool force=false);
 
@@ -240,8 +240,8 @@ class CharacterController : public MWRender::Animation::TextKeyListener
     void playRandomDeath(float startpoint = 0.0f);
 
     /// choose a random animation group with \a prefix and numeric suffix
-    /// @param num if non-NULL, the chosen animation number will be written here
-    std::string chooseRandomGroup (const std::string& prefix, int* num = NULL) const;
+    /// @param num if non-nullptr, the chosen animation number will be written here
+    std::string chooseRandomGroup (const std::string& prefix, int* num = nullptr) const;
 
     bool updateCarriedLeftVisible(WeaponType weaptype) const;
 
@@ -257,7 +257,7 @@ public:
 
     void updatePtr(const MWWorld::Ptr &ptr);
 
-    void update(float duration);
+    void update(float duration, bool animationOnly=false);
 
     void persistAnimationState();
     void unpersistAnimationState();
@@ -292,6 +292,7 @@ public:
     bool isTurning() const;
     bool isAttackingOrSpell() const;
 
+    void setVisibility(float visibility);
     void setAttackingOrSpell(bool attackingOrSpell);
     void castSpell(const std::string spellId, bool manualSpell=false);
     void setAIAttackType(const std::string& attackType);

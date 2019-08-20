@@ -1,6 +1,8 @@
 #ifndef GAME_MWMECHANICS_MECHANICSMANAGERIMP_H
 #define GAME_MWMECHANICS_MECHANICSMANAGERIMP_H
 
+#include <components/settings/settings.hpp>
+
 #include "../mwbase/mechanicsmanager.hpp"
 
 #include "../mwworld/ptr.hpp"
@@ -90,6 +92,8 @@ namespace MWMechanics
 
             virtual void setPlayerClass (const ESM::Class& class_);
             ///< Set player class to custom class.
+
+            virtual void restoreDynamicStats(MWWorld::Ptr actor, bool sleep);
 
             virtual void rest(bool sleep);
             ///< If the player is sleeping or waiting, this should be called every hour.
@@ -213,6 +217,10 @@ namespace MWMechanics
             virtual bool isAttackingOrSpell(const MWWorld::Ptr &ptr) const;
 
             virtual void castSpell(const MWWorld::Ptr& ptr, const std::string spellId, bool manualSpell=false);
+
+            void processChangedSettings(const Settings::CategorySettingVector& settings) override;
+
+            virtual float getActorsProcessingRange() const;
 
             /// Check if the target actor was detected by an observer
             /// If the observer is a non-NPC, check all actors in AI processing distance as observers

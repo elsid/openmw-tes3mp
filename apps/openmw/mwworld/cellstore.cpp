@@ -30,6 +30,7 @@
 #include <components/esm/doorstate.hpp>
 
 #include "../mwbase/environment.hpp"
+#include "../mwbase/mechanicsmanager.hpp"
 #include "../mwbase/world.hpp"
 
 #include "../mwmechanics/creaturestats.hpp"
@@ -168,7 +169,7 @@ namespace
         ESM::RefNum mRefNumToFind;
 
         SearchByRefNumVisitor(const ESM::RefNum& toFind)
-            : mFound(NULL)
+            : mFound(nullptr)
             , mRefNumToFind(toFind)
         {
         }
@@ -297,7 +298,7 @@ namespace MWWorld
         {
             MWWorld::Ptr copied = object.getClass().copyToCell(object, *cellToMoveTo, object.getRefData().getCount());
             object.getRefData().setCount(0);
-            object.getRefData().setBaseNode(NULL);
+            object.getRefData().setBaseNode(nullptr);
             return copied;
         }
         */
@@ -1086,7 +1087,7 @@ namespace MWWorld
 
             CellStore* otherCell = callback->getCellStore(movedTo);
 
-            if (otherCell == NULL)
+            if (otherCell == nullptr)
             {
                 Log(Debug::Warning) << "Warning: Dropping moved ref tag for " << movedRef->mRef.getRefId()
                                     << " (target cell " << movedTo.mWorldspace << " no longer exists). Reference moved back to its original location.";
@@ -1137,6 +1138,29 @@ namespace MWWorld
             creatureStats.getTimeOfDeath() + fCorpseClearDelay <= MWBase::Environment::get().getWorld()->getTimeStamp())
         {
             MWBase::Environment::get().getWorld()->deleteObject(ptr);
+        }
+    }
+
+    void CellStore::rest()
+    {
+        if (mState == State_Loaded)
+        {
+            for (CellRefList<ESM::Creature>::List::iterator it (mCreatures.mList.begin()); it!=mCreatures.mList.end(); ++it)
+            {
+                Ptr ptr = getCurrentPtr(&*it);
+                if (!ptr.isEmpty() && ptr.getRefData().getCount() > 0)
+                {
+                    MWBase::Environment::get().getMechanicsManager()->restoreDynamicStats(ptr, true);
+                }
+            }
+            for (CellRefList<ESM::NPC>::List::iterator it (mNpcs.mList.begin()); it!=mNpcs.mList.end(); ++it)
+            {
+                Ptr ptr = getCurrentPtr(&*it);
+                if (!ptr.isEmpty() && ptr.getRefData().getCount() > 0)
+                {
+                    MWBase::Environment::get().getMechanicsManager()->restoreDynamicStats(ptr, true);
+                }
+            }
         }
     }
 

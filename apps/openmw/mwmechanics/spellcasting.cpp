@@ -259,9 +259,9 @@ namespace MWMechanics
 
         // This makes spells that are easy to cast harder to resist and vice versa
         float castChance = 100.f;
-        if (spell != NULL && !caster.isEmpty() && caster.getClass().isActor())
+        if (spell != nullptr && !caster.isEmpty() && caster.getClass().isActor())
         {
-            castChance = getSpellSuccessChance(spell, caster, NULL, false); // Uncapped casting chance
+            castChance = getSpellSuccessChance(spell, caster, nullptr, false); // Uncapped casting chance
         }
         if (castChance > 0)
             x *= 50 / castChance;
@@ -340,6 +340,34 @@ namespace MWMechanics
         }
         return true;
     }
+
+    class GetAbsorptionProbability : public MWMechanics::EffectSourceVisitor
+    {
+    public:
+        float mProbability;
+
+        GetAbsorptionProbability(const MWWorld::Ptr& actor)
+            : mProbability(0.f){}
+
+        virtual void visit (MWMechanics::EffectKey key,
+                                const std::string& sourceName, const std::string& sourceId, int casterActorId,
+                            float magnitude, float remainingTime = -1, float totalTime = -1)
+        {
+            if (key.mId == ESM::MagicEffect::SpellAbsorption)
+            {
+                if (mProbability == 0.f)
+                    mProbability = magnitude / 100;
+                else
+                {
+                    // If there are different sources of SpellAbsorption effect, multiply failing probability for all effects.
+                    // Real absorption probability will be the (1 - total fail chance) in this case.
+                    float failProbability = 1.f - mProbability;
+                    failProbability *= 1.f - magnitude / 100;
+                    mProbability = 1.f - failProbability;
+                }
+            }
+        }
+    };
 
     CastSpell::CastSpell(const MWWorld::Ptr &caster, const MWWorld::Ptr &target, const bool fromProjectile, const bool manualSpell)
         : mCaster(caster)
@@ -461,22 +489,31 @@ namespace MWMechanics
                 MWBase::Environment::get().getWindowManager()->setEnemy(target);
 
             // Try absorbing if it's a spell
-            // NOTE: Vanilla does this once per spell absorption effect source instead of adding the % from all sources together, not sure
-            // if that is worth replicating.
+            // Unlike Reflect, this is done once per spell absorption effect source
             bool absorbed = false;
             if (spell && caster != target && target.getClass().isActor())
             {
-                float absorb = target.getClass().getCreatureStats(target).getMagicEffects().get(ESM::MagicEffect::SpellAbsorption).getMagnitude();
-                absorbed = (Misc::Rng::roll0to99() < absorb);
-                if (absorbed)
+                CreatureStats& stats = target.getClass().getCreatureStats(target);
+                if (stats.getMagicEffects().get(ESM::MagicEffect::SpellAbsorption).getMagnitude() > 0.f)
                 {
-                    const ESM::Static* absorbStatic = MWBase::Environment::get().getWorld()->getStore().get<ESM::Static>().find ("VFX_Absorb");
-                    MWBase::Environment::get().getWorld()->getAnimation(target)->addEffect(
-                                "meshes\\" + absorbStatic->mModel, ESM::MagicEffect::SpellAbsorption, false, "");
-                    // Magicka is increased by cost of spell
-                    DynamicStat<float> magicka = target.getClass().getCreatureStats(target).getMagicka();
-                    magicka.setCurrent(magicka.getCurrent() + spell->mData.mCost);
-                    target.getClass().getCreatureStats(target).setMagicka(magicka);
+                    GetAbsorptionProbability check(target);
+                    stats.getActiveSpells().visitEffectSources(check);
+                    stats.getSpells().visitEffectSources(check);
+                    if (target.getClass().hasInventoryStore(target))
+                        target.getClass().getInventoryStore(target).visitEffectSources(check);
+
+                    int absorb = check.mProbability * 100;
+                    absorbed = (Misc::Rng::roll0to99() < absorb);
+                    if (absorbed)
+                    {
+                        const ESM::Static* absorbStatic = MWBase::Environment::get().getWorld()->getStore().get<ESM::Static>().find ("VFX_Absorb");
+                        MWBase::Environment::get().getWorld()->getAnimation(target)->addEffect(
+                                    "meshes\\" + absorbStatic->mModel, ESM::MagicEffect::SpellAbsorption, false, "");
+                        // Magicka is increased by cost of spell
+                        DynamicStat<float> magicka = stats.getMagicka();
+                        magicka.setCurrent(magicka.getCurrent() + spell->mData.mCost);
+                        stats.setMagicka(magicka);
+                    }
                 }
             }
 
@@ -623,7 +660,7 @@ namespace MWMechanics
                                     ActiveSpells::ActiveEffect effect_ = effect;
                                     effect_.mMagnitude *= -1;
                                     absorbEffects.push_back(effect_);
-                                    if (reflected && Settings::Manager::getBool("classic reflect absorb attribute behavior", "Game"))
+                                    if (reflected && Settings::Manager::getBool("classic reflected absorb spells behavior", "Game"))
                                         target.getClass().getCreatureStats(target).getActiveSpells().addSpell("", true,
                                             absorbEffects, mSourceName, caster.getClass().getCreatureStats(caster).getActorId());
                                     else
@@ -850,7 +887,7 @@ namespace MWMechanics
             }
             else if (effectId == ESM::MagicEffect::Recall)
             {
-                MWWorld::CellStore* markedCell = NULL;
+                MWWorld::CellStore* markedCell = nullptr;
                 ESM::Position markedPosition;
 
                 MWBase::Environment::get().getWorld()->getPlayer().getMarkedPosition(markedCell, markedPosition);
@@ -1094,10 +1131,9 @@ namespace MWMechanics
             MWBase::Environment::get().getWorld()->getStore().get<ESM::MagicEffect>().find (
             effect.mEffectID);
 
-        const MWMechanics::NpcStats& npcStats = mCaster.getClass().getNpcStats(mCaster);
         const MWMechanics::CreatureStats& creatureStats = mCaster.getClass().getCreatureStats(mCaster);
 
-        float x = (npcStats.getSkill (ESM::Skill::Alchemy).getModified() +
+        float x = (mCaster.getClass().getSkill(mCaster, ESM::Skill::Alchemy) +
                     0.2f * creatureStats.getAttribute (ESM::Attribute::Intelligence).getModified()
                     + 0.1f * creatureStats.getAttribute (ESM::Attribute::Luck).getModified())
                     * creatureStats.getFatigueTerm();

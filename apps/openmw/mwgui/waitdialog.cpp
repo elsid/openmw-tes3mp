@@ -9,6 +9,17 @@
 #include <components/widgets/box.hpp>
 #include <components/settings/settings.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/windowmanager.hpp"
 #include "../mwbase/world.hpp"
 #include "../mwbase/environment.hpp"
@@ -83,7 +94,7 @@ namespace MWGui
 
     void WaitDialog::setPtr(const MWWorld::Ptr &ptr)
     {
-        setCanRest(!ptr.isEmpty() || MWBase::Environment::get().getWorld ()->canRest () == 0);
+        setCanRest(!ptr.isEmpty() || MWBase::Environment::get().getWorld ()->canRest () == MWBase::World::Rest_Allowed);
 
         if (mUntilHealedButton->getVisible())
             MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mUntilHealedButton);
@@ -120,14 +131,37 @@ namespace MWGui
             MWBase::Environment::get().getWindowManager()->popGuiMode ();
         }
 
-        int canRest = MWBase::Environment::get().getWorld ()->canRest ();
+        MWBase::World::RestPermitted canRest = MWBase::Environment::get().getWorld ()->canRest ();
 
-        if (canRest == 2)
+        if (canRest == MWBase::World::Rest_EnemiesAreNearby)
+        {
+            MWBase::Environment::get().getWindowManager()->messageBox("#{sNotifyMessage2}");
+            MWBase::Environment::get().getWindowManager()->popGuiMode ();
+        }
+        else if (canRest == MWBase::World::Rest_PlayerIsUnderwater)
         {
             // resting underwater or mid-air not allowed
             MWBase::Environment::get().getWindowManager()->messageBox ("#{sNotifyMessage1}");
             MWBase::Environment::get().getWindowManager()->popGuiMode ();
         }
+        /*
+            Start of tes3mp addition
+
+            Prevent resting and waiting if they have been disabled by the server for the local player
+        */
+        else if (canRest == MWBase::World::Rest_Allowed && !mwmp::Main::get().getLocalPlayer()->wildernessRestAllowed)
+        {
+            MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest in the wilderness.");
+            MWBase::Environment::get().getWindowManager()->popGuiMode();
+        }
+        else if (canRest == MWBase::World::Rest_OnlyWaiting && !mwmp::Main::get().getLocalPlayer()->waitAllowed)
+        {
+            MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to wait.");
+            MWBase::Environment::get().getWindowManager()->popGuiMode();
+        }
+        /*
+            End of tes3mp addition
+        */
 
         onHourSliderChangedPosition(mHourSlider, 0);
         mHourSlider->setScrollPosition (0);
@@ -295,7 +329,7 @@ namespace MWGui
         mSleeping = canRest;
 
         Gui::Box* box = dynamic_cast<Gui::Box*>(mMainWidget);
-        if (box == NULL)
+        if (box == nullptr)
             throw std::runtime_error("main widget must be a box");
         box->notifyChildrenSizeChanged();
         center();

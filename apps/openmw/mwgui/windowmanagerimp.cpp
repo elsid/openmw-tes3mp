@@ -50,13 +50,13 @@
 #include <components/translation/translation.hpp>
 
 #include <components/myguiplatform/myguiplatform.hpp>
+#include <components/myguiplatform/myguidatamanager.hpp>
 #include <components/myguiplatform/myguirendermanager.hpp>
 #include <components/myguiplatform/additivelayer.hpp>
 #include <components/myguiplatform/scalinglayer.hpp>
 
 #include <components/vfs/manager.hpp>
 
-#include <components/widgets/widgets.hpp>
 #include <components/widgets/tags.hpp>
 
 #include <components/sdlutil/sdlcursormanager.hpp>
@@ -144,46 +144,46 @@ namespace MWGui
 
     WindowManager::WindowManager(
             osgViewer::Viewer* viewer, osg::Group* guiRoot, Resource::ResourceSystem* resourceSystem, SceneUtil::WorkQueue* workQueue,
-            const std::string& logpath, const std::string& resourcePath, bool consoleOnlyScripts,
-            Translation::Storage& translationDataStorage, ToUTF8::FromType encoding, bool exportFonts, const std::map<std::string, std::string>& fallbackMap, const std::string& versionDescription)
-      : mStore(NULL)
+            const std::string& logpath, const std::string& resourcePath, bool consoleOnlyScripts, Translation::Storage& translationDataStorage,
+            ToUTF8::FromType encoding, bool exportFonts, const std::map<std::string, std::string>& fallbackMap, const std::string& versionDescription, const std::string& userDataPath)
+      : mStore(nullptr)
       , mResourceSystem(resourceSystem)
       , mWorkQueue(workQueue)
       , mViewer(viewer)
       , mConsoleOnlyScripts(consoleOnlyScripts)
       , mCurrentModals()
-      , mHud(NULL)
-      , mMap(NULL)
-      , mLocalMapRender(NULL)
-      , mToolTips(NULL)
-      , mStatsWindow(NULL)
-      , mMessageBoxManager(NULL)
-      , mConsole(NULL)
-      , mDialogueWindow(NULL)
-      , mDragAndDrop(NULL)
-      , mInventoryWindow(NULL)
-      , mScrollWindow(NULL)
-      , mBookWindow(NULL)
-      , mCountDialog(NULL)
-      , mTradeWindow(NULL)
-      , mSettingsWindow(NULL)
-      , mConfirmationDialog(NULL)
-      , mSpellWindow(NULL)
-      , mQuickKeysMenu(NULL)
-      , mLoadingScreen(NULL)
-      , mWaitDialog(NULL)
-      , mSoulgemDialog(NULL)
-      , mVideoBackground(NULL)
-      , mVideoWidget(NULL)
-      , mWerewolfFader(NULL)
-      , mBlindnessFader(NULL)
-      , mHitFader(NULL)
-      , mScreenFader(NULL)
-      , mDebugWindow(NULL)
-      , mJailScreen(NULL)
+      , mHud(nullptr)
+      , mMap(nullptr)
+      , mLocalMapRender(nullptr)
+      , mToolTips(nullptr)
+      , mStatsWindow(nullptr)
+      , mMessageBoxManager(nullptr)
+      , mConsole(nullptr)
+      , mDialogueWindow(nullptr)
+      , mDragAndDrop(nullptr)
+      , mInventoryWindow(nullptr)
+      , mScrollWindow(nullptr)
+      , mBookWindow(nullptr)
+      , mCountDialog(nullptr)
+      , mTradeWindow(nullptr)
+      , mSettingsWindow(nullptr)
+      , mConfirmationDialog(nullptr)
+      , mSpellWindow(nullptr)
+      , mQuickKeysMenu(nullptr)
+      , mLoadingScreen(nullptr)
+      , mWaitDialog(nullptr)
+      , mSoulgemDialog(nullptr)
+      , mVideoBackground(nullptr)
+      , mVideoWidget(nullptr)
+      , mWerewolfFader(nullptr)
+      , mBlindnessFader(nullptr)
+      , mHitFader(nullptr)
+      , mScreenFader(nullptr)
+      , mDebugWindow(nullptr)
+      , mJailScreen(nullptr)
       , mTranslationDataStorage (translationDataStorage)
-      , mCharGen(NULL)
-      , mInputBlocker(NULL)
+      , mCharGen(nullptr)
+      , mInputBlocker(nullptr)
       , mCrosshairEnabled(Settings::Manager::getBool ("crosshair", "HUD"))
       , mSubtitlesEnabled(Settings::Manager::getBool ("subtitles", "GUI"))
       , mHitFaderEnabled(Settings::Manager::getBool ("hit fader", "GUI"))
@@ -197,9 +197,9 @@ namespace MWGui
       , mPlayerMajorSkills()
       , mPlayerMinorSkills()
       , mPlayerSkillValues()
-      , mGui(NULL)
+      , mGui(nullptr)
       , mGuiModes()
-      , mCursorManager(NULL)
+      , mCursorManager(nullptr)
       , mGarbageDialogs()
       , mShown(GW_ALL)
       , mForceHidden(GW_None)
@@ -208,6 +208,7 @@ namespace MWGui
       , mFallbackMap(fallbackMap)
       , mShowOwned(0)
       , mEncoding(encoding)
+      , mFontHeight(16)
       , mVersionDescription(versionDescription)
     {
         float uiScale = Settings::Manager::getFloat("scaling factor", "GUI");
@@ -222,8 +223,8 @@ namespace MWGui
         MyGUI::LanguageManager::getInstance().eventRequestTag = MyGUI::newDelegate(this, &WindowManager::onRetrieveTag);
 
         // Load fonts
-        mFontLoader.reset(new Gui::FontLoader(encoding, resourceSystem->getVFS()));
-        mFontLoader->loadAllFonts(exportFonts);
+        mFontLoader.reset(new Gui::FontLoader(encoding, resourceSystem->getVFS(), userDataPath));
+        mFontLoader->loadBitmapFonts(exportFonts);
 
         //Register own widgets with MyGUI
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Widgets::MWSkill>("Widget");
@@ -245,11 +246,19 @@ namespace MWGui
         SpellView::registerComponents();
         Gui::registerAllWidgets();
 
+        int fontSize = Settings::Manager::getInt("font size", "GUI");
+        fontSize = std::min(std::max(12, fontSize), 20);
+        mFontHeight = fontSize;
+
+        MyGUI::ResourceManager::getInstance().unregisterLoadXmlDelegate("Resource");
+        MyGUI::ResourceManager::getInstance().registerLoadXmlDelegate("Resource") = newDelegate(this, &WindowManager::loadFontDelegate);
+
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Controllers::ControllerRepeatEvent>("Controller");
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Controllers::ControllerFollowMouse>("Controller");
 
         MyGUI::FactoryManager::getInstance().registerFactory<ResourceImageSetPointerFix>("Resource", "ResourceImageSetPointer");
         MyGUI::ResourceManager::getInstance().load("core.xml");
+        loadUserFonts();
 
         bool keyboardNav = Settings::Manager::getBool("keyboard navigation", "GUI");
         mKeyboardNavigation.reset(new KeyboardNavigation());
@@ -294,6 +303,99 @@ namespace MWGui
         MyGUI::ClipboardManager::getInstance().eventClipboardRequested += MyGUI::newDelegate(this, &WindowManager::onClipboardRequested);
 
         mShowOwned = Settings::Manager::getInt("show owned", "Game");
+    }
+
+    void WindowManager::loadFontDelegate(MyGUI::xml::ElementPtr _node, const std::string& _file, MyGUI::Version _version)
+    {
+        const std::string templateName = "Journalbook ";
+        MyGUI::xml::ElementEnumerator font = _node->getElementEnumerator();
+        bool createCopy = false;
+        while (font.next("Resource"))
+        {
+            std::string type, name;
+            font->findAttribute("type", type);
+            font->findAttribute("name", name);
+
+            if (name.empty())
+                continue;
+
+            if (Misc::StringUtils::ciEqual(type, "ResourceTrueTypeFont"))
+            {
+                createCopy = true;
+
+                // For TrueType fonts we should override Size and Resolution properties
+                // to allow to configure font size via config file, without need to edit XML files.
+                // Also we should take UI scaling factor in account.
+                int resolution = Settings::Manager::getInt("ttf resolution", "GUI");
+                resolution = std::min(960, std::max(48, resolution));
+
+                float uiScale = Settings::Manager::getFloat("scaling factor", "GUI");
+                resolution *= uiScale;
+
+                MyGUI::xml::ElementPtr resolutionNode = font->createChild("Property");
+                resolutionNode->addAttribute("key", "Resolution");
+                resolutionNode->addAttribute("value", std::to_string(resolution));
+
+                MyGUI::xml::ElementPtr sizeNode = font->createChild("Property");
+                sizeNode->addAttribute("key", "Size");
+                sizeNode->addAttribute("value", std::to_string(mFontHeight));
+            }
+            else if (Misc::StringUtils::ciEqual(type, "ResourceSkin"))
+            {
+                // We should adjust line height for MyGUI widgets depending on font size
+                MyGUI::xml::ElementPtr heightNode = font->createChild("Property");
+                heightNode->addAttribute("key", "HeightLine");
+                heightNode->addAttribute("value", std::to_string(mFontHeight+2));
+            }
+        }
+
+        MyGUI::ResourceManager::getInstance().loadFromXmlNode(_node, _file, _version);
+
+        if (createCopy)
+        {
+            MyGUI::xml::ElementPtr copy = _node->createCopy();
+
+            MyGUI::xml::ElementEnumerator copyFont = copy->getElementEnumerator();
+            while (copyFont.next("Resource"))
+            {
+                std::string type, name;
+                copyFont->findAttribute("type", type);
+                copyFont->findAttribute("name", name);
+
+                if (name.empty())
+                    continue;
+
+                if (Misc::StringUtils::ciEqual(type, "ResourceTrueTypeFont"))
+                {
+                    // Since the journal and books use the custom scaling factor depending on resolution,
+                    // setup separate fonts with different Resolution to fit these windows.
+                    // These fonts have an internal prefix.
+                    int resolution = Settings::Manager::getInt("ttf resolution", "GUI");
+                    resolution = std::min(960, std::max(48, resolution));
+
+                    float currentX = Settings::Manager::getInt("resolution x", "Video");
+                    float currentY = Settings::Manager::getInt("resolution y", "Video");
+                    // TODO: read size from openmw_layout.xml
+                    float heightScale = (currentY / 520);
+                    float widthScale = (currentX / 600);
+                    float uiScale = std::min(widthScale, heightScale);
+                    resolution *= uiScale;
+
+                    MyGUI::xml::ElementPtr resolutionNode = copyFont->createChild("Property");
+                    resolutionNode->addAttribute("key", "Resolution");
+                    resolutionNode->addAttribute("value", std::to_string(resolution));
+
+                    copyFont->setAttribute("name", "Journalbook " + name);
+                }
+            }
+
+            MyGUI::ResourceManager::getInstance().loadFromXmlNode(copy, _file, _version);
+        }
+    }
+
+    void WindowManager::loadUserFonts()
+    {
+        mFontLoader->loadTrueTypeFonts();
     }
 
     void WindowManager::initUI()
@@ -525,6 +627,11 @@ namespace MWGui
         updateVisible();
     }
 
+    int WindowManager::getFontHeight() const
+    {
+        return mFontHeight;
+    }
+
     void WindowManager::setNewGame(bool newgame)
     {
         if (newgame)
@@ -543,6 +650,7 @@ namespace MWGui
         {
             mKeyboardNavigation.reset();
 
+            MyGUI::ResourceManager::getInstance().unregisterLoadXmlDelegate("Resource");
             MyGUI::LanguageManager::getInstance().eventRequestTag.clear();
             MyGUI::PointerManager::getInstance().eventChangeMousePointer.clear();
             MyGUI::InputManager::getInstance().eventChangeKeyFocus.clear();
@@ -617,7 +725,7 @@ namespace MWGui
             setCursorVisible(!gameMode);
 
         if (gameMode)
-            setKeyFocusWidget (NULL);
+            setKeyFocusWidget (nullptr);
 
         // Icons of forced hidden windows are displayed
         setMinimapVisibility((mAllowed & GW_Map) && (!mMap->pinned() || (mForceHidden & GW_Map)));
@@ -1332,8 +1440,7 @@ namespace MWGui
         const ESM::Enchantment* ench = mStore->get<ESM::Enchantment>()
                 .find(item.getClass().getEnchantment(item));
 
-        int chargePercent = (item.getCellRef().getEnchantmentCharge() == -1) ? 100
-                : static_cast<int>(item.getCellRef().getEnchantmentCharge() / static_cast<float>(ench->mData.mCharge) * 100);
+        int chargePercent = static_cast<int>(item.getCellRef().getNormalizedEnchantmentCharge(ench->mData.mCharge) * 100);
         mHud->setSelectedEnchantItem(item, chargePercent);
         mSpellWindow->setTitle(item.getClass().getName(item));
     }
@@ -1346,8 +1453,11 @@ namespace MWGui
     void WindowManager::setSelectedWeapon(const MWWorld::Ptr& item)
     {
         mSelectedWeapon = item;
-        int durabilityPercent =
-             static_cast<int>(item.getClass().getItemHealth(item) / static_cast<float>(item.getClass().getItemMaxHealth(item)) * 100);
+        int durabilityPercent = 100;
+        if (item.getClass().hasItemHealth(item))
+        {
+            durabilityPercent = static_cast<int>(item.getClass().getItemNormalizedHealth(item) * 100);
+        }
         mHud->setSelectedWeapon(item, durabilityPercent);
         mInventoryWindow->setTitle(item.getClass().getName(item));
     }
@@ -1669,7 +1779,7 @@ namespace MWGui
     // Remove this method for MyGUI 3.2.2
     void WindowManager::setKeyFocusWidget(MyGUI::Widget *widget)
     {
-        if (widget == NULL)
+        if (widget == nullptr)
             MyGUI::InputManager::getInstance().resetKeyFocusWidget();
         else
             MyGUI::InputManager::getInstance().setKeyFocusWidget(widget);
@@ -1687,6 +1797,15 @@ namespace MWGui
     void WindowManager::setEnemy(const MWWorld::Ptr &enemy)
     {
         mHud->setEnemy(enemy);
+    }
+
+    int WindowManager::getMessagesCount() const
+    {
+        int count = 0;
+        if (mMessageBoxManager)
+            count = mMessageBoxManager->getMessagesCount();
+
+        return count;
     }
 
     Loading::Listener* WindowManager::getLoadingScreen()
@@ -1931,7 +2050,7 @@ namespace MWGui
         }
         if (mCurrentModals.empty())
         {
-            mKeyboardNavigation->setModalWindow(NULL);
+            mKeyboardNavigation->setModalWindow(nullptr);
             mKeyboardNavigation->restoreFocus(getMode());
         }
         else

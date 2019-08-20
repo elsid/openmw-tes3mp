@@ -13,6 +13,7 @@
 */
 
 #include <components/esm/loadweap.hpp>
+#include <components/misc/constants.hpp>
 #include <components/settings/settings.hpp>
 
 #include "../mwbase/environment.hpp"
@@ -99,7 +100,7 @@ namespace MWClass
     {
         const MWWorld::LiveCellRef<ESM::Weapon> *ref = ptr.get<ESM::Weapon>();
 
-        return (ref->mBase->mData.mType < 11); // thrown weapons and arrows/bolts don't have health, only quantity
+        return (ref->mBase->mData.mType < ESM::Weapon::MarksmanThrown); // thrown weapons and arrows/bolts don't have health, only quantity
     }
 
     int Weapon::getItemMaxHealth (const MWWorld::ConstPtr& ptr) const
@@ -298,7 +299,7 @@ namespace MWClass
         std::string text;
 
         // weapon type & damage
-        if ((ref->mBase->mData.mType < 12 || Settings::Manager::getBool("show projectile damage", "Game")) && ref->mBase->mData.mType < 14)
+        if ((ref->mBase->mData.mType < ESM::Weapon::Arrow || Settings::Manager::getBool("show projectile damage", "Game")) && ref->mBase->mData.mType <= ESM::Weapon::Bolt)
         {
             text += "\n#{sType} ";
 
@@ -328,7 +329,15 @@ namespace MWClass
                 ((oneOrTwoHanded != "") ? ", " + store.get<ESM::GameSetting>().find(oneOrTwoHanded)->mValue.getString() : "");
 
             // weapon damage
-            if (ref->mBase->mData.mType >= 9)
+            if (ref->mBase->mData.mType == ESM::Weapon::MarksmanThrown)
+            {
+                // Thrown weapons have 2x real damage applied
+                // as they're both the weapon and the ammo
+                text += "\n#{sAttack}: "
+                    + MWGui::ToolTips::toString(static_cast<int>(ref->mBase->mData.mChop[0] * 2))
+                    + " - " + MWGui::ToolTips::toString(static_cast<int>(ref->mBase->mData.mChop[1] * 2));
+            }
+            else if (ref->mBase->mData.mType >= ESM::Weapon::MarksmanBow)
             {
                 // marksman
                 text += "\n#{sAttack}: "
@@ -352,21 +361,26 @@ namespace MWClass
             }
         }
 
-        if (ref->mBase->mData.mType < 11) // thrown weapons and arrows/bolts don't have health, only quantity
+        if (hasItemHealth(ptr))
         {
             int remainingHealth = getItemHealth(ptr);
             text += "\n#{sCondition}: " + MWGui::ToolTips::toString(remainingHealth) + "/"
                     + MWGui::ToolTips::toString(ref->mBase->mData.mHealth);
         }
 
-        // add reach and attack speed for melee weapon
-        if (ref->mBase->mData.mType < 9 && Settings::Manager::getBool("show melee info", "Game"))
+        const bool verbose = Settings::Manager::getBool("show melee info", "Game");
+        // add reach for melee weapon
+        if (ref->mBase->mData.mType < ESM::Weapon::MarksmanBow && verbose)
         {
-            // 64 game units = 1 yard = 3 ft, display value in feet
+            // display value in feet
             const float combatDistance = store.get<ESM::GameSetting>().find("fCombatDistance")->mValue.getFloat() * ref->mBase->mData.mReach;
-            text += MWGui::ToolTips::getWeightString(combatDistance*3/64, "#{sRange}");
+            text += MWGui::ToolTips::getWeightString(combatDistance / Constants::UnitsPerFoot, "#{sRange}");
             text += " #{sFeet}";
+        }
 
+        // add attack speed for any weapon excepts arrows and bolts
+        if (ref->mBase->mData.mType < ESM::Weapon::Arrow && verbose)
+        {
             text += MWGui::ToolTips::getPercentString(ref->mBase->mData.mSpeed, "#{sAttributeSpeed}");
         }
 
@@ -423,7 +437,7 @@ namespace MWClass
 
     std::pair<int, std::string> Weapon::canBeEquipped(const MWWorld::ConstPtr &ptr, const MWWorld::Ptr &npc) const
     {
-        if (hasItemHealth(ptr) && ptr.getCellRef().getCharge() == 0)
+        if (hasItemHealth(ptr) && getItemHealth(ptr) == 0)
             return std::make_pair(0, "#{sInventoryMessage1}");
 
         // Do not allow equip weapons from inventory during attack
@@ -431,7 +445,7 @@ namespace MWClass
             && MWBase::Environment::get().getWindowManager()->isGuiMode())
             return std::make_pair(0, "#{sCantEquipWeapWarning}");
 
-        std::pair<std::vector<int>, bool> slots_ = ptr.getClass().getEquipmentSlots(ptr);
+        std::pair<std::vector<int>, bool> slots_ = getEquipmentSlots(ptr);
 
         if (slots_.first.empty())
             return std::make_pair (0, "");

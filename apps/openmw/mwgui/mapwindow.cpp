@@ -44,7 +44,7 @@
 namespace
 {
 
-    const int cellSize = 8192;
+    const int cellSize = Constants::CellSizeInUnits;
 
     enum LocalMapWidgetDepth
     {
@@ -172,8 +172,8 @@ namespace MWGui
         , mCurX(0)
         , mCurY(0)
         , mInterior(false)
-        , mLocalMap(NULL)
-        , mCompass(NULL)
+        , mLocalMap(nullptr)
+        , mCompass(nullptr)
         , mChanged(true)
         , mFogOfWarToggled(true)
         , mFogOfWarEnabled(fogOfWarEnabled)
@@ -447,7 +447,7 @@ namespace MWGui
                     box->getSubWidgetMain()->_setUVSet(MyGUI::FloatRect(0.f, 0.f, 1.f, 1.f));
                 }
                 else
-                    box->setRenderItemTexture(NULL);
+                    box->setRenderItemTexture(nullptr);
             }
         }
         mMapTextures.swap(textures);
@@ -657,7 +657,7 @@ namespace MWGui
         addDetectionMarkers(MWBase::World::Detect_Enchantment);
 
         // Add marker for the spot marked with Mark magic effect
-        MWWorld::CellStore* markedCell = NULL;
+        MWWorld::CellStore* markedCell = nullptr;
         ESM::Position markedPosition;
         MWBase::Environment::get().getWorld()->getPlayer().getMarkedPosition(markedCell, markedPosition);
         if (markedCell && markedCell->isExterior() == !mInterior
@@ -686,11 +686,11 @@ namespace MWGui
         , LocalMapBase(customMarkers, localMapRender)
         , NoDrop(drag, mMainWidget)
         , mGlobalMap(0)
-        , mGlobalMapImage(NULL)
-        , mGlobalMapOverlay(NULL)
+        , mGlobalMapImage(nullptr)
+        , mGlobalMapOverlay(nullptr)
         , mGlobal(Settings::Manager::getBool("global", "Map"))
-        , mEventBoxGlobal(NULL)
-        , mEventBoxLocal(NULL)
+        , mEventBoxGlobal(nullptr)
+        , mEventBoxLocal(nullptr)
         , mGlobalMapRender(new MWRender::GlobalMap(localMapRender->getRoot(), workQueue))
         , mEditNoteDialog()
     {
@@ -931,7 +931,7 @@ namespace MWGui
 
         if (!destNotes.empty())
         {
-            MarkerUserData data (NULL);
+            MarkerUserData data (nullptr);
             data.notes = destNotes;
             data.caption = markerWidget->getUserString("Caption_TextOneLine");
             markerWidget->setUserData(data);

@@ -58,9 +58,9 @@ namespace MWInput
         , mScreenCaptureHandler(screenCaptureHandler)
         , mScreenCaptureOperation(screenCaptureOperation)
         , mJoystickLastUsed(false)
-        , mPlayer(NULL)
-        , mInputManager(NULL)
-        , mVideoWrapper(NULL)
+        , mPlayer(nullptr)
+        , mInputManager(nullptr)
+        , mVideoWrapper(nullptr)
         , mUserFile(userFile)
         , mDragDrop(false)
         , mGrabCursor (Settings::Manager::getBool("grab cursor", "Input"))
@@ -96,7 +96,7 @@ namespace MWInput
                                         Settings::Manager::getFloat("contrast", "Video"));
 
         std::string file = userFileExists ? userFile : "";
-        mInputBinder = new ICS::InputControlSystem(file, true, this, NULL, A_Last);
+        mInputBinder = new ICS::InputControlSystem(file, true, this, nullptr, A_Last);
 
         loadKeyDefaults();
         loadControllerDefaults();
@@ -688,6 +688,9 @@ namespace MWInput
                                         Settings::Manager::getInt("resolution y", "Video"),
                                         Settings::Manager::getBool("fullscreen", "Video"),
                                         Settings::Manager::getBool("window border", "Video"));
+
+            // We should reload TrueType fonts to fit new resolution
+            MWBase::Environment::get().getWindowManager()->loadUserFonts();
         }
     }
 
@@ -1063,39 +1066,13 @@ namespace MWInput
         if (!MWBase::Environment::get().getWindowManager()->getRestEnabled () || MWBase::Environment::get().getWindowManager()->isGuiMode ())
             return;
 
-        if(mPlayer->enemiesNearby()) {//Check if in combat
-            MWBase::Environment::get().getWindowManager()->messageBox("#{sNotifyMessage2}"); //Nope,
-            return;
-        }
-
         /*
             Start of tes3mp addition
-            
+
             Ignore attempts to rest if the player has not logged in on the server yet
         */
         if (!mwmp::Main::get().getLocalPlayer()->isLoggedIn())
             return;
-        /*
-            End of tes3mp addition
-        */
-
-        /*
-            Start of tes3mp addition
-
-            Prevent resting and waiting if they have been disabled by the server for the local player
-        */
-        int canRest = MWBase::Environment::get().getWorld()->canRest();
-
-        if (canRest == 0 && !mwmp::Main::get().getLocalPlayer()->wildernessRestAllowed)
-        {
-            MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to rest in the wilderness.");
-            return;
-        }
-        else if (canRest == 1 && !mwmp::Main::get().getLocalPlayer()->waitAllowed)
-        {
-            MWBase::Environment::get().getWindowManager()->messageBox("You are not allowed to wait.");
-            return;
-        }
         /*
             End of tes3mp addition
         */
@@ -1200,6 +1177,7 @@ namespace MWInput
 
         if(MWBase::Environment::get().getWindowManager()->getMode() != MWGui::GM_Journal
                 && MWBase::Environment::get().getWindowManager()->getMode() != MWGui::GM_MainMenu
+                && MWBase::Environment::get().getWindowManager()->getMode() != MWGui::GM_Settings
                 && MWBase::Environment::get().getWindowManager ()->getJournalAllowed())
         {
             MWBase::Environment::get().getWindowManager()->pushGuiMode(MWGui::GM_Journal);

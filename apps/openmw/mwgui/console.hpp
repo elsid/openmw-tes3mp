@@ -53,8 +53,6 @@ namespace MWGui
 
             virtual void onOpen();
 
-            void setFont(const std::string &fntName);
-
             void onResChange(int width, int height);
 
             // Print a message to the console, in specified color.

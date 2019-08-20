@@ -581,7 +581,7 @@ namespace MWScript
                     if (!player.isInCell())
                         throw std::runtime_error("player not in a cell");
 
-                    MWWorld::CellStore* store = NULL;
+                    MWWorld::CellStore* store = nullptr;
                     if (player.getCell()->isExterior())
                     {
                         int cx,cy;
@@ -904,15 +904,13 @@ namespace MWScript
             }
         };
 
-        template <class R>
         class OpFixme : public Interpreter::Opcode0
         {
         public:
 
             virtual void execute (Interpreter::Runtime& runtime)
             {
-                MWWorld::Ptr ptr = R()(runtime);
-                MWBase::Environment::get().getWorld()->fixPosition(ptr);
+                MWBase::Environment::get().getWorld()->fixPosition();
             }
         };
 
@@ -956,8 +954,7 @@ namespace MWScript
             interpreter.installSegment5(Compiler::Transformation::opcodeGetStartingAngle, new OpGetStartingAngle<ImplicitRef>);
             interpreter.installSegment5(Compiler::Transformation::opcodeGetStartingAngleExplicit, new OpGetStartingAngle<ExplicitRef>);
             interpreter.installSegment5(Compiler::Transformation::opcodeResetActors, new OpResetActors);
-            interpreter.installSegment5(Compiler::Transformation::opcodeFixme, new OpFixme<ImplicitRef>);
-            interpreter.installSegment5(Compiler::Transformation::opcodeFixmeExplicit, new OpFixme<ExplicitRef>);
+            interpreter.installSegment5(Compiler::Transformation::opcodeFixme, new OpFixme);
         }
     }
 }

@@ -105,7 +105,7 @@ namespace
     void updateObjectScale(const MWWorld::Ptr& ptr, MWPhysics::PhysicsSystem& physics,
                             MWRender::RenderingManager& rendering)
     {
-        if (ptr.getRefData().getBaseNode() != NULL)
+        if (ptr.getRefData().getBaseNode() != nullptr)
         {
             float scale = ptr.getCellRef().getScale();
             osg::Vec3f scaleVec (scale, scale, scale);
@@ -383,7 +383,7 @@ namespace MWWorld
         while (active!=mActiveCells.end())
             unloadCell (active++);
         assert(mActiveCells.empty());
-        mCurrentCell = NULL;
+        mCurrentCell = nullptr;
 
         mPreloader->clear();
     }
@@ -398,7 +398,7 @@ namespace MWWorld
         getGridCenter(cellX, cellY);
         float centerX, centerY;
         MWBase::Environment::get().getWorld()->indexToPosition(cellX, cellY, centerX, centerY, true);
-        const float maxDistance = 8192/2 + mCellLoadingThreshold; // 1/2 cell size + threshold
+        const float maxDistance = Constants::CellSizeInUnits / 2 + mCellLoadingThreshold; // 1/2 cell size + threshold
         float distance = std::max(std::abs(centerX-pos.x()), std::abs(centerY-pos.y()));
         if (distance > maxDistance)
         {
@@ -413,8 +413,9 @@ namespace MWWorld
         Loading::Listener* loadingListener = MWBase::Environment::get().getWindowManager()->getLoadingScreen();
         Loading::ScopedLoad load(loadingListener);
 
+        int messagesCount = MWBase::Environment::get().getWindowManager()->getMessagesCount();
         std::string loadingExteriorText = "#{sLoadingMessage3}";
-        loadingListener->setLabel(loadingExteriorText);
+        loadingListener->setLabel(loadingExteriorText, false, messagesCount > 0);
 
         CellStoreCollection::iterator active = mActiveCells.begin();
         while (active!=mActiveCells.end())
@@ -587,15 +588,16 @@ namespace MWWorld
     void Scene::changeToInteriorCell (const std::string& cellName, const ESM::Position& position, bool adjustPlayerPos, bool changeEvent)
     {
         CellStore *cell = MWBase::Environment::get().getWorld()->getInterior(cellName);
-        bool loadcell = (mCurrentCell == NULL);
+        bool loadcell = (mCurrentCell == nullptr);
         if(!loadcell)
             loadcell = *mCurrentCell != *cell;
 
         MWBase::Environment::get().getWindowManager()->fadeScreenOut(0.5);
 
         Loading::Listener* loadingListener = MWBase::Environment::get().getWindowManager()->getLoadingScreen();
+        int messagesCount = MWBase::Environment::get().getWindowManager()->getMessagesCount();
         std::string loadingInteriorText = "#{sLoadingMessage2}";
-        loadingListener->setLabel(loadingInteriorText);
+        loadingListener->setLabel(loadingInteriorText, false, messagesCount > 0);
         Loading::ScopedLoad load(loadingListener);
 
         if(!loadcell)
@@ -876,7 +878,7 @@ namespace MWWorld
 
                 float dist = std::max(std::abs(thisCellCenterX - playerPos.x()), std::abs(thisCellCenterY - playerPos.y()));
                 dist = std::min(dist,std::max(std::abs(thisCellCenterX - predictedPos.x()), std::abs(thisCellCenterY - predictedPos.y())));
-                float loadDist = 8192/2 + 8192 - mCellLoadingThreshold + mPreloadDistance;
+                float loadDist = Constants::CellSizeInUnits / 2 + Constants::CellSizeInUnits - mCellLoadingThreshold + mPreloadDistance;
 
                 if (dist < loadDist)
                     preloadCell(MWBase::Environment::get().getWorld()->getExterior(cellX+dx, cellY+dy));

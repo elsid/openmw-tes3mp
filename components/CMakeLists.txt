@@ -52,6 +52,7 @@ add_component_dir (shader
 add_component_dir (sceneutil
     clone attach visitor util statesetupdater controller skeleton riggeometry morphgeometry lightcontroller
     lightmanager lightutil positionattitudetransform workqueue unrefqueue pathgridutil waterutil writescene serialize optimizer
+    actorutil
     )
 
 add_component_dir (nif
@@ -79,7 +80,7 @@ add_component_dir (esm
     loadweap records aipackage effectlist spelllist variant variantimp loadtes3 cellref filter
     savedgame journalentry queststate locals globalscript player objectstate cellid cellstate globalmap inventorystate containerstate npcstate creaturestate dialoguestate statstate
     npcstats creaturestats weatherstate quickkeys fogstate spellstate activespells creaturelevliststate doorstate projectilestate debugprofile
-    aisequence magiceffects util custommarkerstate stolenitems transport animationstate controlsstate
+    aisequence magiceffects util custommarkerstate stolenitems transport animationstate controlsstate mappings
     )
 
 add_component_dir (esmterrain
@@ -87,7 +88,7 @@ add_component_dir (esmterrain
     )
 
 add_component_dir (misc
-    utf8stream stringops resourcehelpers rng messageformatparser
+    constants utf8stream stringops resourcehelpers rng messageformatparser weakcache
     )
 
 add_component_dir (debug
@@ -133,7 +134,7 @@ add_component_dir (myguiplatform
     )
 
 add_component_dir (widgets
-    box imagebutton tags list numericeditbox sharedstatebutton windowcaption widgets
+    box fontwrapper imagebutton tags list numericeditbox sharedstatebutton windowcaption widgets
     )
 
 add_component_dir (fontloader

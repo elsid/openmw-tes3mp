@@ -1,7 +1,5 @@
 #include "tradewindow.hpp"
 
-#include <climits>
-
 #include <MyGUI_Button.h>
 #include <MyGUI_InputManager.h>
 #include <MyGUI_ControllerManager.h>
@@ -37,8 +35,7 @@ namespace
         float price = static_cast<float>(item.getClass().getValue(item));
         if (item.getClass().hasItemHealth(item))
         {
-            price *= item.getClass().getItemHealth(item);
-            price /= item.getClass().getItemMaxHealth(item);
+            price *= item.getClass().getItemNormalizedHealth(item);
         }
         return static_cast<int>(price * count);
     }
@@ -52,8 +49,8 @@ namespace MWGui
 
     TradeWindow::TradeWindow()
         : WindowBase("openmw_trade_window.layout")
-        , mSortModel(NULL)
-        , mTradeModel(NULL)
+        , mSortModel(nullptr)
+        , mTradeModel(nullptr)
         , mItemToSell(-1)
         , mCurrentBalance(0)
         , mCurrentMerchantOffer(0)
@@ -96,7 +93,7 @@ namespace MWGui
 
         mTotalBalance->eventValueChanged += MyGUI::newDelegate(this, &TradeWindow::onBalanceValueChanged);
         mTotalBalance->eventEditSelectAccept += MyGUI::newDelegate(this, &TradeWindow::onAccept);
-        mTotalBalance->setMinValue(INT_MIN+1); // disallow INT_MIN since abs(INT_MIN) is undefined
+        mTotalBalance->setMinValue(std::numeric_limits<int>::min()+1); // disallow INT_MIN since abs(INT_MIN) is undefined
 
         setCoord(400, 0, 400, 300);
     }
@@ -207,7 +204,7 @@ namespace MWGui
         else
         {
             mItemToSell = mSortModel->mapToSource(index);
-            sellItem (NULL, count);
+            sellItem (nullptr, count);
         }
     }
 
@@ -431,7 +428,7 @@ namespace MWGui
     void TradeWindow::onIncreaseButtonTriggered()
     {
         // prevent overflows, and prevent entering INT_MIN since abs(INT_MIN) is undefined
-        if (mCurrentBalance == INT_MAX || mCurrentBalance == INT_MIN+1)
+        if (mCurrentBalance == std::numeric_limits<int>::max() || mCurrentBalance == std::numeric_limits<int>::min()+1)
             return;
         if (mCurrentBalance < 0) mCurrentBalance -= 1;
         else mCurrentBalance += 1;
@@ -516,8 +513,8 @@ namespace MWGui
     void TradeWindow::resetReference()
     {
         ReferenceInterface::resetReference();
-        mItemView->setModel(NULL);
-        mTradeModel = NULL;
-        mSortModel = NULL;
+        mItemView->setModel(nullptr);
+        mTradeModel = nullptr;
+        mSortModel = nullptr;
     }
 }

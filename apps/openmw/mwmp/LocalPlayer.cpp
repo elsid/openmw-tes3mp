@@ -1069,12 +1069,12 @@ void LocalPlayer::setCell()
         pos.rot[0] = pos.rot[1] = pos.rot[2] = 0;
 
         world->changeToExteriorCell(pos, true);
-        world->fixPosition(ptrPlayer);
+        world->fixPosition();
     }
     else if (world->findExteriorPosition(cell.mName, pos))
     {
         world->changeToExteriorCell(pos, true);
-        world->fixPosition(ptrPlayer);
+        world->fixPosition();
     }
     else
     {
