@@ -27,7 +27,7 @@ addons:
       # Audio, Video and Misc. deps
       libsdl2-dev, libqt4-dev, libopenal-dev, libunshield-dev, libtinyxml-dev,
       # The other ones from OpenMW ppa
-      libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev
+      libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev,
       # tes3mp stuff
       libboost-dev, libqt5opengl5-dev, libluajit-5.1-dev
     ]

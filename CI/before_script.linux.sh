@@ -7,7 +7,6 @@ GOOGLETEST_DIR="$(pwd)/googletest/build"
 
 mkdir build
 cd build
-<<<<<<< HEAD
 
 # Set up compilers
 if [ ! -z "${MATRIX_CC}" ]; then
