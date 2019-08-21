@@ -4,6 +4,7 @@ set(GAME
     engine.cpp
 
     ${CMAKE_SOURCE_DIR}/files/tes3mp/tes3mp.rc
+    ${CMAKE_SOURCE_DIR}/files/tes3mp/tes3mp.exe.manifest
 )
 
 if (ANDROID)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -ex
 
 free -m
 
@@ -7,6 +7,7 @@ GOOGLETEST_DIR="$(pwd)/googletest/build"
 
 mkdir build
 cd build
+<<<<<<< HEAD
 
 # Set up compilers
 if [ ! -z "${MATRIX_CC}" ]; then
@@ -15,25 +16,28 @@ fi
 
 export RAKNET_ROOT=~/CrabNet
 
-export CODE_COVERAGE=0
-if [ ! -z "${ANALYZE}" ]; then
-    CODE_COVERAGE=1
-fi
+export CODE_COVERAGE=1
 
-${ANALYZE}cmake .. \
-    -DBUILD_WITH_CODE_COVERAGE=${CODE_COVERAGE} \
-    -DDESIRED_QT_VERSION=5 \
+if [[ "${CC}" =~ "clang" ]]; then export CODE_COVERAGE=0; fi
+if [[ -z "${BUILD_OPENMW}" ]]; then export BUILD_OPENMW=ON; fi
+if [[ -z "${BUILD_OPENMW_CS}" ]]; then export BUILD_OPENMW_CS=ON; fi
+
+${ANALYZE} cmake \
+    -DBUILD_OPENMW=${BUILD_OPENMW} \
+    -DBUILD_OPENCS=${BUILD_OPENMW_CS} \
+    -DBUILD_LAUNCHER=${BUILD_OPENMW_CS} \
+    -DBUILD_BSATOOL=${BUILD_OPENMW_CS} \
+    -DBUILD_ESMTOOL=${BUILD_OPENMW_CS} \
+    -DBUILD_MWINIIMPORTER=${BUILD_OPENMW_CS} \
+    -DBUILD_ESSIMPORTER=${BUILD_OPENMW_CS} \
+    -DBUILD_WIZARD=${BUILD_OPENMW_CS} \
+    -DBUILD_NIFTEST=${BUILD_OPENMW_CS} \
+    -DBUILD_MYGUI_PLUGIN=${BUILD_OPENMW_CS} \
     -DBUILD_OPENMW_MP=ON \
     -DBUILD_BROWSER=ON \
     -DBUILD_MASTER=ON \
-    -DBUILD_BSATOOL=OFF \
-    -DBUILD_ESMTOOL=OFF \
-    -DBUILD_ESSIMPORTER=OFF \
-    -DBUILD_LAUNCHER=OFF \
-    -DBUILD_MWINIIMPORTER=OFF \
-    -DBUILD_MYGUI_PLUGIN=OFF \
-    -DBUILD_OPENCS=OFF \
-    -DBUILD_WIZARD=OFF \
+    -DBUILD_WITH_CODE_COVERAGE=${CODE_COVERAGE} \
+    -DDESIRED_QT_VERSION=5 \
     -DBUILD_UNITTESTS=1 \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBINDIR=/usr/games \

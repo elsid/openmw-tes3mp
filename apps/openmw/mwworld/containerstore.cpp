@@ -386,18 +386,8 @@ MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add (const Ptr& itemPtr
             item.getRefData().getLocals().setVarByInt(script, "onpcadd", 1);
     }
 
-    /*
-        Start of tes3mp change (major)
-
-        Disable the listener here because it keeps causing crashes; this should only be
-        a temporary solution that doesn't affect much anyway given that the listener is
-        only used in relation to light-emitting items
-    */
-    //if (mListener)
-    //    mListener->itemAdded(item, count);
-    /*
-        End of tes3mp change (major)
-    */
+    if (mListener && !actorPtr.getClass().hasInventoryStore(actorPtr))
+        mListener->itemAdded(item, count);
 
     return it;
 }
@@ -523,18 +513,9 @@ int MWWorld::ContainerStore::remove(const Ptr& item, int count, const Ptr& actor
 
     flagAsModified();
 
-    /*
-        Start of tes3mp change (major)
-
-        Disable the listener here because it keeps causing crashes; this should only be
-        a temporary solution that doesn't affect much anyway given that the listener is
-        only used in relation to light-emitting items
-    */
-    //if (mListener)
-    //    mListener->itemRemoved(item, count - toRemove);
-    /*
-        End of tes3mp change (major)
-    */
+    // we should not fire event for InventoryStore yet - it has some custom logic
+    if (mListener && !actor.getClass().hasInventoryStore(actor))
+        mListener->itemRemoved(item, count - toRemove);
 
     // number of removed items
     return count - toRemove;
