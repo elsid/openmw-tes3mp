@@ -213,7 +213,7 @@
                 <Widget type="AutoSizedButton" skin="MW_Button" position="4 194 137 24" align="Left Bottom" name="ResetControlsButton">
                     <Property key="Caption" value="#{sControlsMenu1}"/>
                 </Widget>
-                <Widget type="HBox" skin="" position="4 224 300 24" align="Left Bottom">
+                <Widget type="HBox" skin="" position="4 224 360 24" align="Left Bottom">
                     <Widget type="AutoSizedButton" skin="MW_Button" position="0 0 24 24" align="Left Bottom">
                         <UserString key="SettingCategory" value="Input"/>
                         <UserString key="SettingName" value="invert x axis"/>
@@ -428,13 +428,15 @@
                                 </Widget>
                             </Widget>
                             <Widget type="HBox" skin="" position="4 56 350 24">
-                                <Widget type="AutoSizedButton" skin="MW_Button" position="0 0 24 24" align="Left Top">
-                                    <UserString key="SettingCategory" value="Water"/>
-                                    <UserString key="SettingName" value="reflect actors"/>
-                                    <UserString key="SettingType" value="CheckButton"/>
+                                <Widget type="ComboBox" skin="MW_ComboBox" position="0 0 115 24" align="Left Top" name="WaterReflectionDetail">
+                                    <Property key="AddItem" value="Off"/>
+                                    <Property key="AddItem" value="Terrain"/>
+                                    <Property key="AddItem" value="World"/>
+                                    <Property key="AddItem" value="Objects"/>
+                                    <Property key="AddItem" value="Actors"/>
                                 </Widget>
-                                <Widget type="AutoSizedTextBox" skin="SandText" position="28 4 79 16" align="Left Top">
-                                    <Property key="Caption" value="Reflect actors"/>
+                                <Widget type="AutoSizedTextBox" skin="SandText" position="64 4 90 16" align="Left Top">
+                                    <Property key="Caption" value="Reflection shader detail"/>
                                 </Widget>
                             </Widget>
                         </Widget>

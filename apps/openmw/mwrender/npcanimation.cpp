@@ -19,7 +19,6 @@
 #include <components/sceneutil/attach.hpp>
 #include <components/sceneutil/visitor.hpp>
 #include <components/sceneutil/skeleton.hpp>
-#include <components/sceneutil/lightmanager.hpp>
 
 #include <components/settings/settings.hpp>
 
@@ -1031,9 +1030,9 @@ void NpcAnimation::enableHeadAnimation(bool enable)
     mHeadAnimationTime->setEnabled(enable);
 }
 
-void NpcAnimation::setWeaponGroup(const std::string &group)
+void NpcAnimation::setWeaponGroup(const std::string &group, bool relativeDuration)
 {
-    mWeaponAnimationTime->setGroup(group);
+    mWeaponAnimationTime->setGroup(group, relativeDuration);
 }
 
 void NpcAnimation::equipmentChanged()

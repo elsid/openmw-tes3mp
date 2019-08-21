@@ -6,8 +6,10 @@
     Bug #3623: Fix HiDPI on Windows
     Bug #3733: Normal maps are inverted on mirrored UVs
     Bug #3765: DisableTeleporting makes Mark/Recall/Intervention effects undetectable
+    Bug #3778: [Mod] Improved Thrown Weapon Projectiles - weapons have wrong transformation during throw animation
     Bug #4329: Removed birthsign abilities are restored after reloading the save
     Bug #4383: Bow model obscures crosshair when arrow is drawn
+    Bug #4384: Resist Normal Weapons only checks ammunition for ranged weapons
     Bug #4411: Reloading a saved game while falling prevents damage in some cases
     Bug #4540: Rain delay when exiting water
     Bug #4701: PrisonMarker record is not hardcoded like other markers
@@ -26,6 +28,7 @@
     Bug #4800: Standing collisions are not updated immediately when an object is teleported without a cell change
     Bug #4803: Stray special characters before begin statement break script compilation
     Bug #4804: Particle system with the "Has Sizes = false" causes an exception
+    Bug #4810: Raki creature broken in OpenMW
     Bug #4813: Creatures with known file but no "Sound Gen Creature" assigned use default sounds
     Bug #4815: "Finished" journal entry with lower index doesn't close journal, SetJournalIndex closes journal
     Bug #4820: Spell absorption is broken
@@ -33,15 +36,21 @@
     Bug #4828: Potion looping effects VFX are not shown for NPCs
     Bug #4837: CTD when a mesh with NiLODNode root node with particles is loaded
     Bug #4860: Actors outside of processing range visible for one frame after spawning
+    Bug #4876: AI ratings handling inconsistencies
+    Bug #4888: Global variable stray explicit reference calls break script compilation
     Feature #2229: Improve pathfinding AI
     Feature #3442: Default values for fallbacks from ini file
     Feature #3610: Option to invert X axis
     Feature #3980: In-game option to disable controller
     Feature #4209: Editor: Faction rank sub-table
     Feature #4673: Weapon sheathing
+    Feature #4675: Support for NiRollController
     Feature #4730: Native animated containers support
     Feature #4812: Support NiSwitchNode
     Feature #4836: Daytime node switch
+    Feature #4859: Make water reflections more configurable
+    Feature #4887: Add openmw command option to set initial random seed
+    Feature #4890: Make Distant Terrain configurable
     Task #4686: Upgrade media decoder to a more current FFmpeg API
 
 0.45.0

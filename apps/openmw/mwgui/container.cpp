@@ -21,7 +21,6 @@
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
 #include "../mwbase/windowmanager.hpp"
-#include "../mwbase/dialoguemanager.hpp"
 #include "../mwbase/mechanicsmanager.hpp"
 
 #include "../mwworld/class.hpp"
@@ -33,7 +32,6 @@
 #include "inventorywindow.hpp"
 
 #include "itemview.hpp"
-#include "itemwidget.hpp"
 #include "inventoryitemmodel.hpp"
 #include "containeritemmodel.hpp"
 #include "sortfilteritemmodel.hpp"

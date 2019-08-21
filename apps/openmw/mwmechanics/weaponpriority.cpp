@@ -1,7 +1,6 @@
 #include "weaponpriority.hpp"
 
 #include <components/esm/loadench.hpp>
-#include <components/esm/loadmgef.hpp>
 
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
@@ -78,7 +77,10 @@ namespace MWMechanics
         adjustWeaponDamage(rating, item, actor);
 
         if (weapon->mData.mType != ESM::Weapon::MarksmanBow && weapon->mData.mType != ESM::Weapon::MarksmanCrossbow)
+        {
             resistNormalWeapon(enemy, actor, item, rating);
+            applyWerewolfDamageMult(enemy, item, rating);
+        }
         else if (weapon->mData.mType == ESM::Weapon::MarksmanBow)
         {
             if (arrowRating <= 0.f)

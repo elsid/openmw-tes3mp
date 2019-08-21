@@ -1,10 +1,9 @@
 #include "spellwindow.hpp"
 
-#include <boost/format.hpp>
-
 #include <MyGUI_EditBox.h>
 #include <MyGUI_InputManager.h>
 
+#include <components/misc/stringops.hpp>
 #include <components/settings/settings.hpp>
 
 /*
@@ -168,7 +167,7 @@ namespace MWGui
             mSpellToDelete = spellId;
             ConfirmationDialog* dialog = MWBase::Environment::get().getWindowManager()->getConfirmationDialog();
             std::string question = MWBase::Environment::get().getWindowManager()->getGameSettingString("sQuestionDeleteSpell", "Delete %s?");
-            question = boost::str(boost::format(question) % spell->mName);
+            Misc::StringUtils::replace(question, "%s", spell->mName.c_str(), 2);
             dialog->askForConfirmation(question);
             dialog->eventOkClicked.clear();
             dialog->eventOkClicked += MyGUI::newDelegate(this, &SpellWindow::onDeleteSpellAccept);

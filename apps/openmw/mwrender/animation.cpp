@@ -79,10 +79,9 @@ namespace
 
         void remove()
         {
-            for (std::vector<osg::ref_ptr<osg::Node> >::iterator it = mToRemove.begin(); it != mToRemove.end(); ++it)
+            for (osg::Node* node : mToRemove)
             {
                 // FIXME: a Drawable might have more than one parent
-                osg::Node* node = *it;
                 if (node->getNumParents())
                     node->getParent(0)->removeChild(node);
             }
@@ -843,9 +842,9 @@ namespace MWRender
 
         if (!mAccumRoot)
         {
-            NodeMap::const_iterator found = nodeMap.find("root bone");
+            NodeMap::const_iterator found = nodeMap.find("bip01");
             if (found == nodeMap.end())
-                found = nodeMap.find("bip01");
+                found = nodeMap.find("root bone");
 
             if (found != nodeMap.end())
                 mAccumRoot = found->second;
@@ -1436,7 +1435,7 @@ namespace MWRender
                 return sceneMgr->createInstance(found->second);
         }
         else
-            return sceneMgr->createInstance(model);
+            return sceneMgr->getInstance(model);
     }
 
     void Animation::setObjectRoot(const std::string &model, bool forceskeleton, bool baseonly, bool isCreature)

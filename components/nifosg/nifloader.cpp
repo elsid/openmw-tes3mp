@@ -21,7 +21,6 @@
 #include <osgParticle/ParticleSystem>
 #include <osgParticle/ParticleSystemUpdater>
 #include <osgParticle/ConstantRateCounter>
-#include <osgParticle/Shooter>
 #include <osgParticle/BoxPlacer>
 #include <osgParticle/ModularProgram>
 
@@ -245,10 +244,8 @@ namespace NifOsg
                 osg::ref_ptr<NifOsg::KeyframeController> callback(new NifOsg::KeyframeController(key->data.getPtr()));
                 callback->setFunction(std::shared_ptr<NifOsg::ControllerFunction>(new NifOsg::ControllerFunction(key)));
 
-                if (target.mKeyframeControllers.find(strdata->string) != target.mKeyframeControllers.end())
+                if (!target.mKeyframeControllers.emplace(strdata->string, callback).second)
                     Log(Debug::Verbose) << "Controller " << strdata->string << " present more than once in " << nif->getFilename() << ", ignoring later version";
-                else
-                    target.mKeyframeControllers[strdata->string] = callback;
             }
         }
 
@@ -697,6 +694,10 @@ namespace NifOsg
                 {
                     handleVisController(static_cast<const Nif::NiVisController*>(ctrl.getPtr()), transformNode, animflags);
                 }
+                else if (ctrl->recType == Nif::RC_NiRollController)
+                {
+                    handleRollController(static_cast<const Nif::NiRollController*>(ctrl.getPtr()), transformNode, animflags);
+                }
                 else
                     Log(Debug::Info) << "Unhandled controller " << ctrl->recName << " on node " << nifNode->recIndex << " in " << mFilename;
             }
@@ -706,6 +707,13 @@ namespace NifOsg
         {
             osg::ref_ptr<VisController> callback(new VisController(visctrl->data.getPtr()));
             setupController(visctrl, callback, animflags);
+            node->addUpdateCallback(callback);
+        }
+
+        void handleRollController(const Nif::NiRollController* rollctrl, osg::Node* node, int animflags)
+        {
+            osg::ref_ptr<RollController> callback(new RollController(rollctrl->data.getPtr()));
+            setupController(rollctrl, callback, animflags);
             node->addUpdateCallback(callback);
         }
 

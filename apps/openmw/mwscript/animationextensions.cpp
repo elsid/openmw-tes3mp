@@ -19,7 +19,6 @@
 #include "../mwworld/cellstore.hpp"
 #include "../mwworld/class.hpp"
 
-#include <components/compiler/extensions.hpp>
 #include <components/compiler/opcodes.hpp>
 
 #include <components/interpreter/interpreter.hpp>
@@ -85,6 +84,7 @@ namespace MWScript
                     {
                         mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                         objectList->reset();
+
                         objectList->packetOrigin = ScriptController::getPacketOriginFromContextType(runtime.getContext().getContextType());
                         objectList->addObjectAnimPlay(ptr, group, mode);
                         objectList->sendObjectAnimPlay();

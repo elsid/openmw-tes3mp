@@ -49,7 +49,6 @@
 #include "mwgui/windowmanagerimp.hpp"
 
 #include "mwscript/scriptmanagerimp.hpp"
-#include "mwscript/extensions.hpp"
 #include "mwscript/interpretercontext.hpp"
 
 #include "mwsound/soundmanagerimp.hpp"
@@ -320,7 +319,6 @@ OMW::Engine::Engine(Files::ConfigurationManager& configurationManager)
   , mNewGame (false)
   , mCfgMgr(configurationManager)
 {
-    Misc::Rng::init();
     MWClass::registerClasses();
 
     Uint32 flags = SDL_INIT_VIDEO|SDL_INIT_NOPARACHUTE|SDL_INIT_GAMECONTROLLER|SDL_INIT_JOYSTICK;
@@ -786,6 +784,8 @@ void OMW::Engine::go()
 
     Log(Debug::Info) << "OSG version: " << osgGetVersion();
 
+    Misc::Rng::init(mRandomSeed);
+
     // Load settings
     Settings::Manager settings;
     std::string settingspath;
@@ -985,4 +985,9 @@ void OMW::Engine::enableFontExport(bool exportFonts)
 void OMW::Engine::setSaveGameFile(const std::string &savegame)
 {
     mSaveGameFile = savegame;
+}
+
+void OMW::Engine::setRandomSeed(unsigned int seed)
+{
+    mRandomSeed = seed;
 }

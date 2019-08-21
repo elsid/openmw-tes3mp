@@ -39,7 +39,6 @@
 #include "itemmodel.hpp"
 #include "draganddrop.hpp"
 
-#include "itemmodel.hpp"
 #include "itemwidget.hpp"
 
 namespace MWGui

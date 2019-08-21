@@ -270,10 +270,10 @@ namespace MWRender
 
     GlobalMap::~GlobalMap()
     {
-        for (CameraVector::iterator it = mCamerasPendingRemoval.begin(); it != mCamerasPendingRemoval.end(); ++it)
-            removeCamera(*it);
-        for (CameraVector::iterator it = mActiveCameras.begin(); it != mActiveCameras.end(); ++it)
-            removeCamera(*it);
+        for (auto& camera : mCamerasPendingRemoval)
+            removeCamera(camera);
+        for (auto& camera : mActiveCameras)
+            removeCamera(camera);
 
         if (mWorkItem)
             mWorkItem->waitTillDone();
@@ -628,8 +628,8 @@ namespace MWRender
 
     void GlobalMap::cleanupCameras()
     {
-        for (CameraVector::iterator it = mCamerasPendingRemoval.begin(); it != mCamerasPendingRemoval.end(); ++it)
-            removeCamera(*it);
+        for (auto& camera : mCamerasPendingRemoval)
+            removeCamera(camera);
 
         mCamerasPendingRemoval.clear();
 

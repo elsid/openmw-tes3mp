@@ -682,6 +682,8 @@ namespace MWClass
                 damage  = attack[0] + ((attack[1]-attack[0])*attackStrength);
             }
             MWMechanics::adjustWeaponDamage(damage, weapon, ptr);
+            MWMechanics::resistNormalWeapon(victim, ptr, weapon, damage);
+            MWMechanics::applyWerewolfDamageMult(victim, weapon, damage);
             MWMechanics::reduceWeaponCondition(damage, true, weapon, ptr);
             healthdmg = true;
         }
@@ -1388,11 +1390,7 @@ namespace MWClass
 
     int Npc::getServices(const MWWorld::ConstPtr &actor) const
     {
-        const MWWorld::LiveCellRef<ESM::NPC>* ref = actor.get<ESM::NPC>();
-        if (ref->mBase->mHasAI)
-            return ref->mBase->mAiData.mServices;
-        else
-            return 0;
+        return actor.get<ESM::NPC>()->mBase->mAiData.mServices;
     }
 
 

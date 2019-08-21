@@ -178,16 +178,12 @@ namespace MWGui
             End of tes3mp addition
         */
 
-        std::stringstream dayStr;
-        dayStr << mDays;
-        if (message.find("%d") != std::string::npos)
-            message.replace(message.find("%d"), 2, dayStr.str());
+        Misc::StringUtils::replace(message, "%d", std::to_string(mDays).c_str(), 2);
 
-        for (std::set<int>::iterator it = skills.begin(); it != skills.end(); ++it)
+        for (const int& skill : skills)
         {
-            std::string skillName = gmst.find(ESM::Skill::sSkillNameIds[*it])->mValue.getString();
-            std::stringstream skillValue;
-            skillValue << player.getClass().getNpcStats(player).getSkill(*it).getBase();
+            std::string skillName = gmst.find(ESM::Skill::sSkillNameIds[skill])->mValue.getString();
+            int skillValue = player.getClass().getNpcStats(player).getSkill(skill).getBase();
             std::string skillMsg = gmst.find("sNotifyMessage44")->mValue.getString();
 
             /*
@@ -196,16 +192,14 @@ namespace MWGui
                 Account for usage of ignoreJailSkillIncreases
             */
             if (!localPlayer->ignoreJailSkillIncreases &&
-                (*it == ESM::Skill::Sneak || *it == ESM::Skill::Security))
+                (skill == ESM::Skill::Sneak || skill == ESM::Skill::Security))
             /*
                 End of tes3mp change (minor)
             */
                 skillMsg = gmst.find("sNotifyMessage39")->mValue.getString();
 
-            if (skillMsg.find("%s") != std::string::npos)
-                skillMsg.replace(skillMsg.find("%s"), 2, skillName);
-            if (skillMsg.find("%d") != std::string::npos)
-                skillMsg.replace(skillMsg.find("%d"), 2, skillValue.str());
+            Misc::StringUtils::replace(skillMsg, "%s", skillName.c_str(), 2);
+            Misc::StringUtils::replace(skillMsg, "%d", std::to_string(skillValue).c_str(), 2);
             message += "\n" + skillMsg;
         }
 

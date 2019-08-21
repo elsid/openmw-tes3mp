@@ -1,4 +1,4 @@
-#include "extensions.hpp"
+#include "soundextensions.hpp"
 
 /*
     Start of tes3mp addition
@@ -13,7 +13,6 @@
     End of tes3mp addition
 */
 
-#include <components/compiler/extensions.hpp>
 #include <components/compiler/opcodes.hpp>
 
 #include <components/interpreter/interpreter.hpp>
