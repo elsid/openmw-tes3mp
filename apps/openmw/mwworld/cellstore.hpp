@@ -300,7 +300,7 @@ namespace MWWorld
 
             ESM::FogState* getFog () const;
 
-            int count() const;
+            std::size_t count() const;
             ///< Return total number of references, including deleted ones.
 
             void load ();
@@ -343,7 +343,7 @@ namespace MWWorld
             /// \attention This function also lists deleted (count 0) objects!
             /// \return Iteration completed?
             template<class Visitor>
-            bool forEachConst (Visitor& visitor) const
+            bool forEachConst (Visitor&& visitor) const
             {
                 if (mState != State_Loaded)
                     return false;

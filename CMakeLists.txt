@@ -289,9 +289,6 @@ if (APPLE)
         "${APP_BUNDLE_DIR}/Contents/Resources/OpenMW.icns" COPYONLY)
 endif (APPLE)
 
-# Set up DEBUG define
-set_directory_properties(PROPERTIES COMPILE_DEFINITIONS_DEBUG DEBUG=1)
-
 if (NOT APPLE)
     set(OPENMW_MYGUI_FILES_ROOT ${OpenMW_BINARY_DIR})
     set(OPENMW_SHADERS_ROOT ${OpenMW_BINARY_DIR})
@@ -578,13 +575,16 @@ if(WIN32)
 endif(WIN32)
 
 # Extern
-IF(BUILD_OPENMW OR BUILD_OPENCS)
+set(RECASTNAVIGATION_DEMO OFF CACHE BOOL "Do not build RecastDemo")
+set(RECASTNAVIGATION_STATIC ON CACHE BOOL "Build recastnavigation static libraries")
+set(RECASTNAVIGATION_TESTS OFF CACHE BOOL "Do not build recastnavigation tests")
+
+add_subdirectory (extern/recastnavigation)
 add_subdirectory (extern/osg-ffmpeg-videoplayer)
 add_subdirectory (extern/oics)
 if (BUILD_OPENCS)
     add_subdirectory (extern/osgQt)
 endif()
-ENDIF(BUILD_OPENMW OR BUILD_OPENCS)
 
 # Components
 add_subdirectory (components)
@@ -658,7 +658,7 @@ if (WIN32)
     if (USE_DEBUG_CONSOLE AND BUILD_OPENMW)
       set_target_properties(tes3mp PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
       set_target_properties(tes3mp PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
-      set_target_properties(tes3mp PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
+      set_target_properties(tes3mp PROPERTIES COMPILE_DEFINITIONS $<$<CONFIG:Debug>:_CONSOLE>)
     elseif (BUILD_OPENMW)
       # Turn off debug console, debug output will be written to visual studio output instead
       set_target_properties(tes3mp PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:WINDOWS")
@@ -668,7 +668,6 @@ if (WIN32)
     if (BUILD_OPENMW)
         # Release builds don't use the debug console
         set_target_properties(tes3mp PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-        set_target_properties(tes3mp PROPERTIES COMPILE_DEFINITIONS_RELEASE "_WINDOWS")
         set_target_properties(tes3mp PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
     endif()
 
