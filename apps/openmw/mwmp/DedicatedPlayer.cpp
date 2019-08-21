@@ -16,6 +16,7 @@
 #include "../mwmechanics/actor.hpp"
 #include "../mwmechanics/aitravel.hpp"
 #include "../mwmechanics/creaturestats.hpp"
+#include "../mwmechanics/movement.hpp"
 #include "../mwmechanics/npcstats.hpp"
 #include "../mwmechanics/mechanicsmanagerimp.hpp"
 #include "../mwmechanics/spellcasting.hpp"

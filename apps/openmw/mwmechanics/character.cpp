@@ -361,15 +361,14 @@ void CharacterController::refreshHitRecoilAnims(CharacterState& idle)
         idle = CharState_None;
 }
 
-void CharacterController::refreshJumpAnims(const WeaponInfo* weap, JumpingState jump, CharacterState& idle, CharacterState& movement, bool force)
+void CharacterController::refreshJumpAnims(const WeaponInfo* weap, JumpingState jump, CharacterState& idle, bool force)
 {
-    if (!force && jump == mJumpState && idle == CharState_None && movement == CharState_None)
+    if (!force && jump == mJumpState && idle == CharState_None)
         return;
 
-    if (jump != JumpState_None && !(mPtr == MWMechanics::getPlayer() && MWBase::Environment::get().getWorld()->isFirstPerson())) // FIXME
+    if (jump == JumpState_InAir)
     {
         idle = CharState_None;
-        movement = CharState_None;
     }
 
     std::string jumpAnimName;
@@ -400,6 +399,7 @@ void CharacterController::refreshJumpAnims(const WeaponInfo* weap, JumpingState 
     if (!force && jump == mJumpState)
         return;
 
+    bool startAtLoop = (jump == mJumpState);
     mJumpState = jump;
 
     if (!mCurrentJump.empty())
@@ -413,7 +413,7 @@ void CharacterController::refreshJumpAnims(const WeaponInfo* weap, JumpingState 
         if (mAnimation->hasAnimation(jumpAnimName))
         {
             mAnimation->play(jumpAnimName, Priority_Jump, jumpmask, false,
-                         1.0f, "start", "stop", 0.f, ~0ul);
+                         1.0f, startAtLoop ? "loop start" : "start", "stop", 0.f, ~0ul);
             mCurrentJump = jumpAnimName;
         }
     }
@@ -691,7 +691,7 @@ void CharacterController::refreshCurrentAnims(CharacterState idle, CharacterStat
     if (!mPtr.getClass().hasInventoryStore(mPtr))
         weap = sWeaponTypeListEnd;
 
-    refreshJumpAnims(weap, jump, idle, movement, force);
+    refreshJumpAnims(weap, jump, idle, force);
     refreshMovementAnims(weap, movement, idle, force);
 
     // idle handled last as it can depend on the other states
@@ -2259,12 +2259,6 @@ void CharacterController::update(float duration, bool animationOnly)
 
             inJump = false;
 
-            // Do not play turning animation for player if rotation speed is very slow.
-            // Actual threshold should take framerate in account.
-            float rotationThreshold = 0;
-            if (isPlayer)
-                rotationThreshold = 0.015 * 60 * duration;
-
             if(std::abs(vec.x()/2.0f) > std::abs(vec.y()))
             {
                 if(vec.x() > 0.0f)
@@ -2289,10 +2283,16 @@ void CharacterController::update(float duration, bool animationOnly)
             }
             else if(rot.z() != 0.0f)
             {
+                // Do not play turning animation for player if rotation speed is very slow.
+                // Actual threshold should take framerate in account.
+                float rotationThreshold = 0.f;
+                if (isPlayer)
+                    rotationThreshold = 0.015 * 60 * duration;
+
                 // It seems only bipedal actors use turning animations.
                 // Also do not use turning animations in the first-person view and when sneaking.
                 bool isFirstPlayer = isPlayer && MWBase::Environment::get().getWorld()->isFirstPerson();
-                if (!sneak && !isFirstPlayer && mPtr.getClass().isBipedal(mPtr))
+                if (!sneak && jumpstate == JumpState_None && !isFirstPlayer && mPtr.getClass().isBipedal(mPtr))
                 {
                     if(rot.z() > rotationThreshold)
                         movestate = inwater ? CharState_SwimTurnRight : CharState_TurnRight;
@@ -2305,12 +2305,15 @@ void CharacterController::update(float duration, bool animationOnly)
         if (playLandingSound)
         {
             MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
-            std::string sound = "DefaultLand";
+            std::string sound;
             osg::Vec3f pos(mPtr.getRefData().getPosition().asVec3());
             if (world->isUnderwater(mPtr.getCell(), pos) || world->isWalkingOnWater(mPtr))
                 sound = "DefaultLandWater";
+            else if (onground)
+                sound = "DefaultLand";
 
-            sndMgr->playSound3D(mPtr, sound, 1.f, 1.f, MWSound::Type::Foot, MWSound::PlayMode::NoPlayerLocal);
+            if (!sound.empty())
+                sndMgr->playSound3D(mPtr, sound, 1.f, 1.f, MWSound::Type::Foot, MWSound::PlayMode::NoPlayerLocal);
         }
 
         // Player can not use smooth turning as NPCs, so we play turning animation a bit to avoid jittering
@@ -2319,7 +2322,7 @@ void CharacterController::update(float duration, bool animationOnly)
             float threshold = mCurrentMovement.find("swim") == std::string::npos ? 0.4f : 0.8f;
             float complete;
             bool animPlaying = mAnimation->getInfo(mCurrentMovement, &complete);
-            if (movestate == CharState_None && isTurning())
+            if (movestate == CharState_None && jumpstate == JumpState_None && isTurning())
             {
                 if (animPlaying && complete < threshold)
                     movestate = mMovementState;

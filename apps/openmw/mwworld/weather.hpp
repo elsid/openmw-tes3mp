@@ -40,6 +40,13 @@ namespace MWWorld
 {
     class TimeStamp;
 
+    enum NightDayMode
+    {
+        Default = 0,
+        ExteriorNight = 1,
+        InteriorDay = 2
+    };
+
     struct WeatherSetting
     {
         float mPreSunriseTime;
@@ -289,6 +296,7 @@ namespace MWWorld
         void stopSounds();
 
         float getWindSpeed() const;
+        NightDayMode getNightDayMode() const;
 
         /// Are we in an ash or blight storm?
         bool isInStorm() const;
@@ -374,6 +382,7 @@ namespace MWWorld
         bool mFastForward;
         float mWeatherUpdateTime;
         float mTransitionFactor;
+        NightDayMode mNightDayMode;
         int mCurrentWeather;
         int mNextWeather;
         int mQueuedWeather;

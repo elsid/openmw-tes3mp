@@ -452,6 +452,8 @@ namespace MWWorld
 
             int getCurrentWeather() const override;
 
+            unsigned int getNightDayMode() const override;
+
             int getMasserPhase() const override;
 
             int getSecundaPhase() const override;
@@ -554,7 +556,7 @@ namespace MWWorld
 
             bool castRay (float x1, float y1, float z1, float x2, float y2, float z2) override;
 
-            void setActorCollisionMode(const Ptr& ptr, bool enabled) override;
+            void setActorCollisionMode(const Ptr& ptr, bool internal, bool external) override;
             bool isActorCollisionEnabled(const Ptr& ptr) override;
 
             bool toggleCollisionMode() override;

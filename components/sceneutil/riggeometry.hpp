@@ -6,7 +6,6 @@
 
 namespace SceneUtil
 {
-
     class Skeleton;
     class Bone;
 
@@ -51,6 +50,20 @@ namespace SceneUtil
         virtual bool supports(const osg::PrimitiveFunctor&) const { return true; }
         virtual void accept(osg::PrimitiveFunctor&) const;
 
+        struct CopyBoundingBoxCallback : osg::Drawable::ComputeBoundingBoxCallback
+        {
+            osg::BoundingBox boundingBox;
+
+            virtual osg::BoundingBox computeBound(const osg::Drawable&) const override { return boundingBox; }
+        };
+
+        struct CopyBoundingSphereCallback : osg::Node::ComputeBoundingSphereCallback
+        {
+            osg::BoundingSphere boundingSphere;
+
+            virtual osg::BoundingSphere computeBound(const osg::Node&) const override { return boundingSphere; }
+        };
+
     private:
         void cull(osg::NodeVisitor* nv);
         void updateBounds(osg::NodeVisitor* nv);
@@ -66,20 +79,26 @@ namespace SceneUtil
 
         osg::ref_ptr<InfluenceMap> mInfluenceMap;
 
-        typedef std::pair<Bone*, osg::Matrixf> BoneBindMatrixPair;
+        typedef std::pair<std::string, osg::Matrixf> BoneBindMatrixPair;
 
         typedef std::pair<BoneBindMatrixPair, float> BoneWeight;
 
         typedef std::vector<unsigned short> VertexList;
 
         typedef std::map<std::vector<BoneWeight>, VertexList> Bone2VertexMap;
-        typedef std::vector<std::pair<std::vector<BoneWeight>, VertexList>> Bone2VertexVector;
 
-        Bone2VertexVector mBone2VertexVector;
+        struct Bone2VertexVector : public osg::Referenced
+        {
+            std::vector<std::pair<std::vector<BoneWeight>, VertexList>> mData;
+        };
+        osg::ref_ptr<Bone2VertexVector> mBone2VertexVector;
 
-        typedef std::vector<std::pair<Bone*, osg::BoundingSpheref>> BoneSphereVector;
-
-        BoneSphereVector mBoneSphereVector;
+        struct BoneSphereVector : public osg::Referenced
+        {
+            std::vector<std::pair<std::string, osg::BoundingSpheref>> mData;
+        };
+        osg::ref_ptr<BoneSphereVector> mBoneSphereVector;
+        std::vector<Bone*> mBoneNodesVector;
 
         unsigned int mLastFrameNumber;
         bool mBoundsFirstFrame;

@@ -79,6 +79,8 @@ namespace MWScript
                             || ::Misc::StringUtils::ciEqual(item, "gold_100"))
                         item = "gold_001";
 
+                    MWWorld::ContainerStore& store = ptr.getClass().getContainerStore(ptr);
+
                     /*
                         Start of tes3mp change (major)
 
@@ -92,7 +94,21 @@ namespace MWScript
                     MWWorld::Ptr itemPtr;
 
                     if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr() || packetOrigin != mwmp::CLIENT_CONSOLE)
-                        itemPtr = *ptr.getClass().getContainerStore(ptr).add(item, count, ptr);
+                    {
+                        // Create a Ptr for the first added item to recover the item name later
+                        itemPtr = *store.add(item, 1, ptr);
+
+                        if (itemPtr.getClass().getScript(itemPtr).empty())
+                        {
+                            store.add(item, count - 1, ptr);
+                        }
+                        else
+                        {
+                            // Adding just one item per time to make sure there isn't a stack of scripted items
+                            for (int i = 1; i < count; i++)
+                                store.add(item, 1, ptr);
+                        }
+                    }
                     /*
                         End of tes3mp change (major)
                     */
@@ -205,8 +221,13 @@ namespace MWScript
 
                     std::string itemName;
                     for (MWWorld::ConstContainerStoreIterator iter(store.cbegin()); iter != store.cend(); ++iter)
+                    {
                         if (::Misc::StringUtils::ciEqual(iter->getCellRef().getRefId(), item))
+                        {
                             itemName = iter->getClass().getName(*iter);
+                            break;
+                        }
+                    }
 
                     /*
                         Start of tes3mp change (major)

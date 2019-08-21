@@ -560,6 +560,7 @@ WeatherManager::WeatherManager(MWRender::RenderingManager& rendering, const Fall
     , mFastForward(false)
     , mWeatherUpdateTime(mHoursBetweenWeatherChanges)
     , mTransitionFactor(0)
+    , mNightDayMode(Default)
     , mCurrentWeather(0)
     , mNextWeather(0)
     , mQueuedWeather(0)
@@ -767,6 +768,14 @@ void WeatherManager::update(float duration, bool paused, const TimeStamp& time, 
         updateWeatherTransitions(duration);
     }
 
+    bool isDay = time.getHour() >= mSunriseTime && time.getHour() <= mTimeSettings.mNightStart;
+    if (isExterior && !isDay)
+        mNightDayMode = ExteriorNight;
+    else if (!isExterior && isDay && mWeatherSettings[mCurrentWeather].mGlareView >= 0.5f)
+        mNightDayMode = InteriorDay;
+    else
+        mNightDayMode = Default;
+
     if(!isExterior)
     {
         mRendering.setSkyEnabled(false);
@@ -823,7 +832,7 @@ void WeatherManager::update(float duration, bool paused, const TimeStamp& time, 
         }
         else
         {
-            theta = static_cast<float>(osg::PI) + static_cast<float>(osg::PI) * (adjustedHour - adjustedNightStart) / nightDuration;
+            theta = static_cast<float>(osg::PI) - static_cast<float>(osg::PI) * (adjustedHour - adjustedNightStart) / nightDuration;
         }
 
         osg::Vec3f final(
@@ -905,6 +914,11 @@ void WeatherManager::advanceTime(double hours, bool incremental)
 unsigned int WeatherManager::getWeatherID() const
 {
     return mCurrentWeather;
+}
+
+NightDayMode WeatherManager::getNightDayMode() const
+{
+    return mNightDayMode;
 }
 
 bool WeatherManager::useTorches(float hour) const

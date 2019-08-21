@@ -11,9 +11,11 @@
 
 // resource
 #include <components/debug/debuglog.hpp>
+#include <components/misc/constants.hpp>
 #include <components/misc/stringops.hpp>
 #include <components/misc/resourcehelpers.hpp>
 #include <components/resource/imagemanager.hpp>
+#include <components/sceneutil/util.hpp>
 
 // particle
 #include <osgParticle/ParticleSystem>
@@ -432,8 +434,23 @@ namespace NifOsg
             osg::ref_ptr<osg::Group> node;
             osg::Object::DataVariance dataVariance = osg::Object::UNSPECIFIED;
 
+            // TODO: it is unclear how to handle transformations of LOD and Switch nodes and controllers for them.
             switch (nifNode->recType)
             {
+            case Nif::RC_NiLODNode:
+            {
+                const Nif::NiLODNode* niLodNode = static_cast<const Nif::NiLODNode*>(nifNode);
+                node = handleLodNode(niLodNode);
+                dataVariance = osg::Object::STATIC;
+                break;
+            }
+            case Nif::RC_NiSwitchNode:
+            {
+                const Nif::NiSwitchNode* niSwitchNode = static_cast<const Nif::NiSwitchNode*>(nifNode);
+                node = handleSwitchNode(niSwitchNode);
+                dataVariance = osg::Object::STATIC;
+                break;
+            }
             case Nif::RC_NiTriShape:
             case Nif::RC_NiAutoNormalParticles:
             case Nif::RC_NiRotatingParticles:
@@ -595,31 +612,6 @@ namespace NifOsg
             if (nifNode->recType != Nif::RC_NiTriShape && !nifNode->controller.empty() && node->getDataVariance() == osg::Object::DYNAMIC)
                 handleNodeControllers(nifNode, static_cast<osg::MatrixTransform*>(node.get()), animflags);
 
-            if (nifNode->recType == Nif::RC_NiLODNode)
-            {
-                const Nif::NiLODNode* niLodNode = static_cast<const Nif::NiLODNode*>(nifNode);
-                osg::ref_ptr<osg::LOD> lod = handleLodNode(niLodNode);
-                node->addChild(lod); // unsure if LOD should be above or below this node's transform
-                node = lod;
-            }
-
-            if (nifNode->recType == Nif::RC_NiSwitchNode)
-            {
-                const Nif::NiSwitchNode* niSwitchNode = static_cast<const Nif::NiSwitchNode*>(nifNode);
-                osg::ref_ptr<osg::Switch> switchNode = handleSwitchNode(niSwitchNode);
-                node->addChild(switchNode);
-                const Nif::NodeList &children = niSwitchNode->children;
-                for(size_t i = 0;i < children.length();++i)
-                {
-                    if(!children[i].empty())
-                        handleNode(children[i].getPtr(), switchNode, imageManager, boundTextures, animflags, skipMeshes, hasMarkers, isAnimated, textKeys, rootNode);
-                }
-
-                // show only first child by default
-                switchNode->setSingleChildOn(0);
-                return switchNode;
-            }
-
             const Nif::NiNode *ninode = dynamic_cast<const Nif::NiNode*>(nifNode);
             if(ninode)
             {
@@ -636,6 +628,16 @@ namespace NifOsg
                     if(!children[i].empty())
                         handleNode(children[i].getPtr(), node, imageManager, boundTextures, animflags, skipMeshes, hasMarkers, isAnimated, textKeys, rootNode);
                 }
+            }
+
+            if (nifNode->recType == Nif::RC_NiSwitchNode)
+            {
+                // show only first child by default
+                node->asSwitch()->setSingleChildOn(0);
+
+                const Nif::NiSwitchNode* niSwitchNode = static_cast<const Nif::NiSwitchNode*>(nifNode);
+                if (niSwitchNode->name == Constants::NightDayLabel && !SceneUtil::hasUserDescription(rootNode, Constants::NightDayLabel))
+                    rootNode->getOrCreateUserDataContainer()->addDescription(Constants::NightDayLabel);
             }
 
             return node;
@@ -1120,7 +1122,7 @@ namespace NifOsg
             const Nif::NodeList &bones = skin->bones;
             for(size_t i = 0;i < bones.length();i++)
             {
-                std::string boneName = bones[i].getPtr()->name;
+                std::string boneName = Misc::StringUtils::lowerCase(bones[i].getPtr()->name);
 
                 SceneUtil::RigGeometry::BoneInfluence influence;
                 const std::vector<Nif::NiSkinData::VertWeight> &weights = data->bones[i].weights;
@@ -1282,6 +1284,7 @@ namespace NifOsg
                 boundTextures.clear();
             }
 
+            // If this loop is changed such that the base texture isn't guaranteed to end up in texture unit 0, the shadow casting shader will need to be updated accordingly.
             for (int i=0; i<Nif::NiTexturingProperty::NumTextures; ++i)
             {
                 if (texprop->textures[i].inUse)

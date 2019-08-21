@@ -58,7 +58,7 @@ namespace MWMechanics
 
 namespace DetourNavigator
 {
-    class Navigator;
+    struct Navigator;
 }
 
 namespace MWWorld
@@ -332,6 +332,8 @@ namespace MWBase
 
             virtual int getCurrentWeather() const = 0;
 
+            virtual unsigned int getNightDayMode() const = 0;
+
             virtual int getMasserPhase() const = 0;
 
             virtual int getSecundaPhase() const = 0;
@@ -458,7 +460,7 @@ namespace MWBase
 
             virtual bool castRay (float x1, float y1, float z1, float x2, float y2, float z2) = 0;
 
-            virtual void setActorCollisionMode(const MWWorld::Ptr& ptr, bool enabled) = 0;
+            virtual void setActorCollisionMode(const MWWorld::Ptr& ptr, bool internal, bool external) = 0;
             virtual bool isActorCollisionEnabled(const MWWorld::Ptr& ptr) = 0;
 
             virtual bool toggleCollisionMode() = 0;

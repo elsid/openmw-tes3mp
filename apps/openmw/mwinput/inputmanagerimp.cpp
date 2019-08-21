@@ -67,6 +67,7 @@ namespace MWInput
         , mInvertX (Settings::Manager::getBool("invert x axis", "Input"))
         , mInvertY (Settings::Manager::getBool("invert y axis", "Input"))
         , mControlsDisabled(false)
+        , mJoystickEnabled (Settings::Manager::getBool("enable controller", "Input"))
         , mCameraSensitivity (Settings::Manager::getFloat("camera sensitivity", "Input"))
         , mCameraYMultiplier (Settings::Manager::getFloat("camera y multiplier", "Input"))
         , mPreviewPOVDelay(0.f)
@@ -671,6 +672,9 @@ namespace MWInput
             if (it->first == "Input" && it->second == "grab cursor")
                 mGrabCursor = Settings::Manager::getBool("grab cursor", "Input");
 
+            if (it->first == "Input" && it->second == "enable controller")
+                mJoystickEnabled = Settings::Manager::getBool("enable controller", "Input");
+
             if (it->first == "Video" && (
                     it->second == "resolution x"
                     || it->second == "resolution y"
@@ -871,6 +875,9 @@ namespace MWInput
 
     void InputManager::buttonPressed(int deviceID, const SDL_ControllerButtonEvent &arg )
     {
+        if (!mJoystickEnabled)
+            return;
+
         mJoystickLastUsed = true;
         bool guiMode = false;
 
@@ -905,6 +912,9 @@ namespace MWInput
 
     void InputManager::buttonReleased(int deviceID, const SDL_ControllerButtonEvent &arg )
     {
+        if (!mJoystickEnabled)
+            return;
+
         mJoystickLastUsed = true;
         if(mInputBinder->detectingBindingState())
             mInputBinder->buttonReleased(deviceID, arg);
@@ -928,7 +938,7 @@ namespace MWInput
 
     void InputManager::axisMoved(int deviceID, const SDL_ControllerAxisEvent &arg )
     {
-        if (!mControlsDisabled)
+        if (!mControlsDisabled && mJoystickEnabled)
             mInputBinder->axisMoved(deviceID, arg);
     }
 

@@ -369,6 +369,9 @@ OMW::Engine::~Engine()
 
     mViewer = nullptr;
 
+    delete mEncoder;
+    mEncoder = nullptr;
+
     if (mWindow)
     {
         SDL_DestroyWindow(mWindow);
@@ -789,8 +792,7 @@ void OMW::Engine::go()
     settingspath = loadSettings (settings);
 
     // Create encoder
-    ToUTF8::Utf8Encoder encoder (mEncoding);
-    mEncoder = &encoder;
+    mEncoder = new ToUTF8::Utf8Encoder(mEncoding);
 
     // Setup viewer
     mViewer = new osgViewer::Viewer;

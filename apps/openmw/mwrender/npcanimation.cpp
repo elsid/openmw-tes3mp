@@ -362,11 +362,16 @@ public:
         if (cv->getProjectionMatrix()->getPerspective(fov, aspect, zNear, zFar))
         {
             fov = mFov;
-            osg::RefMatrix* newProjectionMatrix = new osg::RefMatrix(*cv->getProjectionMatrix());
+            osg::ref_ptr<osg::RefMatrix> newProjectionMatrix = new osg::RefMatrix();
             newProjectionMatrix->makePerspective(fov, aspect, zNear, zFar);
-            cv->pushProjectionMatrix(newProjectionMatrix);
+            osg::ref_ptr<osg::RefMatrix> invertedOldMatrix = cv->getProjectionMatrix();
+            invertedOldMatrix = new osg::RefMatrix(osg::RefMatrix::inverse(*invertedOldMatrix));
+            osg::ref_ptr<osg::RefMatrix> viewMatrix = new osg::RefMatrix(*cv->getModelViewMatrix());
+            viewMatrix->postMult(*newProjectionMatrix);
+            viewMatrix->postMult(*invertedOldMatrix);
+            cv->pushModelViewMatrix(viewMatrix, osg::Transform::ReferenceFrame::ABSOLUTE_RF);
             traverse(node, nv);
-            cv->popProjectionMatrix();
+            cv->popModelViewMatrix();
         }
         else
             traverse(node, nv);
@@ -465,8 +470,12 @@ void NpcAnimation::updateNpcBase()
     bool is1stPerson = mViewMode == VM_FirstPerson;
     bool isBeast = (race->mData.mFlags & ESM::Race::Beast) != 0;
 
-    std::string smodel = SceneUtil::getActorSkeleton(is1stPerson, isFemale, isBeast, isWerewolf);
-    smodel = Misc::ResourceHelpers::correctActorModelPath(smodel, mResourceSystem->getVFS());
+    std::string defaultSkeleton = SceneUtil::getActorSkeleton(is1stPerson, isFemale, isBeast, isWerewolf);
+    defaultSkeleton = Misc::ResourceHelpers::correctActorModelPath(defaultSkeleton, mResourceSystem->getVFS());
+
+    std::string smodel = defaultSkeleton;
+    if (!is1stPerson && !isWerewolf & !mNpc->mModel.empty())
+        smodel = Misc::ResourceHelpers::correctActorModelPath("meshes\\" + mNpc->mModel, mResourceSystem->getVFS());
 
     setObjectRoot(smodel, true, true, false);
 
@@ -481,15 +490,13 @@ void NpcAnimation::updateNpcBase()
         if (smodel != base)
             addAnimSource(base, smodel);
 
+        if (smodel != defaultSkeleton && base != defaultSkeleton)
+            addAnimSource(defaultSkeleton, smodel);
+
         addAnimSource(smodel, smodel);
 
-        if(!isWerewolf)
-        {
-            if(mNpc->mModel.length() > 0)
-                addAnimSource(Misc::ResourceHelpers::correctActorModelPath("meshes\\" + mNpc->mModel, mResourceSystem->getVFS()), smodel);
-            if(Misc::StringUtils::lowerCase(mNpc->mRace).find("argonian") != std::string::npos)
-                addAnimSource("meshes\\xargonian_swimkna.nif", smodel);
-        }
+        if(!isWerewolf && Misc::StringUtils::lowerCase(mNpc->mRace).find("argonian") != std::string::npos)
+            addAnimSource("meshes\\xargonian_swimkna.nif", smodel);
     }
     else
     {

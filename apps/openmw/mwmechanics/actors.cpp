@@ -1,13 +1,11 @@
 #include "actors.hpp"
 
-#include <typeinfo>
-#include <iostream>
 #include <components/esm/esmreader.hpp>
 #include <components/esm/esmwriter.hpp>
-#include <components/esm/loadnpc.hpp>
 
 #include <components/sceneutil/positionattitudetransform.hpp>
 #include <components/debug/debuglog.hpp>
+#include <components/misc/rng.hpp>
 #include <components/settings/settings.hpp>
 
 /*
@@ -42,6 +40,8 @@
 #include "../mwbase/statemanager.hpp"
 
 #include "../mwmechanics/aibreathe.hpp"
+
+#include "../mwrender/vismask.hpp"
 
 #include "spellcasting.hpp"
 #include "npcstats.hpp"
@@ -379,6 +379,33 @@ namespace MWMechanics
         }
     }
 
+    void Actors::playIdleDialogue(const MWWorld::Ptr& actor)
+    {
+        if (!actor.getClass().isActor() || actor == getPlayer() || !MWBase::Environment::get().getSoundManager()->sayDone(actor))
+            return;
+
+        const CreatureStats &stats = actor.getClass().getCreatureStats(actor);
+        if (stats.getAiSetting(CreatureStats::AI_Hello).getModified() == 0)
+            return;
+
+        const MWMechanics::AiSequence& seq = stats.getAiSequence();
+        if (seq.isInCombat() || seq.hasPackage(AiPackage::TypeIdFollow) || seq.hasPackage(AiPackage::TypeIdEscort))
+            return;
+
+        const osg::Vec3f playerPos(getPlayer().getRefData().getPosition().asVec3());
+        const osg::Vec3f actorPos(actor.getRefData().getPosition().asVec3());
+        MWBase::World* world = MWBase::Environment::get().getWorld();
+        if (world->isSwimming(actor) || (playerPos - actorPos).length2() >= 3000 * 3000)
+            return;
+
+        // Our implementation is not FPS-dependent unlike Morrowind's so it needs to be recalibrated. 
+        // We chose to use the chance MW would have when run at 60 FPS with the default value of the GMST.
+        const float delta = MWBase::Environment::get().getFrameDuration() * 6.f;
+        static const float fVoiceIdleOdds = world->getStore().get<ESM::GameSetting>().find("fVoiceIdleOdds")->mValue.getFloat();
+        if (Misc::Rng::rollProbability() * 10000.f < fVoiceIdleOdds * delta && world->getLOS(getPlayer(), actor))
+            MWBase::Environment::get().getDialogueManager()->say(actor, "idle");
+    }
+
     void Actors::engageCombat (const MWWorld::Ptr& actor1, const MWWorld::Ptr& actor2, std::map<const MWWorld::Ptr, const std::set<MWWorld::Ptr> >& cachedAllies, bool againstPlayer)
     {
         // No combat for totally static creatures
@@ -550,7 +577,7 @@ namespace MWMechanics
 
         MagicEffects now = creatureStats.getSpells().getMagicEffects();
 
-        if (creature.getTypeName()==typeid (ESM::NPC).name())
+        if (creature.getClass().isNpc())
         {
             MWWorld::InventoryStore& store = creature.getClass().getInventoryStore (creature);
             now += store.getMagicEffects();
@@ -1286,8 +1313,46 @@ namespace MWMechanics
         if (!anim)
             return;
         mActors.insert(std::make_pair(ptr, new Actor(ptr, anim)));
+
+        CharacterController* ctrl = mActors[ptr]->getCharacterController();
         if (updateImmediately)
-            mActors[ptr]->getCharacterController()->update(0);
+            ctrl->update(0);
+
+        // We should initially hide actors outside of processing range.
+        // Note: since we update player after other actors, distance will be incorrect during teleportation.
+        // Do not update visibility if player was teleported, so actors will be visible during teleportation frame.
+        if (MWBase::Environment::get().getWorld()->getPlayer().wasTeleported())
+            return;
+
+        updateVisibility(ptr, ctrl);
+    }
+
+    void Actors::updateVisibility (const MWWorld::Ptr& ptr, CharacterController* ctrl)
+    {
+        MWWorld::Ptr player = MWMechanics::getPlayer();
+        if (ptr == player)
+            return;
+
+        const float dist = (player.getRefData().getPosition().asVec3() - ptr.getRefData().getPosition().asVec3()).length();
+        if (dist > mActorsProcessingRange)
+        {
+            ptr.getRefData().getBaseNode()->setNodeMask(0);
+            return;
+        }
+        else
+            ptr.getRefData().getBaseNode()->setNodeMask(MWRender::Mask_Actor);
+
+        // Fade away actors on large distance (>90% of actor's processing distance)
+        float visibilityRatio = 1.0;
+        float fadeStartDistance = mActorsProcessingRange*0.9f;
+        float fadeEndDistance = mActorsProcessingRange;
+        float fadeRatio = (dist - fadeStartDistance)/(fadeEndDistance - fadeStartDistance);
+        if (fadeRatio > 0)
+            visibilityRatio -= std::max(0.f, fadeRatio);
+
+        visibilityRatio = std::min(1.f, visibilityRatio);
+
+        ctrl->setVisibility(visibilityRatio);
     }
 
     void Actors::removeActor (const MWWorld::Ptr& ptr)
@@ -1524,7 +1589,10 @@ namespace MWMechanics
                     End of tes3mp change (major)
                 */
 
-                if (!iter->first.getClass().getCreatureStats(iter->first).isDead())
+                // For dead actors we need to remove looping spell particles
+                if (iter->first.getClass().getCreatureStats(iter->first).isDead())
+                    ctrl->updateContinuousVfx();
+                else
                 {
                     bool cellChanged = world->hasCellChanged();
                     MWWorld::Ptr actor = iter->first; // make a copy of the map key to avoid it being invalidated when the player teleports
@@ -1599,14 +1667,17 @@ namespace MWMechanics
                         {
                             CreatureStats &stats = iter->first.getClass().getCreatureStats(iter->first);
                             if (isConscious(iter->first))
+                            {
                                 stats.getAiSequence().execute(iter->first, *ctrl, duration);
+                                playIdleDialogue(iter->first);
+                            }
                         }
                     }
                     /*
                         End of tes3mp change (major)
                     */
 
-                    if(iter->first.getTypeName() == typeid(ESM::NPC).name())
+                    if(iter->first.getClass().isNpc())
                     {
                         updateDrowning(iter->first, duration, ctrl->isKnockedOut(), isPlayer);
                         calculateNpcStatModifiers(iter->first, duration);
@@ -1640,11 +1711,11 @@ namespace MWMechanics
                 if (!inRange)
                 {
                     iter->first.getRefData().getBaseNode()->setNodeMask(0);
-                    world->setActorCollisionMode(iter->first, false);
+                    world->setActorCollisionMode(iter->first, false, false);
                     continue;
                 }
                 else if (!isPlayer)
-                    iter->first.getRefData().getBaseNode()->setNodeMask(1<<3);
+                    iter->first.getRefData().getBaseNode()->setNodeMask(MWRender::Mask_Actor);
 
                 if (iter->first.getClass().getCreatureStats(iter->first).isParalyzed())
                     ctrl->skipAnim();
@@ -1657,20 +1728,10 @@ namespace MWMechanics
                     continue;
                 }
 
-                world->setActorCollisionMode(iter->first, true);
+                world->setActorCollisionMode(iter->first, true, !iter->first.getClass().getCreatureStats(iter->first).isDeathAnimationFinished());
                 ctrl->update(duration);
 
-                // Fade away actors on large distance (>90% of actor's processing distance)
-                float visibilityRatio = 1.0;
-                float fadeStartDistance = mActorsProcessingRange*0.9f;
-                float fadeEndDistance = mActorsProcessingRange;
-                float fadeRatio = (dist - fadeStartDistance)/(fadeEndDistance - fadeStartDistance);
-                if (fadeRatio > 0)
-                    visibilityRatio -= std::max(0.f, fadeRatio);
-
-                visibilityRatio = std::min(1.f, visibilityRatio);
-
-                ctrl->setVisibility(visibilityRatio);
+                updateVisibility(iter->first, ctrl);
             }
 
             if (playerCharacter)
@@ -1699,72 +1760,7 @@ namespace MWMechanics
             }
 
             killDeadActors();
-
-            static float sneakTimer = 0.f; // times update of sneak icon
-
-            // if player is in sneak state see if anyone detects him
-            if (playerCharacter && playerCharacter->isSneaking())
-            {
-                static float sneakSkillTimer = 0.f; // times sneak skill progress from "avoid notice"
-
-                const MWWorld::ESMStore& esmStore = MWBase::Environment::get().getWorld()->getStore();
-                const int radius = esmStore.get<ESM::GameSetting>().find("fSneakUseDist")->mValue.getInteger();
-
-                static float fSneakUseDelay = esmStore.get<ESM::GameSetting>().find("fSneakUseDelay")->mValue.getFloat();
-
-                if (sneakTimer >= fSneakUseDelay)
-                    sneakTimer = 0.f;
-
-                if (sneakTimer == 0.f)
-                {
-                    // Set when an NPC is within line of sight and distance, but is still unaware. Used for skill progress.
-                    bool avoidedNotice = false;
-
-                    bool detected = false;
-
-                    for (PtrActorMap::iterator iter(mActors.begin()); iter != mActors.end(); ++iter)
-                    {
-                        MWWorld::Ptr observer = iter->first;
-
-                        if (iter->first == player)  // not the player
-                            continue;
-
-                        if (observer.getClass().getCreatureStats(observer).isDead())
-                            continue;
-
-                        // is the player in range and can they be detected
-                        if ((observer.getRefData().getPosition().asVec3() - playerPos).length2() <= radius*radius
-                            && MWBase::Environment::get().getWorld()->getLOS(player, observer))
-                        {
-                            if (MWBase::Environment::get().getMechanicsManager()->awarenessCheck(player, observer))
-                            {
-                                detected = true;
-                                avoidedNotice = false;
-                                MWBase::Environment::get().getWindowManager()->setSneakVisibility(false);
-                                break;
-                            }
-                            else
-                                avoidedNotice = true;
-                        }
-                    }
-
-                    if (sneakSkillTimer >= fSneakUseDelay)
-                        sneakSkillTimer = 0.f;
-
-                    if (avoidedNotice && sneakSkillTimer == 0.f)
-                        player.getClass().skillUsageSucceeded(player, ESM::Skill::Sneak, 0);
-
-                    if (!detected)
-                        MWBase::Environment::get().getWindowManager()->setSneakVisibility(true);
-                }
-                sneakTimer += duration;
-                sneakSkillTimer += duration;
-            }
-            else
-            {
-                sneakTimer = 0.f;
-                MWBase::Environment::get().getWindowManager()->setSneakVisibility(false);
-            }
+            updateSneaking(playerCharacter, duration);
         }
 
         updateCombatMusic();
@@ -1965,6 +1961,86 @@ namespace MWMechanics
         }
 
         fastForwardAi();
+    }
+
+    void Actors::updateSneaking(CharacterController* ctrl, float duration)
+    {
+        static float sneakTimer = 0.f; // Times update of sneak icon
+
+        if (!ctrl)
+        {
+            MWBase::Environment::get().getWindowManager()->setSneakVisibility(false);
+            return;
+        }
+
+        MWWorld::Ptr player = getPlayer();
+
+        CreatureStats& stats = player.getClass().getCreatureStats(player);
+        MWBase::World* world = MWBase::Environment::get().getWorld();
+
+        bool sneaking = stats.getStance(MWMechanics::CreatureStats::Stance_Sneak);
+        bool inair = !world->isOnGround(player) && !world->isSwimming(player) && !world->isFlying(player);
+        sneaking = sneaking && (ctrl->isSneaking() || inair);
+
+        if (!sneaking)
+        {
+            MWBase::Environment::get().getWindowManager()->setSneakVisibility(false);
+            return;
+        }
+
+        static float sneakSkillTimer = 0.f; // Times sneak skill progress from "avoid notice"
+
+        const MWWorld::Store<ESM::GameSetting>& gmst = world->getStore().get<ESM::GameSetting>();
+        static const float fSneakUseDist = gmst.find("fSneakUseDist")->mValue.getFloat();
+        static const float fSneakUseDelay = gmst.find("fSneakUseDelay")->mValue.getFloat();
+
+        if (sneakTimer >= fSneakUseDelay)
+            sneakTimer = 0.f;
+
+        if (sneakTimer == 0.f)
+        {
+            // Set when an NPC is within line of sight and distance, but is still unaware. Used for skill progress.
+            bool avoidedNotice = false;
+            bool detected = false;
+
+            std::vector<MWWorld::Ptr> observers;
+            osg::Vec3f position(player.getRefData().getPosition().asVec3());
+            float radius = std::min(fSneakUseDist, mActorsProcessingRange);
+            getObjectsInRange(position, radius, observers);
+
+            for (const MWWorld::Ptr &observer : observers)
+            {
+                if (observer == player || observer.getClass().getCreatureStats(observer).isDead())
+                    continue;
+
+                if (world->getLOS(player, observer))
+                {
+                    if (MWBase::Environment::get().getMechanicsManager()->awarenessCheck(player, observer))
+                    {
+                        detected = true;
+                        avoidedNotice = false;
+                        MWBase::Environment::get().getWindowManager()->setSneakVisibility(false);
+                        break;
+                    }
+                    else
+                    {
+                        avoidedNotice = true;
+                    }
+                }
+            }
+
+            if (sneakSkillTimer >= fSneakUseDelay)
+                sneakSkillTimer = 0.f;
+
+            if (avoidedNotice && sneakSkillTimer == 0.f)
+                player.getClass().skillUsageSucceeded(player, ESM::Skill::Sneak, 0);
+
+            if (!detected)
+                MWBase::Environment::get().getWindowManager()->setSneakVisibility(true);
+        }
+
+        sneakTimer += duration;
+        sneakSkillTimer += duration;
     }
 
     int Actors::getHoursToRest(const MWWorld::Ptr &ptr) const
