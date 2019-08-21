@@ -46,7 +46,9 @@ namespace DetourNavigator
 
         std::map<osg::Vec3f, SharedNavMeshCacheItem> getNavMeshes() const override;
 
-        Settings getSettings() const override;
+        const Settings& getSettings() const override;
+
+        void reportStats(unsigned int frameNumber, osg::Stats& stats) const override;
 
     private:
         Settings mSettings;
@@ -58,6 +60,7 @@ namespace DetourNavigator
         void updateAvoidShapeId(const ObjectId id, const ObjectId avoidId);
         void updateWaterShapeId(const ObjectId id, const ObjectId waterId);
         void updateId(const ObjectId id, const ObjectId waterId, std::unordered_map<ObjectId, ObjectId>& ids);
+        void removeUnusedNavMeshes();
     };
 }
 

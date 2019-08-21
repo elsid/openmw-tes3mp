@@ -44,11 +44,13 @@ namespace DetourNavigator
 
         void wait();
 
+        void reportStats(unsigned int frameNumber, osg::Stats& stats) const;
+
     private:
         struct Job
         {
             osg::Vec3f mAgentHalfExtents;
-            SharedNavMeshCacheItem mNavMeshCacheItem;
+            std::weak_ptr<GuardedNavMeshCacheItem> mNavMeshCacheItem;
             TilePosition mChangedTile;
             unsigned mTryNumber;
             ChangeType mChangeType;
@@ -72,7 +74,7 @@ namespace DetourNavigator
         std::reference_wrapper<TileCachedRecastMeshManager> mRecastMeshManager;
         std::reference_wrapper<OffMeshConnectionsManager> mOffMeshConnectionsManager;
         std::atomic_bool mShouldStop;
-        std::mutex mMutex;
+        mutable std::mutex mMutex;
         std::condition_variable mHasJob;
         std::condition_variable mDone;
         Jobs mJobs;

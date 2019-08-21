@@ -174,7 +174,7 @@ namespace DetourNavigator
             if (!navMesh)
                 return out;
             const auto settings = getSettings();
-            return findSmoothPath(navMesh.lock()->getValue(), toNavMeshCoordinates(settings, agentHalfExtents),
+            return findSmoothPath(navMesh->lockConst()->getImpl(), toNavMeshCoordinates(settings, agentHalfExtents),
                 toNavMeshCoordinates(settings, stepSize), toNavMeshCoordinates(settings, start),
                 toNavMeshCoordinates(settings, end), includeFlags, settings, out);
         }
@@ -191,7 +191,9 @@ namespace DetourNavigator
          */
         virtual std::map<osg::Vec3f, SharedNavMeshCacheItem> getNavMeshes() const = 0;
 
-        virtual Settings getSettings() const = 0;
+        virtual const Settings& getSettings() const = 0;
+
+        virtual void reportStats(unsigned int frameNumber, osg::Stats& stats) const = 0;
     };
 }
 

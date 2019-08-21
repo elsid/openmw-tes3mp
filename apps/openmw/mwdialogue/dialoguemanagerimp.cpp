@@ -131,9 +131,6 @@ namespace MWDialogue
                 End of tes3mp addition
             */
 
-            if (tok->isImplicitKeyword() && mTranslationDataStorage.hasTranslation())
-                continue;
-
             if (mActorKnownTopics.count( topicId ))
                 mKnownTopics.insert( topicId );
         }

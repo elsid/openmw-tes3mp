@@ -122,8 +122,7 @@ namespace MWGui
             End of tes3mp addition
         */
 
-        for (int i=0; i<mDays*24; ++i)
-            MWBase::Environment::get().getMechanicsManager()->rest(true);
+        MWBase::Environment::get().getMechanicsManager()->rest(mDays * 24, true);
 
         /*
             Start of tes3mp change (major)

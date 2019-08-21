@@ -120,8 +120,6 @@ namespace MWWorld
 
             int mActivationDistanceOverride;
 
-            std::string mStartupScript;
-
             std::map<MWWorld::Ptr, int> mDoorStates;
             ///< only holds doors that are currently moving. 1 = opening, 2 = closing
 
@@ -132,7 +130,7 @@ namespace MWWorld
 
             void rotateObjectImp (const Ptr& ptr, const osg::Vec3f& rot, bool adjust);
 
-            Ptr moveObjectImp (const Ptr& ptr, float x, float y, float z, bool movePhysics=true);
+            Ptr moveObjectImp (const Ptr& ptr, float x, float y, float z, bool movePhysics=true, bool moveToActive=false);
             ///< @return an updated Ptr in case the Ptr's cell changes
 
             Ptr copyObjectToCell(const ConstPtr &ptr, CellStore* cell, ESM::Position pos, int count, bool adjustPos);
@@ -211,7 +209,7 @@ namespace MWWorld
                 const Files::Collections& fileCollections,
                 const std::vector<std::string>& contentFiles,
                 ToUTF8::Utf8Encoder* encoder, const std::map<std::string,std::string>& fallbackMap,
-                int activationDistanceOverride, const std::string& startCell, const std::string& startupScript, const std::string& resourcePath, const std::string& userDataPath);
+                int activationDistanceOverride, const std::string& startCell, const std::string& resourcePath, const std::string& userDataPath);
 
             virtual ~World();
 
@@ -499,7 +497,7 @@ namespace MWWorld
 
             void undeleteObject (const Ptr& ptr) override;
 
-            MWWorld::Ptr moveObject (const Ptr& ptr, float x, float y, float z) override;
+            MWWorld::Ptr moveObject (const Ptr& ptr, float x, float y, float z, bool moveToActive=false) override;
             ///< @return an updated Ptr in case the Ptr's cell changes
 
             MWWorld::Ptr moveObject (const Ptr& ptr, CellStore* newCell, float x, float y, float z, bool movePhysics=true) override;
@@ -737,7 +735,7 @@ namespace MWWorld
             RestPermitted canRest() const override;
             ///< check if the player is allowed to rest
 
-            void rest() override;
+            void rest(double hours) override;
 
             /// \todo Probably shouldn't be here
             MWRender::Animation* getAnimation(const MWWorld::Ptr &ptr) override;

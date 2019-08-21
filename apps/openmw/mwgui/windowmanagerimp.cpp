@@ -1070,9 +1070,6 @@ namespace MWGui
 
         updateMap();
 
-        if (!mMap->isVisible())
-            mMap->onFrame(frameDuration);
-
         mHud->onFrame(frameDuration);
 
         mDebugWindow->onFrame(frameDuration);

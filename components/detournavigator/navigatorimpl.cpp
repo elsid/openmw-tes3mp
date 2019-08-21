@@ -21,10 +21,10 @@ namespace DetourNavigator
     void NavigatorImpl::removeAgent(const osg::Vec3f& agentHalfExtents)
     {
         const auto it = mAgents.find(agentHalfExtents);
-        if (it == mAgents.end() || --it->second)
+        if (it == mAgents.end())
             return;
-        mAgents.erase(it);
-        mNavMeshManager.reset(agentHalfExtents);
+        if (it->second > 0)
+            --it->second;
     }
 
     bool NavigatorImpl::addObject(const ObjectId id, const btCollisionShape& shape, const btTransform& transform)
@@ -113,6 +113,7 @@ namespace DetourNavigator
 
     void NavigatorImpl::update(const osg::Vec3f& playerPosition)
     {
+        removeUnusedNavMeshes();
         for (const auto& v : mAgents)
             mNavMeshManager.update(playerPosition, v.first);
     }
@@ -132,9 +133,14 @@ namespace DetourNavigator
         return mNavMeshManager.getNavMeshes();
     }
 
-    Settings NavigatorImpl::getSettings() const
+    const Settings& NavigatorImpl::getSettings() const
     {
         return mSettings;
+    }
+
+    void NavigatorImpl::reportStats(unsigned int frameNumber, osg::Stats& stats) const
+    {
+        mNavMeshManager.reportStats(frameNumber, stats);
     }
 
     void NavigatorImpl::updateAvoidShapeId(const ObjectId id, const ObjectId avoidId)
@@ -154,6 +160,17 @@ namespace DetourNavigator
         {
             mNavMeshManager.removeObject(inserted.first->second);
             inserted.first->second = updateId;
+        }
+    }
+
+    void NavigatorImpl::removeUnusedNavMeshes()
+    {
+        for (auto it = mAgents.begin(); it != mAgents.end();)
+        {
+            if (it->second == 0 && mNavMeshManager.reset(it->first))
+                it = mAgents.erase(it);
+            else
+                ++it;
         }
     }
 }

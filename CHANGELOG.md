@@ -3,6 +3,9 @@
 
     Bug #2969: Scripted items can stack
     Bug #2987: Editor: some chance and AI data fields can overflow
+    Bug #3006: 'else if' operator breaks script compilation
+    Bug #3109: SetPos/Position handles actors differently
+    Bug #3282: Unintended behaviour when assigning F3 and Windows keys
     Bug #3623: Fix HiDPI on Windows
     Bug #3733: Normal maps are inverted on mirrored UVs
     Bug #3765: DisableTeleporting makes Mark/Recall/Intervention effects undetectable
@@ -18,6 +21,7 @@
     Bug #4720: Inventory avatar has shield with two-handed weapon during [un]equipping animation
     Bug #4723: ResetActors command works incorrectly
     Bug #4745: Editor: Interior cell lighting field values are not displayed as colors
+    Bug #4736: LandTexture records overrides do not work
     Bug #4746: Non-solid player can't run or sneak
     Bug #4747: Bones are not read from X.NIF file for NPC animation
     Bug #4750: Sneaking doesn't work in first person view if the player is in attack ready state
@@ -32,15 +36,26 @@
     Bug #4813: Creatures with known file but no "Sound Gen Creature" assigned use default sounds
     Bug #4815: "Finished" journal entry with lower index doesn't close journal, SetJournalIndex closes journal
     Bug #4820: Spell absorption is broken
+    Bug #4823: Jail progress bar works incorrectly
     Bug #4827: NiUVController is handled incorrectly
     Bug #4828: Potion looping effects VFX are not shown for NPCs
     Bug #4837: CTD when a mesh with NiLODNode root node with particles is loaded
+    Bug #4841: Russian localization ignores implicit keywords    
     Bug #4860: Actors outside of processing range visible for one frame after spawning
+    Bug #4867: Arbitrary text after local variable declarations breaks script compilation
     Bug #4876: AI ratings handling inconsistencies
+    Bug #4877: Startup script executes only on a new game start
     Bug #4888: Global variable stray explicit reference calls break script compilation
+    Bug #4896: Title screen music doesn't loop
+    Bug #4911: Editor: QOpenGLContext::swapBuffers() warning with Qt5
+    Bug #4916: Specular power (shininess) material parameter is ignored when shaders are used.
+    Bug #4922: Werewolves can not attack if the transformation happens during attack
+    Bug #4938: Strings from subrecords with actually empty headers can't be empty
+    Bug #4942: Hand-to-Hand attack type is chosen randomly when "always use best attack" is turned off
     Feature #2229: Improve pathfinding AI
     Feature #3442: Default values for fallbacks from ini file
     Feature #3610: Option to invert X axis
+    Feature #3893: Implicit target for "set" function in console
     Feature #3980: In-game option to disable controller
     Feature #4209: Editor: Faction rank sub-table
     Feature #4673: Weapon sheathing
@@ -52,6 +67,7 @@
     Feature #4887: Add openmw command option to set initial random seed
     Feature #4890: Make Distant Terrain configurable
     Task #4686: Upgrade media decoder to a more current FFmpeg API
+    Task #4695: Optimize Distant Terrain memory consumption
 
 0.45.0
 ------

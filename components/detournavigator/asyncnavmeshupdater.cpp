@@ -5,6 +5,8 @@
 
 #include <components/debug/debuglog.hpp>
 
+#include <osg/Stats>
+
 namespace
 {
     using DetourNavigator::ChangeType;
@@ -102,6 +104,20 @@ namespace DetourNavigator
         mDone.wait(lock, [&] { return mJobs.empty(); });
     }
 
+    void AsyncNavMeshUpdater::reportStats(unsigned int frameNumber, osg::Stats& stats) const
+    {
+        std::size_t jobs = 0;
+
+        {
+            const std::lock_guard<std::mutex> lock(mMutex);
+            jobs = mJobs.size();
+        }
+
+        stats.setAttribute(frameNumber, "NavMesh UpdateJobs", jobs);
+
+        mNavMeshTilesCache.reportStats(frameNumber, stats);
+    }
+
     void AsyncNavMeshUpdater::process() throw()
     {
         log("start process jobs");
@@ -129,12 +145,17 @@ namespace DetourNavigator
 
         const auto firstStart = setFirstStart(start);
 
+        const auto navMeshCacheItem = job.mNavMeshCacheItem.lock();
+
+        if (!navMeshCacheItem)
+            return true;
+
         const auto recastMesh = mRecastMeshManager.get().getMesh(job.mChangedTile);
         const auto playerTile = *mPlayerTile.lockConst();
         const auto offMeshConnections = mOffMeshConnectionsManager.get().get(job.mChangedTile);
 
         const auto status = updateNavMesh(job.mAgentHalfExtents, recastMesh.get(), job.mChangedTile, playerTile,
-            offMeshConnections, mSettings, job.mNavMeshCacheItem, mNavMeshTilesCache);
+            offMeshConnections, mSettings, navMeshCacheItem, mNavMeshTilesCache);
 
         const auto finish = std::chrono::steady_clock::now();
 
@@ -143,7 +164,7 @@ namespace DetourNavigator
         using FloatMs = std::chrono::duration<float, std::milli>;
 
         {
-            const auto locked = job.mNavMeshCacheItem.lockConst();
+            const auto locked = navMeshCacheItem->lockConst();
             log("cache updated for agent=", job.mAgentHalfExtents, " status=", status,
                 " generation=", locked->getGeneration(),
                 " revision=", locked->getNavMeshRevision(),
@@ -157,9 +178,7 @@ namespace DetourNavigator
     boost::optional<AsyncNavMeshUpdater::Job> AsyncNavMeshUpdater::getNextJob()
     {
         std::unique_lock<std::mutex> lock(mMutex);
-        if (mJobs.empty())
-            mHasJob.wait_for(lock, std::chrono::milliseconds(10));
-        if (mJobs.empty())
+        if (!mHasJob.wait_for(lock, std::chrono::milliseconds(10), [&] { return !mJobs.empty(); }))
         {
             mFirstStart.lock()->reset();
             mDone.notify_all();
@@ -194,7 +213,8 @@ namespace DetourNavigator
             writeToFile(*recastMesh, mSettings.get().mRecastMeshPathPrefix + std::to_string(job.mChangedTile.x())
                         + "_" + std::to_string(job.mChangedTile.y()) + "_", recastMeshRevision);
         if (mSettings.get().mEnableWriteNavMeshToFile)
-            writeToFile(job.mNavMeshCacheItem.lockConst()->getValue(), mSettings.get().mNavMeshPathPrefix, navMeshRevision);
+            if (const auto shared = job.mNavMeshCacheItem.lock())
+                writeToFile(shared->lockConst()->getImpl(), mSettings.get().mNavMeshPathPrefix, navMeshRevision);
     }
 
     std::chrono::steady_clock::time_point AsyncNavMeshUpdater::setFirstStart(const std::chrono::steady_clock::time_point& value)

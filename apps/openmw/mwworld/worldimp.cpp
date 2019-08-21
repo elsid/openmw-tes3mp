@@ -178,12 +178,12 @@ namespace MWWorld
         const Files::Collections& fileCollections,
         const std::vector<std::string>& contentFiles,
         ToUTF8::Utf8Encoder* encoder, const std::map<std::string,std::string>& fallbackMap,
-        int activationDistanceOverride, const std::string& startCell, const std::string& startupScript,
-            const std::string& resourcePath, const std::string& userDataPath)
+        int activationDistanceOverride, const std::string& startCell,
+        const std::string& resourcePath, const std::string& userDataPath)
     : mResourceSystem(resourceSystem), mFallback(fallbackMap), mLocalScripts (mStore),
       mSky (true), mCells (mStore, mEsm),
       mGodMode(false), mScriptsEnabled(true), mContentFiles (contentFiles), mUserDataPath(userDataPath),
-      mActivationDistanceOverride (activationDistanceOverride), mStartupScript(startupScript),
+      mActivationDistanceOverride (activationDistanceOverride),
       mStartCell (startCell), mDistanceToFacedObject(-1), mTeleportEnabled(true),
       mLevitationEnabled(true), mGoToJail(false), mDaysInPrison(0),
       mPlayerTraveling(false), mPlayerInJail(false), mSpellPreloadTimer(0.f)
@@ -336,9 +336,6 @@ namespace MWWorld
         // enable collision
         if (!mPhysics->toggleCollisionMode())
             mPhysics->toggleCollisionMode();
-
-        if (!mStartupScript.empty())
-            MWBase::Environment::get().getWindowManager()->executeInConsole(mStartupScript);
 
         MWBase::Environment::get().getWindowManager()->updatePlayer();
     }
@@ -503,7 +500,7 @@ namespace MWWorld
         gmst["iWereWolfBounty"] = ESM::Variant(1000);
         gmst["fCombatDistanceWerewolfMod"] = ESM::Variant(0.3f);
 
-        for (const std::pair<std::string, ESM::Variant> &params : gmst)
+        for (const auto &params : gmst)
         {
             if (!mStore.get<ESM::GameSetting>().search(params.first))
             {
@@ -533,7 +530,7 @@ namespace MWWorld
         globals["crimegoldturnin"] = ESM::Variant(0);
         globals["pchasturnin"] = ESM::Variant(0);
 
-        for (const std::pair<std::string, ESM::Variant> &params : globals)
+        for (const auto &params : globals)
         {
             if (!mStore.get<ESM::Global>().search(params.first))
             {
@@ -552,7 +549,7 @@ namespace MWWorld
         statics["templemarker"] = "marker_temple.nif";
         statics["travelmarker"] = "marker_travel.nif";
 
-        for (const std::pair<std::string, std::string> &params : statics)
+        for (const auto &params : statics)
         {
             if (!mStore.get<ESM::Static>().search(params.first))
             {
@@ -566,7 +563,7 @@ namespace MWWorld
         std::map<std::string, std::string> doors;
         doors["prisonmarker"] = "marker_prison.nif";
 
-        for (const std::pair<std::string, std::string> &params : doors)
+        for (const auto &params : doors)
         {
             if (!mStore.get<ESM::Door>().search(params.first))
             {
@@ -1512,23 +1509,24 @@ namespace MWWorld
         return newPtr;
     }
 
-    MWWorld::Ptr World::moveObjectImp(const Ptr& ptr, float x, float y, float z, bool movePhysics)
+    MWWorld::Ptr World::moveObjectImp(const Ptr& ptr, float x, float y, float z, bool movePhysics, bool moveToActive)
     {
-        CellStore *cell = ptr.getCell();
+        int cellX, cellY;
+        positionToIndex(x, y, cellX, cellY);
 
-        if (cell->isExterior()) {
-            int cellX, cellY;
-            positionToIndex(x, y, cellX, cellY);
+        CellStore* cell = ptr.getCell();
+        CellStore* newCell = getExterior(cellX, cellY);
+        bool isCellActive = getPlayerPtr().getCell()->isExterior() && mWorldScene->isCellActive(*newCell);
 
-            cell = getExterior(cellX, cellY);
-        }
+        if (cell->isExterior() || (moveToActive && isCellActive && ptr.getClass().isActor()))
+            cell = newCell;
 
         return moveObject(ptr, cell, x, y, z, movePhysics);
     }
 
-    MWWorld::Ptr World::moveObject (const Ptr& ptr, float x, float y, float z)
+    MWWorld::Ptr World::moveObject (const Ptr& ptr, float x, float y, float z, bool moveToActive)
     {
-        return moveObjectImp(ptr, x, y, z);
+        return moveObjectImp(ptr, x, y, z, true, moveToActive);
     }
 
     void World::scaleObject (const Ptr& ptr, float scale)
@@ -3698,9 +3696,9 @@ namespace MWWorld
         return closestMarker;
     }
 
-    void World::rest()
+    void World::rest(double hours)
     {
-        mCells.rest();
+        mCells.rest(hours);
     }
 
     void World::teleportToClosestMarker (const MWWorld::Ptr& ptr,

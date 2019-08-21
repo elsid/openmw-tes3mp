@@ -30,6 +30,8 @@ namespace {
 using namespace osgShadow;
 using namespace SceneUtil;
 
+#define dbl_max std::numeric_limits<double>::max()
+
 //////////////////////////////////////////////////////////////////
 // fragment shader
 //
@@ -775,6 +777,7 @@ MWShadowTechnique::MWShadowTechnique(const MWShadowTechnique& vdsm, const osg::C
     ShadowTechnique(vdsm,copyop)
 {
     _shadowRecievingPlaceholderStateSet = new osg::StateSet;
+    _enableShadows = vdsm._enableShadows;
 }
 
 MWShadowTechnique::~MWShadowTechnique()
@@ -928,7 +931,7 @@ void MWShadowTechnique::cull(osgUtil::CullVisitor& cv)
                                    viewProjectionMatrix(2,3)==0.0;
 
     double minZNear = 0.0;
-    double maxZFar = DBL_MAX;
+    double maxZFar = dbl_max;
 
     if (cachedNearFarMode==osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR)
     {
@@ -1088,8 +1091,8 @@ void MWShadowTechnique::cull(osgUtil::CullVisitor& cv)
                 double yRange = (clsb._bb.yMax()-clsb._bb.yMin());
 
                 osg::Matrixd cornerConverter = osg::Matrixd::inverse(projectionMatrix) * osg::Matrixd::inverse(viewMatrix) * *cv.getModelViewMatrix();
-                double minZ = DBL_MAX;
-                double maxZ = -DBL_MAX;
+                double minZ = dbl_max;
+                double maxZ = -dbl_max;
                 clsb._bb._max[2] = 1.0;
                 for (unsigned int i = 0; i < 8; i++)
                 {
@@ -1777,7 +1780,7 @@ bool MWShadowTechnique::computeShadowCameraSettings(Frustum& frustum, LightData&
     }
     else
     {
-        double zMax=-DBL_MAX;
+        double zMax=-dbl_max;
 
         OSG_INFO<<"lightDir = "<<positionedLight.lightDir<<std::endl;
         OSG_INFO<<"lightPos3 = "<<positionedLight.lightPos3<<std::endl;
@@ -2009,18 +2012,20 @@ struct ConvexHull
             Vertices unwantedEdgeEnds = findInternalEdges(vertex, connectedVertices);
             for (auto edgeEnd : unwantedEdgeEnds)
             {
-                for (auto itr = _edges.begin(); itr != _edges.end(); ++itr)
+                for (auto itr = _edges.begin(); itr != _edges.end();)
                 {
                     if (*itr == Edge(vertex, edgeEnd))
                     {
-                        _edges.erase(itr);
+                        itr = _edges.erase(itr);
                         break;
                     }
                     else if (*itr == Edge(edgeEnd, vertex))
                     {
-                        _edges.erase(itr);
+                        itr = _edges.erase(itr);
                         break;
                     }
+                    else
+                        ++itr;
                 }
             }
         }
@@ -2155,13 +2160,13 @@ struct ConvexHull
         {
             center += *itr;
 
-            center.x() = osg::maximum(center.x(), -DBL_MAX);
-            center.y() = osg::maximum(center.y(), -DBL_MAX);
-            center.z() = osg::maximum(center.z(), -DBL_MAX);
+            center.x() = osg::maximum(center.x(), -dbl_max);
+            center.y() = osg::maximum(center.y(), -dbl_max);
+            center.z() = osg::maximum(center.z(), -dbl_max);
 
-            center.x() = osg::minimum(center.x(), DBL_MAX);
-            center.y() = osg::minimum(center.y(), DBL_MAX);
-            center.z() = osg::minimum(center.z(), DBL_MAX);
+            center.x() = osg::minimum(center.x(), dbl_max);
+            center.y() = osg::minimum(center.y(), dbl_max);
+            center.z() = osg::minimum(center.z(), dbl_max);
         }
 
         center /= double(intersections.size());
@@ -2227,7 +2232,7 @@ struct ConvexHull
 
     double min(unsigned int index) const
     {
-        double m = DBL_MAX;
+        double m = dbl_max;
         for(Edges::const_iterator itr = _edges.begin();
             itr != _edges.end();
             ++itr)
@@ -2241,7 +2246,7 @@ struct ConvexHull
 
     double max(unsigned int index) const
     {
-        double m = -DBL_MAX;
+        double m = -dbl_max;
         for(Edges::const_iterator itr = _edges.begin();
             itr != _edges.end();
             ++itr)
@@ -2255,7 +2260,7 @@ struct ConvexHull
 
     double minRatio(const osg::Vec3d& eye, unsigned int index) const
     {
-        double m = DBL_MAX;
+        double m = dbl_max;
         osg::Vec3d delta;
         double ratio;
         for(Edges::const_iterator itr = _edges.begin();
@@ -2277,7 +2282,7 @@ struct ConvexHull
 
     double maxRatio(const osg::Vec3d& eye, unsigned int index) const
     {
-        double m = -DBL_MAX;
+        double m = -dbl_max;
         osg::Vec3d delta;
         double ratio;
         for(Edges::const_iterator itr = _edges.begin();
@@ -2321,10 +2326,10 @@ struct RenderLeafBounds
         clip_min_x(-1.0), clip_max_x(1.0),
         clip_min_y(-1.0), clip_max_y(1.0),
         clip_min_z(-1.0), clip_max_z(1.0),
-        clip_min_x_ratio(-DBL_MAX), clip_max_x_ratio(DBL_MAX),
-        clip_min_z_ratio(-DBL_MAX), clip_max_z_ratio(DBL_MAX),
-        min_x_ratio(DBL_MAX), max_x_ratio(-DBL_MAX),
-        min_z_ratio(DBL_MAX), max_z_ratio(-DBL_MAX),
+        clip_min_x_ratio(-dbl_max), clip_max_x_ratio(dbl_max),
+        clip_min_z_ratio(-dbl_max), clip_max_z_ratio(dbl_max),
+        min_x_ratio(dbl_max), max_x_ratio(-dbl_max),
+        min_z_ratio(dbl_max), max_z_ratio(-dbl_max),
         min_x(1.0), max_x(-1.0),
         min_y(1.0), max_y(-1.0),
         min_z(1.0), max_z(-1.0)
@@ -2336,12 +2341,12 @@ struct RenderLeafBounds
     {
         computeRatios = false;
         light_p = p;
-        clip_min_x = -DBL_MAX; clip_max_x = DBL_MAX;
-        clip_min_y = -DBL_MAX; clip_max_y = DBL_MAX;
-        clip_min_z = -DBL_MAX; clip_max_z = DBL_MAX;
-        min_x = DBL_MAX; max_x = -DBL_MAX;
-        min_y = DBL_MAX; max_y = -DBL_MAX;
-        min_z = DBL_MAX; max_z = -DBL_MAX;
+        clip_min_x = -dbl_max; clip_max_x = dbl_max;
+        clip_min_y = -dbl_max; clip_max_y = dbl_max;
+        clip_min_z = -dbl_max; clip_max_z = dbl_max;
+        min_x = dbl_max; max_x = -dbl_max;
+        min_y = dbl_max; max_y = -dbl_max;
+        min_z = dbl_max; max_z = -dbl_max;
     }
 
     void set(const osg::Matrixd& p, osg::Vec3d& e_ls, double nr)
@@ -2808,11 +2813,11 @@ bool MWShadowTechnique::adjustPerspectiveShadowMapCameraSettings(osgUtil::Render
 
     double min_x_ratio = 0.0;
     double max_x_ratio = 0.0;
-    double min_z_ratio = FLT_MAX;
-    double max_z_ratio = -FLT_MAX;
+    double min_z_ratio = dbl_max;
+    double max_z_ratio = -dbl_max;
 
-    min_x_ratio = convexHull.valid() ? convexHull.minRatio(virtual_eye,0) : -DBL_MAX;
-    max_x_ratio = convexHull.valid() ? convexHull.maxRatio(virtual_eye,0) : DBL_MAX;
+    min_x_ratio = convexHull.valid() ? convexHull.minRatio(virtual_eye,0) : -dbl_max;
+    max_x_ratio = convexHull.valid() ? convexHull.maxRatio(virtual_eye,0) : dbl_max;
     //min_z_ratio = convexHull.minRatio(virtual_eye,2);
     //max_z_ratio = convexHull.maxRatio(virtual_eye,2);
 
@@ -2856,9 +2861,9 @@ bool MWShadowTechnique::adjustPerspectiveShadowMapCameraSettings(osgUtil::Render
         if (rli.min_x_ratio>min_x_ratio) min_x_ratio = rli.min_x_ratio;
         if (rli.max_x_ratio<max_x_ratio) max_x_ratio = rli.max_x_ratio;
 
-        if (min_z_ratio == FLT_MAX || rli.min_z_ratio > min_z_ratio)
+        if (min_z_ratio == dbl_max || rli.min_z_ratio > min_z_ratio)
             min_z_ratio = rli.min_z_ratio;
-        if (max_z_ratio == -FLT_MAX || rli.max_z_ratio < max_z_ratio)
+        if (max_z_ratio == -dbl_max || rli.max_z_ratio < max_z_ratio)
             max_z_ratio = rli.max_z_ratio;
     }
 #endif

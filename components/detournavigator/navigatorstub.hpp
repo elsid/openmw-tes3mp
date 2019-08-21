@@ -5,8 +5,9 @@
 
 namespace DetourNavigator
 {
-    struct NavigatorStub final : public Navigator
+    class NavigatorStub final : public Navigator
     {
+    public:
         NavigatorStub() = default;
 
         void addAgent(const osg::Vec3f& /*agentHalfExtents*/) override {}
@@ -65,7 +66,7 @@ namespace DetourNavigator
 
         SharedNavMeshCacheItem getNavMesh(const osg::Vec3f& /*agentHalfExtents*/) const override
         {
-            return SharedNavMeshCacheItem();
+            return mEmptyNavMeshCacheItem;
         }
 
         std::map<osg::Vec3f, SharedNavMeshCacheItem> getNavMeshes() const override
@@ -73,10 +74,16 @@ namespace DetourNavigator
             return std::map<osg::Vec3f, SharedNavMeshCacheItem>();
         }
 
-        Settings getSettings() const override
+        const Settings& getSettings() const override
         {
-            return Settings {};
+            return mDefaultSettings;
         }
+
+        void reportStats(unsigned int /*frameNumber*/, osg::Stats& /*stats*/) const override {}
+
+    private:
+        Settings mDefaultSettings {};
+        SharedNavMeshCacheItem mEmptyNavMeshCacheItem;
     };
 }
 
