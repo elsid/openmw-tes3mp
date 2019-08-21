@@ -16,18 +16,18 @@ addons:
       - sourceline: 'ppa:openmw/openmw'
       - sourceline: 'ppa:rakhimov/boost'
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-trusty-7
+      - llvm-toolchain-xenial-7
     packages: [
       # Dev
       cmake, clang-7, clang-tools-7, gcc-8, g++-8,
       # Boost
       libboost-filesystem-dev, libboost-program-options-dev, libboost-system-dev,
       # FFmpeg
-      libavcodec-dev, libavformat-dev, libavutil-dev, libswscale-dev,
+      libavcodec-dev, libavformat-dev, libavutil-dev, libswresample-dev, libswscale-dev,
       # Audio, Video and Misc. deps
-      libsdl2-dev, libqt4-dev, libopenal-dev, libunshield-dev, libtinyxml-dev,
+      libsdl2-dev, libqt5opengl5-dev, libopenal-dev, libunshield-dev, libtinyxml-dev,
       # The other ones from OpenMW ppa
-      libbullet-dev, libswresample-dev, libopenscenegraph-3.4-dev, libmygui-dev,
+      libbullet-dev, libopenscenegraph-3.4-dev, libmygui-dev,
       # tes3mp stuff
       libboost-dev, libqt5opengl5-dev, libluajit-5.1-dev
     ]
