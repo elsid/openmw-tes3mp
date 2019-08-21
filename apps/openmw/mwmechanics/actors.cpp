@@ -922,8 +922,13 @@ namespace MWMechanics
 
         bool hasSummonEffect = false;
         for (MagicEffects::Collection::const_iterator it = effects.begin(); it != effects.end(); ++it)
+        {
             if (isSummoningEffect(it->first.mId))
+            {
                 hasSummonEffect = true;
+                break;
+            }
+        }
 
         if (!creatureStats.getSummonedCreatureMap().empty() || !creatureStats.getSummonedCreatureGraveyard().empty() || hasSummonEffect)
         {
@@ -1524,6 +1529,14 @@ namespace MWMechanics
                     bool cellChanged = world->hasCellChanged();
                     MWWorld::Ptr actor = iter->first; // make a copy of the map key to avoid it being invalidated when the player teleports
                     updateActor(actor, duration);
+
+                    // Looping magic VFX update
+                    // Note: we need to do this before any of the animations are updated.
+                    // Reaching the text keys may trigger Hit / Spellcast (and as such, particles),
+                    // so updating VFX immediately after that would just remove the particle effects instantly.
+                    // There needs to be a magic effect update in between.
+                    ctrl->updateContinuousVfx();
+
                     if (!cellChanged && world->hasCellChanged())
                     {
                         return; // for now abort update of the old cell when cell changes by teleportation magic effect
@@ -1608,14 +1621,6 @@ namespace MWMechanics
             timerUpdateHeadTrack += duration;
             timerUpdateEquippedLight += duration;
             mTimerDisposeSummonsCorpses += duration;
-
-            // Looping magic VFX update
-            // Note: we need to do this before any of the animations are updated.
-            // Reaching the text keys may trigger Hit / Spellcast (and as such, particles),
-            // so updating VFX immediately after that would just remove the particle effects instantly.
-            // There needs to be a magic effect update in between.
-            for(PtrActorMap::iterator iter(mActors.begin()); iter != mActors.end(); ++iter)
-                iter->second->getCharacterController()->updateContinuousVfx();
 
             // Animation/movement update
             CharacterController* playerCharacter = nullptr;

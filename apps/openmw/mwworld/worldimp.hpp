@@ -619,6 +619,7 @@ namespace MWWorld
             /// \return pointer to created record
 
             void update (float duration, bool paused) override;
+            void updatePhysics (float duration, bool paused) override;
 
             void updateWindowManager () override;
 
