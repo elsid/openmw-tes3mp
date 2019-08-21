@@ -1,16 +1,24 @@
 0.46.0
 ------
 
+    Bug #2987: Editor: some chance and AI data fields can overflow
     Bug #3623: Fix HiDPI on Windows
+    Bug #4411: Reloading a saved game while falling prevents damage in some cases
     Bug #4540: Rain delay when exiting water
     Bug #4701: PrisonMarker record is not hardcoded like other markers
     Bug #4714: Crash upon game load in the repair menu while the "Your repair failed!" message is active
     Bug #4715: "Cannot get class of an empty object" exception after pressing ESC in the dialogue mode
     Bug #4720: Inventory avatar has shield with two-handed weapon during [un]equipping animation
     Bug #4723: ResetActors command works incorrectly
+    Bug #4745: Editor: Interior cell lighting field values are not displayed as colors
+    Bug #4746: Non-solid player can't run or sneak
+    Bug #4750: Sneaking doesn't work in first person view if the player is in attack ready state
+    Bug #4768: Fallback numerical value recovery chokes on invalid arguments
     Feature #2229: Improve pathfinding AI
     Feature #3442: Default values for fallbacks from ini file
+    Feature #3610: Option to invert X axis
     Feature #4673: Weapon sheathing
+    Feature #4730: Native animated containers support
     Task #4686: Upgrade media decoder to a more current FFmpeg API
 
 0.45.0

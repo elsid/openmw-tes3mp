@@ -1361,7 +1361,7 @@ namespace MWPhysics
             float heightDiff = position.z() - oldHeight;
 
             MWMechanics::CreatureStats& stats = iter->first.getClass().getCreatureStats(iter->first);
-            if ((wasOnGround && physicActor->getOnGround()) || flying || world->isSwimming(iter->first) || slowFall < 1)
+            if ((numSteps > 0 && wasOnGround && physicActor->getOnGround()) || flying || world->isSwimming(iter->first) || slowFall < 1)
                 stats.land(iter->first == player);
             else if (heightDiff < 0)
                 stats.addToFallHeight(-heightDiff);
@@ -1383,6 +1383,13 @@ namespace MWPhysics
         CProfileManager::Reset();
         CProfileManager::Increment_Frame_Counter();
 #endif
+    }
+
+    void PhysicsSystem::updateAnimatedCollisionShape(const MWWorld::Ptr& object)
+    {
+        ObjectMap::iterator found = mObjects.find(object);
+        if (found != mObjects.end())
+            found->second->animateCollisionShapes(mCollisionWorld);
     }
 
     void PhysicsSystem::debugDraw()

@@ -62,6 +62,7 @@ set(OPENMW_VERSION_RELEASE 0)
 
 set(OPENMW_VERSION_COMMITHASH "")
 set(OPENMW_VERSION_TAGHASH "")
+set(OPENMW_VERSION_COMMITDATE "")
 
 set(OPENMW_VERSION "${OPENMW_VERSION_MAJOR}.${OPENMW_VERSION_MINOR}.${OPENMW_VERSION_RELEASE}")
 
@@ -73,6 +74,18 @@ if(EXISTS ${PROJECT_SOURCE_DIR}/.git)
         set(GIT_CHECKOUT TRUE)
     else(GIT_FOUND)
         message(WARNING "Git executable not found")
+    endif(GIT_FOUND)
+
+    if(GIT_FOUND)
+        execute_process (
+                COMMAND ${GIT_EXECUTABLE} log -1 --format='%aI'
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                RESULT_VARIABLE EXITCODE3
+                OUTPUT_VARIABLE OPENMW_VERSION_COMMITDATE
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+        if(NOT EXITCODE3)
+            string(SUBSTRING ${OPENMW_VERSION_COMMITDATE} 1 10 OPENMW_VERSION_COMMITDATE)
+        endif(NOT EXITCODE3)
     endif(GIT_FOUND)
 endif(EXISTS ${PROJECT_SOURCE_DIR}/.git)
 
@@ -266,8 +279,14 @@ IF(BUILD_OPENMW OR BUILD_OPENCS)
                     osgdb_tga
                   )
 
-    get_filename_component(OSG_LIB_DIR ${OSGDB_LIBRARY} DIRECTORY)
-    set(OSGPlugins_LIB_DIR "${OSG_LIB_DIR}/osgPlugins-${OPENSCENEGRAPH_VERSION}")
+    set(OSGPlugins_LIB_DIR "")
+    foreach(OSGDB_LIB ${OSGDB_LIBRARY})
+    	# Skip library type names
+    	if(EXISTS ${OSGDB_LIB} AND NOT IS_DIRECTORY ${OSGDB_LIB})
+    		get_filename_component(OSG_LIB_DIR ${OSGDB_LIB} DIRECTORY)
+    		list(APPEND OSGPlugins_LIB_DIR "${OSG_LIB_DIR}/osgPlugins-${OPENSCENEGRAPH_VERSION}")
+    	endif()
+    endforeach(OSGDB_LIB)
 
     if(OSG_STATIC)
         add_definitions(-DOSG_LIBRARY_STATIC)
@@ -365,6 +384,9 @@ configure_resource_file(${OpenMW_SOURCE_DIR}/files/tes3mp/tes3mp-server-default.
 
 configure_resource_file(${OpenMW_SOURCE_DIR}/files/settings-default.cfg
     "${OpenMW_BINARY_DIR}" "settings-default.cfg")
+
+configure_resource_file(${OpenMW_SOURCE_DIR}/files/openmw.appdata.xml
+    "${OpenMW_BINARY_DIR}" "openmw.appdata.xml")
 
 if (NOT APPLE)
     configure_resource_file(${OpenMW_SOURCE_DIR}/files/openmw.cfg.local
@@ -625,7 +647,7 @@ set(RECASTNAVIGATION_DEMO OFF CACHE BOOL "Do not build RecastDemo")
 set(RECASTNAVIGATION_STATIC ON CACHE BOOL "Build recastnavigation static libraries")
 set(RECASTNAVIGATION_TESTS OFF CACHE BOOL "Do not build recastnavigation tests")
 
-add_subdirectory (extern/recastnavigation)
+add_subdirectory (extern/recastnavigation EXCLUDE_FROM_ALL)
 add_subdirectory (extern/osg-ffmpeg-videoplayer)
 add_subdirectory (extern/oics)
 if (BUILD_OPENCS)
@@ -836,6 +858,10 @@ endif()
 
 # Apple bundling
 if (OPENMW_OSX_DEPLOYMENT AND APPLE AND DESIRED_QT_VERSION MATCHES 5)
+    if (${CMAKE_MAJOR_VERSION} STREQUAL "3" AND ${CMAKE_MINOR_VERSION} STREQUAL "13")
+        message(FATAL_ERROR "macOS packaging is broken in CMake 3.13.*, see https://gitlab.com/OpenMW/openmw/issues/4767. Please use an older version like 3.12.4")
+    endif ()
+
     get_property(QT_COCOA_PLUGIN_PATH TARGET Qt5::QCocoaIntegrationPlugin PROPERTY LOCATION_RELEASE)
     get_filename_component(QT_COCOA_PLUGIN_DIR "${QT_COCOA_PLUGIN_PATH}" DIRECTORY)
     get_filename_component(QT_COCOA_PLUGIN_GROUP "${QT_COCOA_PLUGIN_DIR}" NAME)
@@ -870,15 +896,24 @@ if (OPENMW_OSX_DEPLOYMENT AND APPLE AND DESIRED_QT_VERSION MATCHES 5)
 
     set(ABSOLUTE_PLUGINS "")
 
+    set(OSGPlugins_DONT_FIND_DEPENDENCIES 1)
+    find_package(OSGPlugins REQUIRED COMPONENTS ${USED_OSG_PLUGINS})
+
     foreach (PLUGIN_NAME ${USED_OSG_PLUGINS})
-      set(PLUGIN_ABS "${OSGPlugins_LIB_DIR}/${PLUGIN_NAME}.so")
-      set(ABSOLUTE_PLUGINS ${PLUGIN_ABS} ${ABSOLUTE_PLUGINS})
+        string(TOUPPER ${PLUGIN_NAME} PLUGIN_NAME_UC)
+        if(${PLUGIN_NAME_UC}_LIBRARY_RELEASE)
+            set(PLUGIN_ABS ${${PLUGIN_NAME_UC}_LIBRARY_RELEASE})
+        elseif(${PLUGIN_NAME_UC}_LIBRARY)
+            set(PLUGIN_ABS ${${PLUGIN_NAME_UC}_LIBRARY})
+        else()
+            message(FATAL_ERROR "Can't find library file for ${PLUGIN_NAME}")
+            # We used to construct the path manually from OSGPlugins_LIB_DIR and the plugin name.
+            # Maybe that could be restored as a fallback?
+        endif()
+        set(ABSOLUTE_PLUGINS ${PLUGIN_ABS} ${ABSOLUTE_PLUGINS})
     endforeach ()
 
-    get_filename_component(OSG_PLUGIN_PREFIX_DIR "${OSGPlugins_LIB_DIR}" NAME)
-    if (NOT OSG_PLUGIN_PREFIX_DIR)
-      message(FATAL_ERROR "Can't get directory name for OSG plugins from '${OSGPlugins_LIB_DIR}'")
-    endif()
+    set(OSG_PLUGIN_PREFIX_DIR "osgPlugins-${OPENSCENEGRAPH_VERSION}")
 
     # installs used plugins in bundle at given path (bundle_path must be relative to ${CMAKE_INSTALL_PREFIX})
     # and returns list of install paths for all installed plugins

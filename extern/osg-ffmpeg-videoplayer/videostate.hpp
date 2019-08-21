@@ -2,8 +2,10 @@
 #define VIDEOPLAYER_VIDEOSTATE_H
 
 #include <stdint.h>
+#include <atomic>
 #include <vector>
 #include <memory>
+#include <string>
 
 #include <OpenThreads/Thread>
 #include <OpenThreads/Mutex>
@@ -77,7 +79,7 @@ struct PacketQueue {
     { clear(); }
 
     AVPacketList *first_pkt, *last_pkt;
-    volatile bool flushing;
+    std::atomic<bool> flushing;
     int nb_packets;
     int size;
 
@@ -168,12 +170,12 @@ struct VideoState {
     std::unique_ptr<ParseThread> parse_thread;
     std::unique_ptr<VideoThread> video_thread;
 
-    volatile bool mSeekRequested;
+    std::atomic<bool> mSeekRequested;
     uint64_t mSeekPos;
 
-    volatile bool mVideoEnded;
-    volatile bool mPaused;
-    volatile bool mQuit;
+    std::atomic<bool> mVideoEnded;
+    std::atomic<bool> mPaused;
+    std::atomic<bool> mQuit;
 };
 
 }

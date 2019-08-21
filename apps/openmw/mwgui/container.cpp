@@ -285,6 +285,8 @@ namespace MWGui
 
         if (mModel)
             mModel->onClose();
+
+        MWBase::Environment::get().getMechanicsManager()->onClose(mPtr);
     }
 
     void ContainerWindow::onCloseButtonClicked(MyGUI::Widget* _sender)

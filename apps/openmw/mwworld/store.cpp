@@ -1007,14 +1007,13 @@ namespace MWWorld
     }
     void Store<ESM::Attribute>::setUp()
     {
-        for (int i = 0; i < ESM::Attribute::Length; ++i) {
-            mStatic.push_back(
-                ESM::Attribute(
-                    ESM::Attribute::sAttributeIds[i],
-                    ESM::Attribute::sGmstAttributeIds[i],
-                    ESM::Attribute::sGmstAttributeDescIds[i]
-                )
-            );
+        for (int i = 0; i < ESM::Attribute::Length; ++i) 
+        {
+            ESM::Attribute newAttribute;
+            newAttribute.mId = ESM::Attribute::sAttributeIds[i];
+            newAttribute.mName = ESM::Attribute::sGmstAttributeIds[i];
+            newAttribute.mDescription = ESM::Attribute::sGmstAttributeDescIds[i];
+            mStatic.push_back(newAttribute);
         }
     }
     size_t Store<ESM::Attribute>::getSize() const
@@ -1059,18 +1058,20 @@ namespace MWWorld
     {
         // Load default marker definitions, if game files do not have them for some reason
         std::pair<std::string, std::string> markers[] = {
-            std::make_pair("DivineMarker", "marker_divine.nif"),
-            std::make_pair("DoorMarker", "marker_arrow.nif"),
-            std::make_pair("NorthMarker", "marker_north.nif"),
-            std::make_pair("TempleMarker", "marker_temple.nif"),
-            std::make_pair("TravelMarker", "marker_travel.nif")
+            std::make_pair("divinemarker", "marker_divine.nif"),
+            std::make_pair("doormarker", "marker_arrow.nif"),
+            std::make_pair("northmarker", "marker_north.nif"),
+            std::make_pair("templemarker", "marker_temple.nif"),
+            std::make_pair("travelmarker", "marker_travel.nif")
         };
 
-        for (const std::pair<std::string, std::string> marker : markers)
+        for (const std::pair<std::string, std::string> &marker : markers)
         {
             if (search(marker.first) == 0)
             {
-                ESM::Static newMarker = ESM::Static(marker.first, marker.second);
+                ESM::Static newMarker;
+                newMarker.mId = marker.first;
+                newMarker.mModel = marker.second;
                 std::pair<typename Static::iterator, bool> ret = mStatic.insert(std::make_pair(marker.first, newMarker));
                 if (ret.first != mStatic.end())
                 {
@@ -1085,14 +1086,16 @@ namespace MWWorld
     {
         // Load default Door type marker definitions
         std::pair<std::string, std::string> markers[] = {
-            std::make_pair("PrisonMarker", "marker_prison.nif")
+            std::make_pair("prisonmarker", "marker_prison.nif")
         };
 
-        for (const std::pair<std::string, std::string> marker : markers)
+        for (const std::pair<std::string, std::string> &marker : markers)
         {
             if (search(marker.first) == 0)
             {
-                ESM::Door newMarker = ESM::Door(marker.first, std::string(), marker.second, std::string(), std::string(), std::string());
+                ESM::Door newMarker;
+                newMarker.mId = marker.first;
+                newMarker.mModel = marker.second;
                 std::pair<typename Static::iterator, bool> ret = mStatic.insert(std::make_pair(marker.first, newMarker));
                 if (ret.first != mStatic.end())
                 {

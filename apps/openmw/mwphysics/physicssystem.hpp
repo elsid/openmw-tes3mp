@@ -188,6 +188,8 @@ namespace MWPhysics
                 End of tes3mp addition
             */
 
+            void updateAnimatedCollisionShape(const MWWorld::Ptr& object);
+
             template <class Function>
             void forEachAnimatedObject(Function&& function) const
             {
