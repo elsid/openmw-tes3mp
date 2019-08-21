@@ -21,7 +21,7 @@ if [[ "${CC}" =~ "clang" ]]; then export CODE_COVERAGE=0; fi
 if [[ -z "${BUILD_OPENMW}" ]]; then export BUILD_OPENMW=ON; fi
 if [[ -z "${BUILD_OPENMW_CS}" ]]; then export BUILD_OPENMW_CS=ON; fi
 
-${ANALYZE} cmake \
+${ANALYZE} cmake .. \
     -DBUILD_OPENMW=${BUILD_OPENMW} \
     -DBUILD_OPENCS=${BUILD_OPENMW_CS} \
     -DBUILD_LAUNCHER=${BUILD_OPENMW_CS} \
