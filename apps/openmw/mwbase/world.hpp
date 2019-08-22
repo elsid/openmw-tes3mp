@@ -73,11 +73,6 @@ namespace MWWorld
     typedef std::vector<std::pair<MWWorld::Ptr,MWMechanics::Movement> > PtrMovementList;
 }
 
-namespace Fallback
-{
-    class Map;
-}
-
 namespace MWBase
 {
     /// \brief Interface for the World (implemented in MWWorld)
@@ -130,8 +125,6 @@ namespace MWBase
             virtual bool toggleBorders() = 0;
 
             virtual void adjustSky() = 0;
-
-            virtual const Fallback::Map *getFallback () const = 0;
 
             virtual MWWorld::Player& getPlayer() = 0;
             virtual MWWorld::Ptr getPlayerPtr() = 0;
@@ -631,8 +624,9 @@ namespace MWBase
             {
                 Rest_Allowed = 0,
                 Rest_OnlyWaiting = 1,
-                Rest_PlayerIsUnderwater = 2,
-                Rest_EnemiesAreNearby = 3
+                Rest_PlayerIsInAir = 2,
+                Rest_PlayerIsUnderwater = 3,
+                Rest_EnemiesAreNearby = 4
             };
 
             /// check if the player is allowed to rest

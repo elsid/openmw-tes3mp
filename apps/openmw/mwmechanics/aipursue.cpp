@@ -23,6 +23,7 @@
 
 #include "movement.hpp"
 #include "creaturestats.hpp"
+#include "combat.hpp"
 
 namespace MWMechanics
 {

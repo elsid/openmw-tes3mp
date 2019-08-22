@@ -261,7 +261,7 @@ const MWMechanics::PathgridGraph& MWMechanics::AiPackage::getPathGridGraph(const
     CacheMap::iterator found = cache.find(id);
     if (found == cache.end())
     {
-        cache.insert(std::make_pair(id, std::unique_ptr<MWMechanics::PathgridGraph>(new MWMechanics::PathgridGraph(cell))));
+        cache.insert(std::make_pair(id, std::make_unique<MWMechanics::PathgridGraph>(MWMechanics::PathgridGraph(cell))));
     }
     return *cache[id].get();
 }
@@ -333,13 +333,6 @@ bool MWMechanics::AiPackage::doesPathNeedRecalc(const osg::Vec3f& newDest, const
     return mPathFinder.getPath().empty()
         || (distance(mPathFinder.getPath().back(), newDest) > 10)
         || mPathFinder.getPathCell() != currentCell;
-}
-
-bool MWMechanics::AiPackage::isTargetMagicallyHidden(const MWWorld::Ptr& target)
-{
-    const MagicEffects& magicEffects(target.getClass().getCreatureStats(target).getMagicEffects());
-    return (magicEffects.get(ESM::MagicEffect::Invisibility).getMagnitude() > 0)
-        || (magicEffects.get(ESM::MagicEffect::Chameleon).getMagnitude() > 75);
 }
 
 bool MWMechanics::AiPackage::isNearInactiveCell(osg::Vec3f position)

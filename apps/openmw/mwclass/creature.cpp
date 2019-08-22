@@ -466,7 +466,8 @@ namespace MWClass
         if (!successful)
         {
             // Missed
-            MWBase::Environment::get().getSoundManager()->playSound3D(ptr, "miss", 1.0f, 1.0f);
+            if (!attacker.isEmpty() && attacker == MWMechanics::getPlayer())
+                MWBase::Environment::get().getSoundManager()->playSound3D(ptr, "miss", 1.0f, 1.0f);
             return;
         }
 
@@ -856,6 +857,8 @@ namespace MWClass
         if(name == "left")
         {
             MWBase::World *world = MWBase::Environment::get().getWorld();
+            if(world->isFlying(ptr))
+                return -1;
             osg::Vec3f pos(ptr.getRefData().getPosition().asVec3());
             if(world->isUnderwater(ptr.getCell(), pos) || world->isWalkingOnWater(ptr))
                 return ESM::SoundGenerator::SwimLeft;
@@ -866,6 +869,8 @@ namespace MWClass
         if(name == "right")
         {
             MWBase::World *world = MWBase::Environment::get().getWorld();
+            if(world->isFlying(ptr))
+                return -1;
             osg::Vec3f pos(ptr.getRefData().getPosition().asVec3());
             if(world->isUnderwater(ptr.getCell(), pos) || world->isWalkingOnWater(ptr))
                 return ESM::SoundGenerator::SwimRight;
@@ -911,13 +916,7 @@ namespace MWClass
 
     int Creature::getBloodTexture(const MWWorld::ConstPtr &ptr) const
     {
-        int flags = ptr.get<ESM::Creature>()->mBase->mFlags;
-
-        if (flags & ESM::Creature::Skeleton)
-            return 1;
-        if (flags & ESM::Creature::Metal)
-            return 2;
-        return 0;
+        return ptr.get<ESM::Creature>()->mBase->mBloodType;
     }
 
     void Creature::readAdditionalState (const MWWorld::Ptr& ptr, const ESM::ObjectState& state)

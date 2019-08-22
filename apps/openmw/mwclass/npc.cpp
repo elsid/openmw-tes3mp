@@ -800,7 +800,8 @@ namespace MWClass
         if (!successful)
         {
             // Missed
-            sndMgr->playSound3D(ptr, "miss", 1.0f, 1.0f);
+            if (!attacker.isEmpty() && attacker == MWMechanics::getPlayer())
+                sndMgr->playSound3D(ptr, "miss", 1.0f, 1.0f);
             return;
         }
 
@@ -1399,6 +1400,8 @@ namespace MWClass
         if(name == "left" || name == "right")
         {
             MWBase::World *world = MWBase::Environment::get().getWorld();
+            if(world->isFlying(ptr))
+                return std::string();
             osg::Vec3f pos(ptr.getRefData().getPosition().asVec3());
             if(world->isSwimming(ptr))
                 return (name == "left") ? "Swim Left" : "Swim Right";
@@ -1468,13 +1471,7 @@ namespace MWClass
 
     int Npc::getBloodTexture(const MWWorld::ConstPtr &ptr) const
     {
-        const MWWorld::LiveCellRef<ESM::NPC> *ref = ptr.get<ESM::NPC>();
-
-        if (ref->mBase->mFlags & ESM::NPC::Skeleton)
-            return 1;
-        if (ref->mBase->mFlags & ESM::NPC::Metal)
-            return 2;
-        return 0;
+        return ptr.get<ESM::NPC>()->mBase->mBloodType;
     }
 
     void Npc::readAdditionalState (const MWWorld::Ptr& ptr, const ESM::ObjectState& state)

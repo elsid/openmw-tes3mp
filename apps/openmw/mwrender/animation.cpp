@@ -38,8 +38,6 @@
 
 #include <components/settings/settings.hpp>
 
-#include <components/fallback/fallback.hpp>
-
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
 #include "../mwworld/esmstore.hpp"
@@ -1628,21 +1626,12 @@ namespace MWRender
 
     void Animation::addExtraLight(osg::ref_ptr<osg::Group> parent, const ESM::Light *esmLight)
     {
-        const Fallback::Map* fallback = MWBase::Environment::get().getWorld()->getFallback();
-        static bool outQuadInLin = fallback->getFallbackBool("LightAttenuation_OutQuadInLin");
-        static bool useQuadratic = fallback->getFallbackBool("LightAttenuation_UseQuadratic");
-        static float quadraticValue = fallback->getFallbackFloat("LightAttenuation_QuadraticValue");
-        static float quadraticRadiusMult = fallback->getFallbackFloat("LightAttenuation_QuadraticRadiusMult");
-        static bool useLinear = fallback->getFallbackBool("LightAttenuation_UseLinear");
-        static float linearRadiusMult = fallback->getFallbackFloat("LightAttenuation_LinearRadiusMult");
-        static float linearValue = fallback->getFallbackFloat("LightAttenuation_LinearValue");
         bool exterior = mPtr.isInCell() && mPtr.getCell()->getCell()->isExterior();
 
-        SceneUtil::addLight(parent, esmLight, Mask_ParticleSystem, Mask_Lighting, exterior, outQuadInLin,
-                            useQuadratic, quadraticValue, quadraticRadiusMult, useLinear, linearRadiusMult, linearValue);
+        SceneUtil::addLight(parent, esmLight, Mask_ParticleSystem, Mask_Lighting, exterior);
     }
 
-    void Animation::addEffect (const std::string& model, int effectId, bool loop, const std::string& bonename, const std::string& texture, float scale)
+    void Animation::addEffect (const std::string& model, int effectId, bool loop, const std::string& bonename, const std::string& texture)
     {
         if (!mObjectRoot.get())
             return;
@@ -1674,7 +1663,12 @@ namespace MWRender
         }
 
         osg::ref_ptr<osg::PositionAttitudeTransform> trans = new osg::PositionAttitudeTransform;
-        trans->setScale(osg::Vec3f(scale, scale, scale));
+        if (!mPtr.getClass().isNpc())
+        {
+            osg::Vec3f bounds (MWBase::Environment::get().getWorld()->getHalfExtents(mPtr) * 2.f / Constants::UnitsPerFoot);
+            float scale = std::max({ bounds.x()/3.f, bounds.y()/3.f, bounds.z()/6.f });
+            trans->setScale(osg::Vec3f(scale, scale, scale));
+        }
         parentNode->addChild(trans);
 
         osg::ref_ptr<osg::Node> node = mResourceSystem->getSceneManager()->getInstance(model, trans);
@@ -1834,14 +1828,12 @@ namespace MWRender
         }
         else
         {
-            // TODO: use global attenuation settings
-
             // 1 pt of Light magnitude corresponds to 1 foot of radius
             float radius = effect * std::ceil(Constants::UnitsPerFoot);
-            const float linearValue = 3.f; // Currently hardcoded: unmodified Morrowind attenuation settings
-            float linearAttenuation = linearValue / radius;
+            // Arbitrary multiplier used to make the obvious cut-off less obvious
+            float cutoffMult = 3;
 
-            if (!mGlowLight || linearAttenuation != mGlowLight->getLight(0)->getLinearAttenuation())
+            if (!mGlowLight || (radius * cutoffMult) != mGlowLight->getRadius())
             {
                 if (mGlowLight)
                 {
@@ -1853,7 +1845,9 @@ namespace MWRender
                 light->setDiffuse(osg::Vec4f(0,0,0,0));
                 light->setSpecular(osg::Vec4f(0,0,0,0));
                 light->setAmbient(osg::Vec4f(1.5f,1.5f,1.5f,1.f));
-                light->setLinearAttenuation(linearAttenuation);
+
+                bool isExterior = mPtr.isInCell() && mPtr.getCell()->getCell()->isExterior();
+                SceneUtil::configureLight(light, radius, isExterior);
 
                 mGlowLight = new SceneUtil::LightSource;
                 mGlowLight->setNodeMask(Mask_Lighting);
@@ -1861,8 +1855,7 @@ namespace MWRender
                 mGlowLight->setLight(light);
             }
 
-            // Make the obvious cut-off a bit less obvious
-            mGlowLight->setRadius(radius * 3);
+            mGlowLight->setRadius(radius * cutoffMult);
         }
     }
 

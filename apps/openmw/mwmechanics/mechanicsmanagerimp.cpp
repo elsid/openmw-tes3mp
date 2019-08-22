@@ -1559,22 +1559,24 @@ namespace MWMechanics
 
     bool MechanicsManager::actorAttacked(const MWWorld::Ptr &target, const MWWorld::Ptr &attacker)
     {
-        if (target == getPlayer() || !attacker.getClass().isActor())
+        const MWWorld::Ptr& player = getPlayer();
+        if (target == player || !attacker.getClass().isActor())
             return false;
 
-        std::set<MWWorld::Ptr> followersAttacker;
-        getActorsSidingWith(attacker, followersAttacker);
-
         MWMechanics::CreatureStats& statsTarget = target.getClass().getCreatureStats(target);
-
-        if (followersAttacker.find(target) != followersAttacker.end())
+        if (attacker == player)
         {
-            statsTarget.friendlyHit();
-
-            if (statsTarget.getFriendlyHits() < 4)
+            std::set<MWWorld::Ptr> followersAttacker;
+            getActorsSidingWith(attacker, followersAttacker);
+            if (followersAttacker.find(target) != followersAttacker.end())
             {
-                MWBase::Environment::get().getDialogueManager()->say(target, "hit");
-                return false;
+                statsTarget.friendlyHit();
+
+                if (statsTarget.getFriendlyHits() < 4)
+                {
+                    MWBase::Environment::get().getDialogueManager()->say(target, "hit");
+                    return false;
+                }
             }
         }
 
@@ -1589,10 +1591,10 @@ namespace MWMechanics
             Make it possible to start combat with DedicatedPlayers and DedicatedActors by
             adding additional conditions for them
         */
-        if (!attacker.isEmpty() && (attacker.getClass().getCreatureStats(attacker).getAiSequence().isInCombat(target)
-                                    || attacker == getPlayer() || mwmp::PlayerList::isDedicatedPlayer(attacker)
-                                    || mwmp::Main::get().getCellController()->isDedicatedActor(attacker))
-                && !seq.isInCombat(attacker))
+        if (!attacker.isEmpty()
+            && (attacker.getClass().getCreatureStats(attacker).getAiSequence().isInCombat(target) || attacker == player
+                || mwmp::PlayerList::isDedicatedPlayer(attacker) || mwmp::Main::get().getCellController()->isDedicatedActor(attacker))
+            && !seq.isInCombat(attacker))
         /*
             End of tes3mp change (major)
         */
@@ -1605,7 +1607,7 @@ namespace MWMechanics
                 // he will attack the player only if we will force him (e.g. via StartCombat console command)
                 bool peaceful = false;
                 std::string script = target.getClass().getScript(target);
-                if (!script.empty() && target.getRefData().getLocals().hasVar(script, "onpchitme") && attacker == getPlayer())
+                if (!script.empty() && target.getRefData().getLocals().hasVar(script, "onpchitme") && attacker == player)
                 {
                     int fight = std::max(0, target.getClass().getCreatureStats(target).getAiSetting(CreatureStats::AI_Fight).getModified());
                     peaceful = (fight == 0);

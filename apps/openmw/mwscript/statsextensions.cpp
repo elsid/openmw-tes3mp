@@ -466,8 +466,9 @@ namespace MWScript
                     std::string id = runtime.getStringLiteral (runtime[0].mInteger);
                     runtime.pop();
 
-                    // make sure a spell with this ID actually exists.
-                    MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().find (id);
+                    const ESM::Spell* spell = MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().find (id);
+
+                    MWMechanics::CreatureStats& creatureStats = ptr.getClass().getCreatureStats(ptr);
 
                     /*
                         Start of tes3mp change (major)
@@ -476,7 +477,7 @@ namespace MWScript
 
                         Send an ID_PLAYER_SPELLBOOK packet every time a player gains a spell here
                     */
-                    MWMechanics::Spells &spells = ptr.getClass().getCreatureStats(ptr).getSpells();
+                    MWMechanics::Spells &spells = creatureStats.getSpells();
 
                     if (!spells.hasSpell(id))
                     {
@@ -488,6 +489,13 @@ namespace MWScript
                     /*
                         End of tes3mp change (major)
                     */
+
+                    ESM::Spell::SpellType type = static_cast<ESM::Spell::SpellType>(spell->mData.mType);
+                    if (type != ESM::Spell::ST_Spell && type != ESM::Spell::ST_Power)
+                    {
+                        // Apply looping particles immediately for constant effects
+                        MWBase::Environment::get().getWorld()->applyLoopingParticles(ptr);
+                    }
                 }
         };
 

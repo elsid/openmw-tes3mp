@@ -311,7 +311,7 @@ IF(BUILD_OPENMW OR BUILD_OPENCS)
         set(REQUIRED_BULLET_VERSION 283) # but for build testing, 283 is fine
     endif()
 
-    find_package(MyGUI 3.2.1 REQUIRED)
+    find_package(MyGUI 3.2.2 REQUIRED)
     find_package(SDL2 REQUIRED)
     find_package(OpenAL REQUIRED)
     find_package(Bullet ${REQUIRED_BULLET_VERSION} REQUIRED COMPONENTS BulletCollision LinearMath)
@@ -429,7 +429,7 @@ endif()
 # CXX Compiler settings
 set(CMAKE_CXX_STANDARD 14)
 if (CMAKE_CXX_COMPILER_ID STREQUAL GNU OR CMAKE_CXX_COMPILER_ID STREQUAL Clang)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wundef -Wno-unused-parameter -pedantic -Wno-long-long")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wundef -Wno-unused-parameter -std=c++14 -pedantic -Wno-long-long")
     add_definitions( -DBOOST_NO_CXX11_SCOPED_ENUMS=ON )
 
     if (APPLE)
