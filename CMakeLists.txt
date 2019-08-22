@@ -647,9 +647,7 @@ endif(WIN32)
 
 # Extern
 IF(BUILD_OPENMW OR BUILD_OPENCS)
-set(RECASTNAVIGATION_DEMO OFF CACHE BOOL "Do not build RecastDemo")
 set(RECASTNAVIGATION_STATIC ON CACHE BOOL "Build recastnavigation static libraries")
-set(RECASTNAVIGATION_TESTS OFF CACHE BOOL "Do not build recastnavigation tests")
 
 add_subdirectory (extern/recastnavigation EXCLUDE_FROM_ALL)
 add_subdirectory (extern/osg-ffmpeg-videoplayer)

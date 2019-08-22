@@ -235,7 +235,7 @@ void MechanicsHelper::resetAttack(Attack* attack)
 
 bool MechanicsHelper::getSpellSuccess(std::string spellId, const MWWorld::Ptr& caster)
 {
-    return Misc::Rng::roll0to99() < MWMechanics::getSpellSuccessChance(spellId, caster);
+    return Misc::Rng::roll0to99() < MWMechanics::getSpellSuccessChance(spellId, caster, nullptr, true, false);
 }
 
 void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)

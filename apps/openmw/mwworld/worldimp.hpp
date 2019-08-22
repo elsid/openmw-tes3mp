@@ -155,6 +155,8 @@ namespace MWWorld
             void addContainerScripts(const Ptr& reference, CellStore* cell) override;
             void removeContainerScripts(const Ptr& reference) override;
     private:
+            bool rotateDoor(const Ptr door, int state, float duration);
+
             void processDoors(float duration);
             ///< Run physics simulation and modify \a world accordingly.
 
@@ -663,8 +665,6 @@ namespace MWWorld
             bool toggleVanityMode(bool enable) override;
 
             void allowVanityMode(bool allow) override;
-
-            void togglePlayerLooking(bool enable) override;
 
             void changeVanityModeScale(float factor) override;
 
