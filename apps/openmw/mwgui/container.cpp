@@ -254,7 +254,7 @@ namespace MWGui
         mItemView->setModel (mSortModel);
         mItemView->resetScrollBars();
 
-        MyGUI::InputManager::getInstance().setKeyFocusWidget(mCloseButton);
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mCloseButton);
 
         setTitle(container.getClass().getName(container));
     }
@@ -298,7 +298,7 @@ namespace MWGui
         if(mDragAndDrop != nullptr && mDragAndDrop->mIsOnDragAndDrop)
             return;
 
-        MyGUI::InputManager::getInstance().setKeyFocusWidget(mCloseButton);
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mCloseButton);
 
         /*
             Start of tes3mp addition
@@ -378,7 +378,7 @@ namespace MWGui
     {
         if(mDragAndDrop == nullptr || !mDragAndDrop->mIsOnDragAndDrop)
         {
-            MyGUI::InputManager::getInstance().setKeyFocusWidget(mCloseButton);
+            MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mCloseButton);
 
             onTakeAllButtonClicked(mTakeButton);
             

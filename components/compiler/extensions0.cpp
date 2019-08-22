@@ -33,7 +33,7 @@ namespace Compiler
         {
             extensions.registerInstruction ("aiactivate", "c/l", opcodeAIActivate,
                 opcodeAIActivateExplicit);
-            extensions.registerInstruction ("aitravel", "fff/lx", opcodeAiTravel,
+            extensions.registerInstruction ("aitravel", "fff/zx", opcodeAiTravel,
                 opcodeAiTravelExplicit);
             extensions.registerInstruction ("aiescort", "cffff/l", opcodeAiEscort,
                 opcodeAiEscortExplicit);
@@ -340,7 +340,7 @@ namespace Compiler
             extensions.registerFunction ("getmasserphase", 'l', "", opcodeGetMasserPhase);
             extensions.registerFunction ("getsecundaphase", 'l', "", opcodeGetSecundaPhase);
             extensions.registerFunction ("getcurrentweather", 'l', "", opcodeGetCurrentWeather);
-            extensions.registerInstruction ("modregion", "S/llllllllll", opcodeModRegion);
+            extensions.registerInstruction ("modregion", "S/llllllllllX", opcodeModRegion);
         }
     }
 

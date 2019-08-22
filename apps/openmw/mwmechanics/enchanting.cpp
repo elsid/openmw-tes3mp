@@ -131,10 +131,7 @@ namespace MWMechanics
     void Enchanting::nextCastStyle()
     {
         if (itemEmpty())
-        {
-            mCastStyle = ESM::Enchantment::WhenUsed;
             return;
-        }
 
         const bool powerfulSoul = getGemCharge() >= \
                 MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>().find ("iSoulAmountForConstantEffect")->mValue.getInteger();
@@ -296,6 +293,8 @@ namespace MWMechanics
     void Enchanting::setEnchanter(const MWWorld::Ptr& enchanter)
     {
         mEnchanter = enchanter;
+        // Reset cast style
+        mCastStyle = ESM::Enchantment::CastOnce;
     }
 
     int Enchanting::getEnchantChance() const

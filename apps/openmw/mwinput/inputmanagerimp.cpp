@@ -89,6 +89,7 @@ namespace MWInput
         , mSneaking(false)
         , mAttemptJump(false)
         , mInvUiScalingFactor(1.f)
+        , mGamepadCursorSpeed(Settings::Manager::getFloat("gamepad cursor speed", "Input"))
         , mFakeDeviceID(1)
     {
         mInputManager = new SDLUtil::InputWrapper(window, viewer, grab);
@@ -570,9 +571,9 @@ namespace MWInput
 
             // We keep track of our own mouse position, so that moving the mouse while in
             // game mode does not move the position of the GUI cursor
-            float xmove = xAxis * dt * 1500.0f * mInvUiScalingFactor;
-            float ymove = yAxis * dt * 1500.0f * mInvUiScalingFactor;
-            if (xmove != 0|| ymove != 0)
+            float xmove = xAxis * dt * 1500.0f * mInvUiScalingFactor * mGamepadCursorSpeed;
+            float ymove = yAxis * dt * 1500.0f * mInvUiScalingFactor * mGamepadCursorSpeed;
+            if (xmove != 0|| ymove != 0 || zAxis != 0)
             {
                 mGuiCursorX += xmove;
                 mGuiCursorY += ymove;
@@ -635,11 +636,7 @@ namespace MWInput
                     mPlayer->setAutoMove (false);
                     mPlayer->setForwardBackward((yAxis - 0.5f) * 2 * -1);
                 }
-                else if(mPlayer->getAutoMove())
-                {
-                    triedToMove = true;
-                    mPlayer->setForwardBackward (1);
-                }
+
                 if (triedToMove)
                     mJoystickLastUsed = true;
 
@@ -661,7 +658,8 @@ namespace MWInput
                     mPlayer->setAutoMove (false);
                     mPlayer->setForwardBackward (actionIsActive(A_MoveForward) ? 1 : -1);
                 }
-                else if(mPlayer->getAutoMove())
+
+                if (mPlayer->getAutoMove())
                 {
                     alwaysRunAllowed = true;
                     triedToMove = true;

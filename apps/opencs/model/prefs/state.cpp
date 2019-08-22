@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
 
 #include "intsetting.hpp"
 #include "doublesetting.hpp"
@@ -247,6 +248,9 @@ void CSMPrefs::State::declare()
         addValues (landeditOutsideVisibleCell);
     declareInt ("texturebrush-maximumsize", "Maximum texture brush size", 50).
         setMin (1);
+    declareBool ("open-list-view", "Open displays list view", false).
+        setTooltip ("When opening a reference from the scene view, it will open the"
+        " instance list view instead of the individual instance record view.");
 
     declareCategory ("Key Bindings");
 
@@ -331,6 +335,7 @@ void CSMPrefs::State::declare()
     declareShortcut ("scene-navi-primary", "Camera Rotation From Mouse Movement", QKeySequence(Qt::LeftButton));
     declareShortcut ("scene-navi-secondary", "Camera Translation From Mouse Movement",
         QKeySequence(Qt::ControlModifier | (int)Qt::LeftButton));
+    declareShortcut ("scene-open-primary", "Primary Open", QKeySequence(Qt::ShiftModifier | (int)Qt::LeftButton));
     declareShortcut ("scene-edit-primary", "Primary Edit", QKeySequence(Qt::RightButton));
     declareShortcut ("scene-edit-secondary", "Secondary Edit",
         QKeySequence(Qt::ControlModifier | (int)Qt::RightButton));
@@ -411,7 +416,9 @@ CSMPrefs::DoubleSetting& CSMPrefs::State::declareDouble (const std::string& key,
     if (mCurrentCategory==mCategories.end())
         throw std::logic_error ("no category for setting");
 
-    setDefault(key, std::to_string(default_));
+    std::ostringstream stream;
+    stream << default_;
+    setDefault(key, stream.str());
 
     default_ = mSettings.getFloat (key, mCurrentCategory->second.getKey());
 

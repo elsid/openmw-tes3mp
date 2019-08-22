@@ -2,7 +2,6 @@
 
 #include <MyGUI_ImageBox.h>
 #include <MyGUI_Gui.h>
-#include <MyGUI_InputManager.h>
 
 #include <components/esm/records.hpp>
 #include <components/widgets/list.hpp>
@@ -458,7 +457,7 @@ namespace MWGui
     void SpellCreationDialog::onOpen()
     {
         center();
-        MyGUI::InputManager::getInstance().setKeyFocusWidget(mNameEdit);
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mNameEdit);
     }
 
     void SpellCreationDialog::onReferenceUnavailable ()
