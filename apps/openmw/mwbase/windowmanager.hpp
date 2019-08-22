@@ -375,9 +375,6 @@ namespace MWBase
 
             virtual const Translation::Storage& getTranslationDataStorage() const = 0;
 
-            /// Warning: do not use MyGUI::InputManager::setKeyFocusWidget directly. Instead use this.
-            virtual void setKeyFocusWidget (MyGUI::Widget* widget) = 0;
-
             virtual void loadUserFonts() = 0;
 
             virtual Loading::Listener* getLoadingScreen() = 0;
@@ -408,6 +405,7 @@ namespace MWBase
             virtual void removeCurrentModal(MWGui::WindowModal* input) = 0;
 
             virtual void pinWindow (MWGui::GuiWindow window) = 0;
+            virtual void toggleMaximized(MWGui::Layout *layout) = 0;
 
             /// Fade the screen in, over \a time seconds
             virtual void fadeScreenIn(const float time, bool clearQueue=true, float delay=0.f) = 0;
@@ -421,6 +419,7 @@ namespace MWBase
             virtual void activateHitOverlay(bool interrupt=true) = 0;
             virtual void setWerewolfOverlay(bool set) = 0;
 
+            virtual void toggleConsole() = 0;
             virtual void toggleDebugWindow() = 0;
 
             /// Cycle to next or previous spell
@@ -436,6 +435,7 @@ namespace MWBase
             virtual std::string correctTexturePath(const std::string& path) = 0;
             virtual bool textureExists(const std::string& path) = 0;
 
+            virtual void addCell(MWWorld::CellStore* cell) = 0;
             virtual void removeCell(MWWorld::CellStore* cell) = 0;
             virtual void writeFog(MWWorld::CellStore* cell) = 0;
 

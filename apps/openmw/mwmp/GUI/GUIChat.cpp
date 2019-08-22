@@ -188,7 +188,7 @@ namespace mwmp
     {
         editState = state;
         mCommandLine->setVisible(editState);
-        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(editState ? mCommandLine : nullptr);
+        MyGUI::InputManager::getInstance().setKeyFocusWidget(editState ? mCommandLine : nullptr);
     }
 
     void GUIChat::pressedSay()

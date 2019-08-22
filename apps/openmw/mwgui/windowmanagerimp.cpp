@@ -228,8 +228,7 @@ namespace MWGui
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Widgets::MWEffectList>("Widget");
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Widgets::MWSpellEffect>("Widget");
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Widgets::MWDynamicStat>("Widget");
-        MyGUI::FactoryManager::getInstance().registerFactory<MWGui::ExposedWindow>("Widget");
-        MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Widgets::MWScrollBar>("Widget");
+        MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Window>("Widget");
         MyGUI::FactoryManager::getInstance().registerFactory<VideoWidget>("Widget");
         MyGUI::FactoryManager::getInstance().registerFactory<BackgroundImage>("Widget");
         MyGUI::FactoryManager::getInstance().registerFactory<osgMyGUI::AdditiveLayer>("Layer");
@@ -248,7 +247,6 @@ namespace MWGui
         MyGUI::ResourceManager::getInstance().unregisterLoadXmlDelegate("Resource");
         MyGUI::ResourceManager::getInstance().registerLoadXmlDelegate("Resource") = newDelegate(this, &WindowManager::loadFontDelegate);
 
-        MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Controllers::ControllerRepeatEvent>("Controller");
         MyGUI::FactoryManager::getInstance().registerFactory<MWGui::Controllers::ControllerFollowMouse>("Controller");
 
         MyGUI::FactoryManager::getInstance().registerFactory<ResourceImageSetPointerFix>("Resource", "ResourceImageSetPointer");
@@ -459,7 +457,6 @@ namespace MWGui
         mConsole = new Console(w,h, mConsoleOnlyScripts);
         mWindows.push_back(mConsole);
         trackWindow(mConsole, "console");
-        mGuiModeStates[GM_Console] = GuiModeState(mConsole);
 
         bool questList = mResourceSystem->getVFS()->exists("textures/tx_menubook_options_over.dds");
         JournalWindow* journal = JournalWindow::create(JournalViewModel::create (), questList, mEncoding);
@@ -721,7 +718,7 @@ namespace MWGui
             setCursorVisible(!gameMode);
 
         if (gameMode)
-            setKeyFocusWidget (nullptr);
+            MyGUI::InputManager::getInstance().resetKeyFocusWidget();
 
         // Icons of forced hidden windows are displayed
         setMinimapVisibility((mAllowed & GW_Map) && (!mMap->pinned() || (mForceHidden & GW_Map)));
@@ -734,10 +731,10 @@ namespace MWGui
         // If in game mode (or interactive messagebox), show the pinned windows
         if (mGuiModes.empty())
         {
-            mMap->setVisible(mMap->pinned() && !(mForceHidden & GW_Map) && (mAllowed & GW_Map));
-            mStatsWindow->setVisible(mStatsWindow->pinned() && !(mForceHidden & GW_Stats) && (mAllowed & GW_Stats));
-            mInventoryWindow->setVisible(mInventoryWindow->pinned() && !(mForceHidden & GW_Inventory) && (mAllowed & GW_Inventory));
-            mSpellWindow->setVisible(mSpellWindow->pinned() && !(mForceHidden & GW_Magic) && (mAllowed & GW_Magic));
+            mMap->setVisible(mMap->pinned() && !isConsoleMode() && !(mForceHidden & GW_Map) && (mAllowed & GW_Map));
+            mStatsWindow->setVisible(mStatsWindow->pinned() && !isConsoleMode() && !(mForceHidden & GW_Stats) && (mAllowed & GW_Stats));
+            mInventoryWindow->setVisible(mInventoryWindow->pinned() && !isConsoleMode() && !(mForceHidden & GW_Inventory) && (mAllowed & GW_Inventory));
+            mSpellWindow->setVisible(mSpellWindow->pinned() && !isConsoleMode() && !(mForceHidden & GW_Magic) && (mAllowed & GW_Magic));
             return;
         }
         else if (getMode() != GM_Inventory)
@@ -1019,6 +1016,12 @@ namespace MWGui
 
     void WindowManager::onFrame (float frameDuration)
     {
+        bool gameRunning = MWBase::Environment::get().getStateManager()->getState()!=
+            MWBase::StateManager::State_NoGame;
+
+        if (gameRunning)
+            updateMap();
+
         if (!mGuiModes.empty())
         {
             GuiModeState& state = mGuiModeStates[mGuiModes.back()];
@@ -1062,13 +1065,10 @@ namespace MWGui
         if (mLocalMapRender)
             mLocalMapRender->cleanupCameras();
 
-        if (MWBase::Environment::get().getStateManager()->getState()==
-            MWBase::StateManager::State_NoGame)
+        if (!gameRunning)
             return;
 
         mDragAndDrop->onFrame();
-
-        updateMap();
 
         mHud->onFrame(frameDuration);
 
@@ -1254,6 +1254,7 @@ namespace MWGui
         else if (tag.compare(0, tokenLength, tokenToFind) == 0)
         {
             _result = mTranslationDataStorage.translateCellName(tag.substr(tokenLength));
+            _result = MyGUI::TextIterator::toTagsString(_result);
         }
         else if (Gui::replaceTag(tag, _result))
         {
@@ -1306,10 +1307,14 @@ namespace MWGui
 
         for (std::map<MyGUI::Window*, std::string>::iterator it = mTrackedWindows.begin(); it != mTrackedWindows.end(); ++it)
         {
-            MyGUI::IntPoint pos(static_cast<int>(Settings::Manager::getFloat(it->second + " x", "Windows") * x),
-                                static_cast<int>( Settings::Manager::getFloat(it->second+ " y", "Windows") * y));
-            MyGUI::IntSize size(static_cast<int>(Settings::Manager::getFloat(it->second + " w", "Windows") * x),
-                                 static_cast<int>(Settings::Manager::getFloat(it->second + " h", "Windows") * y));
+            std::string settingName = it->second;
+            if (Settings::Manager::getBool(settingName + " maximized", "Windows"))
+                settingName += " maximized";
+
+            MyGUI::IntPoint pos(static_cast<int>(Settings::Manager::getFloat(settingName + " x", "Windows") * x),
+                                static_cast<int>(Settings::Manager::getFloat(settingName + " y", "Windows") * y));
+            MyGUI::IntSize size(static_cast<int>(Settings::Manager::getFloat(settingName + " w", "Windows") * x),
+                                 static_cast<int>(Settings::Manager::getFloat(settingName + " h", "Windows") * y));
             it->first->setPosition(pos);
             it->first->setSize(size);
         }
@@ -1386,6 +1391,10 @@ namespace MWGui
         }
 
         updateVisible();
+
+        // To make sure that console window get focus again
+        if (mConsole && mConsole->isVisible())
+            mConsole->onOpen();
     }
 
     void WindowManager::removeGuiMode(GuiMode mode, bool noSound)
@@ -1619,14 +1628,15 @@ namespace MWGui
 
     bool WindowManager::isGuiMode() const
     {
-        return !mGuiModes.empty() || (mMessageBoxManager && mMessageBoxManager->isInteractiveMessageBox());
+        return
+            !mGuiModes.empty() ||
+            isConsoleMode() ||
+            (mMessageBoxManager && mMessageBoxManager->isInteractiveMessageBox());
     }
 
     bool WindowManager::isConsoleMode() const
     {
-        if (!mGuiModes.empty() && mGuiModes.back()==GM_Console)
-            return true;
-        return false;
+        return mConsole && mConsole->isVisible();
     }
 
     MWGui::GuiMode WindowManager::getMode() const
@@ -1794,16 +1804,6 @@ namespace MWGui
         }
     }
 
-    // Remove this method for MyGUI 3.2.2
-    void WindowManager::setKeyFocusWidget(MyGUI::Widget *widget)
-    {
-        if (widget == nullptr)
-            MyGUI::InputManager::getInstance().resetKeyFocusWidget();
-        else
-            MyGUI::InputManager::getInstance().setKeyFocusWidget(widget);
-        onKeyFocusChanged(widget);
-    }
-
     void WindowManager::onKeyFocusChanged(MyGUI::Widget *widget)
     {
         if (widget && widget->castType<MyGUI::EditBox>(false))
@@ -1838,17 +1838,42 @@ namespace MWGui
 
     void WindowManager::trackWindow(Layout *layout, const std::string &name)
     {
+        std::string settingName = name;
         MyGUI::IntSize viewSize = MyGUI::RenderManager::getInstance().getViewSize();
-        MyGUI::IntPoint pos(static_cast<int>(Settings::Manager::getFloat(name + " x", "Windows") * viewSize.width),
-                            static_cast<int>(Settings::Manager::getFloat(name + " y", "Windows") * viewSize.height));
-        MyGUI::IntSize size (static_cast<int>(Settings::Manager::getFloat(name + " w", "Windows") * viewSize.width),
-                             static_cast<int>(Settings::Manager::getFloat(name + " h", "Windows") * viewSize.height));
+        bool isMaximized = Settings::Manager::getBool(name + " maximized", "Windows");
+        if (isMaximized)
+            settingName += " maximized";
+
+        MyGUI::IntPoint pos(static_cast<int>(Settings::Manager::getFloat(settingName + " x", "Windows") * viewSize.width),
+                            static_cast<int>(Settings::Manager::getFloat(settingName + " y", "Windows") * viewSize.height));
+        MyGUI::IntSize size (static_cast<int>(Settings::Manager::getFloat(settingName + " w", "Windows") * viewSize.width),
+                             static_cast<int>(Settings::Manager::getFloat(settingName + " h", "Windows") * viewSize.height));
         layout->mMainWidget->setPosition(pos);
         layout->mMainWidget->setSize(size);
 
         MyGUI::Window* window = layout->mMainWidget->castType<MyGUI::Window>();
         window->eventWindowChangeCoord += MyGUI::newDelegate(this, &WindowManager::onWindowChangeCoord);
         mTrackedWindows[window] = name;
+    }
+
+    void WindowManager::toggleMaximized(Layout *layout)
+    {
+        MyGUI::Window* window = layout->mMainWidget->castType<MyGUI::Window>();
+        std::string setting = mTrackedWindows[window];
+        if (setting.empty())
+            return;
+
+        bool maximized = !Settings::Manager::getBool(setting + " maximized", "Windows");
+        if (maximized)
+            setting += " maximized";
+
+        MyGUI::IntSize viewSize = MyGUI::RenderManager::getInstance().getViewSize();
+        float x = Settings::Manager::getFloat(setting + " x", "Windows") * float(viewSize.width);
+        float y = Settings::Manager::getFloat(setting + " y", "Windows") * float(viewSize.height);
+        float w = Settings::Manager::getFloat(setting + " w", "Windows") * float(viewSize.width);
+        float h = Settings::Manager::getFloat(setting + " h", "Windows") * float(viewSize.height);
+        window->setCoord(x, y, w, h);
+        Settings::Manager::setBool(mTrackedWindows[window] + " maximized", "Windows", maximized);
     }
 
     void WindowManager::onWindowChangeCoord(MyGUI::Window *_sender)
@@ -1863,6 +1888,9 @@ namespace MWGui
         Settings::Manager::setFloat(setting + " y", "Windows", y);
         Settings::Manager::setFloat(setting + " w", "Windows", w);
         Settings::Manager::setFloat(setting + " h", "Windows", h);
+        bool maximized = Settings::Manager::getBool(setting + " maximized", "Windows");
+        if (maximized)
+            Settings::Manager::setBool(setting + " maximized", "Windows", false);
     }
 
     void WindowManager::clear()
@@ -1942,6 +1970,7 @@ namespace MWGui
     bool WindowManager::isSavingAllowed() const
     {
         return !MyGUI::InputManager::getInstance().isModalAny()
+                && !isConsoleMode()
                 // TODO: remove this, once we have properly serialized the state of open windows
                 && (!isGuiMode() || (mGuiModes.size() == 1 && (getMode() == GM_MainMenu || getMode() == GM_Rest)));
     }
@@ -1968,7 +1997,7 @@ namespace MWGui
         sizeVideo(screenSize.width, screenSize.height);
 
         MyGUI::Widget* oldKeyFocus = MyGUI::InputManager::getInstance().getKeyFocusWidget();
-        setKeyFocusWidget(mVideoWidget);
+        MyGUI::InputManager::getInstance().setKeyFocusWidget(mVideoWidget);
 
         mVideoBackground->setVisible(true);
 
@@ -2006,7 +2035,7 @@ namespace MWGui
 
         MWBase::Environment::get().getSoundManager()->resumeSounds();
 
-        setKeyFocusWidget(oldKeyFocus);
+        MyGUI::InputManager::getInstance().setKeyFocusWidget(oldKeyFocus);
 
         setCursorVisible(cursorWasVisible);
 
@@ -2189,6 +2218,21 @@ namespace MWGui
         SDL_free(text);
     }
 
+    void WindowManager::toggleConsole()
+    {
+        bool visible = mConsole->isVisible();
+
+        if (!visible && !mGuiModes.empty())
+            mKeyboardNavigation->saveFocus(mGuiModes.back());
+
+        mConsole->setVisible(!visible);
+
+        if (visible && !mGuiModes.empty())
+            mKeyboardNavigation->restoreFocus(mGuiModes.back());
+
+        updateVisible();
+    }
+
     void WindowManager::toggleDebugWindow()
     {
         mDebugWindow->setVisible(!mDebugWindow->isVisible());
@@ -2356,6 +2400,11 @@ namespace MWGui
                 *(data++) = static_cast<unsigned char>(value*255);
             }
         tex->unlock();
+    }
+
+    void WindowManager::addCell(MWWorld::CellStore* cell)
+    {
+        mLocalMapRender->addCell(cell);
     }
 
     void WindowManager::removeCell(MWWorld::CellStore *cell)

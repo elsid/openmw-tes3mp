@@ -152,10 +152,9 @@ namespace MWWorld
             */
 
     public: // FIXME
+            void addContainerScripts(const Ptr& reference, CellStore* cell) override;
             void removeContainerScripts(const Ptr& reference) override;
     private:
-            void addContainerScripts(const Ptr& reference, CellStore* cell);
-
             void processDoors(float duration);
             ///< Run physics simulation and modify \a world accordingly.
 
@@ -305,7 +304,7 @@ namespace MWWorld
             ///< Return a pointer to a liveCellRef with the given name.
             /// \param activeOnly do non search inactive cells.
 
-            Ptr searchPtr (const std::string& name, bool activeOnly) override;
+            Ptr searchPtr (const std::string& name, bool activeOnly, bool searchInContainers = true) override;
             ///< Return a pointer to a liveCellRef with the given name.
             /// \param activeOnly do non search inactive cells.
 

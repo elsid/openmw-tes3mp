@@ -35,6 +35,7 @@ namespace MWRender
 class ResetAccumRootCallback;
 class RotateController;
 class GlowUpdater;
+class TransparencyUpdater;
 
 class EffectAnimationTime : public SceneUtil::ControllerSource
 {
@@ -266,6 +267,7 @@ protected:
 
     osg::ref_ptr<SceneUtil::LightSource> mGlowLight;
     osg::ref_ptr<GlowUpdater> mGlowUpdater;
+    osg::ref_ptr<TransparencyUpdater> mTransparencyUpdater;
 
     float mAlpha;
 
@@ -475,6 +477,7 @@ public:
     virtual float getHeadPitch() const;
     virtual float getHeadYaw() const;
     virtual void setAccurateAiming(bool enabled) {}
+    virtual bool canBeHarvested() const { return false; }
 
 private:
     Animation(const Animation&);
@@ -484,6 +487,8 @@ private:
 class ObjectAnimation : public Animation {
 public:
     ObjectAnimation(const MWWorld::Ptr& ptr, const std::string &model, Resource::ResourceSystem* resourceSystem, bool animated, bool allowLight);
+
+    bool canBeHarvested() const;
 };
 
 class UpdateVfxCallback : public osg::NodeCallback

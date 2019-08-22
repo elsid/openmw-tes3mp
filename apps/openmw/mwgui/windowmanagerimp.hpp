@@ -147,9 +147,6 @@ namespace MWGui
     /// (and will continually update the window while doing so)
     virtual void playVideo(const std::string& name, bool allowSkipping);
 
-    /// Warning: do not use MyGUI::InputManager::setKeyFocusWidget directly. Instead use this.
-    virtual void setKeyFocusWidget (MyGUI::Widget* widget);
-
     virtual void setNewGame(bool newgame);
 
     virtual void pushGuiMode(GuiMode mode, const MWWorld::Ptr& arg);
@@ -436,6 +433,7 @@ namespace MWGui
     virtual void removeCurrentModal(WindowModal* input);
 
     virtual void pinWindow (MWGui::GuiWindow window);
+    virtual void toggleMaximized(Layout *layout);
 
     /// Fade the screen in, over \a time seconds
     virtual void fadeScreenIn(const float time, bool clearQueue, float delay);
@@ -449,6 +447,7 @@ namespace MWGui
     virtual void activateHitOverlay(bool interrupt);
     virtual void setWerewolfOverlay(bool set);
 
+    virtual void toggleConsole();
     virtual void toggleDebugWindow();
 
     /// Cycle to next or previous spell
@@ -464,6 +463,7 @@ namespace MWGui
     virtual std::string correctTexturePath(const std::string& path);
     virtual bool textureExists(const std::string& path);
 
+    void addCell(MWWorld::CellStore* cell);
     void removeCell(MWWorld::CellStore* cell);
     void writeFog(MWWorld::CellStore* cell);
 

@@ -187,7 +187,7 @@ namespace MWBase
             ///< Return a pointer to a liveCellRef with the given name.
             /// \param activeOnly do non search inactive cells.
 
-            virtual MWWorld::Ptr searchPtr (const std::string& name, bool activeOnly) = 0;
+            virtual MWWorld::Ptr searchPtr (const std::string& name, bool activeOnly, bool searchInContainers = true) = 0;
             ///< Return a pointer to a liveCellRef with the given name.
             /// \param activeOnly do non search inactive cells.
 
@@ -750,6 +750,7 @@ namespace MWBase
             /// Return the distance between actor's weapon and target's collision box.
             virtual float getHitDistance(const MWWorld::ConstPtr& actor, const MWWorld::ConstPtr& target) = 0;
 
+            virtual void addContainerScripts(const MWWorld::Ptr& reference, MWWorld::CellStore* cell) = 0;
             virtual void removeContainerScripts(const MWWorld::Ptr& reference) = 0;
 
             virtual bool isPlayerInJail() const = 0;

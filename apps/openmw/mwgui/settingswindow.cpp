@@ -6,14 +6,18 @@
 #include <MyGUI_ScrollView.h>
 #include <MyGUI_Gui.h>
 #include <MyGUI_TabControl.h>
+#include <MyGUI_InputManager.h>
 
 #include <boost/algorithm/string.hpp>
 
 #include <SDL_video.h>
 
+#include <iomanip>
+
 #include <components/debug/debuglog.hpp>
 #include <components/misc/stringops.hpp>
 #include <components/misc/gcd.hpp>
+#include <components/misc/constants.hpp>
 #include <components/widgets/sharedstatebutton.hpp>
 #include <components/settings/settings.hpp>
 
@@ -142,13 +146,22 @@ namespace MWGui
                 MyGUI::ScrollBar* scroll = current->castType<MyGUI::ScrollBar>();
                 std::string valueStr;
                 std::string valueType = getSettingValueType(current);
-                if (valueType == "Float" || valueType == "Integer")
+                if (valueType == "Float" || valueType == "Integer" || valueType == "Cell")
                 {
                     // TODO: ScrollBar isn't meant for this. should probably use a dedicated FloatSlider widget
                     float min,max;
                     getSettingMinMax(scroll, min, max);
                     float value = Settings::Manager::getFloat(getSettingName(current), getSettingCategory(current));
-                    valueStr = MyGUI::utility::toString((int)value);
+
+                    if (valueType == "Cell")
+                    {
+                        std::stringstream ss;
+                        ss << std::fixed << std::setprecision(2) << value/Constants::CellSizeInUnits;
+                        valueStr = ss.str();
+                    }
+                    else
+                        valueStr = MyGUI::utility::toString(int(value));
+
                     value = std::max(min, std::min(value, max));
                     value = (value-min)/(max-min);
 
@@ -161,7 +174,8 @@ namespace MWGui
                     scroll->setScrollPosition(value);
                 }
                 scroll->eventScrollChangePosition += MyGUI::newDelegate(this, &SettingsWindow::onSliderChangePosition);
-                updateSliderLabel(scroll, valueStr);
+                if (scroll->getVisible())
+                    updateSliderLabel(scroll, valueStr);
             }
 
             configureWidgets(current);
@@ -176,7 +190,7 @@ namespace MWGui
             MyGUI::TextBox* textBox;
             getWidget(textBox, labelWidgetName);
             std::string labelCaption = scroller->getUserString("SettingLabelCaption");
-            Misc::StringUtils::replaceAll(labelCaption, "%s", value.c_str(), 2);
+            labelCaption = Misc::StringUtils::format(labelCaption, value);
             textBox->setCaptionWithReplacing(labelCaption);
         }
     }
@@ -185,6 +199,12 @@ namespace MWGui
         WindowBase("openmw_settings_window.layout"),
         mKeyboardMode(true)
     {
+        bool terrain = Settings::Manager::getBool("distant terrain", "Terrain");
+        const std::string widgetName = terrain ? "RenderingDistanceSlider" : "LargeRenderingDistanceSlider";
+        MyGUI::Widget* unusedSlider;
+        getWidget(unusedSlider, widgetName);
+        unusedSlider->setVisible(false);
+
         configureWidgets(mMainWidget);
 
         setTitle("#{sOptions}");
@@ -440,7 +460,7 @@ namespace MWGui
         {
             std::string valueStr;
             std::string valueType = getSettingValueType(scroller);
-            if (valueType == "Float" || valueType == "Integer")
+            if (valueType == "Float" || valueType == "Integer" || valueType == "Cell")
             {
                 float value = pos / float(scroller->getScrollRange()-1);
 
@@ -451,7 +471,15 @@ namespace MWGui
                     Settings::Manager::setFloat(getSettingName(scroller), getSettingCategory(scroller), value);
                 else
                     Settings::Manager::setInt(getSettingName(scroller), getSettingCategory(scroller), (int)value);
-                valueStr = MyGUI::utility::toString(int(value));
+
+                if (valueType == "Cell")
+                {
+                    std::stringstream ss;
+                    ss << std::fixed << std::setprecision(2) << value/Constants::CellSizeInUnits;
+                    valueStr = ss.str();
+                }
+                else
+                    valueStr = MyGUI::utility::toString(int(value));
             }
             else
             {
@@ -466,12 +494,13 @@ namespace MWGui
 
     void SettingsWindow::apply()
     {
-        const Settings::CategorySettingVector changed = Settings::Manager::apply();
+        const Settings::CategorySettingVector changed = Settings::Manager::getPendingChanges();
         MWBase::Environment::get().getWorld()->processChangedSettings(changed);
         MWBase::Environment::get().getSoundManager()->processChangedSettings(changed);
         MWBase::Environment::get().getWindowManager()->processChangedSettings(changed);
         MWBase::Environment::get().getInputManager()->processChangedSettings(changed);
         MWBase::Environment::get().getMechanicsManager()->processChangedSettings(changed);
+        Settings::Manager::resetPendingChanges();
     }
 
     void SettingsWindow::onKeyboardSwitchClicked(MyGUI::Widget* _sender)
@@ -599,9 +628,10 @@ namespace MWGui
 
     void SettingsWindow::onOpen()
     {
+        highlightCurrentResolution();
         updateControlsBox();
         resetScrollbars();
-        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mOkButton);
+        MyGUI::InputManager::getInstance().setKeyFocusWidget(mOkButton);
     }
 
     void SettingsWindow::onWindowResize(MyGUI::Window *_sender)

@@ -91,22 +91,22 @@ namespace MWGui
         mTimeAdvancer.eventInterrupted += MyGUI::newDelegate(this, &WaitDialog::onWaitingInterrupted);
         mTimeAdvancer.eventFinished += MyGUI::newDelegate(this, &WaitDialog::onWaitingFinished);
     }
-    
-    void WaitDialog::onReferenceUnavailable ()
-    {
-        MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Rest);
-        resetReference();
-    }
 
     void WaitDialog::setPtr(const MWWorld::Ptr &ptr)
     {
-        mPtr = ptr;
-        setCanRest(!mPtr.isEmpty() || MWBase::Environment::get().getWorld ()->canRest () == MWBase::World::Rest_Allowed);
+        setCanRest(!ptr.isEmpty() || MWBase::Environment::get().getWorld ()->canRest () == MWBase::World::Rest_Allowed);
 
+        if (ptr.isEmpty() && MWBase::Environment::get().getWorld ()->canRest() == MWBase::World::Rest_PlayerIsInAir)
+        {
+            // Resting in air is not allowed unless you're using a bed
+            MWBase::Environment::get().getWindowManager()->messageBox ("#{sNotifyMessage1}");
+            MWBase::Environment::get().getWindowManager()->removeGuiMode(GM_Rest);
+        }
+            
         if (mUntilHealedButton->getVisible())
-            MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mUntilHealedButton);
+            MyGUI::InputManager::getInstance().setKeyFocusWidget(mUntilHealedButton);
         else
-            MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mWaitButton);
+            MyGUI::InputManager::getInstance().setKeyFocusWidget(mWaitButton);
     }
 
     bool WaitDialog::exit()
@@ -118,7 +118,6 @@ namespace MWGui
     {
         mSleeping = false;
         mTimeAdvancer.stop();
-        resetReference();
     }
 
     void WaitDialog::onOpen()
@@ -149,12 +148,6 @@ namespace MWGui
         else if (canRest == MWBase::World::Rest_PlayerIsUnderwater)
         {
             // resting underwater not allowed
-            MWBase::Environment::get().getWindowManager()->messageBox ("#{sNotifyMessage1}");
-            MWBase::Environment::get().getWindowManager()->popGuiMode ();
-        }
-        else if (mPtr.isEmpty() && canRest == MWBase::World::Rest_PlayerIsInAir)
-        {
-            // Resting in air is not allowed either, unless you're using a bed
             MWBase::Environment::get().getWindowManager()->messageBox ("#{sNotifyMessage1}");
             MWBase::Environment::get().getWindowManager()->popGuiMode ();
         }
@@ -268,7 +261,7 @@ namespace MWGui
     {
         mHourText->setCaptionWithReplacing (MyGUI::utility::toString(position+1) + " #{sRestMenu2}");
         mManualHours = position+1;
-        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mWaitButton);
+        MyGUI::InputManager::getInstance().setKeyFocusWidget(mWaitButton);
     }
 
     void WaitDialog::onKeyButtonPressed(MyGUI::Widget *sender, MyGUI::KeyCode key, MyGUI::Char character)
@@ -351,8 +344,6 @@ namespace MWGui
 
     void WaitDialog::onFrame(float dt)
     {
-        checkReferenceAvailable();
-
         mTimeAdvancer.onFrame(dt);
 
         if (mFadeTimeRemaining <= 0)

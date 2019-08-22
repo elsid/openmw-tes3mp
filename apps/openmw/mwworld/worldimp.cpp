@@ -722,7 +722,7 @@ namespace MWWorld
         mLocalScripts.remove (ref);
     }
 
-    Ptr World::searchPtr (const std::string& name, bool activeOnly)
+    Ptr World::searchPtr (const std::string& name, bool activeOnly, bool searchInContainers)
     {
         Ptr ret;
         // the player is always in an active cell.
@@ -749,11 +749,14 @@ namespace MWWorld
                 return ret;
         }
 
-        for (CellStore* cellstore : mWorldScene->getActiveCells())
+        if (searchInContainers)
         {
-            Ptr ptr = cellstore->searchInContainer(lowerCaseName);
-            if (!ptr.isEmpty())
-                return ptr;
+            for (CellStore* cellstore : mWorldScene->getActiveCells())
+            {
+                Ptr ptr = cellstore->searchInContainer(lowerCaseName);
+                if (!ptr.isEmpty())
+                    return ptr;
+            }
         }
 
         Ptr ptr = mPlayer->getPlayer().getClass()
@@ -1508,7 +1511,7 @@ namespace MWWorld
 
         CellStore* cell = ptr.getCell();
         CellStore* newCell = getExterior(cellX, cellY);
-        bool isCellActive = getPlayerPtr().getCell()->isExterior() && mWorldScene->isCellActive(*newCell);
+        bool isCellActive = getPlayerPtr().isInCell() && getPlayerPtr().getCell()->isExterior() && mWorldScene->isCellActive(*newCell);
 
         if (cell->isExterior() || (moveToActive && isCellActive && ptr.getClass().isActor()))
             cell = newCell;
@@ -3750,9 +3753,13 @@ namespace MWWorld
                 return true;
 
             // Consider references inside containers as well (except if we are looking for a Creature, they cannot be in containers)
-            if (mType != World::Detect_Creature &&
-                    (ptr.getClass().isActor() || ptr.getClass().getTypeName() == typeid(ESM::Container).name()))
+            bool isContainer = ptr.getClass().getTypeName() == typeid(ESM::Container).name();
+            if (mType != World::Detect_Creature && (ptr.getClass().isActor() || isContainer))
             {
+                // but ignore containers without resolved content
+                if (isContainer && ptr.getRefData().getCustomData() == nullptr)
+                    return true;
+
                 MWWorld::ContainerStore& store = ptr.getClass().getContainerStore(ptr);
                 {
                     for (MWWorld::ContainerStoreIterator it = store.begin(); it != store.end(); ++it)
