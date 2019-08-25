@@ -14,6 +14,7 @@
 #include "player/ProcessorPlayerBehavior.hpp"
 #include "player/ProcessorPlayerBook.hpp"
 #include "player/ProcessorPlayerBounty.hpp"
+#include "player/ProcessorPlayerCast.hpp"
 #include "player/ProcessorPlayerCellChange.hpp"
 #include "player/ProcessorPlayerCellState.hpp"
 #include "player/ProcessorPlayerCharClass.hpp"
@@ -77,10 +78,10 @@
 #include "actor/ProcessorActorAnimPlay.hpp"
 #include "actor/ProcessorActorAttack.hpp"
 #include "actor/ProcessorActorAuthority.hpp"
+#include "actor/ProcessorActorCast.hpp"
 #include "actor/ProcessorActorCellChange.hpp"
 #include "actor/ProcessorActorDeath.hpp"
 #include "actor/ProcessorActorEquipment.hpp"
-#include "actor/ProcessorActorInteraction.hpp"
 #include "actor/ProcessorActorList.hpp"
 #include "actor/ProcessorActorPosition.hpp"
 #include "actor/ProcessorActorSpeech.hpp"
@@ -114,6 +115,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerBehavior());
     PlayerProcessor::AddProcessor(new ProcessorPlayerBook());
     PlayerProcessor::AddProcessor(new ProcessorPlayerBounty());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerCast());
     PlayerProcessor::AddProcessor(new ProcessorPlayerCellChange());
     PlayerProcessor::AddProcessor(new ProcessorPlayerCellState());
     PlayerProcessor::AddProcessor(new ProcessorPlayerCharClass());
@@ -175,10 +177,10 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorAnimPlay());
     ActorProcessor::AddProcessor(new ProcessorActorAttack());
     ActorProcessor::AddProcessor(new ProcessorActorAuthority());
+    ActorProcessor::AddProcessor(new ProcessorActorCast());
     ActorProcessor::AddProcessor(new ProcessorActorCellChange());
     ActorProcessor::AddProcessor(new ProcessorActorDeath());
     ActorProcessor::AddProcessor(new ProcessorActorEquipment());
-    ActorProcessor::AddProcessor(new ProcessorActorInteraction());
     ActorProcessor::AddProcessor(new ProcessorActorList());
     ActorProcessor::AddProcessor(new ProcessorActorPosition());
     ActorProcessor::AddProcessor(new ProcessorActorSpeech());

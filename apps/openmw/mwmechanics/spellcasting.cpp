@@ -1059,17 +1059,17 @@ namespace MWMechanics
                     Make spell casting fail based on the attack success rated determined
                     in LocalPlayer and LocalActor's updateAttack()
                 */
-                mwmp::Attack *localAttack = NULL;
-                mwmp::Attack *dedicatedAttack = MechanicsHelper::getDedicatedAttack(mCaster);
+                mwmp::Cast *localCast = NULL;
+                mwmp::Cast *dedicatedCast = MechanicsHelper::getDedicatedCast(mCaster);
 
-                if (dedicatedAttack)
-                    dedicatedAttack->pressed = false;
+                if (dedicatedCast)
+                    dedicatedCast->pressed = false;
                 else
-                    localAttack = MechanicsHelper::getLocalAttack(mCaster);
+                    localCast = MechanicsHelper::getLocalCast(mCaster);
 
                 // Check success
-                if ((localAttack && localAttack->success == false) ||
-                    (dedicatedAttack && dedicatedAttack->success == false))
+                if ((localCast && localCast->success == false) ||
+                    (dedicatedCast && dedicatedCast->success == false))
                 {
                     if (mCaster == getPlayer())
                         MWBase::Environment::get().getWindowManager()->messageBox("#{sMagicSkillFail}");

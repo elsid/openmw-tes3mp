@@ -30,6 +30,7 @@ namespace mwmp
         void addAiActor(BaseActor baseActor);
         void addAiActor(const MWWorld::Ptr& actorPtr, const MWWorld::Ptr& targetPtr, unsigned int aiAction);
         void addAttackActor(BaseActor baseActor);
+        void addCastActor(BaseActor baseActor);
         void addCellChangeActor(BaseActor baseActor);
 
         void sendPositionActors();
@@ -41,6 +42,7 @@ namespace mwmp
         void sendEquipmentActors();
         void sendAiActors();
         void sendAttackActors();
+        void sendCastActors();
         void sendCellChangeActors();
 
         void sendActorsInCell(MWWorld::CellStore* cellStore);
@@ -57,6 +59,7 @@ namespace mwmp
         std::vector<BaseActor> equipmentActors;
         std::vector<BaseActor> aiActors;
         std::vector<BaseActor> attackActors;
+        std::vector<BaseActor> castActors;
         std::vector<BaseActor> cellChangeActors;
     };
 }

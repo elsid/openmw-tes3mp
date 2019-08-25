@@ -1,16 +1,16 @@
-#ifndef OPENMW_PROCESSORACTORINTERACTION_HPP
-#define OPENMW_PROCESSORACTORINTERACTION_HPP
+#ifndef OPENMW_PROCESSORACTORCAST_HPP
+#define OPENMW_PROCESSORACTORCAST_HPP
 
 #include "../ActorProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorActorInteraction : public ActorProcessor
+    class ProcessorActorCast : public ActorProcessor
     {
     public:
-        ProcessorActorInteraction()
+        ProcessorActorCast()
         {
-            BPP_INIT(ID_ACTOR_INTERACTION)
+            BPP_INIT(ID_ACTOR_CAST)
         }
 
         void Do(ActorPacket &packet, Player &player, BaseActorList &actorList) override
@@ -24,4 +24,4 @@ namespace mwmp
     };
 }
 
-#endif //OPENMW_PROCESSORACTORINTERACTION_HPP
+#endif //OPENMW_PROCESSORACTORCAST_HPP

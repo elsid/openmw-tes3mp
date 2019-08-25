@@ -115,6 +115,26 @@ Attack *MechanicsHelper::getDedicatedAttack(const MWWorld::Ptr& ptr)
     return nullptr;
 }
 
+Cast *MechanicsHelper::getLocalCast(const MWWorld::Ptr& ptr)
+{
+    if (ptr == MWBase::Environment::get().getWorld()->getPlayerPtr())
+        return &mwmp::Main::get().getLocalPlayer()->cast;
+    else if (mwmp::Main::get().getCellController()->isLocalActor(ptr))
+        return &mwmp::Main::get().getCellController()->getLocalActor(ptr)->cast;
+
+    return nullptr;
+}
+
+Cast *MechanicsHelper::getDedicatedCast(const MWWorld::Ptr& ptr)
+{
+    if (mwmp::PlayerList::isDedicatedPlayer(ptr))
+        return &mwmp::PlayerList::getPlayer(ptr)->cast;
+    else if (mwmp::Main::get().getCellController()->isDedicatedActor(ptr))
+        return &mwmp::Main::get().getCellController()->getDedicatedActor(ptr)->cast;
+
+    return nullptr;
+}
+
 MWWorld::Ptr MechanicsHelper::getPlayerPtr(const Target& target)
 {
     if (target.guid == mwmp::Main::get().getLocalPlayer()->guid)
@@ -233,6 +253,16 @@ void MechanicsHelper::resetAttack(Attack* attack)
     attack->target.mpNum = 0;
 }
 
+void MechanicsHelper::resetCast(Cast* cast)
+{
+    cast->isHit = false;
+    cast->success = false;
+    cast->target.guid = RakNet::RakNetGUID();
+    cast->target.refId.clear();
+    cast->target.refNum = 0;
+    cast->target.mpNum = 0;
+}
+
 bool MechanicsHelper::getSpellSuccess(std::string spellId, const MWWorld::Ptr& caster)
 {
     return Misc::Rng::roll0to99() < MWMechanics::getSpellSuccessChance(spellId, caster, nullptr, true, false);
@@ -272,7 +302,7 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
             victim = controller->getDedicatedActor(attack.target.refNum, attack.target.mpNum)->getPtr();
     }
 
-    if (attack.isHit && (attack.type == attack.MELEE || attack.type == attack.RANGED))
+    if (attack.isHit)
     {
         bool isRanged = attack.type == attack.RANGED;
 
@@ -385,38 +415,71 @@ void MechanicsHelper::processAttack(Attack attack, const MWWorld::Ptr& attacker)
                 inventoryStore.remove(ammoPtr, 1, attacker);
         }
     }
-    else if (attack.type == attack.MAGIC)
-    {
-        attackerStats.getSpells().setSelectedSpell(attack.spellId);
+}
 
-        if (attack.instant)
+void MechanicsHelper::processCast(Cast cast, const MWWorld::Ptr& caster)
+{
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_VERBOSE, "Processing cast from %s of type %i",
+        caster.getClass().getName(caster).c_str(), cast.type);
+
+    if (!cast.pressed)
+    {
+        LOG_APPEND(TimedLog::LOG_VERBOSE, "- success: %s", cast.success ? "true" : "false");
+    }
+
+    LOG_APPEND(TimedLog::LOG_VERBOSE, "- pressed: %s", cast.pressed ? "true" : "false");
+
+    MWMechanics::CreatureStats &casterStats = caster.getClass().getCreatureStats(caster);
+    MWWorld::Ptr victim;
+
+    if (cast.target.isPlayer)
+    {
+        if (cast.target.guid == mwmp::Main::get().getLocalPlayer()->guid)
+            victim = MWBase::Environment::get().getWorld()->getPlayerPtr();
+        else if (PlayerList::getPlayer(cast.target.guid) != nullptr)
+            victim = PlayerList::getPlayer(cast.target.guid)->getPtr();
+    }
+    else
+    {
+        auto controller = mwmp::Main::get().getCellController();
+        if (controller->isLocalActor(cast.target.refNum, cast.target.mpNum))
+            victim = controller->getLocalActor(cast.target.refNum, cast.target.mpNum)->getPtr();
+        else if (controller->isDedicatedActor(cast.target.refNum, cast.target.mpNum))
+            victim = controller->getDedicatedActor(cast.target.refNum, cast.target.mpNum)->getPtr();
+    }
+
+    if (cast.type == cast.REGULAR)
+    {
+        casterStats.getSpells().setSelectedSpell(cast.spellId);
+
+        if (cast.instant)
         {
-            MWBase::Environment::get().getWorld()->castSpell(attacker);
-            attack.instant = false;
+            MWBase::Environment::get().getWorld()->castSpell(caster);
+            cast.instant = false;
         }
 
-        LOG_APPEND(TimedLog::LOG_VERBOSE, "- spellId: %s", attack.spellId.c_str());
+        LOG_APPEND(TimedLog::LOG_VERBOSE, "- spellId: %s", cast.spellId.c_str());
     }
-    else if (attack.type == attack.ITEM_MAGIC)
+    else if (cast.type == cast.ITEM)
     {
-        attackerStats.getSpells().setSelectedSpell("");
+        casterStats.getSpells().setSelectedSpell("");
 
-        MWWorld::InventoryStore& inventoryStore = attacker.getClass().getInventoryStore(attacker);
+        MWWorld::InventoryStore& inventoryStore = caster.getClass().getInventoryStore(caster);
 
         MWWorld::ContainerStoreIterator it = inventoryStore.begin();
         for (; it != inventoryStore.end(); ++it)
         {
-            if (Misc::StringUtils::ciEqual(it->getCellRef().getRefId(), attack.itemId))
+            if (Misc::StringUtils::ciEqual(it->getCellRef().getRefId(), cast.itemId))
                 break;
         }
 
         // Add the item if it's missing
         if (it == inventoryStore.end())
-            it = attacker.getClass().getContainerStore(attacker).add(attack.itemId, 1, attacker);
+            it = caster.getClass().getContainerStore(caster).add(cast.itemId, 1, caster);
 
         inventoryStore.setSelectedEnchantItem(it);
-        LOG_APPEND(TimedLog::LOG_VERBOSE, "- itemId: %s", attack.itemId.c_str());
-        MWBase::Environment::get().getWorld()->castSpell(attacker);
+        LOG_APPEND(TimedLog::LOG_VERBOSE, "- itemId: %s", cast.itemId.c_str());
+        MWBase::Environment::get().getWorld()->castSpell(caster);
         inventoryStore.setSelectedEnchantItem(inventoryStore.end());
     }
 }

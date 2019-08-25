@@ -1609,7 +1609,21 @@ namespace MWMechanics
                 mwmp::Attack *dedicatedAttack = MechanicsHelper::getDedicatedAttack(iter->first);
 
                 if (dedicatedAttack)
-                    iter->second->getCharacterController()->setAttackingOrSpell(dedicatedAttack->pressed);
+                {
+                    bool attackingOrSpellState = false;
+
+                    if (dedicatedAttack->pressed)
+                        attackingOrSpellState = true;
+                    else
+                    {
+                        mwmp::Cast *dedicatedCast = MechanicsHelper::getDedicatedCast(iter->first);
+
+                        if (dedicatedCast->pressed)
+                            attackingOrSpellState = true;
+                    }
+
+                    iter->second->getCharacterController()->setAttackingOrSpell(attackingOrSpellState);
+                }
                 /*
                     End of tes3mp addition
                 */

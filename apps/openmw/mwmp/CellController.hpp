@@ -29,6 +29,7 @@ namespace mwmp
         void readSpeech(mwmp::ActorList& actorList);
         void readAi(mwmp::ActorList& actorList);
         void readAttack(mwmp::ActorList& actorList);
+        void readCast(mwmp::ActorList& actorList);
         void readCellChange(mwmp::ActorList& actorList);
 
         void setLocalActorRecord(std::string actorIndex, std::string cellIndex);

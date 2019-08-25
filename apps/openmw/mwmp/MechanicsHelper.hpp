@@ -20,6 +20,9 @@ namespace MechanicsHelper
     mwmp::Attack *getLocalAttack(const MWWorld::Ptr& ptr);
     mwmp::Attack *getDedicatedAttack(const MWWorld::Ptr& ptr);
 
+    mwmp::Cast *getLocalCast(const MWWorld::Ptr& ptr);
+    mwmp::Cast *getDedicatedCast(const MWWorld::Ptr& ptr);
+
     MWWorld::Ptr getPlayerPtr(const mwmp::Target& target);
 
     mwmp::Item getItem(const MWWorld::Ptr& itemPtr, int count);
@@ -29,10 +32,12 @@ namespace MechanicsHelper
 
     void assignAttackTarget(mwmp::Attack* attack, const MWWorld::Ptr& target);
     void resetAttack(mwmp::Attack* attack);
+    void resetCast(mwmp::Cast* cast);
 
     bool getSpellSuccess(std::string spellId, const MWWorld::Ptr& caster);
 
     void processAttack(mwmp::Attack attack, const MWWorld::Ptr& attacker);
+    void processCast(mwmp::Cast cast, const MWWorld::Ptr& caster);
 
     bool doesEffectListContainEffect(const ESM::EffectList& effectList, short effectId, short attributeId = -1, short skillId = -1);
     void unequipItemsByEffect(const MWWorld::Ptr& ptr, short enchantmentType, short effectId, short attributeId = -1, short skillId = -1);

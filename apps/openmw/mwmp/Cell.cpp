@@ -99,6 +99,7 @@ void Cell::updateLocal(bool forceUpdate)
     actorList->sendStatsDynamicActors();
     actorList->sendEquipmentActors();
     actorList->sendAttackActors();
+    actorList->sendCastActors();
     actorList->sendCellChangeActors();
 }
 
@@ -314,14 +315,35 @@ void Cell::readAttack(ActorList& actorList)
                 actor->drawState = MWMechanics::DrawState_::DrawState_Weapon;
                 actor->setAnimFlags();
             }
-            else if (actor->drawState != MWMechanics::DrawState_::DrawState_Spell &&
-                (actor->attack.type == mwmp::Attack::MAGIC || actor->attack.type == mwmp::Attack::ITEM_MAGIC))
+
+            MechanicsHelper::processAttack(actor->attack, actor->getPtr());
+        }
+    }
+}
+
+void Cell::readCast(ActorList& actorList)
+{
+    for (const auto &baseActor : actorList.baseActors)
+    {
+        std::string mapIndex = Main::get().getCellController()->generateMapIndex(baseActor);
+
+        if (dedicatedActors.count(mapIndex) > 0)
+        {
+            LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Reading ActorCast about %s", mapIndex.c_str());
+
+            DedicatedActor *actor = dedicatedActors[mapIndex];
+            actor->cast = baseActor.cast;
+
+            // Set the correct drawState here if we've somehow we've missed a previous
+            // AnimFlags packet
+            if (actor->drawState != MWMechanics::DrawState_::DrawState_Spell &&
+                (actor->attack.type == mwmp::Cast::REGULAR || actor->cast.type == mwmp::Cast::ITEM))
             {
                 actor->drawState = MWMechanics::DrawState_::DrawState_Spell;
                 actor->setAnimFlags();
             }
 
-            MechanicsHelper::processAttack(actor->attack, actor->getPtr());
+            MechanicsHelper::processCast(actor->cast, actor->getPtr());
         }
     }
 }

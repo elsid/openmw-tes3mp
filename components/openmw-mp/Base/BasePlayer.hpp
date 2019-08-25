@@ -294,6 +294,7 @@ namespace mwmp
         ESM::Class charClass;
         Item equipmentItems[19];
         Attack attack;
+        Cast cast;
         std::string birthsign;
         std::string chatMessage;
         CharGenState charGenState;

@@ -36,6 +36,12 @@ LocalActor::LocalActor()
     attack.type = Attack::MELEE;
     attack.shouldSend = false;
     attack.instant = false;
+    attack.pressed = false;
+
+    cast.type = Cast::REGULAR;
+    cast.shouldSend = false;
+    cast.instant = false;
+    cast.pressed = false;
 
     killer.isPlayer = false;
     killer.refId = "";
@@ -60,7 +66,7 @@ void LocalActor::update(bool forceUpdate)
         updateAnimFlags(forceUpdate);
         updateAnimPlay();
         updateSpeech();
-        updateAttack();
+        updateAttackOrCast();
     }
 
     hasSentData = true;
@@ -250,21 +256,26 @@ void LocalActor::updateEquipment(bool forceUpdate)
     }
 }
 
-void LocalActor::updateAttack()
+void LocalActor::updateAttackOrCast()
 {
     if (attack.shouldSend)
     {
-        if (attack.type == Attack::MAGIC)
-        {
-            MWMechanics::CreatureStats &attackerStats = ptr.getClass().getCreatureStats(ptr);
-            attack.spellId = attackerStats.getSpells().getSelectedSpell();
-
-            if (attack.pressed)
-                attack.success = MechanicsHelper::getSpellSuccess(attack.spellId, ptr);
-        }
-
         mwmp::Main::get().getNetworking()->getActorList()->addAttackActor(*this);
         attack.shouldSend = false;
+    }
+    else if (cast.shouldSend)
+    {
+        if (cast.type == Cast::REGULAR)
+        {
+            MWMechanics::CreatureStats &casterStats = ptr.getClass().getCreatureStats(ptr);
+            cast.spellId = casterStats.getSpells().getSelectedSpell();
+
+            if (cast.pressed)
+                cast.success = MechanicsHelper::getSpellSuccess(cast.spellId, ptr);
+        }
+
+        mwmp::Main::get().getNetworking()->getActorList()->addCastActor(*this);
+        cast.shouldSend = false;
     }
 }
 

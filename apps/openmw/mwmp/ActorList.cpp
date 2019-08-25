@@ -39,6 +39,7 @@ void ActorList::reset()
     equipmentActors.clear();
     aiActors.clear();
     attackActors.clear();
+    castActors.clear();
     cellChangeActors.clear();
     guid = mwmp::Main::get().getNetworking()->getLocalPlayer()->guid;
 }
@@ -116,6 +117,11 @@ void ActorList::addAiActor(const MWWorld::Ptr& actorPtr, const MWWorld::Ptr& tar
 void ActorList::addAttackActor(BaseActor baseActor)
 {
     attackActors.push_back(baseActor);
+}
+
+void ActorList::addCastActor(BaseActor baseActor)
+{
+    castActors.push_back(baseActor);
 }
 
 void ActorList::addCellChangeActor(BaseActor baseActor)
@@ -210,6 +216,16 @@ void ActorList::sendAttackActors()
         baseActors = attackActors;
         Main::get().getNetworking()->getActorPacket(ID_ACTOR_ATTACK)->setActorList(this);
         Main::get().getNetworking()->getActorPacket(ID_ACTOR_ATTACK)->Send();
+    }
+}
+
+void ActorList::sendCastActors()
+{
+    if (castActors.size() > 0)
+    {
+        baseActors = castActors;
+        Main::get().getNetworking()->getActorPacket(ID_ACTOR_CAST)->setActorList(this);
+        Main::get().getNetworking()->getActorPacket(ID_ACTOR_CAST)->Send();
     }
 }
 

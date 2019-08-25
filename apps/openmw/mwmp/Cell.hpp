@@ -26,6 +26,7 @@ namespace mwmp
         void readSpeech(ActorList& actorList);
         void readAi(ActorList& actorList);
         void readAttack(ActorList& actorList);
+        void readCast(ActorList& actorList);
         void readCellChange(ActorList& actorList);
 
         void initializeLocalActor(const MWWorld::Ptr& ptr);

@@ -1166,14 +1166,14 @@ bool CharacterController::updateCreatureState()
                         If this mPtr belongs to a LocalPlayer or LocalActor, get their Attack and prepare
                         it for sending
                     */
-                    mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(mPtr);
+                    mwmp::Cast *localCast = MechanicsHelper::getLocalCast(mPtr);
 
-                    if (localAttack)
+                    if (localCast)
                     {
-                        MechanicsHelper::resetAttack(localAttack);
-                        localAttack->type = mwmp::Attack::MAGIC;
-                        localAttack->pressed = true;
-                        localAttack->shouldSend = true;
+                        MechanicsHelper::resetCast(localCast);
+                        localCast->type = mwmp::Cast::REGULAR;
+                        localCast->pressed = true;
+                        localCast->shouldSend = true;
                     }
                     /*
                         End of tes3mp addition
@@ -1188,7 +1188,7 @@ bool CharacterController::updateCreatureState()
                         Mark the attack as instant if there is no spellcast animation
                     */
                     if (!mAnimation->hasAnimation("spellcast"))
-                        localAttack->instant = true;
+                        localCast->instant = true;
                     /*
                         End of tes3mp addition
                     */
@@ -1536,14 +1536,14 @@ bool CharacterController::updateWeaponState(CharacterState& idle)
                         If this mPtr belongs to a LocalPlayer or LocalActor, get their Attack and prepare
                         it for sending
                     */
-                    mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(mPtr);
+                    mwmp::Cast *localCast = MechanicsHelper::getLocalCast(mPtr);
 
-                    if (localAttack)
+                    if (localCast)
                     {
-                        MechanicsHelper::resetAttack(localAttack);
-                        localAttack->type = mwmp::Attack::MAGIC;
-                        localAttack->pressed = true;
-                        localAttack->shouldSend = true;
+                        MechanicsHelper::resetCast(localCast);
+                        localCast->type = mwmp::Cast::REGULAR;
+                        localCast->pressed = true;
+                        localCast->shouldSend = true;
                     }
                     /*
                         End of tes3mp addition

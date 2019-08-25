@@ -44,7 +44,8 @@ using namespace std;
 DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
 {
     reference = 0;
-    attack.pressed = 0;
+    attack.pressed = false;
+    cast.pressed = false;
 
     creatureStats.mDead = false;
     // Give this new character a temporary high fatigue so it doesn't spawn on
@@ -65,6 +66,7 @@ DedicatedPlayer::DedicatedPlayer(RakNet::RakNetGUID guid) : BasePlayer(guid)
 
     hasFinishedInitialTeleportation = false;
 }
+
 DedicatedPlayer::~DedicatedPlayer()
 {
 

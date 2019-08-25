@@ -65,18 +65,12 @@ namespace mwmp
 
         Target target;
 
-        char type; // 0 - melee, 1 - magic, 2 - item magic, 3 - throwable
+        char type; // 0 - melee, 1 - ranged
         enum TYPE
         {
             MELEE = 0,
-            RANGED,
-            MAGIC,
-            ITEM_MAGIC,
-            THROWABLE
+            RANGED
         };
-
-        std::string spellId; // id of spell (e.g. "fireball")
-        std::string itemId;
 
         std::string rangedWeaponId;
         std::string rangedAmmoId;
@@ -95,6 +89,32 @@ namespace mwmp
         bool knockdown;
         bool applyWeaponEnchantment;
         bool applyAmmoEnchantment;
+
+        bool shouldSend;
+    };
+
+    class Cast
+    {
+    public:
+
+        Target target;
+
+        char type; // 0 - regular magic, 1 - item magic
+        enum TYPE
+        {
+            REGULAR = 0,
+            ITEM
+        };
+
+        std::string spellId; // id of spell (e.g. "fireball")
+        std::string itemId;
+
+        ESM::Position hitPosition;
+
+        bool isHit;
+        bool success;
+        bool pressed;
+        bool instant;
 
         bool shouldSend;
     };

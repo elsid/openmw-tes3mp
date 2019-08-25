@@ -174,7 +174,7 @@ add_component_dir (openmw-mp/Packets/Actor
         ActorPacket
 
         PacketActorList PacketActorAuthority PacketActorTest PacketActorAI PacketActorAnimFlags PacketActorAnimPlay
-        PacketActorAttack PacketActorCellChange PacketActorDeath PacketActorEquipment PacketActorInteraction PacketActorPosition
+        PacketActorAttack PacketActorCast PacketActorCellChange PacketActorDeath PacketActorEquipment PacketActorPosition
         PacketActorSpeech PacketActorStatsDynamic
         )
 
@@ -185,12 +185,12 @@ add_component_dir (openmw-mp/Packets/Player
 
         PacketPlayerBaseInfo PacketPlayerCharGen PacketPlayerActiveSkills PacketPlayerAnimFlags PacketPlayerAnimPlay
         PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty
-        PacketPlayerCellChange PacketPlayerCellState PacketPlayerClass PacketPlayerDeath PacketPlayerEquipment
-        PacketPlayerFaction PacketPlayerInput PacketPlayerInventory PacketPlayerItemUse PacketPlayerJail
-        PacketPlayerJournal PacketWorldKillCount PacketPlayerLevel PacketPlayerMiscellaneous PacketPlayerMomentum
-        PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerReputation PacketPlayerRest PacketPlayerResurrect
-        PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook PacketPlayerStatsDynamic
-        PacketPlayerTopic
+        PacketPlayerCast PacketPlayerCellChange PacketPlayerCellState PacketPlayerClass PacketPlayerDeath
+        PacketPlayerEquipment PacketPlayerFaction PacketPlayerInput PacketPlayerInventory PacketPlayerItemUse
+        PacketPlayerJail PacketPlayerJournal PacketWorldKillCount PacketPlayerLevel PacketPlayerMiscellaneous
+        PacketPlayerMomentum PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerReputation PacketPlayerRest
+        PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook
+        PacketPlayerStatsDynamic PacketPlayerTopic
         )
 
 add_component_dir (openmw-mp/Packets/Object

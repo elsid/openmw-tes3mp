@@ -38,6 +38,7 @@ namespace mwmp
 
         Animation animation;
         Attack attack;
+        Cast cast;
 
         Target killer;
 

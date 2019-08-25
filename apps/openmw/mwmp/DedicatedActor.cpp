@@ -45,6 +45,7 @@ DedicatedActor::DedicatedActor()
     hasChangedCell = true;
 
     attack.pressed = false;
+    cast.pressed = false;
 }
 
 DedicatedActor::~DedicatedActor()

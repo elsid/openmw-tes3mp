@@ -65,6 +65,12 @@ LocalPlayer::LocalPlayer()
     ignoreJailSkillIncreases = false;
     
     attack.shouldSend = false;
+    attack.instant = false;
+    attack.pressed = false;
+
+    cast.shouldSend = false;
+    cast.instant = false;
+    cast.pressed = false;
 
     killer.isPlayer = false;
     killer.refId = "";
@@ -110,7 +116,7 @@ void LocalPlayer::update()
         updateCell();
         updatePosition();
         updateAnimFlags();
-        updateAttack();
+        updateAttackOrCast();
         updateEquipment();
         updateStatsDynamic();
         updateAttributes();
@@ -592,22 +598,29 @@ void LocalPlayer::updateInventory(bool forceUpdate)
     sendInventory();
 }
 
-void LocalPlayer::updateAttack()
+void LocalPlayer::updateAttackOrCast()
 {
     if (attack.shouldSend)
     {
-        if (attack.type == Attack::MAGIC)
-        {
-            attack.spellId = MWBase::Environment::get().getWindowManager()->getSelectedSpell();
-
-            if (attack.pressed)
-                attack.success = MechanicsHelper::getSpellSuccess(attack.spellId, getPlayerPtr());
-        }
-
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTACK)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_ATTACK)->Send();
 
         attack.shouldSend = false;
+    }
+    else if (cast.shouldSend)
+    {
+        if (cast.type == Cast::REGULAR)
+        {
+            cast.spellId = MWBase::Environment::get().getWindowManager()->getSelectedSpell();
+
+            if (cast.pressed)
+                cast.success = MechanicsHelper::getSpellSuccess(cast.spellId, getPlayerPtr());
+        }
+
+        getNetworking()->getPlayerPacket(ID_PLAYER_CAST)->setPlayer(this);
+        getNetworking()->getPlayerPacket(ID_PLAYER_CAST)->Send();
+
+        cast.shouldSend = false;
     }
 }
 

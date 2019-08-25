@@ -3474,21 +3474,21 @@ namespace MWWorld
             /*
                 Start of tes3mp change (minor)
 
-                If this actor is a LocalPlayer or LocalActor, get their Attack and prepare
+                If this actor is a LocalPlayer or LocalActor, get their Cast and prepare
                 it for sending
 
-                Set the attack details before going through with the casting, in case it's
-                a one use item that would get removed through the casting (like a scroll)
+                Set the cast details before going forward, in case it's a one use item that
+                will get removed (like a scroll)
             */
             {
-                mwmp::Attack *localAttack = MechanicsHelper::getLocalAttack(actor);
+                mwmp::Cast *localCast = MechanicsHelper::getLocalCast(actor);
 
-                if (localAttack)
+                if (localCast)
                 {
-                    MechanicsHelper::resetAttack(localAttack);
-                    localAttack->type = mwmp::Attack::ITEM_MAGIC;
-                    localAttack->itemId = inv.getSelectedEnchantItem()->getCellRef().getRefId();
-                    localAttack->shouldSend = true;
+                    MechanicsHelper::resetCast(localCast);
+                    localCast->type = mwmp::Cast::ITEM;
+                    localCast->itemId = inv.getSelectedEnchantItem()->getCellRef().getRefId();
+                    localCast->shouldSend = true;
                 }
 
                 cast.cast(*inv.getSelectedEnchantItem());

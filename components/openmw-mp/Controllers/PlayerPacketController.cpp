@@ -14,6 +14,7 @@
 #include "../Packets/Player/PacketPlayerBehavior.hpp"
 #include "../Packets/Player/PacketPlayerBook.hpp"
 #include "../Packets/Player/PacketPlayerBounty.hpp"
+#include "../Packets/Player/PacketPlayerCast.hpp"
 #include "../Packets/Player/PacketPlayerCellChange.hpp"
 #include "../Packets/Player/PacketPlayerCellState.hpp"
 #include "../Packets/Player/PacketPlayerClass.hpp"
@@ -69,6 +70,7 @@ mwmp::PlayerPacketController::PlayerPacketController(RakNet::RakPeerInterface *p
     AddPacket<PacketPlayerBehavior>(&packets, peer);
     AddPacket<PacketPlayerBook>(&packets, peer);
     AddPacket<PacketPlayerBounty>(&packets, peer);
+    AddPacket<PacketPlayerCast>(&packets, peer);
     AddPacket<PacketPlayerCellChange>(&packets, peer);
     AddPacket<PacketPlayerCellState>(&packets, peer);
     AddPacket<PacketPlayerCharGen>(&packets, peer);

@@ -38,7 +38,7 @@ namespace mwmp
         void updateCell(bool forceUpdate = false);
         void updateEquipment(bool forceUpdate = false);
         void updateInventory(bool forceUpdate = false);
-        void updateAttack();
+        void updateAttackOrCast();
         void updateAnimFlags(bool forceUpdate = false);
 
         void addItems();
