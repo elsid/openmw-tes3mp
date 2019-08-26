@@ -435,18 +435,6 @@ void MWWorld::InventoryStore::autoEquipWeapon (const MWWorld::Ptr& actor, TSlots
 
 void MWWorld::InventoryStore::autoEquipArmor (const MWWorld::Ptr& actor, TSlots& slots_)
 {
-    /*
-        Start of tes3mp addition
-
-        We need DedicatedPlayers and DedicatedActors to wear exactly what they're wearing on their
-        authority client, so don't auto-equip for them
-    */
-    if (mwmp::PlayerList::isDedicatedPlayer(actor) || mwmp::Main::get().getCellController()->isDedicatedActor(actor))
-        return;
-    /*
-        End of tes3mp addition
-    */
-
     // Only NPCs can wear armor for now.
     // For creatures we equip only shields.
     if (!actor.getClass().isNpc())
@@ -590,6 +578,18 @@ void MWWorld::InventoryStore::autoEquipShield(const MWWorld::Ptr& actor, TSlots&
 
 void MWWorld::InventoryStore::autoEquip (const MWWorld::Ptr& actor)
 {
+    /*
+        Start of tes3mp addition
+
+        We need DedicatedPlayers and DedicatedActors to wear exactly what they're wearing on their
+        authority client, so don't auto-equip for them
+    */
+    if (mwmp::PlayerList::isDedicatedPlayer(actor) || mwmp::Main::get().getCellController()->isDedicatedActor(actor))
+        return;
+    /*
+        End of tes3mp addition
+    */
+
     TSlots slots_;
     initSlots (slots_);
 
