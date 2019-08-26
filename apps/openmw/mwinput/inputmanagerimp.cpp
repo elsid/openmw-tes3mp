@@ -21,6 +21,7 @@
 */
 #include "../mwmp/Main.hpp"
 #include "../mwmp/LocalPlayer.hpp"
+#include "../mwmp/GUIController.hpp"
 /*
     End of tes3mp addition
 */
@@ -863,7 +864,16 @@ namespace MWInput
 
     void InputManager::keyPressed( const SDL_KeyboardEvent &arg )
     {
-        mwmp::Main::pressedKey(arg.keysym.scancode);
+        /*
+            Start of tes3mp addition
+
+            Pass the pressed key to the multiplayer-specific GUI controller
+        */
+        mwmp::Main::get().getGUIController()->pressedKey(arg.keysym.scancode);
+        /*
+            End of tes3mp addition
+        */
+
         // HACK: to make Morrowind's default keybinding for the console work without printing an extra "^" upon closing
         // This assumes that SDL_TextInput events always come *after* the key event
         // (which is somewhat reasonable, and hopefully true for all SDL platforms)

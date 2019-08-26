@@ -257,13 +257,6 @@ CellController *Main::getCellController() const
     return mCellController;
 }
 
-void Main::pressedKey(int key)
-{
-    if (pMain == nullptr) return;
-    if (get().getGUIController()->pressedKey(key))
-        return; // if any gui bind pressed
-}
-
 // When sending packets with ingame script values, certain packets
 // should be ignored because of their potential for spam
 bool Main::isValidPacketScript(std::string script)

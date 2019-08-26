@@ -25,7 +25,6 @@ namespace mwmp
         static void destroy();
         static const Main &get();
         static void frame(float dt);
-        static void pressedKey(int key);
 
         static bool isValidPacketScript(std::string script);
         static std::string getResDir();
