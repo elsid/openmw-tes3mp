@@ -358,6 +358,8 @@ MWWorld::CellStore *CellController::getCellStore(const ESM::Cell& cell)
 
 bool CellController::isSameCell(const ESM::Cell& cell, const ESM::Cell& otherCell)
 {
+    if (&cell == nullptr || &otherCell == nullptr) return false;
+
     if (cell.isExterior() && otherCell.isExterior())
     {
         if (cell.mData.mX == otherCell.mData.mX && cell.mData.mY == otherCell.mData.mY)

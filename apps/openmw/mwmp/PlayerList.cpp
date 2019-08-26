@@ -96,6 +96,9 @@ void PlayerList::enableMarkers(const ESM::Cell& cell)
 {
     for (auto &playerEntry : players)
     {
+        if (playerEntry.second == nullptr || playerEntry.second->getPtr().mRef == nullptr)
+            continue;
+
         if (Main::get().getCellController()->isSameCell(cell, playerEntry.second->cell))
         {
             playerEntry.second->enableMarker();
