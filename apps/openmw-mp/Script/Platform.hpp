@@ -1,7 +1,3 @@
-//
-// Created by koncord on 23.01.16.
-//
-
 #ifndef PLATFORM_HPP
 #define PLATFORM_HPP
 

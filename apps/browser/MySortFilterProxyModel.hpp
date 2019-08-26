@@ -1,7 +1,3 @@
-//
-// Created by koncord on 30.01.17.
-//
-
 #ifndef OPENMW_MYSORTFILTERPROXYMODEL_HPP
 #define OPENMW_MYSORTFILTERPROXYMODEL_HPP
 

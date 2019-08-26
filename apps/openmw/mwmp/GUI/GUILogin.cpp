@@ -1,7 +1,3 @@
-//
-// Created by koncord on 19.05.16.
-//
-
 #include "GUILogin.hpp"
 #include <MyGUI_EditBox.h>
 #include <MyGUI_Button.h>

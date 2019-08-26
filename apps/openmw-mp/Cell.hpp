@@ -1,7 +1,3 @@
-//
-// Created by koncord on 18.02.17.
-//
-
 #ifndef OPENMW_SERVERCELL_HPP
 #define OPENMW_SERVERCELL_HPP
 

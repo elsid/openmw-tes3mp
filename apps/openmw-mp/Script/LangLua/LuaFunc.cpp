@@ -1,7 +1,3 @@
-//
-// Created by koncord on 09.05.16.
-//
-
 #include <iostream>
 #include "LangLua.hpp"
 #include <Script/API/TimerAPI.hpp>

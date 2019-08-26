@@ -1,7 +1,3 @@
-//
-// Created by koncord on 28.04.16.
-//
-
 #ifndef OPENMW_PACKETHANDSHAKE_HPP
 #define OPENMW_PACKETHANDSHAKE_HPP
 

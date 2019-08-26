@@ -1,7 +1,3 @@
-//
-// Created by koncord on 29.08.16.
-//
-
 #ifndef OPENMW_CHARCLASSAPI_HPP
 #define OPENMW_CHARCLASSAPI_HPP
 

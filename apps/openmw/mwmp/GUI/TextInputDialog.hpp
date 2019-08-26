@@ -1,8 +1,3 @@
-//
-// Created by koncord on 06.06.17.
-//
-
-
 #ifndef OPENMW_TEXTINPUTDIALOG_HPP
 #define OPENMW_TEXTINPUTDIALOG_HPP
 

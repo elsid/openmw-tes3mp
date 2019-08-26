@@ -1,7 +1,3 @@
-//
-// Created by koncord on 07.01.16.
-//
-
 #ifndef OPENMW_PACKETPLAYEREQUIPMENT_HPP
 #define OPENMW_PACKETPLAYEREQUIPMENT_HPP
 

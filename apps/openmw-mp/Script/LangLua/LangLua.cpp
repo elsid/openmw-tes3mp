@@ -1,7 +1,3 @@
-//
-// Created by koncord on 08.05.16.
-//
-
 #include <iostream>
 #include "LangLua.hpp"
 #include <Script/Script.hpp>

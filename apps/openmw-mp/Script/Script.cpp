@@ -1,7 +1,3 @@
-//
-// Created by koncord on 19.03.16.
-//
-
 #include "Script.hpp"
 #include "LangNative/LangNative.hpp"
 

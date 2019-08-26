@@ -1,7 +1,3 @@
-//
-// Created by koncord on 21.04.17.
-//
-
 #ifndef NEWMASTERPROTO_MASTERSERVER_HPP
 #define NEWMASTERPROTO_MASTERSERVER_HPP
 

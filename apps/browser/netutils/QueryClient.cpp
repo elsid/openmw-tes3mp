@@ -1,7 +1,3 @@
-//
-// Created by koncord on 24.04.17.
-//
-
 #include "QueryClient.hpp"
 #include <RakSleep.h>
 #include <components/openmw-mp/NetworkMessages.hpp>

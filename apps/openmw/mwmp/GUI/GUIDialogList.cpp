@@ -1,7 +1,3 @@
-//
-// Created by koncord on 03.11.16.
-//
-
 #include <components/openmw-mp/TimedLog.hpp>
 
 #include "apps/openmw/mwbase/environment.hpp"

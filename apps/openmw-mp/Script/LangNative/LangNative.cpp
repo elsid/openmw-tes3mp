@@ -1,7 +1,3 @@
-//
-// Created by koncord on 09.05.16.
-//
-
 #ifndef _WIN32
     #include <dlfcn.h>
 #endif

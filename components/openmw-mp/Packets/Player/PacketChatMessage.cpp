@@ -1,7 +1,3 @@
-//
-// Created by koncord on 06.03.16.
-//
-
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include "PacketChatMessage.hpp"
 

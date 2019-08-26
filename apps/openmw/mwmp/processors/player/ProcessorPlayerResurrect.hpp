@@ -1,7 +1,3 @@
-//
-// Created by koncord on 16.04.17.
-//
-
 #ifndef OPENMW_PROCESSORPLAYERRESURRECT_HPP
 #define OPENMW_PROCESSORPLAYERRESURRECT_HPP
 

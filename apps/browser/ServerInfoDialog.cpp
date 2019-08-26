@@ -1,7 +1,3 @@
-//
-// Created by koncord on 07.01.17.
-//
-
 #include <apps/browser/netutils/QueryClient.hpp>
 #include "qdebug.h"
 

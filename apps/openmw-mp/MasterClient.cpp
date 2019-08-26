@@ -1,7 +1,3 @@
-//
-// Created by koncord on 14.08.16.
-//
-
 #include <RakSleep.h>
 #include <Getche.h>
 #include <sstream>

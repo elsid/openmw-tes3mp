@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.08.16.
-//
-
 #include <cstdarg>
 #include <iostream>
 #include <cstring>

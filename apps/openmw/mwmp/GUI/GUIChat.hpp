@@ -1,7 +1,3 @@
-//
-// Created by koncord on 04.03.16.
-//
-
 #ifndef OPENMW_GUICHAT_HPP
 #define OPENMW_GUICHAT_HPP
 

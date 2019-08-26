@@ -1,7 +1,3 @@
-//
-// Created by koncord on 13.01.16.
-//
-
 #ifndef OPENMW_PACKETSTATSDYNAMIC_HPP
 #define OPENMW_PACKETSTATSDYNAMIC_HPP
 

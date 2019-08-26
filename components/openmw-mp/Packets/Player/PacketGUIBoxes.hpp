@@ -1,7 +1,3 @@
-//
-// Created by koncord on 23.07.16.
-//
-
 #ifndef OPENMW_PACKETGUIBOXES_HPP
 #define OPENMW_PACKETGUIBOXES_HPP
 

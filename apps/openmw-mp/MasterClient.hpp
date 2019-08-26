@@ -1,7 +1,3 @@
-//
-// Created by koncord on 14.08.16.
-//
-
 #ifndef OPENMW_MASTERCLIENT_HPP
 #define OPENMW_MASTERCLIENT_HPP
 

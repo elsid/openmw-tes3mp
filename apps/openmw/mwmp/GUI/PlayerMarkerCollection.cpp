@@ -1,7 +1,3 @@
-//
-// Created by koncord on 30.09.16.
-//
-
 #include <stdexcept>
 #include "PlayerMarkerCollection.hpp"
 

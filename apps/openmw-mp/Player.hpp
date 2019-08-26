@@ -1,7 +1,3 @@
-//
-// Created by koncord on 05.01.16.
-//
-
 #ifndef OPENMW_PLAYER_HPP
 #define OPENMW_PLAYER_HPP
 

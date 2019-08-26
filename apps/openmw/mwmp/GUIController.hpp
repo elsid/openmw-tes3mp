@@ -1,7 +1,3 @@
-//
-// Created by koncord on 20.07.16.
-//
-
 #ifndef OPENMW_GUICONTROLLER_HPP
 #define OPENMW_GUICONTROLLER_HPP
 

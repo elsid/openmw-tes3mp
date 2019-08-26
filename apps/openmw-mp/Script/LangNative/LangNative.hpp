@@ -1,7 +1,3 @@
-//
-// Created by koncord on 09.05.16.
-//
-
 #ifndef PLUGINSYSTEM3_LANGNATIVE_HPP
 #define PLUGINSYSTEM3_LANGNATIVE_HPP
 

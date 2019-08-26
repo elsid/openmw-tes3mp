@@ -1,7 +1,3 @@
-//
-// Created by koncord on 24.01.16.
-//
-
 #ifndef UTILS_HPP
 #define UTILS_HPP
 

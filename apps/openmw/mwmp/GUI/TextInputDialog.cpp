@@ -1,7 +1,3 @@
-//
-// Created by koncord on 06.06.17.
-//
-
 #include "TextInputDialog.hpp"
 
 #include "apps/openmw/mwbase/windowmanager.hpp"

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 19.05.16.
-//
-
 #ifndef OPENMW_GUILOGIN_HPP
 #define OPENMW_GUILOGIN_HPP
 

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 18.02.17.
-//
-
 #include "Cell.hpp"
 
 #include <components/openmw-mp/NetworkMessages.hpp>

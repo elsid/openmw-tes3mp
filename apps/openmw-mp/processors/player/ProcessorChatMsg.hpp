@@ -1,7 +1,3 @@
-//
-// Created by koncord on 01.04.17.
-//
-
 #ifndef OPENMW_PROCESSORPLAYERCHATMSG_HPP
 #define OPENMW_PROCESSORPLAYERCHATMSG_HPP
 

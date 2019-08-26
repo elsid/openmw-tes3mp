@@ -1,7 +1,3 @@
-//
-// Created by koncord on 07.01.17.
-//
-
 #ifndef NEWLAUNCHER_PING_HPP
 #define NEWLAUNCHER_PING_HPP
 

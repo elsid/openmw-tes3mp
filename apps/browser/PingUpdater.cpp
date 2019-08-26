@@ -1,7 +1,3 @@
-//
-// Created by koncord on 02.05.17.
-//
-
 #include "PingUpdater.hpp"
 #include "netutils/Utils.hpp"
 #include <QDebug>

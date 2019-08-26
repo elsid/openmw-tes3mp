@@ -1,7 +1,3 @@
-//
-// Created by koncord on 13.05.17.
-//
-
 #include "RestServer.hpp"
 
 #include <boost/property_tree/ptree.hpp>

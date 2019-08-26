@@ -1,7 +1,3 @@
-//
-// Created by koncord on 20.07.16.
-//
-
 #include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/Base/BasePlayer.hpp>
 

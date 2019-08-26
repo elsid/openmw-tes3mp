@@ -1,7 +1,3 @@
-//
-// Created by koncord on 29.08.16.
-//
-
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include "PacketPlayerClass.hpp"
 

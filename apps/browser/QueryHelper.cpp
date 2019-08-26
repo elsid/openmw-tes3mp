@@ -1,7 +1,3 @@
-//
-// Created by koncord on 27.05.17.
-//
-
 #include "netutils/QueryClient.hpp"
 #include "netutils/Utils.hpp"
 #include "QueryHelper.hpp"

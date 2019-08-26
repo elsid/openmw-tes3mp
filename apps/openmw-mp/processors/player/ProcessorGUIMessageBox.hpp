@@ -1,7 +1,3 @@
-//
-// Created by koncord on 01.04.17.
-//
-
 #ifndef OPENMW_PROCESSORGUIMESSAGEBOX_HPP
 #define OPENMW_PROCESSORGUIMESSAGEBOX_HPP
 

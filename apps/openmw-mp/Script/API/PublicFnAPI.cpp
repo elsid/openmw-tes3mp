@@ -1,7 +1,3 @@
-//
-// Created by koncord on 14.05.16.
-//
-
 #include <Script/ScriptFunction.hpp>
 #include "PublicFnAPI.hpp"
 

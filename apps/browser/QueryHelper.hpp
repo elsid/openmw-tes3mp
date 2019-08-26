@@ -1,8 +1,3 @@
-//
-// Created by koncord on 27.05.17.
-//
-
-
 #ifndef OPENMW_QUERYHELPER_HPP
 #define OPENMW_QUERYHELPER_HPP
 

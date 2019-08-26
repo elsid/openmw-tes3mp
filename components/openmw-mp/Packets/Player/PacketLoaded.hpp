@@ -1,7 +1,3 @@
-//
-// Created by koncord on 17.09.16.
-//
-
 #ifndef OPENMW_PACKETLOADED_HPP
 #define OPENMW_PACKETLOADED_HPP
 

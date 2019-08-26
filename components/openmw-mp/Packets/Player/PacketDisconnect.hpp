@@ -1,7 +1,3 @@
-//
-// Created by koncord on 12.01.16.
-//
-
 #ifndef OPENMW_PACKETDISCONNECT_HPP
 #define OPENMW_PACKETDISCONNECT_HPP
 

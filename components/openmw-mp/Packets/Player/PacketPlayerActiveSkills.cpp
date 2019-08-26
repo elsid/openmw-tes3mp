@@ -1,7 +1,3 @@
-//
-// Created by koncord on 03.12.16.
-//
-
 #include "PacketPlayerActiveSkills.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 

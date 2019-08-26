@@ -1,7 +1,3 @@
-//
-// Created by koncord on 24.04.17.
-//
-
 #ifndef OPENMW_QUERYCLIENT_HPP
 #define OPENMW_QUERYCLIENT_HPP
 

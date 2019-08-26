@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.08.16.
-//
-
 #ifndef OPENMW_LOG_HPP
 #define OPENMW_LOG_HPP
 

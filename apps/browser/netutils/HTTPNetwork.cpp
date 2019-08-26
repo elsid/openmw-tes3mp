@@ -1,7 +1,3 @@
-//
-// Created by koncord on 07.01.17.
-//
-
 #include <RakPeer.h>
 #include <HTTPConnection2.h>
 #include <TCPInterface.h>

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 06.01.17.
-//
-
 #include "MainWindow.hpp"
 #include "QueryHelper.hpp"
 #include "PingHelper.hpp"

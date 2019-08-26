@@ -1,7 +1,3 @@
-//
-// Created by koncord on 06.01.17.
-//
-
 #ifndef NEWLAUNCHER_MAIN_HPP
 #define NEWLAUNCHER_MAIN_HPP
 

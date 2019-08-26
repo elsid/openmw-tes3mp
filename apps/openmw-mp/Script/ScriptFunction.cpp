@@ -1,7 +1,3 @@
-//
-// Created by koncord on 23.01.16.
-//
-
 #include<iostream>
 #include <stdexcept>
 #include "ScriptFunction.hpp"

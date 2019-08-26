@@ -1,7 +1,3 @@
-//
-// Created by koncord on 03.11.16.
-//
-
 #ifndef OPENMW_GUIDIALOGLIST_HPP
 #define OPENMW_GUIDIALOGLIST_HPP
 

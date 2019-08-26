@@ -1,7 +1,3 @@
-//
-// Created by koncord on 30.09.16.
-//
-
 // Copied from MWGui::CustomMarkerCollection
 
 #ifndef OPENMW_PLAYERMARKERCOLLECTION_HPP

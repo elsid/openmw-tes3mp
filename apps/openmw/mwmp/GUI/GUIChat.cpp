@@ -1,7 +1,3 @@
-//
-// Created by koncord on 04.03.16.
-//
-
 #include "GUIChat.hpp"
 
 #include <MyGUI_EditBox.h>

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 17.03.16.
-//
-
 #ifndef OPENMW_PACKETPLAYERSKILL_HPP
 #define OPENMW_PACKETPLAYERSKILL_HPP
 

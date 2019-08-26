@@ -1,7 +1,3 @@
-//
-// Created by koncord on 02.05.17.
-//
-
 #ifndef OPENMW_PINGUPDATER_HPP
 #define OPENMW_PINGUPDATER_HPP
 

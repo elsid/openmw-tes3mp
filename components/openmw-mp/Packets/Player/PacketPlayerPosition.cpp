@@ -1,7 +1,3 @@
-//
-// Created by koncord on 05.01.16.
-//
-
 #include "PacketPlayerPosition.hpp"
 #include <components/openmw-mp/NetworkMessages.hpp>
 

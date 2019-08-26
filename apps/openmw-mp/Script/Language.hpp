@@ -1,7 +1,3 @@
-//
-// Created by koncord on 19.03.16.
-//
-
 #ifndef PLUGINSYSTEM3_LANGUAGE_HPP
 #define PLUGINSYSTEM3_LANGUAGE_HPP
 

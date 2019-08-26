@@ -1,7 +1,3 @@
-//
-// Created by koncord on 06.03.16.
-//
-
 #ifndef OPENMW_PACKETCHATMESSAGE_HPP
 #define OPENMW_PACKETCHATMESSAGE_HPP
 

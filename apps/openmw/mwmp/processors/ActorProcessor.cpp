@@ -1,7 +1,3 @@
-//
-// Created by koncord on 18.04.17.
-//
-
 #include "ActorProcessor.hpp"
 #include "../Networking.hpp"
 #include "../Main.hpp"

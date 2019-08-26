@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.03.16.
-//
-
 #include <apps/openmw-mp/Script/ScriptFunctions.hpp>
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <Player.hpp>

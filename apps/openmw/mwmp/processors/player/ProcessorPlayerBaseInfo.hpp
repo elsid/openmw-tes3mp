@@ -1,7 +1,3 @@
-//
-// Created by koncord on 04.04.17.
-//
-
 #ifndef OPENMW_PROCESSORPLAYERBASEINFO_HPP
 #define OPENMW_PROCESSORPLAYERBASEINFO_HPP
 

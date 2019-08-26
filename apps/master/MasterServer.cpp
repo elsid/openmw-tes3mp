@@ -1,7 +1,3 @@
-//
-// Created by koncord on 21.04.17.
-//
-
 #include <RakPeerInterface.h>
 #include <RakSleep.h>
 #include <BitStream.h>

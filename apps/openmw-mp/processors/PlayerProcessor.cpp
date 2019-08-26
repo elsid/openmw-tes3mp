@@ -1,7 +1,3 @@
-//
-// Created by koncord on 31.03.17.
-//
-
 #include "PlayerProcessor.hpp"
 #include "Networking.hpp"
 

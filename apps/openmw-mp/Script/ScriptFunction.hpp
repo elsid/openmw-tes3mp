@@ -1,7 +1,3 @@
-//
-// Created by koncord on 23.01.16.
-//
-
 #ifndef SCRIPTFUNCTION_HPP
 #define SCRIPTFUNCTION_HPP
 

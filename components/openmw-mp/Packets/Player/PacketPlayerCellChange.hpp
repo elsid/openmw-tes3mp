@@ -1,7 +1,3 @@
-//
-// Created by koncord on 15.01.16.
-//
-
 #ifndef OPENMW_PACKETPLAYERCELLCHANGE_HPP
 #define OPENMW_PACKETPLAYERCELLCHANGE_HPP
 

@@ -1,7 +1,3 @@
-//
-// Created by koncord on 05.01.16.
-//
-
 #ifndef OPENMW_NETWORKMESSAGES_HPP
 #define OPENMW_NETWORKMESSAGES_HPP
 

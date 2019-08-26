@@ -1,7 +1,3 @@
-//
-// Created by koncord on 14.05.16.
-//
-
 #ifndef PLUGINSYSTEM3_PUBLICFNAPI_HPP
 #define PLUGINSYSTEM3_PUBLICFNAPI_HPP
 

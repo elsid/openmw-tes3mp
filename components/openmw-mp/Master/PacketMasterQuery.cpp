@@ -1,7 +1,3 @@
-//
-// Created by koncord on 22.04.17.
-//
-
 #include <components/openmw-mp/NetworkMessages.hpp>
 #include <iostream>
 #include "MasterData.hpp"

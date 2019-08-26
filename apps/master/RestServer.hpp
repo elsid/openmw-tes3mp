@@ -1,7 +1,3 @@
-//
-// Created by koncord on 13.05.17.
-//
-
 #ifndef NEWRESTAPI_RESTSERVER_HPP
 #define NEWRESTAPI_RESTSERVER_HPP
 

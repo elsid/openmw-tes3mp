@@ -1,7 +1,3 @@
-//
-// Created by koncord on 03.05.17.
-//
-
 #include "PingHelper.hpp"
 #include "ServerModel.hpp"
 #include <QDebug>
