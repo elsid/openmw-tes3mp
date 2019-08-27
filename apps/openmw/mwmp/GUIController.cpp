@@ -184,7 +184,7 @@ void mwmp::GUIController::onInputBoxDone(MWGui::WindowBase *parWindow)
 bool mwmp::GUIController::pressedKey(int key)
 {
     MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
-    if (mChat == nullptr || windowManager->getMode() != MWGui::GM_None)
+    if (mChat == nullptr || windowManager->isConsoleMode() || windowManager->getMode() != MWGui::GM_None)
         return false;
     if (key == keyChatMode)
     {
