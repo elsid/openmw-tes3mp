@@ -43,7 +43,7 @@ namespace mwmp
 
     private:
 
-        static std::map<RakNet::RakNetGUID, DedicatedPlayer *> players;
+        static std::map<RakNet::RakNetGUID, DedicatedPlayer *> playerList;
     };
 }
 

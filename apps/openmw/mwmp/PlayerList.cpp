@@ -21,14 +21,14 @@
 using namespace mwmp;
 using namespace std;
 
-std::map <RakNet::RakNetGUID, DedicatedPlayer *> PlayerList::players;
+std::map <RakNet::RakNetGUID, DedicatedPlayer *> PlayerList::playerList;
 
 void PlayerList::update(float dt)
 {
-    for (auto &p : players)
+    for (auto &playerEntry : playerList)
     {
-        DedicatedPlayer *player = p.second;
-        if (player == 0) continue;
+        DedicatedPlayer *player = playerEntry.second;
+        if (player == nullptr) continue;
 
         player->update(dt);
     }
@@ -38,46 +38,47 @@ DedicatedPlayer *PlayerList::newPlayer(RakNet::RakNetGUID guid)
 {
     LOG_APPEND(TimedLog::LOG_INFO, "- Creating new DedicatedPlayer with guid %s", guid.ToString());
 
-    players[guid] = new DedicatedPlayer(guid);
+    playerList[guid] = new DedicatedPlayer(guid);
 
-    LOG_APPEND(TimedLog::LOG_INFO, "- There are now %i DedicatedPlayers", players.size());
+    LOG_APPEND(TimedLog::LOG_INFO, "- There are now %i DedicatedPlayers", playerList.size());
 
-    return players[guid];
+    return playerList[guid];
 }
 
 void PlayerList::deletePlayer(RakNet::RakNetGUID guid)
 {
-    if (players[guid]->reference)
-        players[guid]->deleteReference();
+    if (playerList[guid]->reference)
+        playerList[guid]->deleteReference();
 
-    delete players[guid];
-    players.erase(guid);
+    delete playerList[guid];
+    playerList.erase(guid);
 }
 
 void PlayerList::cleanUp()
 {
-    for (auto &p : players)
-        delete p.second;
+    for (auto &playerEntry : playerList)
+        delete playerEntry.second;
 }
 
 DedicatedPlayer *PlayerList::getPlayer(RakNet::RakNetGUID guid)
 {
-    return players[guid];
+    return playerList[guid];
 }
 
 DedicatedPlayer *PlayerList::getPlayer(const MWWorld::Ptr &ptr)
 {
-    for (auto &p : players)
+    for (auto &playerEntry : playerList)
     {
-        if (p.second == 0 || p.second->getPtr().mRef == 0)
+        if (playerEntry.second == nullptr || playerEntry.second->getPtr().mRef == nullptr)
             continue;
         
         string refId = ptr.getCellRef().getRefId();
         
-        if (p.second->getPtr().getCellRef().getRefId() == refId)
-            return p.second;
+        if (playerEntry.second->getPtr().getCellRef().getRefId() == refId)
+            return playerEntry.second;
     }
-    return 0;
+
+    return nullptr;
 }
 
 bool PlayerList::isDedicatedPlayer(const MWWorld::Ptr &ptr)
@@ -89,12 +90,12 @@ bool PlayerList::isDedicatedPlayer(const MWWorld::Ptr &ptr)
     if (ptr.getCellRef().getRefNum().mIndex != 0 || ptr.getCellRef().getMpNum() != 0)
         return false;
 
-    return (getPlayer(ptr) != 0);
+    return (getPlayer(ptr) != nullptr);
 }
 
 void PlayerList::enableMarkers(const ESM::Cell& cell)
 {
-    for (auto &playerEntry : players)
+    for (auto &playerEntry : playerList)
     {
         if (playerEntry.second == nullptr || playerEntry.second->getPtr().mRef == nullptr)
             continue;
@@ -114,12 +115,12 @@ void PlayerList::enableMarkers(const ESM::Cell& cell)
 */
 void PlayerList::clearHitAttemptActorId(int actorId)
 {
-    for (auto &p : players)
+    for (auto &playerEntry : playerList)
     {
-        if (p.second == 0 || p.second->getPtr().mRef == 0)
+        if (playerEntry.second == nullptr || playerEntry.second->getPtr().mRef == nullptr)
             continue;
 
-        MWMechanics::CreatureStats &playerCreatureStats = p.second->getPtr().getClass().getCreatureStats(p.second->getPtr());
+        MWMechanics::CreatureStats &playerCreatureStats = playerEntry.second->getPtr().getClass().getCreatureStats(playerEntry.second->getPtr());
 
         if (playerCreatureStats.getHitAttemptActorId() == actorId)
             playerCreatureStats.setHitAttemptActorId(-1);
