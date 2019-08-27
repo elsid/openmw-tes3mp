@@ -23,7 +23,7 @@ namespace mwmp
         okButton->eventMouseButtonClick += MyGUI::newDelegate(this, &TextInputDialog::onOkClicked);
 
         // Make sure the edit box has focus
-        MyGUI::InputManager::getInstance().setKeyFocusWidget(mTextEdit);
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mTextEdit);
     }
 
     void TextInputDialog::setNextButtonShow(bool shown)
@@ -56,7 +56,7 @@ namespace mwmp
     {
         WindowModal::onOpen();
         // Make sure the edit box has focus
-        MyGUI::InputManager::getInstance().setKeyFocusWidget(mTextEdit);
+        MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mTextEdit);
     }
 
     bool TextInputDialog::exit()
@@ -71,7 +71,7 @@ namespace mwmp
         if (mTextEdit->getCaption() == "")
         {
             //MWBase::Environment::get().getWindowManager()->messageBox ("#{sNotifyMessage37}");
-            MyGUI::InputManager::getInstance().setKeyFocusWidget(mTextEdit);
+            MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mTextEdit);
         }
         else
             eventDone(this);
