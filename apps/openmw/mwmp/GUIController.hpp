@@ -34,7 +34,7 @@ namespace mwmp
 
         void refreshGuiMode(MWGui::GuiMode guiMode);
 
-        void setupChat(const Settings::Manager &manager);
+        void setupChat();
 
         void printChatMessage(std::string &msg);
         void setChatVisible(bool chatVisible);

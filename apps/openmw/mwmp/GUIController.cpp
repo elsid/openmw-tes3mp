@@ -64,18 +64,18 @@ void mwmp::GUIController::refreshGuiMode(MWGui::GuiMode guiMode)
     }
 }
 
-void mwmp::GUIController::setupChat(const Settings::Manager &mgr)
+void mwmp::GUIController::setupChat()
 {
     assert(mChat == nullptr);
 
-    float chatDelay = mgr.getFloat("delay", "Chat");
-    int chatY = mgr.getInt("y", "Chat");
-    int chatX = mgr.getInt("x", "Chat");
-    int chatW = mgr.getInt("w", "Chat");
-    int chatH = mgr.getInt("h", "Chat");
+    float chatDelay = Settings::Manager::getFloat("delay", "Chat");
+    int chatY = Settings::Manager::getInt("y", "Chat");
+    int chatX = Settings::Manager::getInt("x", "Chat");
+    int chatW = Settings::Manager::getInt("w", "Chat");
+    int chatH = Settings::Manager::getInt("h", "Chat");
 
-    keySay =      SDL_GetScancodeFromName(mgr.getString("keySay", "Chat").c_str());
-    keyChatMode = SDL_GetScancodeFromName(mgr.getString("keyChatMode", "Chat").c_str());
+    keySay = SDL_GetScancodeFromName(Settings::Manager::getString("keySay", "Chat").c_str());
+    keyChatMode = SDL_GetScancodeFromName(Settings::Manager::getString("keyChatMode", "Chat").c_str());
 
     mChat = new GUIChat(chatX, chatY, chatW, chatH);
     mChat->setDelay(chatDelay);

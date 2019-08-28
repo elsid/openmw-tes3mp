@@ -118,35 +118,13 @@ void Main::configure(const boost::program_options::variables_map &variables)
     resourceDir = variables["resources"].as<Files::EscapeHashString>().toStdString();
 }
 
-static Settings::CategorySettingValueMap saveUserSettings;
-static Settings::CategorySettingValueMap saveDefaultSettings;
-static Settings::CategorySettingVector saveChangedSettings;
-
-void initializeManager(Settings::Manager &manager)
-{
-    saveUserSettings = manager.mUserSettings;
-    saveDefaultSettings = manager.mDefaultSettings;
-    saveChangedSettings = manager.mChangedSettings;
-    manager.mUserSettings.clear();
-    manager.mDefaultSettings.clear();
-    manager.mChangedSettings.clear();
-    loadSettings(manager);
-}
-
-void restoreManager(Settings::Manager &manager)
-{
-    manager.mUserSettings = saveUserSettings;
-    manager.mDefaultSettings = saveDefaultSettings;
-    manager.mChangedSettings = saveChangedSettings;
-}
-
 bool Main::init(std::vector<std::string> &content, Files::Collections &collections)
 {
     assert(!pMain);
     pMain = new Main();
 
     Settings::Manager manager;
-    initializeManager(manager);
+    loadSettings(manager);
 
     int logLevel = manager.getInt("logLevel", "General");
     TimedLog::SetLevel(logLevel);
@@ -168,17 +146,13 @@ bool Main::init(std::vector<std::string> &content, Files::Collections &collectio
     get().mLocalPlayer->serverPassword = serverPassword;
 
     pMain->mNetworking->connect(pMain->server, pMain->port, content, collections);
-    restoreManager(manager);
+
     return pMain->mNetworking->isConnected();
 }
 
 void Main::postInit()
 {
-    Settings::Manager manager;
-    initializeManager(manager);
-
-    pMain->mGUIController->setupChat(manager);
-    restoreManager(manager);
+    pMain->mGUIController->setupChat();
 
     const MWBase::Environment &environment = MWBase::Environment::get();
     environment.getStateManager()->newGame(true);
