@@ -128,7 +128,7 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor
     ProcessorVideoPlay
 
     ProcessorObjectActivate ProcessorObjectAnimPlay ProcessorObjectAttach  ProcessorObjectCollision ProcessorObjectDelete
-    ProcessorObjectLock ProcessorObjectMove ProcessorObjectPlace ProcessorObjectReset ProcessorObjectRotate
+    ProcessorObjectHit ProcessorObjectLock ProcessorObjectMove ProcessorObjectPlace ProcessorObjectRotate
     ProcessorObjectScale ProcessorObjectSpawn ProcessorObjectState ProcessorObjectTrap ProcessorScriptLocalShort
     ProcessorScriptLocalFloat ProcessorScriptMemberShort ProcessorScriptMemberFloat ProcessorScriptGlobalShort
     ProcessorScriptGlobalFloat

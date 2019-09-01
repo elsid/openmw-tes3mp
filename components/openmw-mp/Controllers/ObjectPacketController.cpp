@@ -3,10 +3,10 @@
 #include "../Packets/Object/PacketObjectAttach.hpp"
 #include "../Packets/Object/PacketObjectCollision.hpp"
 #include "../Packets/Object/PacketObjectDelete.hpp"
+#include "../Packets/Object/PacketObjectHit.hpp"
 #include "../Packets/Object/PacketObjectLock.hpp"
 #include "../Packets/Object/PacketObjectMove.hpp"
 #include "../Packets/Object/PacketObjectPlace.hpp"
-#include "../Packets/Object/PacketObjectReset.hpp"
 #include "../Packets/Object/PacketObjectRotate.hpp"
 #include "../Packets/Object/PacketObjectScale.hpp"
 #include "../Packets/Object/PacketObjectSpawn.hpp"
@@ -44,10 +44,10 @@ mwmp::ObjectPacketController::ObjectPacketController(RakNet::RakPeerInterface *p
     AddPacket<PacketObjectAttach>(&packets, peer);
     AddPacket<PacketObjectCollision>(&packets, peer);
     AddPacket<PacketObjectDelete>(&packets, peer);
+    AddPacket<PacketObjectHit>(&packets, peer);
     AddPacket<PacketObjectLock>(&packets, peer);
     AddPacket<PacketObjectMove>(&packets, peer);
     AddPacket<PacketObjectPlace>(&packets, peer);
-    AddPacket<PacketObjectReset>(&packets, peer);
     AddPacket<PacketObjectRotate>(&packets, peer);
     AddPacket<PacketObjectScale>(&packets, peer);
     AddPacket<PacketObjectSpawn>(&packets, peer);

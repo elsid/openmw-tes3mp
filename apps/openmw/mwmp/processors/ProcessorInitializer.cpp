@@ -55,10 +55,10 @@
 #include "object/ProcessorObjectAttach.hpp"
 #include "object/ProcessorObjectCollision.hpp"
 #include "object/ProcessorObjectDelete.hpp"
+#include "object/ProcessorObjectHit.hpp"
 #include "object/ProcessorObjectLock.hpp"
 #include "object/ProcessorObjectMove.hpp"
 #include "object/ProcessorObjectPlace.hpp"
-#include "object/ProcessorObjectReset.hpp"
 #include "object/ProcessorObjectRotate.hpp"
 #include "object/ProcessorObjectScale.hpp"
 #include "object/ProcessorObjectSpawn.hpp"
@@ -155,10 +155,10 @@ void ProcessorInitializer()
     ObjectProcessor::AddProcessor(new ProcessorObjectAttach());
     ObjectProcessor::AddProcessor(new ProcessorObjectCollision());
     ObjectProcessor::AddProcessor(new ProcessorObjectDelete());
+    ObjectProcessor::AddProcessor(new ProcessorObjectHit());
     ObjectProcessor::AddProcessor(new ProcessorObjectLock());
     ObjectProcessor::AddProcessor(new ProcessorObjectMove());
     ObjectProcessor::AddProcessor(new ProcessorObjectPlace());
-    ObjectProcessor::AddProcessor(new ProcessorObjectReset());
     ObjectProcessor::AddProcessor(new ProcessorObjectRotate());
     ObjectProcessor::AddProcessor(new ProcessorObjectScale());
     ObjectProcessor::AddProcessor(new ProcessorObjectSpawn());
