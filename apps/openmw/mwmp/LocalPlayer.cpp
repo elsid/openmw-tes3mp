@@ -609,14 +609,6 @@ void LocalPlayer::updateAttackOrCast()
     }
     else if (cast.shouldSend)
     {
-        if (cast.type == Cast::REGULAR)
-        {
-            cast.spellId = MWBase::Environment::get().getWindowManager()->getSelectedSpell();
-
-            if (cast.pressed)
-                cast.success = MechanicsHelper::getSpellSuccess(cast.spellId, getPlayerPtr());
-        }
-
         getNetworking()->getPlayerPacket(ID_PLAYER_CAST)->setPlayer(this);
         getNetworking()->getPlayerPacket(ID_PLAYER_CAST)->Send();
 

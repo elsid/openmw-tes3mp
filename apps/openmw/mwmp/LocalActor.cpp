@@ -265,15 +265,6 @@ void LocalActor::updateAttackOrCast()
     }
     else if (cast.shouldSend)
     {
-        if (cast.type == Cast::REGULAR)
-        {
-            MWMechanics::CreatureStats &casterStats = ptr.getClass().getCreatureStats(ptr);
-            cast.spellId = casterStats.getSpells().getSelectedSpell();
-
-            if (cast.pressed)
-                cast.success = MechanicsHelper::getSpellSuccess(cast.spellId, ptr);
-        }
-
         mwmp::Main::get().getNetworking()->getActorList()->addCastActor(*this);
         cast.shouldSend = false;
     }
