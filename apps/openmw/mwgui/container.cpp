@@ -22,11 +22,14 @@
 #include "../mwbase/world.hpp"
 #include "../mwbase/windowmanager.hpp"
 #include "../mwbase/mechanicsmanager.hpp"
+#include "../mwbase/scriptmanager.hpp"
 
 #include "../mwworld/class.hpp"
 #include "../mwworld/inventorystore.hpp"
 
 #include "../mwmechanics/creaturestats.hpp"
+
+#include "../mwscript/interpretercontext.hpp"
 
 #include "countdialog.hpp"
 #include "inventorywindow.hpp"
@@ -384,23 +387,46 @@ namespace MWGui
             
             if (mPtr.getClass().isPersistent(mPtr))
                 MWBase::Environment::get().getWindowManager()->messageBox("#{sDisposeCorpseFail}");
-            /*
-                Start of tes3mp change (major)
-
-                Instead of deleting the corpse on this client, simply send an ID_OBJECT_DELETE
-                packet to the server as a request for the deletion
-            */
             else
             {
+                /*
+                    Start of tes3mp change (major)
+
+                    Instead of deleting the corpse on this client, increasing the death count and
+                    running the dead actor's sccript, simply send an ID_OBJECT_DELETE packet to the server
+                    as a request for the deletion
+                */
+
+                /*
+                MWMechanics::CreatureStats& creatureStats = mPtr.getClass().getCreatureStats(mPtr);
+
+                // If we dispose corpse before end of death animation, we should update death counter counter manually.
+                // Also we should run actor's script - it may react on actor's death.
+                if (creatureStats.isDead() && !creatureStats.isDeathAnimationFinished())
+                {
+                    creatureStats.setDeathAnimationFinished(true);
+                    MWBase::Environment::get().getMechanicsManager()->notifyDied(mPtr);
+
+                    const std::string script = mPtr.getClass().getScript(mPtr);
+                    if (!script.empty() && MWBase::Environment::get().getWorld()->getScriptsEnabled())
+                    {
+                        MWScript::InterpreterContext interpreterContext (&mPtr.getRefData().getLocals(), mPtr);
+                        MWBase::Environment::get().getScriptManager()->run (script, interpreterContext);
+                    }
+                }
+
+                MWBase::Environment::get().getWorld()->deleteObject(mPtr);
+                */
+
                 mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
                 objectList->reset();
                 objectList->packetOrigin = mwmp::CLIENT_GAMEPLAY;
                 objectList->addObjectDelete(mPtr);
                 objectList->sendObjectDelete();
+                /*
+                    End of tes3mp change (major)
+                */
             }
-            /*
-                End of tes3mp change (major)
-            */
         }
     }
 

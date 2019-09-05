@@ -1847,7 +1847,7 @@ namespace MWWorld
         return result.mHit;
     }
 
-    bool World::rotateDoor(const Ptr door, int state, float duration)
+    bool World::rotateDoor(const Ptr door, MWWorld::DoorState state, float duration)
     {
         const ESM::Position& objPos = door.getRefData().getPosition();
         float oldRot = objPos.rot[2];
@@ -1856,17 +1856,20 @@ namespace MWWorld
         float maxRot = minRot + osg::DegreesToRadians(90.f);
 
         float diff = duration * osg::DegreesToRadians(90.f);
-        float targetRot = std::min(std::max(minRot, oldRot + diff * (state == 1 ? 1 : -1)), maxRot);
+        float targetRot = std::min(std::max(minRot, oldRot + diff * (state == MWWorld::DoorState::Opening ? 1 : -1)), maxRot);
         rotateObject(door, objPos.rot[0], objPos.rot[1], targetRot);
 
-        bool reached = (targetRot == maxRot && state) || targetRot == minRot;
+        bool reached = (targetRot == maxRot && state != MWWorld::DoorState::Idle) || targetRot == minRot;
 
         /// \todo should use convexSweepTest here
+        bool collisionWithActor = false;
         std::vector<MWWorld::Ptr> collisions = mPhysics->getCollisions(door, MWPhysics::CollisionType_Door, MWPhysics::CollisionType_Actor);
         for (MWWorld::Ptr& ptr : collisions)
         {
             if (ptr.getClass().isActor())
             {
+                collisionWithActor = true;
+                
                 // Collided with actor, ask actor to try to avoid door
                 if(ptr != getPlayerPtr() )
                 {
@@ -1881,6 +1884,25 @@ namespace MWWorld
             }
         }
 
+        // Cancel door closing sound if collision with actor is detected
+        if (collisionWithActor)
+        {
+            const ESM::Door* ref = door.get<ESM::Door>()->mBase;
+
+            if (state == MWWorld::DoorState::Opening)
+            {
+                const std::string& openSound = ref->mOpenSound;
+                if (!openSound.empty() && MWBase::Environment::get().getSoundManager()->getSoundPlaying(door, openSound))
+                    MWBase::Environment::get().getSoundManager()->stopSound3D(door, openSound);
+            }
+            else if (state == MWWorld::DoorState::Closing)
+            {
+                const std::string& closeSound = ref->mCloseSound;
+                if (!closeSound.empty() && MWBase::Environment::get().getSoundManager()->getSoundPlaying(door, closeSound))
+                    MWBase::Environment::get().getSoundManager()->stopSound3D(door, closeSound);
+            }
+        }
+
         // the rotation order we want to use
         mWorldScene->updateObjectRotation(door, false);
         return reached;
@@ -1888,7 +1910,7 @@ namespace MWWorld
 
     void World::processDoors(float duration)
     {
-        std::map<MWWorld::Ptr, int>::iterator it = mDoorStates.begin();
+        auto it = mDoorStates.begin();
         while (it != mDoorStates.end())
         {
             if (!mWorldScene->isCellActive(*it->first.getCell()) || !it->first.getRefData().getBaseNode())
@@ -1905,7 +1927,7 @@ namespace MWWorld
                 if (reached)
                 {
                     // Mark as non-moving
-                    it->first.getClass().setDoorState(it->first, 0);
+                    it->first.getClass().setDoorState(it->first, MWWorld::DoorState::Idle);
                     mDoorStates.erase(it++);
                 }
                 else
@@ -2802,21 +2824,21 @@ namespace MWWorld
 
     void World::activateDoor(const MWWorld::Ptr& door)
     {
-        int state = door.getClass().getDoorState(door);
+        auto state = door.getClass().getDoorState(door);
         switch (state)
         {
-        case 0:
+        case MWWorld::DoorState::Idle:
             if (door.getRefData().getPosition().rot[2] == door.getCellRef().getPosition().rot[2])
-                state = 1; // if closed, then open
+                state = MWWorld::DoorState::Opening; // if closed, then open
             else
-                state = 2; // if open, then close
+                state = MWWorld::DoorState::Closing; // if open, then close
             break;
-        case 2:
-            state = 1; // if closing, then open
+        case MWWorld::DoorState::Closing:
+            state = MWWorld::DoorState::Opening; // if closing, then open
             break;
-        case 1:
+        case MWWorld::DoorState::Opening:
         default:
-            state = 2; // if opening, then close
+            state = MWWorld::DoorState::Closing; // if opening, then close
             break;
         }
 
@@ -2838,7 +2860,7 @@ namespace MWWorld
         mDoorStates[door] = state;
     }
 
-    void World::activateDoor(const Ptr &door, int state)
+    void World::activateDoor(const Ptr &door, MWWorld::DoorState state)
     {
         /*
             Start of tes3mp addition
@@ -2856,7 +2878,7 @@ namespace MWWorld
 
         door.getClass().setDoorState(door, state);
         mDoorStates[door] = state;
-        if (state == 0)
+        if (state == MWWorld::DoorState::Idle)
         {
             mDoorStates.erase(door);
             rotateDoor(door, state, 1);
@@ -2868,10 +2890,10 @@ namespace MWWorld
 
         Allow the saving of door states without going through World::activateDoor()
     */
-    void World::saveDoorState(const Ptr &door, int state)
+    void World::saveDoorState(const Ptr &door, MWWorld::DoorState state)
     {
         mDoorStates[door] = state;
-        if (state == 0)
+        if (state == MWWorld::DoorState::Idle)
             mDoorStates.erase(door);
     }
     /*

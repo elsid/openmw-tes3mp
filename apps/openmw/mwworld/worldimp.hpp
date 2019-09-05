@@ -118,7 +118,7 @@ namespace MWWorld
 
             int mActivationDistanceOverride;
 
-            std::map<MWWorld::Ptr, int> mDoorStates;
+            std::map<MWWorld::Ptr, MWWorld::DoorState> mDoorStates;
             ///< only holds doors that are currently moving. 1 = opening, 2 = closing
 
             std::string mStartCell;
@@ -155,7 +155,7 @@ namespace MWWorld
             void addContainerScripts(const Ptr& reference, CellStore* cell) override;
             void removeContainerScripts(const Ptr& reference) override;
     private:
-            bool rotateDoor(const Ptr door, int state, float duration);
+            bool rotateDoor(const Ptr door, DoorState state, float duration);
 
             void processDoors(float duration);
             ///< Run physics simulation and modify \a world accordingly.
@@ -680,14 +680,14 @@ namespace MWWorld
             /// update movement state of a non-teleport door as specified
             /// @param state see MWClass::setDoorState
             /// @note throws an exception when invoked on a teleport door
-            void activateDoor(const MWWorld::Ptr& door, int state) override;
+            void activateDoor(const MWWorld::Ptr& door, MWWorld::DoorState state) override;
 
             /*
                 Start of tes3mp addition
 
                 Useful self-contained method for saving door states
             */
-            void saveDoorState(const MWWorld::Ptr& door, int state) override;
+            void saveDoorState(const MWWorld::Ptr& door, MWWorld::DoorState state) override;
             /*
                 End of tes3mp addition
             */

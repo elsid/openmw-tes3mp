@@ -18,6 +18,7 @@
     Bug #3894: Hostile spell effects not detected/present on first frame of OnPCHitMe
     Bug #4202: Open .omwaddon files without needing toopen openmw-cs first
     Bug #4240: Ash storm origin coordinates and hand shielding animation behavior are incorrect
+    Bug #4270: Closing doors while they are obstructed desyncs closing sfx
     Bug #4276: Resizing character window differs from vanilla
     Bug #4329: Removed birthsign abilities are restored after reloading the save
     Bug #4341: Error message about missing GDB is too vague
@@ -27,6 +28,7 @@
     Bug #4540: Rain delay when exiting water
     Bug #4600: Crash when no sound output is available or --no-sound is used.
     Bug #4639: Black screen after completing first mages guild mission + training
+    Bug #4650: Focus is lost after pressing ESC in confirmation dialog inside savegame dialog
     Bug #4701: PrisonMarker record is not hardcoded like other markers
     Bug #4703: Editor: it's possible to preview levelled list records
     Bug #4705: Editor: unable to open exterior cell views from Instances table
@@ -128,12 +130,13 @@
     Bug #5106: Still can jump even when encumbered
     Bug #5110: ModRegion with a redundant numerical argument breaks script execution
     Bug #5112: Insufficient magicka for current spell not reflected on HUD icon
+    Bug #5113: Unknown alchemy question mark not centered
     Bug #5123: Script won't run on respawn
     Bug #5124: Arrow remains attached to actor if pulling animation was cancelled
     Bug #5126: Swimming creatures without RunForward animations are motionless during combat
     Bug #5134: Doors rotation by "Lock" console command is inconsistent
-    Bug #5126: Swimming creatures without RunForward animations are motionless during combat
     Bug #5137: Textures with Clamp Mode set to Clamp instead of Wrap are too dark outside the boundaries
+    Bug #5149: Failing lock pick attempts isn't always a crime
     Feature #1774: Handle AvoidNode
     Feature #2229: Improve pathfinding AI
     Feature #3025: Analogue gamepad movement controls
@@ -177,6 +180,8 @@
     Feature #5122: Use magic glow for enchanted arrows
     Feature #5131: Custom skeleton bones
     Feature #5132: Unique animations for different weapon types
+    Feature #5146: Safe Dispose corpse
+    Feature #5147: Show spell magicka cost in spell buying window
     Task #4686: Upgrade media decoder to a more current FFmpeg API
     Task #4695: Optimize Distant Terrain memory consumption
     Task #4789: Optimize cell transitions

@@ -13,6 +13,7 @@
 #include "../mwbase/world.hpp"
 #include "../mwbase/environment.hpp"
 #include "../mwbase/mechanicsmanager.hpp"
+#include "../mwbase/scriptmanager.hpp"
 #include "../mwbase/soundmanager.hpp"
 #include "../mwbase/windowmanager.hpp"
 
@@ -25,6 +26,8 @@
 #include "../mwmechanics/summoning.hpp"
 
 #include "../mwrender/animation.hpp"
+
+#include "../mwscript/interpretercontext.hpp"
 
 #include "../mwworld/class.hpp"
 #include "../mwworld/containerstore.hpp"
@@ -483,6 +486,28 @@ void ObjectList::deleteObjects(MWWorld::CellStore* cellStore)
                 }
             }
 
+            // Is this a dying actor being deleted before its death animation has finished? If so,
+            // increase the death count for the actor if applicable and run the actor's script,
+            // which is the same as what happens in OpenMW's ContainerWindow::onDisposeCorpseButtonClicked()
+            // if an actor's corpse is disposed of before its death animation is finished
+            if (ptrFound.getClass().isActor())
+            {
+                MWMechanics::CreatureStats& creatureStats = ptrFound.getClass().getCreatureStats(ptrFound);
+
+                if (creatureStats.isDead() && !creatureStats.isDeathAnimationFinished())
+                {
+                    creatureStats.setDeathAnimationFinished(true);
+                    MWBase::Environment::get().getMechanicsManager()->notifyDied(ptrFound);
+
+                    const std::string script = ptrFound.getClass().getScript(ptrFound);
+                    if (!script.empty() && MWBase::Environment::get().getWorld()->getScriptsEnabled())
+                    {
+                        MWScript::InterpreterContext interpreterContext(&ptrFound.getRefData().getLocals(), ptrFound);
+                        MWBase::Environment::get().getScriptManager()->run(script, interpreterContext);
+                    }
+                }
+            }
+
             MWBase::Environment::get().getWorld()->deleteObject(ptrFound);
         }
     }
@@ -646,8 +671,10 @@ void ObjectList::activateDoors(MWWorld::CellStore* cellStore)
             LOG_APPEND(TimedLog::LOG_VERBOSE, "-- Found %s %i-%i", ptrFound.getCellRef().getRefId().c_str(),
                                ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
 
-            ptrFound.getClass().setDoorState(ptrFound, baseObject.doorState);
-            MWBase::Environment::get().getWorld()->saveDoorState(ptrFound, baseObject.doorState);
+            MWWorld::DoorState doorState = static_cast<MWWorld::DoorState>(baseObject.doorState);
+
+            ptrFound.getClass().setDoorState(ptrFound, doorState);
+            MWBase::Environment::get().getWorld()->saveDoorState(ptrFound, doorState);
         }
     }
 }
@@ -1054,7 +1081,7 @@ void ObjectList::addObjectAnimPlay(const MWWorld::Ptr& ptr, std::string group, i
     addObject(baseObject);
 }
 
-void ObjectList::addDoorState(const MWWorld::Ptr& ptr, int state)
+void ObjectList::addDoorState(const MWWorld::Ptr& ptr, MWWorld::DoorState state)
 {
     cell = *ptr.getCell()->getCell();
 
@@ -1062,7 +1089,7 @@ void ObjectList::addDoorState(const MWWorld::Ptr& ptr, int state)
     baseObject.refId = ptr.getCellRef().getRefId();
     baseObject.refNum = ptr.getCellRef().getRefNum().mIndex;
     baseObject.mpNum = ptr.getCellRef().getMpNum();
-    baseObject.doorState = state;
+    baseObject.doorState = static_cast<int>(state);
     addObject(baseObject);
 }
 

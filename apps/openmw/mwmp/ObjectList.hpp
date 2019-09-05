@@ -2,7 +2,7 @@
 #define OPENMW_OBJECTLIST_HPP
 
 #include <components/openmw-mp/Base/BaseObject.hpp>
-#include "../mwworld/cellstore.hpp"
+#include "../mwworld/worldimp.hpp"
 #include <RakNetTypes.h>
 
 namespace mwmp
@@ -61,7 +61,7 @@ namespace mwmp
         void addObjectState(const MWWorld::Ptr& ptr, bool objectState);
         void addObjectAnimPlay(const MWWorld::Ptr& ptr, std::string group, int mode);
 
-        void addDoorState(const MWWorld::Ptr& ptr, int state);
+        void addDoorState(const MWWorld::Ptr& ptr, MWWorld::DoorState state);
         void addMusicPlay(std::string filename);
         void addVideoPlay(std::string filename, bool allowSkipping);
         void addScriptLocalShort(const MWWorld::Ptr& ptr, int index, int shortVal);

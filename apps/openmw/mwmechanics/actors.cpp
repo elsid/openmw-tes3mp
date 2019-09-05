@@ -1830,6 +1830,43 @@ namespace MWMechanics
         updateCombatMusic();
     }
 
+    void Actors::notifyDied(const MWWorld::Ptr &actor)
+    {
+        actor.getClass().getCreatureStats(actor).notifyDied();
+
+        /*
+            Start of tes3mp change (major)
+
+            Only increment death count for an actor if we are its authority, to avoid
+            situations where we increment it locally after having already received an
+            ID_WORLD_KILL_COUNT packet about it
+        */
+        bool isLocalActor = mwmp::Main::get().getCellController()->isLocalActor(actor);
+
+        if (isLocalActor)
+            ++mDeathCount[Misc::StringUtils::lowerCase(actor.getCellRef().getRefId())];
+        /*
+            End of tes3mp change (major)
+        */
+
+        /*
+            Start of tes3mp addition
+
+            Send an ID_WORLD_KILL_COUNT packet every time the kill count changes,
+            as long as we are the authority over the actor's cell
+        */
+        if (isLocalActor)
+        {
+            std::string refId = Misc::StringUtils::lowerCase(actor.getCellRef().getRefId());
+            int number = mDeathCount[refId];
+
+            mwmp::Main::get().getLocalPlayer()->sendKill(refId, number);
+        }
+        /*
+            End of tes3mp addition
+        */
+    }
+
     void Actors::killDeadActors()
     {
         for(PtrActorMap::iterator iter(mActors.begin()); iter != mActors.end(); ++iter)
@@ -1873,39 +1910,7 @@ namespace MWMechanics
             }
             else if (killResult == CharacterController::Result_DeathAnimJustFinished)
             {
-                iter->first.getClass().getCreatureStats(iter->first).notifyDied();
-
-                /*
-                    Start of tes3mp change (major)
-
-                    Only increment death count for an actor if we are its authority, to avoid
-                    situations where we increment it locally after having already received an
-                    ID_WORLD_KILL_COUNT packet about it
-                */
-                bool isLocalActor = mwmp::Main::get().getCellController()->isLocalActor(iter->first);
-
-                if (isLocalActor)
-                    ++mDeathCount[Misc::StringUtils::lowerCase(iter->first.getCellRef().getRefId())];
-                /*
-                    End of tes3mp change (major)
-                */
-
-                /*
-                    Start of tes3mp addition
-
-                    Send an ID_WORLD_KILL_COUNT packet every time the kill count changes,
-                    as long as we are the authority over the actor's cell
-                */
-                if (isLocalActor)
-                {
-                    std::string refId = Misc::StringUtils::lowerCase(iter->first.getCellRef().getRefId());
-                    int number = mDeathCount[refId];
-
-                    mwmp::Main::get().getLocalPlayer()->sendKill(refId, number);
-                }
-                /*
-                    End of tes3mp addition
-                */
+                notifyDied(iter->first);
 
                 // Reset magic effects and recalculate derived effects
                 // One case where we need this is to make sure bound items are removed upon death
