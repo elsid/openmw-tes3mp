@@ -5,7 +5,7 @@ using namespace mwmp;
 
 PacketCellCreate::PacketCellCreate(RakNet::RakPeerInterface *peer) : WorldstatePacket(peer)
 {
-    packetID = ID_CELL_CREATE;
+    packetID = ID_PLACEHOLDER;
     orderChannel = CHANNEL_SYSTEM;
 }
 

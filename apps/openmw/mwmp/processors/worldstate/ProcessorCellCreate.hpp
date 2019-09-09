@@ -10,7 +10,7 @@ namespace mwmp
     public:
         ProcessorCellCreate()
         {
-            BPP_INIT(ID_CELL_CREATE)
+            BPP_INIT(ID_PLACEHOLDER)
         }
 
         virtual void Do(WorldstatePacket &packet, Worldstate &worldstate)

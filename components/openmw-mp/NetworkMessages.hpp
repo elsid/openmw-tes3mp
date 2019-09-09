@@ -108,7 +108,8 @@ enum GameMessages
     ID_WORLD_WEATHER,
 
     ID_PLAYER_ITEM_USE,
-    ID_PLAYER_CAST
+    ID_PLAYER_CAST,
+    ID_PLACEHOLDER
 };
 
 enum OrderingChannel
