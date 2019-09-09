@@ -134,8 +134,8 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor
     ProcessorScriptGlobalFloat
     )
 
-add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorCellReset ProcessorRecordDynamic
-    ProcessorWorldCollisionOverride ProcessorWorldMap ProcessorWorldRegionAuthority ProcessorWorldTime
+add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorCellReset ProcessorClientScriptSettings
+    ProcessorRecordDynamic ProcessorWorldCollisionOverride ProcessorWorldMap ProcessorWorldRegionAuthority ProcessorWorldTime
     ProcessorWorldWeather
     )
 

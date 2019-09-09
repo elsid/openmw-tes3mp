@@ -1,5 +1,6 @@
 #include <cstdlib>
 
+#include <components/openmw-mp/Utils.hpp>
 #include <components/openmw-mp/TimedLog.hpp>
 #include <components/openmw-mp/Version.hpp>
 
@@ -231,79 +232,12 @@ CellController *Main::getCellController() const
     return mCellController;
 }
 
-// When sending packets with ingame script values, certain packets
-// should be ignored because of their potential for spam
 bool Main::isValidPacketScript(std::string script)
 {
-    static const int validPacketScriptsCount = 21;
-    static const std::string validPacketScripts[validPacketScriptsCount] = {
-        // Ghostgate buttons
-        "GG_OpenGate1", // coc Ghostgate
-        "GG_OpenGate2",
-        // Dwemer ruin cranks
-        "Arkn_doors", // coe 0, -2
-        "nchuleftingthWrong1", // coc "Nchuleftingth, Test of Pattern"
-        "nchuleftingthWrong2",
-        "nchulfetingthRight",
-        "Akula_innerdoors", // coc "Akulakhan's Chamber"
-        "Dagoth_doors", // coe 2, 8
-        // Sotha Sil levers
-        "SothaLever1", // coc "Sotha Sil, Outer Flooded Halls"
-        "SothaLever2",
-        "SothaLever3",
-        "SothaLever4",
-        "SothaLever5",
-        "SothaLever6",
-        "SothaLever7",
-        "SothaLever8",
-        "SothaLever9",
-        "SothaLever10",
-        "SothaLever11",
-        "SothaOilLever", // coc "Sotha Sil, Dome of Udok"
-        // Generic state script
-        "LocalState"
-    };
+    mwmp::BaseWorldstate *worldstate = get().getNetworking()->getWorldstate();
 
-    static const int invalidPacketScriptsCount = 17;
-    static const std::string invalidPacketScripts[invalidPacketScriptsCount] = {
-        // Spammy shorts
-        "OutsideBanner",
-        "sleeperScript",
-        "dreamer_talkerEnable",
-        "drenSlaveOwners",
-        "ahnassiScript",
-        "hlormarScript",
-        // Spammy floats
-        "Float",
-        "SignRotate",
-        "FaluraScript",
-        "jsaddhaScript",
-        // Spammy globals
-        "wraithguardScript",
-        // Spammy globals leading to crashes
-        "LegionUniform",
-        "OrdinatorUniform",
-        "LorkhanHeart",
-        "ouch_keening",
-        "ouch_sunder",
-        "ouch_wraithguard"
-    };
-
-    for (const auto &validPacketScript : validPacketScripts)
-    {
-        if (Misc::StringUtils::ciEqual(script, validPacketScript))
-            return true;
-    }
+    if (Utils::vectorContains(worldstate->synchronizedClientScriptIds, script))
+        return true;
 
     return false;
-
-    /* Switch over to this when using a blacklist system
-    for (int i = 0; i < invalidPacketScriptsCount; i++)
-    {
-        if (Misc::StringUtils::ciEqual(script, invalidPacketScripts[i]))
-            return false;
-    }
-
-    return true;
-    */
 }

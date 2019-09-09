@@ -307,6 +307,7 @@ namespace mwmp
         RakNet::RakNetGUID guid;
 
         mwmp::Time time;
+        std::vector<std::string> synchronizedClientScriptIds;
 
         bool hasPlayerCollision;
         bool hasActorCollision;

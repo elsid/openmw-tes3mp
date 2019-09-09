@@ -43,12 +43,16 @@
     {"SetPlacedObjectCollisionState",     WorldstateFunctions::SetPlacedObjectCollisionState},\
     {"UseActorCollisionForPlacedObjects", WorldstateFunctions::UseActorCollisionForPlacedObjects},\
     \
+    {"AddSynchronizedClientScriptId",     WorldstateFunctions::AddSynchronizedClientScriptId},\
     {"AddEnforcedCollisionRefId",         WorldstateFunctions::AddEnforcedCollisionRefId},\
+    \
+    {"ClearSynchronizedClientScriptIds",  WorldstateFunctions::ClearSynchronizedClientScriptIds},\
     {"ClearEnforcedCollisionRefIds",      WorldstateFunctions::ClearEnforcedCollisionRefIds},\
     \
     {"SaveMapTileImageFile",              WorldstateFunctions::SaveMapTileImageFile},\
     {"LoadMapTileImageFile",              WorldstateFunctions::LoadMapTileImageFile},\
     \
+    {"SendClientScriptSettings",          WorldstateFunctions::SendClientScriptSettings},\
     {"SendWorldMap",                      WorldstateFunctions::SendWorldMap},\
     {"SendWorldTime",                     WorldstateFunctions::SendWorldTime},\
     {"SendWorldWeather",                  WorldstateFunctions::SendWorldWeather},\
@@ -294,6 +298,15 @@ public:
     static void UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept;
 
     /**
+    * \brief Add an ID to the list of script IDs whose variables should all be synchronized
+    *        across players.
+    *
+    * \param scriptId The ID.
+    * \return void
+    */
+    static void AddSynchronizedClientScriptId(const char* scriptId) noexcept;
+
+    /**
     * \brief Add a refId to the list of refIds for which collision should be enforced
     *        irrespective of other settings.
     *
@@ -303,7 +316,15 @@ public:
     static void AddEnforcedCollisionRefId(const char* refId) noexcept;
 
     /**
-    * \brief Clear the list of refIdsd for which collision should be enforced irrespective
+    * \brief Clear the list of script IDs whose variables should all be synchronized
+    *        across players.
+    *
+    * \return void
+    */
+    static void ClearSynchronizedClientScriptIds() noexcept;
+
+    /**
+    * \brief Clear the list of refIds for which collision should be enforced irrespective
     *        of other settings.
     *
     * \return void
@@ -330,6 +351,19 @@ public:
     * \return void
     */
     static void LoadMapTileImageFile(int cellX, int cellY, const char* filePath) noexcept;
+
+    /**
+    * \brief Send a ClientScriptSettings packet with the current client script settings in
+    *        the write-only worldstate.
+    *
+    * \param pid The player ID attached to the packet.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
+    * \return void
+    */
+    static void SendClientScriptSettings(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a WorldRegionAuthority packet establishing a certain player as the only one who

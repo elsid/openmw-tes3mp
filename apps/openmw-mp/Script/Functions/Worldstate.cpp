@@ -153,9 +153,19 @@ void WorldstateFunctions::UseActorCollisionForPlacedObjects(bool useActorCollisi
     writeWorldstate.useActorCollisionForPlacedObjects = useActorCollision;
 }
 
+void WorldstateFunctions::AddSynchronizedClientScriptId(const char *scriptId) noexcept
+{
+    writeWorldstate.synchronizedClientScriptIds.push_back(scriptId);
+}
+
 void WorldstateFunctions::AddEnforcedCollisionRefId(const char *refId) noexcept
 {
     writeWorldstate.enforcedCollisionRefIds.push_back(refId);
+}
+
+void WorldstateFunctions::ClearSynchronizedClientScriptIds() noexcept
+{
+    writeWorldstate.synchronizedClientScriptIds.clear();
 }
 
 void WorldstateFunctions::ClearEnforcedCollisionRefIds() noexcept
@@ -194,6 +204,22 @@ void WorldstateFunctions::LoadMapTileImageFile(int cellX, int cellY, const char*
     {
         writeWorldstate.mapTiles.push_back(mapTile);
     }
+}
+
+void WorldstateFunctions::SendClientScriptSettings(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    writeWorldstate.guid = player->guid;
+
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_CLIENT_SCRIPT_SETTINGS);
+    packet->setWorldstate(&writeWorldstate);
+
+    if (!skipAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
 }
 
 void WorldstateFunctions::SendWorldMap(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
