@@ -388,8 +388,17 @@ MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add (const Ptr& itemPtr
             item.getRefData().getLocals().setVarByInt(script, "onpcadd", 1);
     }
 
-    if (mListener && !actorPtr.getClass().hasInventoryStore(actorPtr))
-        mListener->itemAdded(item, count);
+    /*
+        Start of tes3mp change (major)
+
+        Disable the listener here because it keeps causing crashes; this should only be
+        a temporary solution
+    */
+    //if (mListener && !actorPtr.getClass().hasInventoryStore(actorPtr))
+    //    mListener->itemAdded(item, count);
+    /*
+        End of tes3mp change (major)
+    */
 
     return it;
 }
@@ -527,8 +536,18 @@ int MWWorld::ContainerStore::remove(const Ptr& item, int count, const Ptr& actor
     flagAsModified();
 
     // we should not fire event for InventoryStore yet - it has some custom logic
-    if (mListener && !actor.getClass().hasInventoryStore(actor))
-        mListener->itemRemoved(item, count - toRemove);
+
+    /*
+        Start of tes3mp change (major)
+
+        Disable the listener here because it keeps causing crashes; this should only be
+        a temporary solution
+    */
+    //if (mListener && !actor.getClass().hasInventoryStore(actor))
+    //    mListener->itemRemoved(item, count - toRemove);
+    /*
+        End of tes3mp change (major)
+    */
 
     // number of removed items
     return count - toRemove;
