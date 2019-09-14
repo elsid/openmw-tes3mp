@@ -207,7 +207,8 @@ public:
             {"OnGUIAction",              Callback<unsigned short, int, const char*>()},
             {"OnWorldKillCount",         Callback<unsigned short>()},
             {"OnWorldMap",               Callback<unsigned short>()},
-            {"OnWorldWeather",           Callback<unsigned short>() },
+            {"OnWorldWeather",           Callback<unsigned short>()},
+            {"OnScriptGlobalShort",      Callback<unsigned short>()},
             {"OnMpNumIncrement",         Callback<int>()},
             {"OnRequestDataFileList",    Callback<>()}
     };
