@@ -158,6 +158,11 @@ void WorldstateFunctions::AddSynchronizedClientScriptId(const char *scriptId) no
     writeWorldstate.synchronizedClientScriptIds.push_back(scriptId);
 }
 
+void WorldstateFunctions::AddSynchronizedClientGlobalId(const char *globalId) noexcept
+{
+    writeWorldstate.synchronizedClientGlobalIds.push_back(globalId);
+}
+
 void WorldstateFunctions::AddEnforcedCollisionRefId(const char *refId) noexcept
 {
     writeWorldstate.enforcedCollisionRefIds.push_back(refId);
@@ -166,6 +171,11 @@ void WorldstateFunctions::AddEnforcedCollisionRefId(const char *refId) noexcept
 void WorldstateFunctions::ClearSynchronizedClientScriptIds() noexcept
 {
     writeWorldstate.synchronizedClientScriptIds.clear();
+}
+
+void WorldstateFunctions::ClearSynchronizedClientGlobalIds() noexcept
+{
+    writeWorldstate.synchronizedClientGlobalIds.clear();
 }
 
 void WorldstateFunctions::ClearEnforcedCollisionRefIds() noexcept

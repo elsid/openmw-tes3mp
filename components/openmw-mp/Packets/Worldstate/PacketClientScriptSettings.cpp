@@ -30,4 +30,22 @@ void PacketClientScriptSettings::Packet(RakNet::BitStream *bs, bool send)
     {
         RW(clientScriptId, send);
     }
+
+    uint32_t clientGlobalsCount;
+
+    if (send)
+        clientGlobalsCount = static_cast<uint32_t>(worldstate->synchronizedClientGlobalIds.size());
+
+    RW(clientGlobalsCount, send);
+
+    if (!send)
+    {
+        worldstate->synchronizedClientGlobalIds.clear();
+        worldstate->synchronizedClientGlobalIds.resize(clientGlobalsCount);
+    }
+
+    for (auto &&clientGlobalId : worldstate->synchronizedClientGlobalIds)
+    {
+        RW(clientGlobalId, send);
+    }
 }

@@ -308,6 +308,7 @@ namespace mwmp
 
         mwmp::Time time;
         std::vector<std::string> synchronizedClientScriptIds;
+        std::vector<std::string> synchronizedClientGlobalIds;
 
         bool hasPlayerCollision;
         bool hasActorCollision;

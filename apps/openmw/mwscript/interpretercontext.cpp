@@ -323,10 +323,11 @@ namespace MWScript
         /*
             Start of tes3mp addition
 
-            Send an ID_SCRIPT_GLOBAL_SHORT packet every time a global short changes its value
-            in a script approved for packet sending
+            Send an ID_SCRIPT_GLOBAL_SHORT packet when a global short changes its value as long as
+            it is being set in a script that has been approved for packet sending or the global itself
+            has been set to always be synchronized
         */
-        if (sendPackets)
+        if (sendPackets || mwmp::Main::isValidPacketGlobal(name))
         {
             mwmp::ObjectList *objectList = mwmp::Main::get().getNetworking()->getObjectList();
             objectList->reset();

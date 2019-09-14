@@ -44,9 +44,11 @@
     {"UseActorCollisionForPlacedObjects", WorldstateFunctions::UseActorCollisionForPlacedObjects},\
     \
     {"AddSynchronizedClientScriptId",     WorldstateFunctions::AddSynchronizedClientScriptId},\
+    {"AddSynchronizedClientGlobalId",     WorldstateFunctions::AddSynchronizedClientGlobalId},\
     {"AddEnforcedCollisionRefId",         WorldstateFunctions::AddEnforcedCollisionRefId},\
     \
     {"ClearSynchronizedClientScriptIds",  WorldstateFunctions::ClearSynchronizedClientScriptIds},\
+    {"ClearSynchronizedClientGlobalIds",  WorldstateFunctions::ClearSynchronizedClientGlobalIds},\
     {"ClearEnforcedCollisionRefIds",      WorldstateFunctions::ClearEnforcedCollisionRefIds},\
     \
     {"SaveMapTileImageFile",              WorldstateFunctions::SaveMapTileImageFile},\
@@ -298,13 +300,22 @@ public:
     static void UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept;
 
     /**
-    * \brief Add an ID to the list of script IDs whose variables should all be synchronized
-    *        across players.
+    * \brief Add an ID to the list of script IDs whose variable changes should be sent to the
+    *        the server by clients.
     *
     * \param scriptId The ID.
     * \return void
     */
     static void AddSynchronizedClientScriptId(const char* scriptId) noexcept;
+
+    /**
+    * \brief Add an ID to the list of global IDs whose value changes should be sent to the
+    *        server by clients.
+    *
+    * \param globalId The ID.
+    * \return void
+    */
+    static void AddSynchronizedClientGlobalId(const char* globalId) noexcept;
 
     /**
     * \brief Add a refId to the list of refIds for which collision should be enforced
@@ -316,12 +327,20 @@ public:
     static void AddEnforcedCollisionRefId(const char* refId) noexcept;
 
     /**
-    * \brief Clear the list of script IDs whose variables should all be synchronized
-    *        across players.
+    * \brief Clear the list of script IDs whose variable changes should be sent to the
+    *        the server by clients.
     *
     * \return void
     */
     static void ClearSynchronizedClientScriptIds() noexcept;
+
+    /**
+    * \brief Clear the list of global IDs whose value changes should be sent to the
+    *        the server by clients.
+    *
+    * \return void
+    */
+    static void ClearSynchronizedClientGlobalIds() noexcept;
 
     /**
     * \brief Clear the list of refIds for which collision should be enforced irrespective

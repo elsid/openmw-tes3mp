@@ -26,7 +26,9 @@ namespace mwmp
         static const Main &get();
         static void frame(float dt);
 
-        static bool isValidPacketScript(std::string script);
+        static bool isValidPacketScript(std::string scriptId);
+        static bool isValidPacketGlobal(std::string globalId);
+
         static std::string getResDir();
 
         Networking *getNetworking() const;

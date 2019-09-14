@@ -232,11 +232,21 @@ CellController *Main::getCellController() const
     return mCellController;
 }
 
-bool Main::isValidPacketScript(std::string script)
+bool Main::isValidPacketScript(std::string scriptId)
 {
     mwmp::BaseWorldstate *worldstate = get().getNetworking()->getWorldstate();
 
-    if (Utils::vectorContains(worldstate->synchronizedClientScriptIds, script))
+    if (Utils::vectorContains(worldstate->synchronizedClientScriptIds, scriptId))
+        return true;
+
+    return false;
+}
+
+bool Main::isValidPacketGlobal(std::string globalId)
+{
+    mwmp::BaseWorldstate *worldstate = get().getNetworking()->getWorldstate();
+
+    if (Utils::vectorContains(worldstate->synchronizedClientGlobalIds, globalId))
         return true;
 
     return false;
