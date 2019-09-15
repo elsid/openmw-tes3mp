@@ -323,6 +323,16 @@ namespace MWScript
         /*
             Start of tes3mp addition
 
+            Avoid setting a global to a value it already is, preventing packet spam
+        */
+        if (getGlobalFloat(name) == value) return;
+        /*
+            End of tes3mp addition
+        */
+
+        /*
+            Start of tes3mp addition
+
             Send an ID_SCRIPT_GLOBAL_SHORT packet when a global short changes its value as long as
             it is being set in a script that has been approved for packet sending or the global itself
             has been set to always be synchronized
