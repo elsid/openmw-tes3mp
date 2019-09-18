@@ -1021,7 +1021,7 @@ namespace MWMechanics
             return true;
         }
 
-        if (!target.getClass().canBeActivated(target))
+        if (!target.getClass().hasToolTip(target))
             return true;
 
         // TODO: implement a better check to check if target is owned bed
@@ -1067,6 +1067,10 @@ namespace MWMechanics
         if (!cellref.getOwner().empty())
             victim = MWBase::Environment::get().getWorld()->searchPtr(cellref.getOwner(), true, false);
 
+        // A special case for evidence chest - we should not allow to take items even if it is technically permitted
+        if (Misc::StringUtils::ciEqual(cellref.getRefId(), "stolen_goods"))
+            return false;
+
         return (!isOwned && !isFactionOwned);
     }
 
@@ -1087,7 +1091,7 @@ namespace MWMechanics
         if (isAllowedToUse(ptr, bed, victim))
             return false;
 
-        if(commitCrime(ptr, victim, OT_SleepingInOwnedBed))
+        if(commitCrime(ptr, victim, OT_SleepingInOwnedBed, bed.getCellRef().getFaction()))
         {
             MWBase::Environment::get().getWindowManager()->messageBox("#{sNotifyMessage64}");
             return true;
@@ -1101,7 +1105,7 @@ namespace MWMechanics
         MWWorld::Ptr victim;
         if (isAllowedToUse(ptr, item, victim))
             return;
-        commitCrime(ptr, victim, OT_Trespassing);
+        commitCrime(ptr, victim, OT_Trespassing, item.getCellRef().getFaction());
     }
 
     std::vector<std::pair<std::string, int> > MechanicsManager::getStolenItemOwners(const std::string& itemid)
@@ -1182,7 +1186,7 @@ namespace MWMechanics
         // move items from player to owner and report about theft
         victim.getClass().getContainerStore(victim).add(item, toRemove, victim);
         store.remove(item, toRemove, player);
-        commitCrime(player, victim, OT_Theft, item.getClass().getValue(item) * toRemove);
+        commitCrime(player, victim, OT_Theft, item.getCellRef().getFaction(), item.getClass().getValue(item) * toRemove);
     }
 
     void MechanicsManager::confiscateStolenItems(const MWWorld::Ptr &player, const MWWorld::Ptr &targetContainer)
@@ -1212,7 +1216,7 @@ namespace MWMechanics
             store.remove(*it, toMove, player);
         }
         // TODO: unhardcode the locklevel
-        targetContainer.getClass().lock(targetContainer,50);
+        targetContainer.getCellRef().lock(50);
     }
 
     void MechanicsManager::itemTaken(const MWWorld::Ptr &ptr, const MWWorld::Ptr &item, const MWWorld::Ptr& container,
@@ -1269,11 +1273,11 @@ namespace MWMechanics
                 mStolenItems[Misc::StringUtils::lowerCase(item.getCellRef().getRefId())][owner] += count;
         }
         if (alarm)
-            commitCrime(ptr, victim, OT_Theft, item.getClass().getValue(item) * count);
+            commitCrime(ptr, victim, OT_Theft, ownerCellRef->getFaction(), item.getClass().getValue(item) * count);
     }
 
 
-    bool MechanicsManager::commitCrime(const MWWorld::Ptr &player, const MWWorld::Ptr &victim, OffenseType type, int arg, bool victimAware)
+    bool MechanicsManager::commitCrime(const MWWorld::Ptr &player, const MWWorld::Ptr &victim, OffenseType type, const std::string& factionId, int arg, bool victimAware)
     {
         // NOTE: victim may be empty
 
@@ -1331,13 +1335,13 @@ namespace MWMechanics
         }
 
         if (crimeSeen)
-            reportCrime(player, victim, type, arg);
+            reportCrime(player, victim, type, factionId, arg);
         else if (type == OT_Assault && !victim.isEmpty())
         {
             bool reported = false;
             if (victim.getClass().isClass(victim, "guard")
                 && !victim.getClass().getCreatureStats(victim).getAiSequence().hasPackage(AiPackage::TypeIdPursue))
-                reported = reportCrime(player, victim, type, arg);
+                reported = reportCrime(player, victim, type, std::string(), arg);
 
             if (!reported)
                 startCombat(victim, player); // TODO: combat should be started with an "unaware" flag, which makes the victim flee?
@@ -1368,7 +1372,7 @@ namespace MWMechanics
         return true;
     }
 
-    bool MechanicsManager::reportCrime(const MWWorld::Ptr &player, const MWWorld::Ptr &victim, OffenseType type, int arg)
+    bool MechanicsManager::reportCrime(const MWWorld::Ptr &player, const MWWorld::Ptr &victim, OffenseType type, const std::string& factionId, int arg)
     {
         const MWWorld::Store<ESM::GameSetting>& store = MWBase::Environment::get().getWorld()->getStore().get<ESM::GameSetting>();
 
@@ -1525,7 +1529,6 @@ namespace MWMechanics
 
         if (reported)
         {
-            MWBase::Environment::get().getWindowManager()->messageBox("#{sCrimeMessage}");
             player.getClass().getNpcStats(player).setBounty(player.getClass().getNpcStats(player).getBounty()
                                                       + arg);
 
@@ -1548,6 +1551,14 @@ namespace MWMechanics
                     */
 
                     player.getClass().getNpcStats(player).expell(factionID);
+                }
+            }
+            else if (!factionId.empty())
+            {
+                const std::map<std::string, int>& playerRanks = player.getClass().getNpcStats(player).getFactionRanks();
+                if (playerRanks.find(Misc::StringUtils::lowerCase(factionId)) != playerRanks.end())
+                {
+                    player.getClass().getNpcStats(player).expell(factionId);
                 }
             }
 
@@ -2016,7 +2027,6 @@ namespace MWMechanics
                 {
                     npcStats.setBounty(npcStats.getBounty()+
                                        gmst.find("iWereWolfBounty")->mValue.getInteger());
-                    windowManager->messageBox("#{sCrimeMessage}");
                 }
             }
         }

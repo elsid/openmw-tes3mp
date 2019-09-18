@@ -248,7 +248,7 @@ namespace MWWorld
         if (toActivate.isEmpty())
             return;
 
-        if (!toActivate.getClass().canBeActivated(toActivate))
+        if (!toActivate.getClass().hasToolTip(toActivate))
             return;
 
         /*

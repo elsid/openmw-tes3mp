@@ -590,7 +590,7 @@ namespace MWDialogue
     void DialogueManager::say(const MWWorld::Ptr &actor, const std::string &topic)
     {
         MWBase::SoundManager *sndMgr = MWBase::Environment::get().getSoundManager();
-        if(!sndMgr->sayDone(actor))
+        if(sndMgr->sayActive(actor))
         {
             // Actor is already saying something.
             return;

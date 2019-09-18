@@ -527,9 +527,9 @@ void ObjectList::lockObjects(MWWorld::CellStore* cellStore)
                                ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
 
             if (baseObject.lockLevel > 0)
-                ptrFound.getClass().lock(ptrFound, baseObject.lockLevel);
+                ptrFound.getCellRef().lock(baseObject.lockLevel);
             else
-                ptrFound.getClass().unlock(ptrFound);
+                ptrFound.getCellRef().unlock();
         }
     }
 }

@@ -238,7 +238,7 @@ namespace MWScript
                         Disable unilateral locking on this client and expect the server's reply to our
                         packet to do it instead
                     */
-                    //ptr.getClass().lock (ptr, lockLevel);
+                    //ptr.getCellRef().lock (lockLevel);
                     /*
                         End of tes3mp change (major)
                     */
@@ -285,7 +285,7 @@ namespace MWScript
                         Disable unilateral unlocking on this client and expect the server's reply to our
                         packet to do it instead
                     */
-                    //ptr.getClass().unlock (ptr);
+                    //ptr.getCellRef().unlock ();
                     /*
                         End of tes3mp change (major)
                     */

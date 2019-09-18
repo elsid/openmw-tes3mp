@@ -757,7 +757,7 @@ namespace MWMechanics
                         Disable unilateral locking on this client and expect the server's reply to our
                         packet to do it instead
                     */
-                    //target.getClass().lock(target, static_cast<int>(magnitude));
+                    //target.getCellRef().lock(static_cast<int>(magnitude));
                     /*
                         End of tes3mp change (major)
                     */
@@ -801,7 +801,7 @@ namespace MWMechanics
                         Disable unilateral locking on this client and expect the server's reply to our
                         packet to do it instead
                     */
-                    //target.getClass().unlock(target);
+                    //target.getCellRef().unlock();
                     /*
                         End of tes3mp change (major)
                     */

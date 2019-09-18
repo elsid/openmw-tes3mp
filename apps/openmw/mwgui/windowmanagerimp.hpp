@@ -559,6 +559,8 @@ namespace MWGui
     bool mCursorVisible;
     bool mCursorActive;
 
+    int mPlayerBounty;
+
     void setCursorVisible(bool visible);
 
     /// \todo get rid of this stuff. Move it to the respective UI element classes, if needed.
