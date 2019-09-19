@@ -294,6 +294,18 @@ namespace MWScript
                     MWMechanics::CreatureStats::AiSetting setting = (MWMechanics::CreatureStats::AiSetting)mIndex;
 
                     MWMechanics::Stat<int> stat = ptr.getClass().getCreatureStats(ptr).getAiSetting(setting);
+
+                    /*
+                        Start of tes3mp addition
+
+                        Track the original stat value, to ensure we don't send repetitive packets to the server
+                        about its changes
+                    */
+                    int initialValue = stat.getBase();
+                    /*
+                        End of tes3mp addition
+                    */                    
+
                     stat.setModified(value, 0);
                     ptr.getClass().getCreatureStats(ptr).setAiSetting(setting, stat);
 
@@ -304,7 +316,7 @@ namespace MWScript
                         so send a combat packet regardless of whether we're the cell authority or not; the server
                         can decide if it wants to comply with them by forwarding them to the cell authority
                     */
-                    if (setting == MWMechanics::CreatureStats::AI_Fight && value == 100)
+                    if (stat.getBase() != initialValue && setting == MWMechanics::CreatureStats::AI_Fight && value == 100)
                     {
                         mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
                         actorList->reset();
@@ -502,6 +514,18 @@ namespace MWScript
                     runtime.pop();
 
                     MWWorld::Ptr target = MWBase::Environment::get().getWorld()->getPtr(targetID, true);
+
+                    /*
+                        Start of tes3mp addition
+
+                        Track whether this actor is already in combat with its target, to ensure we don't
+                        send repetitive packets to the server
+                    */
+                    bool alreadyInCombatWithTarget = actor.getClass().getCreatureStats(actor).getAiSequence().isInCombat(target);
+                    /*
+                        End of tes3mp addition
+                    */
+
                     MWBase::Environment::get().getMechanicsManager()->startCombat(actor, target);
 
                     /*
@@ -511,7 +535,7 @@ namespace MWScript
                         cell authority or not; the server can decide if it wants to comply with them by
                         forwarding them to the cell authority
                     */
-                    if (target)
+                    if (target && !alreadyInCombatWithTarget)
                     {
                         mwmp::ActorList *actorList = mwmp::Main::get().getNetworking()->getActorList();
                         actorList->reset();
