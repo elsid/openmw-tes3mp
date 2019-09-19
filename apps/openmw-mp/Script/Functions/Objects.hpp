@@ -54,6 +54,9 @@
     \
     {"GetVideoFilename",                      ObjectFunctions::GetVideoFilename},\
     \
+    {"GetScriptVariableName",                 ObjectFunctions::GetScriptVariableName},\
+    {"GetScriptVariableShortValue",           ObjectFunctions::GetScriptVariableShortValue},\
+    \
     {"GetContainerChangesSize",               ObjectFunctions::GetContainerChangesSize},\
     {"GetContainerItemRefId",                 ObjectFunctions::GetContainerItemRefId},\
     {"GetContainerItemCount",                 ObjectFunctions::GetContainerItemCount},\
@@ -93,6 +96,9 @@
     {"SetObjectDoorDestinationPosition",      ObjectFunctions::SetObjectDoorDestinationPosition},\
     {"SetObjectDoorDestinationRotation",      ObjectFunctions::SetObjectDoorDestinationRotation},\
     \
+    {"SetScriptVariableName",                 ObjectFunctions::SetScriptVariableName},\
+    {"SetScriptVariableShortValue",           ObjectFunctions::SetScriptVariableShortValue},\
+    \
     {"SetPlayerAsObject",                     ObjectFunctions::SetPlayerAsObject},\
     \
     {"SetContainerItemRefId",                 ObjectFunctions::SetContainerItemRefId},\
@@ -118,6 +124,7 @@
     {"SendDoorDestination",                   ObjectFunctions::SendDoorDestination},\
     {"SendContainer",                         ObjectFunctions::SendContainer},\
     {"SendVideoPlay",                         ObjectFunctions::SendVideoPlay},\
+    {"SendScriptGlobalShort",                 ObjectFunctions::SendScriptGlobalShort},\
     {"SendConsoleCommand",                    ObjectFunctions::SendConsoleCommand},\
     \
     {"ReadLastObjectList",                    ObjectFunctions::ReadLastObjectList},\
@@ -508,6 +515,9 @@ public:
     */
     static const char *GetVideoFilename(unsigned int index) noexcept;
 
+    static const char *GetScriptVariableName(unsigned int index) noexcept;
+    static int GetScriptVariableShortValue(unsigned int index) noexcept;
+
     /**
     * \brief Get the number of container item indexes of the object at a certain index in the
     * read object list.
@@ -841,6 +851,9 @@ public:
     */
     static void SetObjectDoorDestinationRotation(double x, double z) noexcept;
 
+    static void SetScriptVariableName(const char* varName) noexcept;
+    static void SetScriptVariableShortValue(int shortVal) noexcept;
+
     /**
     * \brief Set a player as the object in the temporary object stored on the server.
     *        Currently only used for ConsoleCommand packets.
@@ -1056,6 +1069,8 @@ public:
     * \return void
     */
     static void SendVideoPlay(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+    static void SendScriptGlobalShort(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a ConsoleCommand packet.

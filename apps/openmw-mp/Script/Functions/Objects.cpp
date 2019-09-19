@@ -254,6 +254,16 @@ const char *ObjectFunctions::GetVideoFilename(unsigned int index) noexcept
     return readObjectList->baseObjects.at(index).videoFilename.c_str();
 }
 
+const char *ObjectFunctions::GetScriptVariableName(unsigned int index) noexcept
+{
+    return readObjectList->baseObjects.at(index).varName.c_str();
+}
+
+int ObjectFunctions::GetScriptVariableShortValue(unsigned int index) noexcept
+{
+    return readObjectList->baseObjects.at(index).shortVal;
+}
+
 unsigned int ObjectFunctions::GetContainerChangesSize(unsigned int objectIndex) noexcept
 {
     return readObjectList->baseObjects.at(objectIndex).containerItemCount;
@@ -436,6 +446,16 @@ void ObjectFunctions::SetObjectDoorDestinationRotation(double x, double z) noexc
     tempObject.destinationPosition.rot[2] = z;
 }
 
+void ObjectFunctions::SetScriptVariableName(const char* varName) noexcept
+{
+    tempObject.varName = varName;
+}
+
+void ObjectFunctions::SetScriptVariableShortValue(int shortVal) noexcept
+{
+    tempObject.shortVal = shortVal;
+}
+
 void ObjectFunctions::SetPlayerAsObject(unsigned short pid) noexcept
 {
     Player *player;
@@ -614,6 +634,17 @@ void ObjectFunctions::SendContainer(bool sendToOtherPlayers, bool skipAttachedPl
 void ObjectFunctions::SendVideoPlay(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
 {
     mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_VIDEO_PLAY);
+    packet->setObjectList(&writeObjectList);
+
+    if (!skipAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
+}
+
+void ObjectFunctions::SendScriptGlobalShort(bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
+{
+    mwmp::ObjectPacket *packet = mwmp::Networking::get().getObjectPacketController()->GetPacket(ID_SCRIPT_GLOBAL_SHORT);
     packet->setObjectList(&writeObjectList);
 
     if (!skipAttachedPlayer)
