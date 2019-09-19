@@ -51,8 +51,8 @@ namespace mwmp
         bool isPlayer;
 
         std::string refId;
-        int refNum;
-        int mpNum;
+        unsigned int refNum;
+        unsigned int mpNum;
 
         std::string name; // Remove this once the server can get names corresponding to different refIds
 

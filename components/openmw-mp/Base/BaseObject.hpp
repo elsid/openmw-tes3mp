@@ -27,8 +27,8 @@ namespace mwmp
     struct BaseObject
     {
         std::string refId;
-        int refNum;
-        int mpNum;
+        unsigned int refNum;
+        unsigned int mpNum;
         int count;
         int charge;
         double enchantmentCharge;
