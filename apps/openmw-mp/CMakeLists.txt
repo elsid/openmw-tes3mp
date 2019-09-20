@@ -32,6 +32,8 @@ if(BUILD_WITH_LUA)
     include_directories(SYSTEM ${LuaJit_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/extern/LuaBridge)
 endif(BUILD_WITH_LUA)
 
+include_directories(${CMAKE_SOURCE_DIR}/extern/PicoSHA2)
+
 set(NativeScript_Sources
         Script/LangNative/LangNative.cpp
         )
