@@ -13,6 +13,8 @@
 #include <MyGUI_ScrollView.h>
 #include <MyGUI_TextIterator.h>
 
+#include <extern/PicoSHA2/picosha2.h>
+
 #include "../mwbase/environment.hpp"
 #include "../mwbase/windowmanager.hpp"
 #include "../mwbase/inputmanager.hpp"
@@ -170,15 +172,27 @@ void mwmp::GUIController::showInputBox(const BasePlayer::GUIMessageBox &guiMessa
 
 void mwmp::GUIController::onInputBoxDone(MWGui::WindowBase *parWindow)
 {
-    //MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
+    LocalPlayer *localPlayer = Main::get().getLocalPlayer();
+    std::string textInput = mInputBox->getTextInput();
 
-    Main::get().getLocalPlayer()->guiMessageBox.data = mInputBox->getTextInput();
-    Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX)->setPlayer(Main::get().getLocalPlayer());
-    Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX)->Send();
+    // Send SHA256 hash of input for password dialogs after it's been hashed and rehashed,
+    // for some slight extra security that doesn't require the client to keep storing a salt
+    if (localPlayer->guiMessageBox.type == BasePlayer::GUIMessageBox::PasswordDialog)
+    {
+        textInput = picosha2::hash256_hex_string(textInput);
+        textInput = picosha2::hash256_hex_string(textInput + picosha2::hash256_hex_string(picosha2::hash256_hex_string((textInput))));
+    }
 
-    MWBase::Environment::get().getWindowManager()->removeDialog(mInputBox);
+    localPlayer->guiMessageBox.data = textInput;
+
+    PlayerPacket *playerPacket = Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX);
+    playerPacket->setPlayer(Main::get().getLocalPlayer());
+    playerPacket->Send();
+
+    MWBase::WindowManager *windowManager = MWBase::Environment::get().getWindowManager();
+    windowManager->removeDialog(mInputBox);
     mInputBox = 0;
-    MWBase::Environment::get().getWindowManager()->popGuiMode();
+    windowManager->popGuiMode();
 }
 
 bool mwmp::GUIController::pressedKey(int key)
@@ -217,9 +231,13 @@ void mwmp::GUIController::update(float dt)
     {
         LOG_MESSAGE_SIMPLE(TimedLog::LOG_VERBOSE, "Pressed: %d", pressedButton);
         calledInteractiveMessage = false;
-        Main::get().getLocalPlayer()->guiMessageBox.data = MyGUI::utility::toString(pressedButton);
-        Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX)->setPlayer(Main::get().getLocalPlayer());
-        Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX)->Send();
+
+        LocalPlayer *localPlayer = Main::get().getLocalPlayer();
+        localPlayer->guiMessageBox.data = MyGUI::utility::toString(pressedButton);
+
+        PlayerPacket *playerPacket = Main::get().getNetworking()->getPlayerPacket(ID_GUI_MESSAGEBOX);
+        playerPacket->setPlayer(Main::get().getLocalPlayer());
+        playerPacket->Send();
     }
 }
 
