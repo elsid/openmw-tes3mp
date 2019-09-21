@@ -4,6 +4,10 @@
 #include "../Types.hpp"
 
 #define MISCELLANEOUSAPI \
+    {"GenerateRandomString",        MiscellaneousFunctions::GenerateRandomString},\
+    \
+    {"GetSHA256Hash",               MiscellaneousFunctions::GetSHA256Hash},\
+    \
     {"GetLastPlayerId",             MiscellaneousFunctions::GetLastPlayerId},\
     \
     {"GetCurrentMpNum",             MiscellaneousFunctions::GetCurrentMpNum},\
@@ -12,6 +16,23 @@
 class MiscellaneousFunctions
 {
 public:
+
+    /**
+    * \brief Generate a random string of a particular length that only contains
+    *        letters and numbers.
+    *
+    * \param length The length of the generated string.
+    * \return The generated string.
+    */
+    static const char *GenerateRandomString(unsigned int length) noexcept;
+
+    /**
+    * \brief Get the SHA256 hash corresponding to an input string.
+    *
+    * \param inputString The input string.
+    * \return The SHA256 hash.
+    */
+    static const char *GetSHA256Hash(const char* inputString) noexcept;
 
     /**
     * \brief Get the last player ID currently connected to the server.
