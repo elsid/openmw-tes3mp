@@ -175,8 +175,8 @@ void mwmp::GUIController::onInputBoxDone(MWGui::WindowBase *parWindow)
     LocalPlayer *localPlayer = Main::get().getLocalPlayer();
     std::string textInput = mInputBox->getTextInput();
 
-    // Send SHA256 hash of input for password dialogs after it's been hashed and rehashed,
-    // for some slight extra security that doesn't require the client to keep storing a salt
+    // Send input for password dialogs after it's been hashed and rehashed, for some slight
+    // extra security that doesn't require the client to keep storing a salt
     if (localPlayer->guiMessageBox.type == BasePlayer::GUIMessageBox::PasswordDialog)
     {
         textInput = picosha2::hash256_hex_string(textInput);
