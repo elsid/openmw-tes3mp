@@ -325,7 +325,7 @@ namespace MWScript
 
             Avoid setting a global to a value it already is, preventing packet spam
         */
-        if (getGlobalFloat(name) == value) return;
+        if (getGlobalShort(name) == value) return;
         /*
             End of tes3mp addition
         */
