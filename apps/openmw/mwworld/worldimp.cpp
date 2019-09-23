@@ -2905,9 +2905,20 @@ namespace MWWorld
 
         Make it possible to check whether a cell is active
     */
-    bool World::isCellActive(MWWorld::CellStore* cell)
+    bool World::isCellActive(const ESM::Cell& cell)
     {
-        return mWorldScene->isCellActive(*cell);
+        const Scene::CellStoreCollection& activeCells = mWorldScene->getActiveCells();
+        mwmp::CellController *cellController = mwmp::Main::get().getCellController();
+
+        for (auto it = activeCells.begin(); it != activeCells.end(); ++it)
+        {
+            if (cellController->isSameCell(cell, *(*it)->getCell()))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     /*
         End of tes3mp addition

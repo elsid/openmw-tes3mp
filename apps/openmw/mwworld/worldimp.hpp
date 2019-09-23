@@ -697,7 +697,7 @@ namespace MWWorld
 
                 Make it possible to check whether a cell is active
             */
-            bool isCellActive(MWWorld::CellStore* cell) override;
+            bool isCellActive(const ESM::Cell& cell) override;
             /*
                 End of tes3mp addition
             */
