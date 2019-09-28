@@ -801,6 +801,42 @@ namespace MWWorld
             list.push_back(sharedCell->mName);
         }
     }
+    /*
+        Start of tes3mp addition
+
+        Make it possible to override a cell record similarly to how
+        other types of records can be overridden
+    */
+    ESM::Cell *Store<ESM::Cell>::override(const ESM::Cell &cell)
+    {
+        if (search(cell) != 0)
+        {
+            for (auto it = mSharedInt.begin(); it != mSharedInt.end(); ++it)
+            {
+                if (Misc::StringUtils::ciEqual((*it)->mName, cell.mName))
+                {
+                    (*it) = &const_cast<ESM::Cell&>(cell);
+                    break;
+                }
+            }
+
+            for (auto it = mInt.begin(); it != mInt.end(); ++it)
+            {
+                if (Misc::StringUtils::ciEqual((*it).second.mName, cell.mName))
+                {
+                    (*it).second = cell;
+                    return &(*it).second;
+                }
+            }
+        }
+        else
+        {
+            return insert(cell);
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
     ESM::Cell *Store<ESM::Cell>::insert(const ESM::Cell &cell)
     {
         if (search(cell) != 0)

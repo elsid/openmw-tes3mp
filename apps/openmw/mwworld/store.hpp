@@ -315,6 +315,16 @@ namespace MWWorld
 
         void listIdentifier(std::vector<std::string> &list) const;
 
+        /*
+            Start of tes3mp addition
+
+            Make it possible to override a cell record similarly to how
+            other types of records can be overridden
+        */
+        ESM::Cell *override(const ESM::Cell &cell);
+        /*
+            End of tes3mp addition
+        */
         ESM::Cell *insert(const ESM::Cell &cell);
 
         bool erase(const ESM::Cell &cell);

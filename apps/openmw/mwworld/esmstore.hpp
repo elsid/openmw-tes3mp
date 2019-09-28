@@ -241,6 +241,20 @@ namespace MWWorld
         ///< \return Known type?
     };
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to override a cell record similarly to how
+        other types of records can be overridden
+    */
+    template <>
+    inline const ESM::Cell *ESMStore::overrideRecord<ESM::Cell>(const ESM::Cell &cell) {
+        return mCells.override(cell);
+    }
+    /*
+        End of tes3mp addition
+    */
+
     template <>
     inline const ESM::Cell *ESMStore::insert<ESM::Cell>(const ESM::Cell &cell) {
         return mCells.insert(cell);
