@@ -36,6 +36,7 @@ namespace RecordHelper
     bool doesProbeRecordExist(const std::string& id);
     bool doesRepairRecordExist(const std::string& id);
     bool doesLightRecordExist(const std::string& id);
+    bool doesCellRecordExist(const std::string& id);
 
     std::string createCreatureRecord(const ESM::Creature& record);
     std::string createNpcRecord(const ESM::NPC& record);
@@ -65,6 +66,7 @@ namespace RecordHelper
     void overrideProbeRecord(const mwmp::ProbeRecord& record);
     void overrideRepairRecord(const mwmp::RepairRecord& record);
     void overrideLightRecord(const mwmp::LightRecord& record);
+    void overrideCellRecord(const mwmp::CellRecord& record);
 
     void overrideCreatureRecord(const ESM::Creature& record);
     void overrideNpcRecord(const ESM::NPC& record);
@@ -91,6 +93,7 @@ namespace RecordHelper
     void overrideProbeRecord(const ESM::Probe& record);
     void overrideRepairRecord(const ESM::Repair& record);
     void overrideLightRecord(const ESM::Light& record);
+    void overrideCellRecord(const ESM::Cell& record);
 }
 
 

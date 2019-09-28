@@ -51,7 +51,8 @@ namespace mwmp
         LOCKPICK,
         PROBE,
         REPAIR,
-        LIGHT
+        LIGHT,
+        CELL
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -150,6 +151,13 @@ namespace mwmp
     struct BookRecord
     {
         ESM::Book data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
+    struct CellRecord
+    {
+        ESM::Cell data;
         std::string baseId;
         BaseOverrides baseOverrides;
     };
@@ -331,6 +339,7 @@ namespace mwmp
         std::vector<ApparatusRecord> apparatusRecords;
         std::vector<ArmorRecord> armorRecords;
         std::vector<BookRecord> bookRecords;
+        std::vector<CellRecord> cellRecords;
         std::vector<ClothingRecord> clothingRecords;
         std::vector<ContainerRecord> containerRecords;
         std::vector<CreatureRecord> creatureRecords;

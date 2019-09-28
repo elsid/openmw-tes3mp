@@ -2,6 +2,7 @@
 
 #include "../mwbase/environment.hpp"
 
+#include "../mwworld/cellstore.hpp"
 #include "../mwworld/worldimp.hpp"
 
 #include "RecordHelper.hpp"
@@ -158,6 +159,13 @@ bool RecordHelper::doesLightRecordExist(const std::string& id)
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     return world->getStore().get<ESM::Light>().search(id);
+}
+
+bool RecordHelper::doesCellRecordExist(const std::string& id)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    return world->getStore().get<ESM::Cell>().search(id);
 }
 
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
@@ -1485,6 +1493,61 @@ void RecordHelper::overrideLightRecord(const mwmp::LightRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
+void RecordHelper::overrideCellRecord(const mwmp::CellRecord& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    ESM::Cell recordData = record.data;
+
+    if (recordData.mName.empty())
+    {
+        LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    MWWorld::Ptr playerPtr = world->getPlayerPtr();
+    bool isCurrentCell = Misc::StringUtils::ciEqual(recordData.mName, playerPtr.getCell()->getCell()->mName);
+
+    if (record.baseId.empty())
+    {
+        recordData.mData.mFlags |= ESM::Cell::Flags::Interior;
+        
+        world->unloadCell(recordData);
+        world->clearCellStore(recordData);
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesCellRecordExist(record.baseId))
+    {
+        const ESM::Cell *baseData = world->getStore().get<ESM::Cell>().search(record.baseId);
+        ESM::Cell finalData = *baseData;
+        finalData.mName = recordData.mName;
+
+        world->unloadCell(finalData);
+        world->clearCellStore(finalData);
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+
+    if (isCurrentCell)
+    {
+        // As a temporary solution, move the player to exterior 0, 0, but
+        // fix this once it's possible to override exteriors cells as well
+        ESM::Position tempPos;
+        tempPos.pos[0] = 0;
+        tempPos.pos[1] = 0;
+        tempPos.pos[2] = 0;
+
+        ESM::Position playerPos = playerPtr.getRefData().getPosition();
+
+        world->changeToExteriorCell(tempPos, true, true);
+        world->changeToInteriorCell(recordData.mName, playerPos, true, true);
+    }
+}
+
 void RecordHelper::overrideCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -1619,6 +1682,13 @@ void RecordHelper::overrideRepairRecord(const ESM::Repair& record)
 }
 
 void RecordHelper::overrideLightRecord(const ESM::Light& record)
+{
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    world->getModifiableStore().overrideRecord(record);
+}
+
+void RecordHelper::overrideCellRecord(const ESM::Cell& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 

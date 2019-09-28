@@ -32,6 +32,7 @@ LockpickRecord tempLockpick;
 ProbeRecord tempProbe;
 RepairRecord tempRepair;
 LightRecord tempLight;
+CellRecord tempCell;
 
 BaseOverrides tempOverrides;
 
@@ -78,6 +79,7 @@ void RecordsDynamicFunctions::ClearRecords() noexcept
     WorldstateFunctions::writeWorldstate.probeRecords.clear();
     WorldstateFunctions::writeWorldstate.repairRecords.clear();
     WorldstateFunctions::writeWorldstate.lightRecords.clear();
+    WorldstateFunctions::writeWorldstate.cellRecords.clear();
 }
 
 unsigned short RecordsDynamicFunctions::GetRecordType() noexcept
@@ -426,6 +428,8 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
         tempRepair.baseId = baseId;
     else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
         tempLight.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::CELL)
+        tempCell.baseId = baseId;
     else
         LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
@@ -509,6 +513,8 @@ void RecordsDynamicFunctions::SetRecordName(const char* name) noexcept
         tempRepair.data.mName = name;
     else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
         tempLight.data.mName = name;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::CELL)
+        tempCell.data.mName = name;
     else
     {
         LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set name for record type %i which lacks that property", writeRecordsType);
@@ -1593,6 +1599,12 @@ void RecordsDynamicFunctions::AddRecord() noexcept
         tempLight.baseOverrides = tempOverrides;
         WorldstateFunctions::writeWorldstate.lightRecords.push_back(tempLight);
         tempLight = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::CELL)
+    {
+        tempCell.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.cellRecords.push_back(tempCell);
+        tempCell = {};
     }
 
     effectCount = 0;
