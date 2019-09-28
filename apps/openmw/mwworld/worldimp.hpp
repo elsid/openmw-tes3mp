@@ -702,6 +702,26 @@ namespace MWWorld
                 End of tes3mp addition
             */
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to unload a cell from elsewhere
+            */
+            void unloadCell(const ESM::Cell& cell) override;
+            /*
+                End of tes3mp addition
+            */
+
+            /*
+                Start of tes3mp addition
+
+                Clear the CellStore for a specific Cell from elsewhere
+            */
+            virtual void clearCellStore(const ESM::Cell& cell) override;
+            /*
+                End of tes3mp addition
+            */
+
             void getActorsStandingOn (const MWWorld::ConstPtr& object, std::vector<MWWorld::Ptr> &actors) override; ///< get a list of actors standing on \a object
             bool getPlayerStandingOn (const MWWorld::ConstPtr& object) override; ///< @return true if the player is standing on \a object
             bool getActorStandingOn (const MWWorld::ConstPtr& object) override; ///< @return true if any actor is standing on \a object

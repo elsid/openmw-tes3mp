@@ -2924,6 +2924,37 @@ namespace MWWorld
         End of tes3mp addition
     */
 
+    /*
+        Start of tes3mp addition
+
+        Make it possible to unload a cell from elsewhere
+    */
+    void World::unloadCell(const ESM::Cell& cell)
+    {
+        if (isCellActive(cell))
+        {
+            const Scene::CellStoreCollection& activeCells = mWorldScene->getActiveCells();
+            mwmp::CellController *cellController = mwmp::Main::get().getCellController();
+            mWorldScene->unloadCell(activeCells.find(cellController->getCellStore(cell)));
+        }
+    }
+    /*
+        End of tes3mp addition
+    */
+
+    /*
+        Start of tes3mp addition
+
+        Clear the CellStore for a specific Cell from elsewhere
+    */
+    void World::clearCellStore(const ESM::Cell& cell)
+    {
+        mCells.clear(cell);
+    }
+    /*
+        End of tes3mp addition
+    */
+
     bool World::getPlayerStandingOn (const MWWorld::ConstPtr& object)
     {
         MWWorld::Ptr player = getPlayerPtr();

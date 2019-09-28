@@ -47,6 +47,17 @@ namespace MWWorld
 
             void clear();
 
+            /*
+                Start of tes3mp addition
+
+                Make it possible to clear the CellStore for a specific Cell,
+                allowing cells to be replaced from elsewhere in the code
+            */
+            void clear(const ESM::Cell& cell);
+            /*
+                End of tes3mp addition
+            */
+
             Cells (const MWWorld::ESMStore& store, std::vector<ESM::ESMReader>& reader);
 
             CellStore *getExterior (int x, int y);

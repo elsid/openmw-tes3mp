@@ -53,6 +53,27 @@ void MWWorld::Cells::clear()
     mIdCacheIndex = 0;
 }
 
+/*
+    Start of tes3mp addition
+
+    Make it possible to clear the CellStore for a specific Cell,
+    allowing cells to be replaced from elsewhere in the code
+*/
+void MWWorld::Cells::clear(const ESM::Cell& cell)
+{
+    for (auto it = mInteriors.begin(); it != mInteriors.end(); ++it)
+    {
+        if (Misc::StringUtils::ciEqual((*it).first, cell.mName))
+        {
+            mInteriors.erase(it);
+            break;
+        }
+    }
+}
+/*
+    End of tes3mp addition
+*/
+
 MWWorld::Ptr MWWorld::Cells::getPtrAndCache (const std::string& name, CellStore& cellStore)
 {
     Ptr ptr = getPtr (name, cellStore);
