@@ -484,19 +484,19 @@ namespace MWInput
                 quickLoad();
                 break;
             case A_CycleSpellLeft:
-                if (checkAllowedToUseItems())
+                if (checkAllowedToUseItems() && MWBase::Environment::get().getWindowManager()->isAllowed(MWGui::GW_Magic))
                     MWBase::Environment::get().getWindowManager()->cycleSpell(false);
                 break;
             case A_CycleSpellRight:
-                if (checkAllowedToUseItems())
+                if (checkAllowedToUseItems() && MWBase::Environment::get().getWindowManager()->isAllowed(MWGui::GW_Magic))
                     MWBase::Environment::get().getWindowManager()->cycleSpell(true);
                 break;
             case A_CycleWeaponLeft:
-                if (checkAllowedToUseItems())
+                if (checkAllowedToUseItems() && MWBase::Environment::get().getWindowManager()->isAllowed(MWGui::GW_Inventory))
                     MWBase::Environment::get().getWindowManager()->cycleWeapon(false);
                 break;
             case A_CycleWeaponRight:
-                if (checkAllowedToUseItems())
+                if (checkAllowedToUseItems() && MWBase::Environment::get().getWindowManager()->isAllowed(MWGui::GW_Inventory))
                     MWBase::Environment::get().getWindowManager()->cycleWeapon(true);
                 break;
             case A_Sneak:
@@ -1390,6 +1390,9 @@ namespace MWInput
         if (!mControlSwitch["playercontrols"] || !mControlSwitch["playerfighting"] || !mControlSwitch["playermagic"])
             return;
         if (!checkAllowedToUseItems())
+            return;
+
+        if (MWBase::Environment::get().getWorld()->getGlobalFloat ("chargenstate")!=-1)
             return;
 
         if (!MWBase::Environment::get().getWindowManager()->isGuiMode())

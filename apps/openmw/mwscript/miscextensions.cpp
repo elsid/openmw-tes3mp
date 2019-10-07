@@ -444,7 +444,7 @@ namespace MWScript
             virtual void execute (Interpreter::Runtime& runtime)
             {
                 if (!MWBase::Environment::get().getWorld()->isFirstPerson())
-                    MWBase::Environment::get().getWorld()->togglePOV();
+                    MWBase::Environment::get().getWorld()->togglePOV(true);
             }
         };
 
@@ -453,7 +453,7 @@ namespace MWScript
             virtual void execute (Interpreter::Runtime& runtime)
             {
                 if (MWBase::Environment::get().getWorld()->isFirstPerson())
-                    MWBase::Environment::get().getWorld()->togglePOV();
+                    MWBase::Environment::get().getWorld()->togglePOV(true);
             }
         };
 
