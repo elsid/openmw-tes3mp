@@ -4,6 +4,8 @@
 
 #include "../mwgui/windowmanagerimp.hpp"
 
+#include "../mwmechanics/mechanicsmanagerimp.hpp"
+
 #include "../mwworld/player.hpp"
 #include "../mwworld/worldimp.hpp"
 
@@ -311,6 +313,27 @@ void Worldstate::markExploredMapTile(int cellX, int cellY)
     exploredMapTiles.push_back(exploredTile);
 }
 
+void Worldstate::setKills()
+{
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_WORLD_KILL_COUNT with the following kill counts:");
+    std::string debugMessage = "";
+
+    for (const auto &killChange : killChanges)
+    {
+        if (TimedLog::GetLevel() <= TimedLog::LOG_INFO)
+        {
+            if (!debugMessage.empty())
+                debugMessage += ", ";
+
+            debugMessage += killChange.refId + ": " + std::to_string(killChange.number);
+        }
+
+        MWBase::Environment::get().getMechanicsManager()->setDeaths(killChange.refId, killChange.number);
+    }
+
+    LOG_APPEND(TimedLog::LOG_INFO, "- %s", debugMessage.c_str());
+}
+
 void Worldstate::setMapExplored()
 {
     for (const auto &mapTile : mapTiles)
@@ -343,6 +366,22 @@ void Worldstate::setWeather()
 
     world->setRegionWeather(weather.region.c_str(), weather.currentWeather, weather.nextWeather,
         weather.queuedWeather, weather.transitionFactor, forceWeather);
+}
+
+void Worldstate::sendKill(const std::string& refId, int number)
+{
+    killChanges.clear();
+
+    mwmp::Kill killChange;
+    killChange.refId = refId;
+    killChange.number = number;
+
+    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_WORLD_KILL_COUNT with refId %s, number %i", refId.c_str(), number);
+
+    killChanges.push_back(killChange);
+
+    getNetworking()->getWorldstatePacket(ID_WORLD_KILL_COUNT)->setWorldstate(this);
+    getNetworking()->getWorldstatePacket(ID_WORLD_KILL_COUNT)->Send();
 }
 
 void Worldstate::sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData)

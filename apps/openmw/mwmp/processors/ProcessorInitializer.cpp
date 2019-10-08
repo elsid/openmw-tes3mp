@@ -28,7 +28,7 @@
 #include "player/ProcessorPlayerItemUse.hpp"
 #include "player/ProcessorPlayerJail.hpp"
 #include "player/ProcessorPlayerJournal.hpp"
-#include "player/ProcessorWorldKillCount.hpp"
+#include "player/ProcessorPlayerPlaceholder.hpp"
 #include "player/ProcessorPlayerLevel.hpp"
 #include "player/ProcessorPlayerMiscellaneous.hpp"
 #include "player/ProcessorPlayerMomentum.hpp"
@@ -89,11 +89,11 @@
 #include "actor/ProcessorActorTest.hpp"
 
 #include "WorldstateProcessor.hpp"
-#include "worldstate/ProcessorCellCreate.hpp"
 #include "worldstate/ProcessorCellReset.hpp"
 #include "worldstate/ProcessorClientScriptSettings.hpp"
 #include "worldstate/ProcessorRecordDynamic.hpp"
 #include "worldstate/ProcessorWorldCollisionOverride.hpp"
+#include "worldstate/ProcessorWorldKillCount.hpp"
 #include "worldstate/ProcessorWorldMap.hpp"
 #include "worldstate/ProcessorWorldRegionAuthority.hpp"
 #include "worldstate/ProcessorWorldTime.hpp"
@@ -130,7 +130,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerItemUse());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJail());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJournal());
-    PlayerProcessor::AddProcessor(new ProcessorWorldKillCount());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerPlaceholder());
     PlayerProcessor::AddProcessor(new ProcessorPlayerLevel());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMiscellaneous());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMomentum());
@@ -188,7 +188,7 @@ void ProcessorInitializer()
     ActorProcessor::AddProcessor(new ProcessorActorStatsDynamic());
     ActorProcessor::AddProcessor(new ProcessorActorTest());
 
-    WorldstateProcessor::AddProcessor(new ProcessorCellCreate());
+    WorldstateProcessor::AddProcessor(new ProcessorWorldKillCount());
     WorldstateProcessor::AddProcessor(new ProcessorCellReset());
     WorldstateProcessor::AddProcessor(new ProcessorClientScriptSettings());
     WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());

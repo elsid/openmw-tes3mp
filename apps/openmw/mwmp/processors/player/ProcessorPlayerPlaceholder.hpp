@@ -1,16 +1,16 @@
-#ifndef OPENMW_PROCESSORWORLDKILLCOUNT_HPP
-#define OPENMW_PROCESSORWORLDKILLCOUNT_HPP
+#ifndef OPENMW_PROCESSORPLACEHOLDER_HPP
+#define OPENMW_PROCESSORPLACEHOLDER_HPP
 
 #include "../PlayerProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorWorldKillCount : public PlayerProcessor
+    class ProcessorPlayerPlaceholder : public PlayerProcessor
     {
     public:
-        ProcessorWorldKillCount()
+        ProcessorPlayerPlaceholder()
         {
-            BPP_INIT(ID_WORLD_KILL_COUNT)
+            BPP_INIT(ID_PLACEHOLDER)
         }
 
         virtual void Do(PlayerPacket &packet, BasePlayer *player)
@@ -21,10 +21,10 @@ namespace mwmp
             }
             else if (player != 0)
             {
-                static_cast<LocalPlayer*>(player)->setKills();
+                // Placeholder
             }
         }
     };
 }
 
-#endif //OPENMW_PROCESSORWORLDKILLCOUNT_HPP
+#endif //OPENMW_PROCESSORPLACEHOLDER_HPP

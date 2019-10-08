@@ -1860,7 +1860,7 @@ namespace MWMechanics
             std::string refId = Misc::StringUtils::lowerCase(actor.getCellRef().getRefId());
             int number = mDeathCount[refId];
 
-            mwmp::Main::get().getLocalPlayer()->sendKill(refId, number);
+            mwmp::Main::get().getNetworking()->getWorldstate()->sendKill(refId, number);
         }
         /*
             End of tes3mp addition

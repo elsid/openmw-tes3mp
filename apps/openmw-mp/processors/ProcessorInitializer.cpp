@@ -24,7 +24,7 @@
 #include "player/ProcessorPlayerInventory.hpp"
 #include "player/ProcessorPlayerItemUse.hpp"
 #include "player/ProcessorPlayerJournal.hpp"
-#include "player/ProcessorWorldKillCount.hpp"
+#include "player/ProcessorPlayerPlaceholder.hpp"
 #include "player/ProcessorPlayerInput.hpp"
 #include "player/ProcessorPlayerLevel.hpp"
 #include "player/ProcessorPlayerMiscellaneous.hpp"
@@ -77,6 +77,7 @@
 #include "object/ProcessorVideoPlay.hpp"
 #include "WorldstateProcessor.hpp"
 #include "worldstate/ProcessorRecordDynamic.hpp"
+#include "worldstate/ProcessorWorldKillCount.hpp"
 #include "worldstate/ProcessorWorldMap.hpp"
 #include "worldstate/ProcessorWorldWeather.hpp"
 
@@ -104,7 +105,7 @@ void ProcessorInitializer()
     PlayerProcessor::AddProcessor(new ProcessorPlayerInventory());
     PlayerProcessor::AddProcessor(new ProcessorPlayerItemUse());
     PlayerProcessor::AddProcessor(new ProcessorPlayerJournal());
-    PlayerProcessor::AddProcessor(new ProcessorWorldKillCount());
+    PlayerProcessor::AddProcessor(new ProcessorPlayerPlaceholder());
     PlayerProcessor::AddProcessor(new ProcessorPlayerInput());
     PlayerProcessor::AddProcessor(new ProcessorPlayerLevel());
     PlayerProcessor::AddProcessor(new ProcessorPlayerMiscellaneous());
@@ -157,6 +158,7 @@ void ProcessorInitializer()
     ObjectProcessor::AddProcessor(new ProcessorVideoPlay());
 
     WorldstateProcessor::AddProcessor(new ProcessorRecordDynamic());
+    WorldstateProcessor::AddProcessor(new ProcessorWorldKillCount());
     WorldstateProcessor::AddProcessor(new ProcessorWorldMap());
     WorldstateProcessor::AddProcessor(new ProcessorWorldWeather());
 }

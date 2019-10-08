@@ -9,9 +9,14 @@
     \
     {"CopyReceivedWorldstateToStore",     WorldstateFunctions::CopyReceivedWorldstateToStore},\
     \
+    {"ClearKillChanges",                  WorldstateFunctions::ClearKillChanges},\
     {"ClearMapChanges",                   WorldstateFunctions::ClearMapChanges},\
     \
+    {"GetKillChangesSize",                WorldstateFunctions::GetKillChangesSize},\
     {"GetMapChangesSize",                 WorldstateFunctions::GetMapChangesSize},\
+    \
+    {"GetKillRefId",                      WorldstateFunctions::GetKillRefId},\
+    {"GetKillNumber",                     WorldstateFunctions::GetKillNumber},\
     \
     {"GetWeatherRegion",                  WorldstateFunctions::GetWeatherRegion},\
     {"GetWeatherCurrent",                 WorldstateFunctions::GetWeatherCurrent},\
@@ -43,6 +48,7 @@
     {"SetPlacedObjectCollisionState",     WorldstateFunctions::SetPlacedObjectCollisionState},\
     {"UseActorCollisionForPlacedObjects", WorldstateFunctions::UseActorCollisionForPlacedObjects},\
     \
+    {"AddKill",                           WorldstateFunctions::AddKill},\
     {"AddSynchronizedClientScriptId",     WorldstateFunctions::AddSynchronizedClientScriptId},\
     {"AddSynchronizedClientGlobalId",     WorldstateFunctions::AddSynchronizedClientGlobalId},\
     {"AddEnforcedCollisionRefId",         WorldstateFunctions::AddEnforcedCollisionRefId},\
@@ -55,6 +61,7 @@
     {"LoadMapTileImageFile",              WorldstateFunctions::LoadMapTileImageFile},\
     \
     {"SendClientScriptSettings",          WorldstateFunctions::SendClientScriptSettings},\
+    {"SendWorldKillCount",                WorldstateFunctions::SendWorldKillCount},\
     {"SendWorldMap",                      WorldstateFunctions::SendWorldMap},\
     {"SendWorldTime",                     WorldstateFunctions::SendWorldTime},\
     {"SendWorldWeather",                  WorldstateFunctions::SendWorldWeather},\
@@ -88,6 +95,15 @@ public:
     static void CopyReceivedWorldstateToStore() noexcept;
 
     /**
+    * \brief Clear the kill count changes for the write-only worldstate.
+    *
+    * This is used to initialize the sending of new WorldKillCount packets.
+    *
+    * \return void
+    */
+    static void ClearKillChanges() noexcept;
+
+    /**
     * \brief Clear the map changes for the write-only worldstate.
     *
     * This is used to initialize the sending of new WorldMap packets.
@@ -102,6 +118,29 @@ public:
     * \return The number of indexes.
     */
     static unsigned int GetMapChangesSize() noexcept;
+
+    /**
+    * \brief Get the number of indexes in the read worldstate's kill changes.
+    *
+    * \return The number of indexes.
+    */
+    static unsigned int GetKillChangesSize() noexcept;
+
+    /**
+    * \brief Get the refId at a certain index in the read worldstate's kill count changes.
+    *
+    * \param index The index of the kill count.
+    * \return The refId.
+    */
+    static const char *GetKillRefId(unsigned int index) noexcept;
+
+    /**
+    * \brief Get the number of kills at a certain index in the read worldstate's kill count changes.
+    *
+    * \param index The index of the kill count.
+    * \return The number of kills.
+    */
+    static int GetKillNumber(unsigned int index) noexcept;
 
     /**
     * \brief Get the weather region in the read worldstate.
@@ -300,6 +339,15 @@ public:
     static void UseActorCollisionForPlacedObjects(bool useActorCollision) noexcept;
 
     /**
+    * \brief Add a new kill count to the kill count changes.
+    *
+    * \param refId The refId of the kill count.
+    * \param number The number of kills in the kill count.
+    * \return void
+    */
+    static void AddKill(const char* refId, int number) noexcept;
+
+    /**
     * \brief Add an ID to the list of script IDs whose variable changes should be sent to the
     *        the server by clients.
     *
@@ -383,6 +431,19 @@ public:
     * \return void
     */
     static void SendClientScriptSettings(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
+
+    /**
+    * \brief Send a WorldKillCount packet with the current set of kill count changes in the write-only
+    *        worldstate.
+    *
+    * \param pid The player ID attached to the packet.
+    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
+    *                           player attached to the packet (false by default).
+    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
+    *                           to the packet (false by default).
+    * \return void
+    */
+    static void SendWorldKillCount(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
     * \brief Send a WorldRegionAuthority packet establishing a certain player as the only one who

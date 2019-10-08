@@ -23,14 +23,34 @@ void WorldstateFunctions::CopyReceivedWorldstateToStore() noexcept
     writeWorldstate = *readWorldstate;
 }
 
+void WorldstateFunctions::ClearKillChanges() noexcept
+{
+    writeWorldstate.killChanges.clear();
+}
+
 void WorldstateFunctions::ClearMapChanges() noexcept
 {
     writeWorldstate.mapTiles.clear();
 }
 
+unsigned int WorldstateFunctions::GetKillChangesSize() noexcept
+{
+    return readWorldstate->killChanges.size();
+}
+
 unsigned int WorldstateFunctions::GetMapChangesSize() noexcept
 {
     return readWorldstate->mapTiles.size();
+}
+
+const char *WorldstateFunctions::GetKillRefId(unsigned int index) noexcept
+{
+    return readWorldstate->killChanges.at(index).refId.c_str();
+}
+
+int WorldstateFunctions::GetKillNumber(unsigned int index) noexcept
+{
+    return readWorldstate->killChanges.at(index).number;
 }
 
 const char *WorldstateFunctions::GetWeatherRegion() noexcept
@@ -153,6 +173,15 @@ void WorldstateFunctions::UseActorCollisionForPlacedObjects(bool useActorCollisi
     writeWorldstate.useActorCollisionForPlacedObjects = useActorCollision;
 }
 
+void WorldstateFunctions::AddKill(const char* refId, int number) noexcept
+{
+    mwmp::Kill kill;
+    kill.refId = refId;
+    kill.number = number;
+
+    writeWorldstate.killChanges.push_back(kill);
+}
+
 void WorldstateFunctions::AddSynchronizedClientScriptId(const char *scriptId) noexcept
 {
     writeWorldstate.synchronizedClientScriptIds.push_back(scriptId);
@@ -224,6 +253,23 @@ void WorldstateFunctions::SendClientScriptSettings(unsigned short pid, bool send
     writeWorldstate.guid = player->guid;
 
     mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_CLIENT_SCRIPT_SETTINGS);
+    packet->setWorldstate(&writeWorldstate);
+
+    if (!skipAttachedPlayer)
+        packet->Send(false);
+    if (sendToOtherPlayers)
+        packet->Send(true);
+}
+
+
+void WorldstateFunctions::SendWorldKillCount(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
+{
+    Player *player;
+    GET_PLAYER(pid, player, );
+
+    writeWorldstate.guid = player->guid;
+
+    mwmp::WorldstatePacket *packet = mwmp::Networking::get().getWorldstatePacketController()->GetPacket(ID_WORLD_KILL_COUNT);
     packet->setWorldstate(&writeWorldstate);
 
     if (!skipAttachedPlayer)

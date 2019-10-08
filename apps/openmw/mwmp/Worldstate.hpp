@@ -18,9 +18,11 @@ namespace mwmp
         bool containsExploredMapTile(int cellX, int cellY);
         void markExploredMapTile(int cellX, int cellY);
 
+        void setKills();
         void setMapExplored();
         void setWeather();
 
+        void sendKill(const std::string& refId, int number);
         void sendMapExplored(int cellX, int cellY, const std::vector<char>& imageData);
         void sendWeather(std::string region, int currentWeather, int nextWeather, int queuedWeather, float transitionFactor);
 

@@ -1314,27 +1314,6 @@ void LocalPlayer::setFactions()
     }
 }
 
-void LocalPlayer::setKills()
-{
-    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_WORLD_KILL_COUNT with the following kill counts:");
-    std::string debugMessage = "";
-
-    for (const auto &kill : killChanges.kills)
-    {
-        if (TimedLog::GetLevel() <= TimedLog::LOG_INFO)
-        {
-            if (!debugMessage.empty())
-                debugMessage += ", ";
-
-            debugMessage += kill.refId + ": " + std::to_string(kill.number);
-        }
-
-        MWBase::Environment::get().getMechanicsManager()->setDeaths(kill.refId, kill.number);
-    }
-
-    LOG_APPEND(TimedLog::LOG_INFO, "- %s", debugMessage.c_str());
-}
-
 void LocalPlayer::setBooks()
 {
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
@@ -1618,22 +1597,6 @@ void LocalPlayer::sendTopic(const std::string& topicId)
 
     getNetworking()->getPlayerPacket(ID_PLAYER_TOPIC)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_TOPIC)->Send();
-}
-
-void LocalPlayer::sendKill(const std::string& refId, int number)
-{
-    killChanges.kills.clear();
-
-    mwmp::Kill kill;
-    kill.refId = refId;
-    kill.number = number;
-
-    LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_WORLD_KILL_COUNT with refId %s, number %i", refId.c_str(), number);
-
-    killChanges.kills.push_back(kill);
-
-    getNetworking()->getPlayerPacket(ID_WORLD_KILL_COUNT)->setPlayer(this);
-    getNetworking()->getPlayerPacket(ID_WORLD_KILL_COUNT)->Send();
 }
 
 void LocalPlayer::sendBook(const std::string& bookId)

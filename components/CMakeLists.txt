@@ -187,10 +187,12 @@ add_component_dir (openmw-mp/Packets/Player
         PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty
         PacketPlayerCast PacketPlayerCellChange PacketPlayerCellState PacketPlayerClass PacketPlayerDeath
         PacketPlayerEquipment PacketPlayerFaction PacketPlayerInput PacketPlayerInventory PacketPlayerItemUse
-        PacketPlayerJail PacketPlayerJournal PacketWorldKillCount PacketPlayerLevel PacketPlayerMiscellaneous
-        PacketPlayerMomentum PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerReputation PacketPlayerRest
-        PacketPlayerResurrect PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook
-        PacketPlayerStatsDynamic PacketPlayerTopic
+        PacketPlayerJail PacketPlayerJournal PacketPlayerLevel PacketPlayerMiscellaneous PacketPlayerMomentum
+        PacketPlayerPosition PacketPlayerQuickKeys PacketPlayerReputation PacketPlayerRest PacketPlayerResurrect
+        PacketPlayerShapeshift PacketPlayerSkill PacketPlayerSpeech PacketPlayerSpellbook PacketPlayerStatsDynamic
+        PacketPlayerTopic
+
+        PacketPlayerPlaceholder
         )
 
 add_component_dir (openmw-mp/Packets/Object
@@ -209,7 +211,7 @@ add_component_dir (openmw-mp/Packets/Worldstate
         WorldstatePacket
 
         PacketCellCreate PacketCellReset PacketClientScriptSettings PacketRecordDynamic PacketWorldCollisionOverride
-        PacketWorldMap PacketWorldRegionAuthority PacketWorldTime PacketWorldWeather
+        PacketWorldKillCount PacketWorldMap PacketWorldRegionAuthority PacketWorldTime PacketWorldWeather
         )
 
 add_component_dir (fallback

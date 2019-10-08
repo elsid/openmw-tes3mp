@@ -70,7 +70,6 @@ namespace mwmp
         void setSpellbook();
         void setQuickKeys();
         void setFactions();
-        void setKills();
         void setBooks();
         void setShapeshift();
         void setMarkLocation();
@@ -90,7 +89,6 @@ namespace mwmp
         void sendFactionExpulsionState(const std::string& factionId, bool isExpelled);
         void sendFactionReputation(const std::string& factionId, int reputation);
         void sendTopic(const std::string& topic);
-        void sendKill(const std::string& refId, int number);
         void sendBook(const std::string& bookId);
         void sendWerewolfState(bool isWerewolf);
         void sendMarkLocation(const ESM::Cell& newMarkCell, const ESM::Position& newMarkPosition);

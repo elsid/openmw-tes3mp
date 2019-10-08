@@ -117,9 +117,10 @@ add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageB
     ProcessorPlayerBounty ProcessorPlayerCast ProcessorPlayerCellChange ProcessorPlayerCellState ProcessorPlayerCharClass
     ProcessorPlayerCharGen ProcessorPlayerDeath ProcessorPlayerDisposition ProcessorPlayerEquipment ProcessorPlayerFaction
     ProcessorPlayerInput ProcessorPlayerInventory ProcessorPlayerItemUse ProcessorPlayerJail ProcessorPlayerJournal
-    ProcessorWorldKillCount ProcessorPlayerLevel ProcessorPlayerMiscellaneous ProcessorPlayerMomentum ProcessorPlayerPosition
-    ProcessorPlayerQuickKeys ProcessorPlayerReputation ProcessorPlayerResurrect ProcessorPlayerShapeshift ProcessorPlayerSkill
+    ProcessorPlayerLevel ProcessorPlayerMiscellaneous ProcessorPlayerMomentum ProcessorPlayerPosition ProcessorPlayerQuickKeys
+    ProcessorPlayerReputation ProcessorPlayerResurrect ProcessorPlayerShapeshift ProcessorPlayerSkill
     ProcessorPlayerSpeech ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic ProcessorPlayerTopic
+    ProcessorPlayerPlaceholder
     )
 
 add_openmw_dir (mwmp/processors/object BaseObjectProcessor
@@ -134,8 +135,8 @@ add_openmw_dir (mwmp/processors/object BaseObjectProcessor
     ProcessorScriptGlobalFloat
     )
 
-add_openmw_dir (mwmp/processors/worldstate ProcessorCellCreate ProcessorCellReset ProcessorClientScriptSettings
-    ProcessorRecordDynamic ProcessorWorldCollisionOverride ProcessorWorldMap ProcessorWorldRegionAuthority ProcessorWorldTime
+add_openmw_dir (mwmp/processors/worldstate ProcessorCellReset ProcessorClientScriptSettings ProcessorRecordDynamic
+    ProcessorWorldCollisionOverride ProcessorWorldKillCount ProcessorWorldMap ProcessorWorldRegionAuthority ProcessorWorldTime
     ProcessorWorldWeather
     )
 

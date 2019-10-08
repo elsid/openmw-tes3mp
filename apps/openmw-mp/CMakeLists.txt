@@ -101,7 +101,7 @@ set(PROCESSORS_PLAYER
         processors/player/ProcessorPlayerDisposition.hpp processors/player/ProcessorPlayerEquipment.hpp
         processors/player/ProcessorPlayerFaction.hpp processors/player/ProcessorPlayerInput.hpp
         processors/player/ProcessorPlayerInventory.hpp processors/player/ProcessorPlayerItemUse.hpp
-        processors/player/ProcessorPlayerJournal.hpp processors/player/ProcessorWorldKillCount.hpp
+        processors/player/ProcessorPlayerJournal.hpp processors/player/ProcessorPlayerPlaceholder.hpp
         processors/player/ProcessorPlayerLevel.hpp processors/player/ProcessorPlayerMiscellaneous.hpp
         processors/player/ProcessorPlayerPosition.hpp processors/player/ProcessorPlayerQuickKeys.hpp
         processors/player/ProcessorPlayerRest.hpp processors/player/ProcessorPlayerResurrect.hpp
@@ -129,8 +129,8 @@ set(PROCESSORS_OBJECT
 source_group(tes3mp-server\\processors\\object FILES ${PROCESSORS_OBJECT})
 
 set(PROCESSORS_WORLDSTATE
-        processors/worldstate/ProcessorRecordDynamic.hpp processors/worldstate/ProcessorWorldMap.hpp
-        processors/worldstate/ProcessorWorldWeather.hpp
+        processors/worldstate/ProcessorRecordDynamic.hpp processors/worldstate/ProcessorWorldKillCount.hpp
+        processors/worldstate/ProcessorWorldMap.hpp processors/worldstate/ProcessorWorldWeather.hpp
         )
 
 source_group(tes3mp-server\\processors\\worldstate FILES ${PROCESSORS_WORLDSTATE})

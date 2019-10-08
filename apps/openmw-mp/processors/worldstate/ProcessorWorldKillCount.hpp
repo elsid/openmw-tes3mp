@@ -1,11 +1,11 @@
 #ifndef OPENMW_PROCESSORWORLDKILLCOUNT_HPP
 #define OPENMW_PROCESSORWORLDKILLCOUNT_HPP
 
-#include "../PlayerProcessor.hpp"
+#include "../WorldstateProcessor.hpp"
 
 namespace mwmp
 {
-    class ProcessorWorldKillCount : public PlayerProcessor
+    class ProcessorWorldKillCount : public WorldstateProcessor
     {
     public:
         ProcessorWorldKillCount()
@@ -13,7 +13,7 @@ namespace mwmp
             BPP_INIT(ID_WORLD_KILL_COUNT)
         }
 
-        void Do(PlayerPacket &packet, Player &player) override
+        void Do(WorldstatePacket &packet, Player &player, BaseWorldstate &worldstate) override
         {
             DEBUG_PRINTF(strPacketID.c_str());
 

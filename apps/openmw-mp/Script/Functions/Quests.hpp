@@ -3,15 +3,12 @@
 
 #define QUESTAPI \
     {"ClearJournalChanges",               QuestFunctions::ClearJournalChanges},\
-    {"ClearKillChanges",                  QuestFunctions::ClearKillChanges},\
     \
     {"GetJournalChangesSize",             QuestFunctions::GetJournalChangesSize},\
-    {"GetKillChangesSize",                QuestFunctions::GetKillChangesSize},\
     \
     {"AddJournalEntry",                   QuestFunctions::AddJournalEntry},\
     {"AddJournalEntryWithTimestamp",      QuestFunctions::AddJournalEntryWithTimestamp},\
     {"AddJournalIndex",                   QuestFunctions::AddJournalIndex},\
-    {"AddKill",                           QuestFunctions::AddKill},\
     \
     {"SetReputation",                     QuestFunctions::SetReputation},\
     \
@@ -19,17 +16,13 @@
     {"GetJournalItemIndex",               QuestFunctions::GetJournalItemIndex},\
     {"GetJournalItemType",                QuestFunctions::GetJournalItemType},\
     {"GetJournalItemActorRefId",          QuestFunctions::GetJournalItemActorRefId},\
-    {"GetKillRefId",                      QuestFunctions::GetKillRefId},\
-    {"GetKillNumber",                     QuestFunctions::GetKillNumber},\
     \
     {"GetReputation",                     QuestFunctions::GetReputation},\
     \
     {"SendJournalChanges",                QuestFunctions::SendJournalChanges},\
-    {"SendKillChanges",                   QuestFunctions::SendKillChanges},\
     {"SendReputation",                    QuestFunctions::SendReputation},\
     \
-    {"InitializeJournalChanges",          QuestFunctions::InitializeJournalChanges},\
-    {"InitializeKillChanges",             QuestFunctions::InitializeKillChanges}
+    {"InitializeJournalChanges",          QuestFunctions::InitializeJournalChanges}
 
 class QuestFunctions
 {
@@ -46,30 +39,12 @@ public:
     static void ClearJournalChanges(unsigned short pid) noexcept;
 
     /**
-    * \brief Clear the last recorded kill count changes for a player.
-    *
-    * This is used to initialize the sending of new WorldKillCount packets.
-    *
-    * \param pid The player ID whose kill count changes should be used.
-    * \return void
-    */
-    static void ClearKillChanges(unsigned short pid) noexcept;
-
-    /**
     * \brief Get the number of indexes in a player's latest journal changes.
     *
     * \param pid The player ID whose journal changes should be used.
     * \return The number of indexes.
     */
     static unsigned int GetJournalChangesSize(unsigned short pid) noexcept;
-
-    /**
-    * \brief Get the number of indexes in a player's latest kill count changes.
-    *
-    * \param pid The player ID whose kill count changes should be used.
-    * \return The number of indexes.
-    */
-    static unsigned int GetKillChangesSize(unsigned short pid) noexcept;
 
     /**
     * \brief Add a new journal item of type ENTRY to the journal changes for a player,
@@ -108,16 +83,6 @@ public:
     * \return void
     */
     static void AddJournalIndex(unsigned short pid, const char* quest, unsigned int index) noexcept;
-
-    /**
-    * \brief Add a new kill count to the kill count changes for a player.
-    *
-    * \param pid The player ID whose kill count changes should be used.
-    * \param refId The refId of the kill count.
-    * \param number The number of kills in the kill count.
-    * \return void
-    */
-    static void AddKill(unsigned short pid, const char* refId, int number) noexcept;
 
     /**
     * \brief Set the reputation of a certain player.
@@ -167,24 +132,6 @@ public:
     static const char *GetJournalItemActorRefId(unsigned short pid, unsigned int index) noexcept;
 
     /**
-    * \brief Get the refId at a certain index in a player's latest kill count changes.
-    *
-    * \param pid The player ID whose kill count changes should be used.
-    * \param index The index of the kill count.
-    * \return The refId.
-    */
-    static const char *GetKillRefId(unsigned short pid, unsigned int index) noexcept;
-
-    /**
-    * \brief Get the number of kills at a certain index in a player's latest kill count changes.
-    *
-    * \param pid The player ID whose kill count changes should be used.
-    * \param index The index of the kill count.
-    * \return The number of kills.
-    */
-    static int GetKillNumber(unsigned short pid, unsigned int index) noexcept;
-
-    /**
     * \brief Get the a certain player's reputation.
     *
     * \param pid The player ID.
@@ -205,18 +152,6 @@ public:
     static void SendJournalChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
 
     /**
-    * \brief Send a WorldKillCount packet with a player's recorded kill count changes.
-    *
-    * \param pid The player ID whose kill count changes should be used.
-    * \param sendToOtherPlayers Whether this packet should be sent to players other than the
-    *                           player attached to the packet (false by default).
-    * \param skipAttachedPlayer Whether the packet should skip being sent to the player attached
-    *                           to the packet (false by default).
-    * \return void
-    */
-    static void SendKillChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept;
-
-    /**
     * \brief Send a PlayerReputation packet with a player's recorded reputation.
     *
     * \param pid The player ID whose reputation should be used.
@@ -231,7 +166,6 @@ public:
     // All methods below are deprecated versions of methods from above
 
     static void InitializeJournalChanges(unsigned short pid) noexcept;
-    static void InitializeKillChanges(unsigned short pid) noexcept;
 
 private:
 

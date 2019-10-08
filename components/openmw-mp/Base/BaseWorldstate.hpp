@@ -297,6 +297,12 @@ namespace mwmp
         float transitionFactor;
     };
 
+    struct Kill
+    {
+        std::string refId;
+        int number;
+    };
+
     class BaseWorldstate
     {
     public:
@@ -325,6 +331,7 @@ namespace mwmp
 
         std::string authorityRegion;
 
+        std::vector<Kill> killChanges;
         std::vector<std::string> enforcedCollisionRefIds;
 
         std::vector<MapTile> mapTiles;

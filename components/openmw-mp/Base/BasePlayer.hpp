@@ -54,12 +54,6 @@ namespace mwmp
         std::string topicId;
     };
 
-    struct Kill
-    {
-        std::string refId;
-        int number;
-    };
-
     struct Book
     {
         std::string bookId;
@@ -118,12 +112,6 @@ namespace mwmp
     struct TopicChanges
     {
         std::vector<Topic> topics;
-        unsigned int count;
-    };
-
-    struct KillChanges
-    {
-        std::vector<Kill> kills;
         unsigned int count;
     };
 
@@ -260,7 +248,6 @@ namespace mwmp
         JournalChanges journalChanges;
         FactionChanges factionChanges;
         TopicChanges topicChanges;
-        KillChanges killChanges;
         BookChanges bookChanges;
         CellStateChanges cellStateChanges;
 
