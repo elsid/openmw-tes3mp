@@ -495,7 +495,7 @@ void Cell::initializeDedicatedActors(ActorList& actorList)
         {
             MWWorld::Ptr ptrFound = store->searchExact(baseActor.refNum, baseActor.mpNum);
 
-            if (!ptrFound) return;
+            if (!ptrFound) continue;
 
             initializeDedicatedActor(ptrFound);
         }
