@@ -815,7 +815,7 @@ void ObjectList::setMemberShorts()
         // Mimic the way a Ptr is fetched in InterpreterContext for similar situations
         MWWorld::Ptr ptrFound = MWBase::Environment::get().getWorld()->searchPtr(baseObject.refId, false);
 
-        if (!ptrFound.isEmpty())
+        if (ptrFound)
         {
             LOG_APPEND(TimedLog::LOG_VERBOSE, "-- Found %s %i-%i", ptrFound.getCellRef().getRefId().c_str(),
                                ptrFound.getCellRef().getRefNum(), ptrFound.getCellRef().getMpNum());
