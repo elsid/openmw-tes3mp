@@ -1511,6 +1511,7 @@ void RecordHelper::overrideCellRecord(const mwmp::CellRecord& record)
     if (record.baseId.empty())
     {
         recordData.mData.mFlags |= ESM::Cell::Flags::Interior;
+        recordData.mCellId.mWorldspace = Misc::StringUtils::lowerCase(recordData.mName);
         
         world->unloadCell(recordData);
         world->clearCellStore(recordData);
@@ -1521,6 +1522,7 @@ void RecordHelper::overrideCellRecord(const mwmp::CellRecord& record)
         const ESM::Cell *baseData = world->getStore().get<ESM::Cell>().search(record.baseId);
         ESM::Cell finalData = *baseData;
         finalData.mName = recordData.mName;
+        finalData.mCellId.mWorldspace = Misc::StringUtils::lowerCase(recordData.mName);
 
         world->unloadCell(finalData);
         world->clearCellStore(finalData);
