@@ -68,32 +68,13 @@ namespace RecordHelper
     void overrideLightRecord(const mwmp::LightRecord& record);
     void overrideCellRecord(const mwmp::CellRecord& record);
 
-    void overrideCreatureRecord(const ESM::Creature& record);
-    void overrideNpcRecord(const ESM::NPC& record);
+    template<class RecordType>
+    void overrideRecord(const RecordType &record)
+    {
+        MWBase::World *world = MWBase::Environment::get().getWorld();
 
-    void overrideEnchantmentRecord(const ESM::Enchantment& record);
-    void overridePotionRecord(const ESM::Potion& record);
-    void overrideSpellRecord(const ESM::Spell& record);
-
-    void overrideArmorRecord(const ESM::Armor& record);
-    void overrideBookRecord(const ESM::Book& record);
-    void overrideClothingRecord(const ESM::Clothing& record);
-    void overrideMiscellaneousRecord(const ESM::Miscellaneous& record);
-    void overrideWeaponRecord(const ESM::Weapon& record);
-
-    void overrideContainerRecord(const ESM::Container& record);
-    void overrideDoorRecord(const ESM::Door& record);
-
-    void overrideActivatorRecord(const ESM::Activator& record);
-    void overrideStaticRecord(const ESM::Static& record);
-
-    void overrideIngredientRecord(const ESM::Ingredient& record);
-    void overrideApparatusRecord(const ESM::Apparatus& record);
-    void overrideLockpickRecord(const ESM::Lockpick& record);
-    void overrideProbeRecord(const ESM::Probe& record);
-    void overrideRepairRecord(const ESM::Repair& record);
-    void overrideLightRecord(const ESM::Light& record);
-    void overrideCellRecord(const ESM::Cell& record);
+        world->getModifiableStore().overrideRecord(record);
+    }
 }
 
 

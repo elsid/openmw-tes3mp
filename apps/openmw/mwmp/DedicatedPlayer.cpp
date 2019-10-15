@@ -165,7 +165,7 @@ void DedicatedPlayer::setBaseInfo()
     }
     else
     {
-        RecordHelper::overrideNpcRecord(npc);
+        RecordHelper::overrideRecord(npc);
         reloadPtr();
     }
 
@@ -208,7 +208,7 @@ void DedicatedPlayer::setShapeshift()
             else
             {
                 creature.mId = creatureRecordId;
-                RecordHelper::overrideCreatureRecord(creature);
+                RecordHelper::overrideRecord(creature);
             }
 
             LOG_APPEND(TimedLog::LOG_INFO, "- Creating reference for %s", creature.mId.c_str());
@@ -223,7 +223,7 @@ void DedicatedPlayer::setShapeshift()
                 deleteReference();
             }
 
-            RecordHelper::overrideNpcRecord(npc);
+            RecordHelper::overrideRecord(npc);
             createReference(npc.mId);
             reloadPtr();
         }
