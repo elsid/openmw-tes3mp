@@ -404,7 +404,7 @@ void ObjectList::spawnObjects(MWWorld::CellStore* cellStore)
         // Ignore generic dynamic refIds because they could be anything on other clients
         if (baseObject.refId.find("$dynamic") != string::npos)
             continue;
-        else if (!RecordHelper::doesCreatureRecordExist(baseObject.refId) && !RecordHelper::doesNpcRecordExist(baseObject.refId))
+        else if (!RecordHelper::doesRecordIdExist<ESM::Creature>(baseObject.refId) && !RecordHelper::doesRecordIdExist<ESM::NPC>(baseObject.refId))
         {
             LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Ignored spawning of invalid object %s", baseObject.refId.c_str());
             continue;

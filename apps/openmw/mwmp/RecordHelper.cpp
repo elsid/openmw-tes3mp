@@ -7,167 +7,6 @@
 
 #include "RecordHelper.hpp"
 
-bool RecordHelper::doesClassRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Class>().search(id);
-}
-
-bool RecordHelper::doesRaceRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Race>().search(id);
-}
-
-bool RecordHelper::doesCreatureRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Creature>().search(id);
-}
-
-bool RecordHelper::doesNpcRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::NPC>().search(id);
-}
-
-bool RecordHelper::doesEnchantmentRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Enchantment>().search(id);
-}
-
-bool RecordHelper::doesPotionRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Potion>().search(id);
-}
-
-bool RecordHelper::doesSpellRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Spell>().search(id);
-}
-
-bool RecordHelper::doesArmorRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Armor>().search(id);
-}
-
-bool RecordHelper::doesBookRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Book>().search(id);
-}
-
-bool RecordHelper::doesClothingRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Clothing>().search(id);
-}
-
-bool RecordHelper::doesMiscellaneousRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Miscellaneous>().search(id);
-}
-
-bool RecordHelper::doesWeaponRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Weapon>().search(id);
-}
-
-bool RecordHelper::doesContainerRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Container>().search(id);
-}
-
-bool RecordHelper::doesDoorRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Door>().search(id);
-}
-
-bool RecordHelper::doesActivatorRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Activator>().search(id);
-}
-
-bool RecordHelper::doesStaticRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Static>().search(id);
-}
-
-bool RecordHelper::doesIngredientRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Ingredient>().search(id);
-}
-
-bool RecordHelper::doesApparatusRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Apparatus>().search(id);
-}
-
-bool RecordHelper::doesLockpickRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Lockpick>().search(id);
-}
-
-bool RecordHelper::doesProbeRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Probe>().search(id);
-}
-
-bool RecordHelper::doesRepairRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Repair>().search(id);
-}
-
-bool RecordHelper::doesLightRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Light>().search(id);
-}
-
-bool RecordHelper::doesCellRecordExist(const std::string& id)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->getStore().get<ESM::Cell>().search(id);
-}
-
 std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
@@ -192,14 +31,14 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         return;
     }
 
-    bool isExistingId = doesCreatureRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Creature>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesCreatureRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Creature>(record.baseId))
     {
         const ESM::Creature *baseData = world->getStore().get<ESM::Creature>().search(record.baseId);
         ESM::Creature finalData = *baseData;
@@ -244,7 +83,7 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         if (record.baseOverrides.hasScript)
             finalData.mScript = recordData.mScript;
 
-        if (!record.inventoryBaseId.empty() && doesNpcRecordExist(record.inventoryBaseId))
+        if (!record.inventoryBaseId.empty() && doesRecordIdExist<ESM::NPC>(record.inventoryBaseId))
             finalData.mInventory.mList = world->getStore().get<ESM::Creature>().search(record.inventoryBaseId)->mInventory.mList;
         else if (record.baseOverrides.hasInventory)
             finalData.mInventory.mList = recordData.mInventory.mList;
@@ -271,17 +110,17 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
         return;
     }
 
-    bool isExistingId = doesNpcRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::NPC>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
-        if (!doesRaceRecordExist(recordData.mRace))
+        if (!doesRecordIdExist<ESM::Race>(recordData.mRace))
         {
             LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring new NPC record with invalid race provided");
             return;
         }
-        else if (!doesClassRecordExist(recordData.mClass))
+        else if (!doesRecordIdExist<ESM::Class>(recordData.mClass))
         {
             LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring new NPC record with invalid class provided");
             return;
@@ -289,7 +128,7 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
         else
             world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesNpcRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::NPC>(record.baseId))
     {
         const ESM::NPC *baseData = world->getStore().get<ESM::NPC>().search(record.baseId);
         ESM::NPC finalData = *baseData;
@@ -366,7 +205,7 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
                 finalData.mFlags &= ~ESM::NPC::Autocalc;
         }
 
-        if (!record.inventoryBaseId.empty() && doesNpcRecordExist(record.inventoryBaseId))
+        if (!record.inventoryBaseId.empty() && doesRecordIdExist<ESM::NPC>(record.inventoryBaseId))
             finalData.mInventory.mList = world->getStore().get<ESM::NPC>().search(record.inventoryBaseId)->mInventory.mList;
         else if (record.baseOverrides.hasInventory)
             finalData.mInventory.mList = recordData.mInventory.mList;
@@ -405,7 +244,7 @@ void RecordHelper::overrideEnchantmentRecord(const mwmp::EnchantmentRecord& reco
         else
             world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesEnchantmentRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Enchantment>(record.baseId))
     {
         const ESM::Enchantment *baseData = world->getStore().get<ESM::Enchantment>().search(record.baseId);
         ESM::Enchantment finalData = *baseData;
@@ -445,14 +284,14 @@ void RecordHelper::overridePotionRecord(const mwmp::PotionRecord& record)
         return;
     }
 
-    bool isExistingId = doesPotionRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Potion>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesPotionRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Potion>(record.baseId))
     {
         const ESM::Potion *baseData = world->getStore().get<ESM::Potion>().search(record.baseId);
         ESM::Potion finalData = *baseData;
@@ -504,14 +343,14 @@ void RecordHelper::overrideSpellRecord(const mwmp::SpellRecord& record)
         return;
     }
 
-    bool isExistingId = doesSpellRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Spell>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesSpellRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Spell>(record.baseId))
     {
         const ESM::Spell *baseData = world->getStore().get<ESM::Spell>().search(record.baseId);
         ESM::Spell finalData = *baseData;
@@ -551,12 +390,12 @@ void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
         return;
     }
 
-    bool isExistingId = doesArmorRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Armor>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
-        if (!recordData.mEnchant.empty() && !doesEnchantmentRecordExist(recordData.mEnchant))
+        if (!recordData.mEnchant.empty() && !doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
         {
             LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring new armor record with invalid enchantmentId %s", recordData.mEnchant.c_str());
             return;
@@ -564,7 +403,7 @@ void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
         else
             world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesArmorRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Armor>(record.baseId))
     {
         const ESM::Armor *baseData = world->getStore().get<ESM::Armor>().search(record.baseId);
         ESM::Armor finalData = *baseData;
@@ -598,7 +437,7 @@ void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -635,12 +474,12 @@ void RecordHelper::overrideBookRecord(const mwmp::BookRecord& record)
         return;
     }
 
-    bool isExistingId = doesBookRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Book>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
-        if (!recordData.mEnchant.empty() && !doesEnchantmentRecordExist(recordData.mEnchant))
+        if (!recordData.mEnchant.empty() && !doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
         {
             LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring new book record with invalid enchantmentId %s", recordData.mEnchant.c_str());
             return;
@@ -648,7 +487,7 @@ void RecordHelper::overrideBookRecord(const mwmp::BookRecord& record)
         else
             world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesBookRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Book>(record.baseId))
     {
         const ESM::Book *baseData = world->getStore().get<ESM::Book>().search(record.baseId);
         ESM::Book finalData = *baseData;
@@ -680,7 +519,7 @@ void RecordHelper::overrideBookRecord(const mwmp::BookRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -714,12 +553,12 @@ void RecordHelper::overrideClothingRecord(const mwmp::ClothingRecord& record)
         return;
     }
 
-    bool isExistingId = doesClothingRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Clothing>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
-        if (!recordData.mEnchant.empty() && !doesEnchantmentRecordExist(recordData.mEnchant))
+        if (!recordData.mEnchant.empty() && !doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
         {
             LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring new clothing record with invalid enchantmentId %s", recordData.mEnchant.c_str());
             return;
@@ -727,7 +566,7 @@ void RecordHelper::overrideClothingRecord(const mwmp::ClothingRecord& record)
         else
             world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesClothingRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Clothing>(record.baseId))
     {
         const ESM::Clothing *baseData = world->getStore().get<ESM::Clothing>().search(record.baseId);
         ESM::Clothing finalData = *baseData;
@@ -753,7 +592,7 @@ void RecordHelper::overrideClothingRecord(const mwmp::ClothingRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -790,14 +629,14 @@ void RecordHelper::overrideMiscellaneousRecord(const mwmp::MiscellaneousRecord& 
         return;
     }
 
-    bool isExistingId = doesMiscellaneousRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Miscellaneous>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesMiscellaneousRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Miscellaneous>(record.baseId))
     {
         const ESM::Miscellaneous *baseData = world->getStore().get<ESM::Miscellaneous>().search(record.baseId);
         ESM::Miscellaneous finalData = *baseData;
@@ -846,12 +685,12 @@ void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
         return;
     }
 
-    bool isExistingId = doesWeaponRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Weapon>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
-        if (!recordData.mEnchant.empty() && !doesEnchantmentRecordExist(recordData.mEnchant))
+        if (!recordData.mEnchant.empty() && !doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
         {
             LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring new weapon record with invalid enchantmentId %s", recordData.mEnchant.c_str());
             return;
@@ -859,7 +698,7 @@ void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
         else
             world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesWeaponRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Weapon>(record.baseId))
     {
         const ESM::Weapon *baseData = world->getStore().get<ESM::Weapon>().search(record.baseId);
         ESM::Weapon finalData = *baseData;
@@ -915,7 +754,7 @@ void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
 
         if (record.baseOverrides.hasEnchantmentId)
         {
-            if (recordData.mEnchant.empty() || doesEnchantmentRecordExist(recordData.mEnchant))
+            if (recordData.mEnchant.empty() || doesRecordIdExist<ESM::Enchantment>(recordData.mEnchant))
                 finalData.mEnchant = recordData.mEnchant;
             else
                 LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring invalid enchantmentId %s", recordData.mEnchant.c_str());
@@ -949,14 +788,14 @@ void RecordHelper::overrideContainerRecord(const mwmp::ContainerRecord& record)
         return;
     }
 
-    bool isExistingId = doesContainerRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Container>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesContainerRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Container>(record.baseId))
     {
         const ESM::Container *baseData = world->getStore().get<ESM::Container>().search(record.baseId);
         ESM::Container finalData = *baseData;
@@ -1002,14 +841,14 @@ void RecordHelper::overrideDoorRecord(const mwmp::DoorRecord& record)
         return;
     }
 
-    bool isExistingId = doesDoorRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Door>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesDoorRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Door>(record.baseId))
     {
         const ESM::Door *baseData = world->getStore().get<ESM::Door>().search(record.baseId);
         ESM::Door finalData = *baseData;
@@ -1052,14 +891,14 @@ void RecordHelper::overrideActivatorRecord(const mwmp::ActivatorRecord& record)
         return;
     }
 
-    bool isExistingId = doesActivatorRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Activator>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesActivatorRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Activator>(record.baseId))
     {
         const ESM::Activator *baseData = world->getStore().get<ESM::Activator>().search(record.baseId);
         ESM::Activator finalData = *baseData;
@@ -1096,14 +935,14 @@ void RecordHelper::overrideStaticRecord(const mwmp::StaticRecord& record)
         return;
     }
 
-    bool isExistingId = doesStaticRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Static>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesStaticRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Static>(record.baseId))
     {
         const ESM::Static *baseData = world->getStore().get<ESM::Static>().search(record.baseId);
         ESM::Static finalData = *baseData;
@@ -1134,14 +973,14 @@ void RecordHelper::overrideIngredientRecord(const mwmp::IngredientRecord& record
         return;
     }
 
-    bool isExistingId = doesIngredientRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Ingredient>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesIngredientRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Ingredient>(record.baseId))
     {
         const ESM::Ingredient *baseData = world->getStore().get<ESM::Ingredient>().search(record.baseId);
         ESM::Ingredient finalData = *baseData;
@@ -1199,14 +1038,14 @@ void RecordHelper::overrideApparatusRecord(const mwmp::ApparatusRecord& record)
         return;
     }
 
-    bool isExistingId = doesApparatusRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Apparatus>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesApparatusRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Apparatus>(record.baseId))
     {
         const ESM::Apparatus *baseData = world->getStore().get<ESM::Apparatus>().search(record.baseId);
         ESM::Apparatus finalData = *baseData;
@@ -1258,14 +1097,14 @@ void RecordHelper::overrideLockpickRecord(const mwmp::LockpickRecord& record)
         return;
     }
 
-    bool isExistingId = doesLockpickRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Lockpick>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesLockpickRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Lockpick>(record.baseId))
     {
         const ESM::Lockpick *baseData = world->getStore().get<ESM::Lockpick>().search(record.baseId);
         ESM::Lockpick finalData = *baseData;
@@ -1317,14 +1156,14 @@ void RecordHelper::overrideProbeRecord(const mwmp::ProbeRecord& record)
         return;
     }
 
-    bool isExistingId = doesProbeRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Probe>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesProbeRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Probe>(record.baseId))
     {
         const ESM::Probe *baseData = world->getStore().get<ESM::Probe>().search(record.baseId);
         ESM::Probe finalData = *baseData;
@@ -1376,14 +1215,14 @@ void RecordHelper::overrideRepairRecord(const mwmp::RepairRecord& record)
         return;
     }
 
-    bool isExistingId = doesRepairRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Repair>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesRepairRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Repair>(record.baseId))
     {
         const ESM::Repair *baseData = world->getStore().get<ESM::Repair>().search(record.baseId);
         ESM::Repair finalData = *baseData;
@@ -1435,14 +1274,14 @@ void RecordHelper::overrideLightRecord(const mwmp::LightRecord& record)
         return;
     }
 
-    bool isExistingId = doesLightRecordExist(recordData.mId);
+    bool isExistingId = doesRecordIdExist<ESM::Light>(recordData.mId);
     MWBase::World *world = MWBase::Environment::get().getWorld();
 
     if (record.baseId.empty())
     {
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesLightRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Light>(record.baseId))
     {
         const ESM::Light *baseData = world->getStore().get<ESM::Light>().search(record.baseId);
         ESM::Light finalData = *baseData;
@@ -1517,7 +1356,7 @@ void RecordHelper::overrideCellRecord(const mwmp::CellRecord& record)
         world->clearCellStore(recordData);
         world->getModifiableStore().overrideRecord(recordData);
     }
-    else if (doesCellRecordExist(record.baseId))
+    else if (doesRecordIdExist<ESM::Cell>(record.baseId))
     {
         const ESM::Cell *baseData = world->getStore().get<ESM::Cell>().search(record.baseId);
         ESM::Cell finalData = *baseData;

@@ -8,36 +8,6 @@
 
 namespace RecordHelper
 {
-    bool doesClassRecordExist(const std::string& id);
-    bool doesRaceRecordExist(const std::string& id);
-
-    bool doesCreatureRecordExist(const std::string& id);
-    bool doesNpcRecordExist(const std::string& id);
-
-    bool doesEnchantmentRecordExist(const std::string& id);
-    bool doesPotionRecordExist(const std::string& id);
-    bool doesSpellRecordExist(const std::string& id);
-
-    bool doesArmorRecordExist(const std::string& id);
-    bool doesBookRecordExist(const std::string& id);
-    bool doesClothingRecordExist(const std::string& id);
-    bool doesMiscellaneousRecordExist(const std::string& id);
-    bool doesWeaponRecordExist(const std::string& id);
-
-    bool doesContainerRecordExist(const std::string& id);
-    bool doesDoorRecordExist(const std::string& id);
-
-    bool doesActivatorRecordExist(const std::string& id);
-    bool doesStaticRecordExist(const std::string& id);
-
-    bool doesIngredientRecordExist(const std::string& id);
-    bool doesApparatusRecordExist(const std::string& id);
-    bool doesLockpickRecordExist(const std::string& id);
-    bool doesProbeRecordExist(const std::string& id);
-    bool doesRepairRecordExist(const std::string& id);
-    bool doesLightRecordExist(const std::string& id);
-    bool doesCellRecordExist(const std::string& id);
-
     std::string createCreatureRecord(const ESM::Creature& record);
     std::string createNpcRecord(const ESM::NPC& record);
 
@@ -67,6 +37,14 @@ namespace RecordHelper
     void overrideRepairRecord(const mwmp::RepairRecord& record);
     void overrideLightRecord(const mwmp::LightRecord& record);
     void overrideCellRecord(const mwmp::CellRecord& record);
+
+    template<class RecordType>
+    bool doesRecordIdExist(const std::string& id)
+    {
+        MWBase::World *world = MWBase::Environment::get().getWorld();
+
+        return world->getStore().get<RecordType>().search(id);
+    }
 
     template<class RecordType>
     void overrideRecord(const RecordType &record)
