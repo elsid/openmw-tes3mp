@@ -83,7 +83,7 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         if (record.baseOverrides.hasScript)
             finalData.mScript = recordData.mScript;
 
-        if (!record.inventoryBaseId.empty() && doesRecordIdExist<ESM::NPC>(record.inventoryBaseId))
+        if (!record.inventoryBaseId.empty() && doesRecordIdExist<ESM::Creature>(record.inventoryBaseId))
             finalData.mInventory.mList = world->getStore().get<ESM::Creature>().search(record.inventoryBaseId)->mInventory.mList;
         else if (record.baseOverrides.hasInventory)
             finalData.mInventory.mList = recordData.mInventory.mList;
