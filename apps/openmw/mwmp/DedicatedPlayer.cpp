@@ -160,7 +160,7 @@ void DedicatedPlayer::setBaseInfo()
 
     if (!reference)
     {
-        npc.mId = RecordHelper::createNpcRecord(npc);
+        npc.mId = RecordHelper::createRecord(npc)->mId;
         createReference(npc.mId);
     }
     else
@@ -202,7 +202,7 @@ void DedicatedPlayer::setShapeshift()
             // and reuse it
             if (creatureRecordId.empty())
             {
-                creature.mId = creatureRecordId = RecordHelper::createCreatureRecord(creature);
+                creature.mId = creatureRecordId = RecordHelper::createRecord(creature)->mId;
                 LOG_APPEND(TimedLog::LOG_INFO, "- Creating new creature record %s", creatureRecordId.c_str());
             }
             else

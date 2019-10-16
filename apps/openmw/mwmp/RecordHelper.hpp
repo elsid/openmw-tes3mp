@@ -8,9 +8,6 @@
 
 namespace RecordHelper
 {
-    std::string createCreatureRecord(const ESM::Creature& record);
-    std::string createNpcRecord(const ESM::NPC& record);
-
     void overrideCreatureRecord(const mwmp::CreatureRecord& record);
     void overrideNpcRecord(const mwmp::NpcRecord& record);
 
@@ -39,19 +36,27 @@ namespace RecordHelper
     void overrideCellRecord(const mwmp::CellRecord& record);
 
     template<class RecordType>
-    bool doesRecordIdExist(const std::string& id)
-    {
-        MWBase::World *world = MWBase::Environment::get().getWorld();
-
-        return world->getStore().get<RecordType>().search(id);
-    }
-
-    template<class RecordType>
     void overrideRecord(const RecordType &record)
     {
         MWBase::World *world = MWBase::Environment::get().getWorld();
 
         world->getModifiableStore().overrideRecord(record);
+    }
+
+    template<class RecordType>
+    const RecordType *createRecord(const RecordType &record)
+    {
+        MWBase::World *world = MWBase::Environment::get().getWorld();
+
+        return world->createRecord(record);
+    }
+
+    template<class RecordType>
+    bool doesRecordIdExist(const std::string& id)
+    {
+        MWBase::World *world = MWBase::Environment::get().getWorld();
+
+        return world->getStore().get<RecordType>().search(id);
     }
 }
 

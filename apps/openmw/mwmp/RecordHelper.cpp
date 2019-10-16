@@ -7,20 +7,6 @@
 
 #include "RecordHelper.hpp"
 
-std::string RecordHelper::createCreatureRecord(const ESM::Creature& record)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->createRecord(record)->mId;
-}
-
-std::string RecordHelper::createNpcRecord(const ESM::NPC& record)
-{
-    MWBase::World *world = MWBase::Environment::get().getWorld();
-
-    return world->createRecord(record)->mId;
-}
-
 void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
 {
     const ESM::Creature &recordData = record.data;
