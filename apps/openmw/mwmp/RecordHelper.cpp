@@ -1,7 +1,5 @@
 #include <components/openmw-mp/TimedLog.hpp>
 
-#include "../mwbase/environment.hpp"
-
 #include "../mwworld/cellstore.hpp"
 #include "../mwworld/worldimp.hpp"
 

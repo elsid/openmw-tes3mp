@@ -3,8 +3,7 @@
 
 #include <components/openmw-mp/Base/BaseWorldstate.hpp>
 
-#include <components/esm/loadcrea.hpp>
-#include <components/esm/loadnpc.hpp>
+#include "../mwbase/environment.hpp"
 
 namespace RecordHelper
 {
