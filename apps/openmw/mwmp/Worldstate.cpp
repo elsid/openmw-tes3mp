@@ -49,7 +49,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- spell record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideSpellRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::POTION)
@@ -61,7 +61,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- potion record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overridePotionRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::ENCHANTMENT)
@@ -73,7 +73,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- enchantment record %s, %i\n-- baseId is %s", record.data.mId.c_str(), record.data.mData.mType,
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideEnchantmentRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::CREATURE)
@@ -85,7 +85,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- creature record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideCreatureRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::NPC)
@@ -97,7 +97,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- NPC record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideNpcRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::ARMOR)
@@ -109,7 +109,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- armor record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideArmorRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::BOOK)
@@ -121,7 +121,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- book record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideBookRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::CLOTHING)
@@ -133,7 +133,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- clothing record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideClothingRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::MISCELLANEOUS)
@@ -145,7 +145,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- miscellaneous record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideMiscellaneousRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::WEAPON)
@@ -157,7 +157,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- weapon record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideWeaponRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::CONTAINER)
@@ -169,7 +169,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- container record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideContainerRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::DOOR)
@@ -181,7 +181,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- door record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideDoorRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::ACTIVATOR)
@@ -193,7 +193,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- activator record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideActivatorRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::STATIC)
@@ -205,7 +205,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- static record %s\n-- baseId is %s", record.data.mId.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideStaticRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::INGREDIENT)
@@ -217,7 +217,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- ingredient record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideIngredientRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::APPARATUS)
@@ -229,7 +229,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- apparatus record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideApparatusRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::LOCKPICK)
@@ -241,7 +241,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- lockpick record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideLockpickRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::PROBE)
@@ -253,7 +253,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- probe record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideProbeRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::REPAIR)
@@ -265,7 +265,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- repair record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideRepairRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::LIGHT)
@@ -277,7 +277,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- light record %s, %s\n-- baseId is %s", record.data.mId.c_str(), record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideLightRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
     else if (recordsType == mwmp::RECORD_TYPE::CELL)
@@ -289,7 +289,7 @@ void Worldstate::addRecords()
             LOG_APPEND(TimedLog::LOG_INFO, "- cell record %s\n-- baseId is %s", record.data.mName.c_str(),
                 hasBaseId ? record.baseId.c_str() : "empty");
 
-            RecordHelper::overrideCellRecord(record);
+            RecordHelper::overrideRecord(record);
         }
     }
 }

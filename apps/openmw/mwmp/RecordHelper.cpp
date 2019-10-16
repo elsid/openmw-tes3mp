@@ -5,7 +5,7 @@
 
 #include "RecordHelper.hpp"
 
-void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
+void RecordHelper::overrideRecord(const mwmp::CreatureRecord& record)
 {
     const ESM::Creature &recordData = record.data;
 
@@ -84,7 +84,7 @@ void RecordHelper::overrideCreatureRecord(const mwmp::CreatureRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
+void RecordHelper::overrideRecord(const mwmp::NpcRecord& record)
 {
     const ESM::NPC &recordData = record.data;
 
@@ -206,7 +206,7 @@ void RecordHelper::overrideNpcRecord(const mwmp::NpcRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideEnchantmentRecord(const mwmp::EnchantmentRecord& record)
+void RecordHelper::overrideRecord(const mwmp::EnchantmentRecord& record)
 {
     const ESM::Enchantment &recordData = record.data;
 
@@ -258,7 +258,7 @@ void RecordHelper::overrideEnchantmentRecord(const mwmp::EnchantmentRecord& reco
     }
 }
 
-void RecordHelper::overridePotionRecord(const mwmp::PotionRecord& record)
+void RecordHelper::overrideRecord(const mwmp::PotionRecord& record)
 {
     const ESM::Potion &recordData = record.data;
 
@@ -317,7 +317,7 @@ void RecordHelper::overridePotionRecord(const mwmp::PotionRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideSpellRecord(const mwmp::SpellRecord& record)
+void RecordHelper::overrideRecord(const mwmp::SpellRecord& record)
 {
     const ESM::Spell &recordData = record.data;
 
@@ -364,7 +364,7 @@ void RecordHelper::overrideSpellRecord(const mwmp::SpellRecord& record)
     }
 }
 
-void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
+void RecordHelper::overrideRecord(const mwmp::ArmorRecord& record)
 {
     const ESM::Armor &recordData = record.data;
 
@@ -448,7 +448,7 @@ void RecordHelper::overrideArmorRecord(const mwmp::ArmorRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideBookRecord(const mwmp::BookRecord& record)
+void RecordHelper::overrideRecord(const mwmp::BookRecord& record)
 {
     const ESM::Book &recordData = record.data;
 
@@ -527,7 +527,7 @@ void RecordHelper::overrideBookRecord(const mwmp::BookRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideClothingRecord(const mwmp::ClothingRecord& record)
+void RecordHelper::overrideRecord(const mwmp::ClothingRecord& record)
 {
     const ESM::Clothing &recordData = record.data;
 
@@ -603,7 +603,7 @@ void RecordHelper::overrideClothingRecord(const mwmp::ClothingRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideMiscellaneousRecord(const mwmp::MiscellaneousRecord& record)
+void RecordHelper::overrideRecord(const mwmp::MiscellaneousRecord& record)
 {
     const ESM::Miscellaneous &recordData = record.data;
 
@@ -659,7 +659,7 @@ void RecordHelper::overrideMiscellaneousRecord(const mwmp::MiscellaneousRecord& 
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
+void RecordHelper::overrideRecord(const mwmp::WeaponRecord& record)
 {
     const ESM::Weapon &recordData = record.data;
 
@@ -762,7 +762,7 @@ void RecordHelper::overrideWeaponRecord(const mwmp::WeaponRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideContainerRecord(const mwmp::ContainerRecord& record)
+void RecordHelper::overrideRecord(const mwmp::ContainerRecord& record)
 {
     const ESM::Container &recordData = record.data;
 
@@ -815,7 +815,7 @@ void RecordHelper::overrideContainerRecord(const mwmp::ContainerRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideDoorRecord(const mwmp::DoorRecord& record)
+void RecordHelper::overrideRecord(const mwmp::DoorRecord& record)
 {
     const ESM::Door &recordData = record.data;
 
@@ -865,7 +865,7 @@ void RecordHelper::overrideDoorRecord(const mwmp::DoorRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideActivatorRecord(const mwmp::ActivatorRecord& record)
+void RecordHelper::overrideRecord(const mwmp::ActivatorRecord& record)
 {
     const ESM::Activator &recordData = record.data;
 
@@ -909,7 +909,7 @@ void RecordHelper::overrideActivatorRecord(const mwmp::ActivatorRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideStaticRecord(const mwmp::StaticRecord& record)
+void RecordHelper::overrideRecord(const mwmp::StaticRecord& record)
 {
     const ESM::Static &recordData = record.data;
 
@@ -947,7 +947,7 @@ void RecordHelper::overrideStaticRecord(const mwmp::StaticRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideIngredientRecord(const mwmp::IngredientRecord& record)
+void RecordHelper::overrideRecord(const mwmp::IngredientRecord& record)
 {
     const ESM::Ingredient &recordData = record.data;
 
@@ -1012,7 +1012,7 @@ void RecordHelper::overrideIngredientRecord(const mwmp::IngredientRecord& record
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideApparatusRecord(const mwmp::ApparatusRecord& record)
+void RecordHelper::overrideRecord(const mwmp::ApparatusRecord& record)
 {
     const ESM::Apparatus &recordData = record.data;
 
@@ -1071,7 +1071,7 @@ void RecordHelper::overrideApparatusRecord(const mwmp::ApparatusRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideLockpickRecord(const mwmp::LockpickRecord& record)
+void RecordHelper::overrideRecord(const mwmp::LockpickRecord& record)
 {
     const ESM::Lockpick &recordData = record.data;
 
@@ -1130,7 +1130,7 @@ void RecordHelper::overrideLockpickRecord(const mwmp::LockpickRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideProbeRecord(const mwmp::ProbeRecord& record)
+void RecordHelper::overrideRecord(const mwmp::ProbeRecord& record)
 {
     const ESM::Probe &recordData = record.data;
 
@@ -1189,7 +1189,7 @@ void RecordHelper::overrideProbeRecord(const mwmp::ProbeRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideRepairRecord(const mwmp::RepairRecord& record)
+void RecordHelper::overrideRecord(const mwmp::RepairRecord& record)
 {
     const ESM::Repair &recordData = record.data;
 
@@ -1248,7 +1248,7 @@ void RecordHelper::overrideRepairRecord(const mwmp::RepairRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideLightRecord(const mwmp::LightRecord& record)
+void RecordHelper::overrideRecord(const mwmp::LightRecord& record)
 {
     const ESM::Light &recordData = record.data;
 
@@ -1316,7 +1316,7 @@ void RecordHelper::overrideLightRecord(const mwmp::LightRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
-void RecordHelper::overrideCellRecord(const mwmp::CellRecord& record)
+void RecordHelper::overrideRecord(const mwmp::CellRecord& record)
 {
     MWBase::World *world = MWBase::Environment::get().getWorld();
 

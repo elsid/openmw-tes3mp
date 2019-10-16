@@ -7,32 +7,27 @@
 
 namespace RecordHelper
 {
-    void overrideCreatureRecord(const mwmp::CreatureRecord& record);
-    void overrideNpcRecord(const mwmp::NpcRecord& record);
-
-    void overrideEnchantmentRecord(const mwmp::EnchantmentRecord& record);
-    void overridePotionRecord(const mwmp::PotionRecord& record);
-    void overrideSpellRecord(const mwmp::SpellRecord& record);
-
-    void overrideArmorRecord(const mwmp::ArmorRecord& record);
-    void overrideBookRecord(const mwmp::BookRecord& record);
-    void overrideClothingRecord(const mwmp::ClothingRecord& record);
-    void overrideMiscellaneousRecord(const mwmp::MiscellaneousRecord& record);
-    void overrideWeaponRecord(const mwmp::WeaponRecord& record);
-
-    void overrideContainerRecord(const mwmp::ContainerRecord& record);
-    void overrideDoorRecord(const mwmp::DoorRecord& record);
-
-    void overrideActivatorRecord(const mwmp::ActivatorRecord& record);
-    void overrideStaticRecord(const mwmp::StaticRecord& record);
-
-    void overrideIngredientRecord(const mwmp::IngredientRecord& record);
-    void overrideApparatusRecord(const mwmp::ApparatusRecord& record);
-    void overrideLockpickRecord(const mwmp::LockpickRecord& record);
-    void overrideProbeRecord(const mwmp::ProbeRecord& record);
-    void overrideRepairRecord(const mwmp::RepairRecord& record);
-    void overrideLightRecord(const mwmp::LightRecord& record);
-    void overrideCellRecord(const mwmp::CellRecord& record);
+    void overrideRecord(const mwmp::CreatureRecord& record);
+    void overrideRecord(const mwmp::NpcRecord& record);
+    void overrideRecord(const mwmp::EnchantmentRecord& record);
+    void overrideRecord(const mwmp::PotionRecord& record);
+    void overrideRecord(const mwmp::SpellRecord& record);
+    void overrideRecord(const mwmp::ArmorRecord& record);
+    void overrideRecord(const mwmp::BookRecord& record);
+    void overrideRecord(const mwmp::ClothingRecord& record);
+    void overrideRecord(const mwmp::MiscellaneousRecord& record);
+    void overrideRecord(const mwmp::WeaponRecord& record);
+    void overrideRecord(const mwmp::ContainerRecord& record);
+    void overrideRecord(const mwmp::DoorRecord& record);
+    void overrideRecord(const mwmp::ActivatorRecord& record);
+    void overrideRecord(const mwmp::StaticRecord& record);
+    void overrideRecord(const mwmp::IngredientRecord& record);
+    void overrideRecord(const mwmp::ApparatusRecord& record);
+    void overrideRecord(const mwmp::LockpickRecord& record);
+    void overrideRecord(const mwmp::ProbeRecord& record);
+    void overrideRecord(const mwmp::RepairRecord& record);
+    void overrideRecord(const mwmp::LightRecord& record);
+    void overrideRecord(const mwmp::CellRecord& record);
 
     template<class RecordType>
     void overrideRecord(const RecordType &record)
