@@ -7,27 +7,27 @@
 
 namespace RecordHelper
 {
-    void overrideRecord(const mwmp::CreatureRecord& record);
-    void overrideRecord(const mwmp::NpcRecord& record);
-    void overrideRecord(const mwmp::EnchantmentRecord& record);
-    void overrideRecord(const mwmp::PotionRecord& record);
-    void overrideRecord(const mwmp::SpellRecord& record);
+    void overrideRecord(const mwmp::ActivatorRecord& record);
+    void overrideRecord(const mwmp::ApparatusRecord& record);
     void overrideRecord(const mwmp::ArmorRecord& record);
     void overrideRecord(const mwmp::BookRecord& record);
+    void overrideRecord(const mwmp::CellRecord& record);
     void overrideRecord(const mwmp::ClothingRecord& record);
-    void overrideRecord(const mwmp::MiscellaneousRecord& record);
-    void overrideRecord(const mwmp::WeaponRecord& record);
     void overrideRecord(const mwmp::ContainerRecord& record);
+    void overrideRecord(const mwmp::CreatureRecord& record);
     void overrideRecord(const mwmp::DoorRecord& record);
-    void overrideRecord(const mwmp::ActivatorRecord& record);
-    void overrideRecord(const mwmp::StaticRecord& record);
+    void overrideRecord(const mwmp::EnchantmentRecord& record);
     void overrideRecord(const mwmp::IngredientRecord& record);
-    void overrideRecord(const mwmp::ApparatusRecord& record);
+    void overrideRecord(const mwmp::LightRecord& record);
     void overrideRecord(const mwmp::LockpickRecord& record);
+    void overrideRecord(const mwmp::MiscellaneousRecord& record);
+    void overrideRecord(const mwmp::NpcRecord& record);
+    void overrideRecord(const mwmp::PotionRecord& record);
     void overrideRecord(const mwmp::ProbeRecord& record);
     void overrideRecord(const mwmp::RepairRecord& record);
-    void overrideRecord(const mwmp::LightRecord& record);
-    void overrideRecord(const mwmp::CellRecord& record);
+    void overrideRecord(const mwmp::SpellRecord& record);
+    void overrideRecord(const mwmp::StaticRecord& record);
+    void overrideRecord(const mwmp::WeaponRecord& record);
 
     template<class RecordType>
     void overrideRecord(const RecordType &record)
