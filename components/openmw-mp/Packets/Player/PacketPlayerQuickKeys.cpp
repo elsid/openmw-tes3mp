@@ -13,28 +13,25 @@ void PacketPlayerQuickKeys::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
+    uint32_t count;
+
     if (send)
-        player->quickKeyChanges.count = (unsigned int) (player->quickKeyChanges.quickKeys.size());
-    else
-        player->quickKeyChanges.quickKeys.clear();
+        count = static_cast<uint32_t>(player->quickKeyChanges.size());
 
-    RW(player->quickKeyChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->quickKeyChanges.count; i++)
+    if (!send)
     {
-        QuickKey quickKey;
+        player->quickKeyChanges.clear();
+        player->quickKeyChanges.resize(count);
+    }
 
-        if (send)
-            quickKey = player->quickKeyChanges.quickKeys.at(i);
-
+    for (auto &&quickKey : player->quickKeyChanges)
+    {
         RW(quickKey.type, send);
         RW(quickKey.slot, send);
 
         if (quickKey.type != QuickKey::UNASSIGNED)
             RW(quickKey.itemId, send);
-
-        if (!send)
-            player->quickKeyChanges.quickKeys.push_back(quickKey);
     }
-
 }

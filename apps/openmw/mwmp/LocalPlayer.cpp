@@ -1232,7 +1232,7 @@ void LocalPlayer::setQuickKeys()
 
     LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Received ID_PLAYER_QUICKKEYS from server");
 
-    for (const auto &quickKey : quickKeyChanges.quickKeys)
+    for (const auto &quickKey : quickKeyChanges)
     {
         LOG_APPEND(TimedLog::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
 
@@ -1494,7 +1494,7 @@ void LocalPlayer::sendSpellChange(std::string id, unsigned int action)
 
 void LocalPlayer::sendQuickKey(unsigned short slot, int type, const std::string& itemId)
 {
-    quickKeyChanges.quickKeys.clear();
+    quickKeyChanges.clear();
 
     mwmp::QuickKey quickKey;
     quickKey.slot = slot;
@@ -1504,7 +1504,7 @@ void LocalPlayer::sendQuickKey(unsigned short slot, int type, const std::string&
     LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_QUICKKEYS", itemId.c_str());
     LOG_APPEND(TimedLog::LOG_INFO, "- slot: %i, type: %i, itemId: %s", quickKey.slot, quickKey.type, quickKey.itemId.c_str());
 
-    quickKeyChanges.quickKeys.push_back(quickKey);
+    quickKeyChanges.push_back(quickKey);
 
     getNetworking()->getPlayerPacket(ID_PLAYER_QUICKKEYS)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_QUICKKEYS)->Send();

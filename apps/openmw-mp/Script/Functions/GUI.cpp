@@ -89,7 +89,7 @@ void GUIFunctions::ClearQuickKeyChanges(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    player->quickKeyChanges.quickKeys.clear();
+    player->quickKeyChanges.clear();
 }
 
 unsigned int GUIFunctions::GetQuickKeyChangesSize(unsigned short pid) noexcept
@@ -97,7 +97,7 @@ unsigned int GUIFunctions::GetQuickKeyChangesSize(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->quickKeyChanges.count;
+    return player->quickKeyChanges.size();
 }
 
 int GUIFunctions::GetQuickKeySlot(unsigned short pid, unsigned int index) noexcept
@@ -105,10 +105,10 @@ int GUIFunctions::GetQuickKeySlot(unsigned short pid, unsigned int index) noexce
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (index >= player->quickKeyChanges.count)
+    if (index >= player->quickKeyChanges.size())
         return 0;
 
-    return player->quickKeyChanges.quickKeys.at(index).slot;
+    return player->quickKeyChanges.at(index).slot;
 }
 
 int GUIFunctions::GetQuickKeyType(unsigned short pid, unsigned int index) noexcept
@@ -116,10 +116,10 @@ int GUIFunctions::GetQuickKeyType(unsigned short pid, unsigned int index) noexce
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    if (index >= player->quickKeyChanges.count)
+    if (index >= player->quickKeyChanges.size())
         return 0;
 
-    return player->quickKeyChanges.quickKeys.at(index).type;
+    return player->quickKeyChanges.at(index).type;
 }
 
 const char *GUIFunctions::GetQuickKeyItemId(unsigned short pid, unsigned int index) noexcept
@@ -127,10 +127,10 @@ const char *GUIFunctions::GetQuickKeyItemId(unsigned short pid, unsigned int ind
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->quickKeyChanges.count)
+    if (index >= player->quickKeyChanges.size())
         return "invalid";
 
-    return player->quickKeyChanges.quickKeys.at(index).itemId.c_str();
+    return player->quickKeyChanges.at(index).itemId.c_str();
 }
 
 void GUIFunctions::AddQuickKey(unsigned short pid, unsigned short slot, int type, const char* itemId) noexcept
@@ -143,7 +143,7 @@ void GUIFunctions::AddQuickKey(unsigned short pid, unsigned short slot, int type
     quickKey.type = type;
     quickKey.itemId = itemId;
 
-    player->quickKeyChanges.quickKeys.push_back(quickKey);
+    player->quickKeyChanges.push_back(quickKey);
 }
 
 void GUIFunctions::SendQuickKeyChanges(unsigned short pid) noexcept

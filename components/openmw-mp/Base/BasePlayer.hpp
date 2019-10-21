@@ -141,12 +141,6 @@ namespace mwmp
         int action; // 0 - Clear and set in entirety, 1 - Add spell, 2 - Remove spell
     };
 
-    struct QuickKeyChanges
-    {
-        std::vector<QuickKey> quickKeys;
-        unsigned int count;
-    };
-
     struct CellStateChanges
     {
         std::vector<CellState> cellStates;
@@ -238,7 +232,7 @@ namespace mwmp
 
         InventoryChanges inventoryChanges;
         SpellbookChanges spellbookChanges;
-        QuickKeyChanges quickKeyChanges;
+        std::vector<QuickKey> quickKeyChanges;
         std::vector<JournalItem> journalChanges;
         FactionChanges factionChanges;
         TopicChanges topicChanges;
