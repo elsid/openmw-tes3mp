@@ -732,16 +732,24 @@ void LocalPlayer::addSpells()
 
 void LocalPlayer::addJournalItems()
 {
-    for (const auto &journalItem : journalChanges.journalItems)
+    for (const auto &journalItem : journalChanges)
     {
         MWWorld::Ptr ptrFound;
 
         if (journalItem.type == JournalItem::ENTRY)
         {
+            LOG_APPEND(TimedLog::LOG_VERBOSE, "- type: ENTRY, quest: %s, index: %i, actorRefId: %s",
+                journalItem.quest.c_str(), journalItem.index, journalItem.actorRefId.c_str());
+
             ptrFound = MWBase::Environment::get().getWorld()->searchPtr(journalItem.actorRefId, false);
 
             if (!ptrFound)
                 ptrFound = getPlayerPtr();
+        }
+        else
+        {
+            LOG_APPEND(TimedLog::LOG_VERBOSE, "- type: INDEX, quest: %s, index: %i",
+                journalItem.quest.c_str(), journalItem.index);
         }
 
         try
@@ -1504,7 +1512,7 @@ void LocalPlayer::sendQuickKey(unsigned short slot, int type, const std::string&
 
 void LocalPlayer::sendJournalEntry(const std::string& quest, int index, const MWWorld::Ptr& actor)
 {
-    journalChanges.journalItems.clear();
+    journalChanges.clear();
 
     mwmp::JournalItem journalItem;
     journalItem.type = JournalItem::ENTRY;
@@ -1513,7 +1521,7 @@ void LocalPlayer::sendJournalEntry(const std::string& quest, int index, const MW
     journalItem.actorRefId = actor.getCellRef().getRefId();
     journalItem.hasTimestamp = false;
 
-    journalChanges.journalItems.push_back(journalItem);
+    journalChanges.push_back(journalItem);
 
     getNetworking()->getPlayerPacket(ID_PLAYER_JOURNAL)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_JOURNAL)->Send();
@@ -1521,14 +1529,14 @@ void LocalPlayer::sendJournalEntry(const std::string& quest, int index, const MW
 
 void LocalPlayer::sendJournalIndex(const std::string& quest, int index)
 {
-    journalChanges.journalItems.clear();
+    journalChanges.clear();
 
     mwmp::JournalItem journalItem;
     journalItem.type = JournalItem::INDEX;
     journalItem.quest = quest;
     journalItem.index = index;
 
-    journalChanges.journalItems.push_back(journalItem);
+    journalChanges.push_back(journalItem);
 
     getNetworking()->getPlayerPacket(ID_PLAYER_JOURNAL)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_JOURNAL)->Send();

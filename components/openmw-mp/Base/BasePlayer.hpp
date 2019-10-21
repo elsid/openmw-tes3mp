@@ -88,12 +88,6 @@ namespace mwmp
         int type; // 0 - Cell load, 1 - Cell unload
     };
 
-    struct JournalChanges
-    {
-        std::vector<JournalItem> journalItems;
-        unsigned int count;
-    };
-
     struct FactionChanges
     {
         std::vector<Faction> factions;
@@ -245,7 +239,7 @@ namespace mwmp
         InventoryChanges inventoryChanges;
         SpellbookChanges spellbookChanges;
         QuickKeyChanges quickKeyChanges;
-        JournalChanges journalChanges;
+        std::vector<JournalItem> journalChanges;
         FactionChanges factionChanges;
         TopicChanges topicChanges;
         BookChanges bookChanges;

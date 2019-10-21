@@ -13,7 +13,7 @@ void QuestFunctions::ClearJournalChanges(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    player->journalChanges.journalItems.clear();
+    player->journalChanges.clear();
 }
 
 unsigned int QuestFunctions::GetJournalChangesSize(unsigned short pid) noexcept
@@ -21,7 +21,7 @@ unsigned int QuestFunctions::GetJournalChangesSize(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.count;
+    return player->journalChanges.size();
 }
 
 void QuestFunctions::AddJournalEntry(unsigned short pid, const char* quest, unsigned int index, const char* actorRefId) noexcept
@@ -36,7 +36,7 @@ void QuestFunctions::AddJournalEntry(unsigned short pid, const char* quest, unsi
     journalItem.actorRefId = actorRefId;
     journalItem.hasTimestamp = false;
 
-    player->journalChanges.journalItems.push_back(journalItem);
+    player->journalChanges.push_back(journalItem);
 }
 
 void QuestFunctions::AddJournalEntryWithTimestamp(unsigned short pid, const char* quest, unsigned int index, const char* actorRefId,
@@ -56,7 +56,7 @@ void QuestFunctions::AddJournalEntryWithTimestamp(unsigned short pid, const char
     journalItem.timestamp.month = month;
     journalItem.timestamp.day = day;
 
-    player->journalChanges.journalItems.push_back(journalItem);
+    player->journalChanges.push_back(journalItem);
 }
 
 void QuestFunctions::AddJournalIndex(unsigned short pid, const char* quest, unsigned int index) noexcept
@@ -69,7 +69,7 @@ void QuestFunctions::AddJournalIndex(unsigned short pid, const char* quest, unsi
     journalItem.quest = quest;
     journalItem.index = index;
 
-    player->journalChanges.journalItems.push_back(journalItem);
+    player->journalChanges.push_back(journalItem);
 }
 
 void QuestFunctions::SetReputation(unsigned short pid, int value) noexcept
@@ -85,10 +85,10 @@ const char *QuestFunctions::GetJournalItemQuest(unsigned short pid, unsigned int
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->journalChanges.count)
+    if (index >= player->journalChanges.size())
         return "invalid";
 
-    return player->journalChanges.journalItems.at(index).quest.c_str();
+    return player->journalChanges.at(index).quest.c_str();
 }
 
 int QuestFunctions::GetJournalItemIndex(unsigned short pid, unsigned int index) noexcept
@@ -96,7 +96,7 @@ int QuestFunctions::GetJournalItemIndex(unsigned short pid, unsigned int index) 
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.journalItems.at(index).index;
+    return player->journalChanges.at(index).index;
 }
 
 int QuestFunctions::GetJournalItemType(unsigned short pid, unsigned int index) noexcept
@@ -104,7 +104,7 @@ int QuestFunctions::GetJournalItemType(unsigned short pid, unsigned int index) n
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.journalItems.at(index).type;
+    return player->journalChanges.at(index).type;
 }
 
 const char *QuestFunctions::GetJournalItemActorRefId(unsigned short pid, unsigned int index) noexcept
@@ -112,7 +112,7 @@ const char *QuestFunctions::GetJournalItemActorRefId(unsigned short pid, unsigne
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->journalChanges.journalItems.at(index).actorRefId.c_str();
+    return player->journalChanges.at(index).actorRefId.c_str();
 }
 
 int QuestFunctions::GetReputation(unsigned short pid) noexcept
