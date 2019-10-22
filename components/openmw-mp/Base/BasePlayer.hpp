@@ -103,12 +103,6 @@ namespace mwmp
         int action; // 0 - Rank, 1 - Expulsion state, 2 - Both
     };
 
-    struct TopicChanges
-    {
-        std::vector<Topic> topics;
-        unsigned int count;
-    };
-
     struct BookChanges
     {
         std::vector<Book> books;
@@ -235,7 +229,7 @@ namespace mwmp
         std::vector<QuickKey> quickKeyChanges;
         std::vector<JournalItem> journalChanges;
         FactionChanges factionChanges;
-        TopicChanges topicChanges;
+        std::vector<Topic> topicChanges;
         BookChanges bookChanges;
         CellStateChanges cellStateChanges;
 

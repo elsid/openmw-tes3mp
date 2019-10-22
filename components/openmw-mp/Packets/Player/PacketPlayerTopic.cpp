@@ -13,23 +13,21 @@ void PacketPlayerTopic::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
+    uint32_t count;
+
     if (send)
-        player->topicChanges.count = (unsigned int)(player->topicChanges.topics.size());
-    else
-        player->topicChanges.topics.clear();
+        count = static_cast<uint32_t>(player->topicChanges.size());
 
-    RW(player->topicChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->topicChanges.count; i++)
+    if (!send)
     {
-        Topic topic;
+        player->topicChanges.clear();
+        player->topicChanges.resize(count);
+    }
 
-        if (send)
-            topic = player->topicChanges.topics.at(i);
-
+    for (auto &&topic : player->topicChanges)
+    {
         RW(topic.topicId, send, true);
-
-        if (!send)
-            player->topicChanges.topics.push_back(topic);
     }
 }

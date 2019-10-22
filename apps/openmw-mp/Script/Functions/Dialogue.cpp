@@ -12,7 +12,7 @@ void DialogueFunctions::ClearTopicChanges(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    player->topicChanges.topics.clear();
+    player->topicChanges.clear();
 }
 
 unsigned int DialogueFunctions::GetTopicChangesSize(unsigned short pid) noexcept
@@ -20,7 +20,7 @@ unsigned int DialogueFunctions::GetTopicChangesSize(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->topicChanges.count;
+    return player->topicChanges.size();
 }
 
 void DialogueFunctions::AddTopic(unsigned short pid, const char* topicId) noexcept
@@ -31,7 +31,7 @@ void DialogueFunctions::AddTopic(unsigned short pid, const char* topicId) noexce
     mwmp::Topic topic;
     topic.topicId = topicId;
 
-    player->topicChanges.topics.push_back(topic);
+    player->topicChanges.push_back(topic);
 }
 
 const char *DialogueFunctions::GetTopicId(unsigned short pid, unsigned int index) noexcept
@@ -39,10 +39,10 @@ const char *DialogueFunctions::GetTopicId(unsigned short pid, unsigned int index
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->topicChanges.count)
+    if (index >= player->topicChanges.size())
         return "invalid";
 
-    return player->topicChanges.topics.at(index).topicId.c_str();
+    return player->topicChanges.at(index).topicId.c_str();
 }
 
 void DialogueFunctions::SendTopicChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept

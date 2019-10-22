@@ -779,7 +779,7 @@ void LocalPlayer::addJournalItems()
 void LocalPlayer::addTopics()
 {
     auto &env = MWBase::Environment::get();
-    for (const auto &topic : topicChanges.topics)
+    for (const auto &topic : topicChanges)
     {
         std::string topicId = topic.topicId;
 
@@ -1589,7 +1589,7 @@ void LocalPlayer::sendFactionReputation(const std::string& factionId, int reputa
 
 void LocalPlayer::sendTopic(const std::string& topicId)
 {
-    topicChanges.topics.clear();
+    topicChanges.clear();
 
     mwmp::Topic topic;
 
@@ -1601,7 +1601,7 @@ void LocalPlayer::sendTopic(const std::string& topicId)
 
     LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_TOPIC with topic %s", topic.topicId.c_str());
 
-    topicChanges.topics.push_back(topic);
+    topicChanges.push_back(topic);
 
     getNetworking()->getPlayerPacket(ID_PLAYER_TOPIC)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_TOPIC)->Send();
