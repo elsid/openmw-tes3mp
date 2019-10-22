@@ -103,12 +103,6 @@ namespace mwmp
         int action; // 0 - Rank, 1 - Expulsion state, 2 - Both
     };
 
-    struct BookChanges
-    {
-        std::vector<Book> books;
-        unsigned int count;
-    };
-
     struct InventoryChanges
     {
         std::vector<Item> items;
@@ -230,7 +224,7 @@ namespace mwmp
         std::vector<JournalItem> journalChanges;
         FactionChanges factionChanges;
         std::vector<Topic> topicChanges;
-        BookChanges bookChanges;
+        std::vector<Book> bookChanges;
         CellStateChanges cellStateChanges;
 
         ESM::ActiveSpells activeSpells;

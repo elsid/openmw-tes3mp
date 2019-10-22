@@ -1327,7 +1327,7 @@ void LocalPlayer::setBooks()
     MWWorld::Ptr ptrPlayer = getPlayerPtr();
     MWMechanics::NpcStats &ptrNpcStats = ptrPlayer.getClass().getNpcStats(ptrPlayer);
 
-    for (const auto &book : bookChanges.books)
+    for (const auto &book : bookChanges)
         ptrNpcStats.flagAsUsed(book.bookId);
 }
 
@@ -1609,14 +1609,14 @@ void LocalPlayer::sendTopic(const std::string& topicId)
 
 void LocalPlayer::sendBook(const std::string& bookId)
 {
-    bookChanges.books.clear();
+    bookChanges.clear();
 
     mwmp::Book book;
     book.bookId = bookId;
 
     LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "Sending ID_PLAYER_BOOK with book %s", book.bookId.c_str());
 
-    bookChanges.books.push_back(book);
+    bookChanges.push_back(book);
 
     getNetworking()->getPlayerPacket(ID_PLAYER_BOOK)->setPlayer(this);
     getNetworking()->getPlayerPacket(ID_PLAYER_BOOK)->Send();

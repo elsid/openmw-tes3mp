@@ -13,23 +13,21 @@ void PacketPlayerBook::Packet(RakNet::BitStream *bs, bool send)
 {
     PlayerPacket::Packet(bs, send);
 
+    uint32_t count;
+
     if (send)
-        player->bookChanges.count = (unsigned int)(player->bookChanges.books.size());
-    else
-        player->bookChanges.books.clear();
+        count = static_cast<uint32_t>(player->bookChanges.size());
 
-    RW(player->bookChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->bookChanges.count; i++)
+    if (!send)
     {
-        Book book;
+        player->bookChanges.clear();
+        player->bookChanges.resize(count);
+    }
 
-        if (send)
-            book = player->bookChanges.books.at(i);
-
+    for (auto &&book : player->bookChanges)
+    {
         RW(book.bookId, send, true);
-
-        if (!send)
-            player->bookChanges.books.push_back(book);
     }
 }

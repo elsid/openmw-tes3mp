@@ -12,7 +12,7 @@ void BookFunctions::ClearBookChanges(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, );
 
-    player->bookChanges.books.clear();
+    player->bookChanges.clear();
 }
 
 unsigned int BookFunctions::GetBookChangesSize(unsigned short pid) noexcept
@@ -20,7 +20,7 @@ unsigned int BookFunctions::GetBookChangesSize(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->bookChanges.count;
+    return player->bookChanges.size();
 }
 
 void BookFunctions::AddBook(unsigned short pid, const char* bookId) noexcept
@@ -31,7 +31,7 @@ void BookFunctions::AddBook(unsigned short pid, const char* bookId) noexcept
     mwmp::Book book;
     book.bookId = bookId;
 
-    player->bookChanges.books.push_back(book);
+    player->bookChanges.push_back(book);
 }
 
 const char *BookFunctions::GetBookId(unsigned short pid, unsigned int index) noexcept
@@ -39,10 +39,10 @@ const char *BookFunctions::GetBookId(unsigned short pid, unsigned int index) noe
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->bookChanges.count)
+    if (index >= player->bookChanges.size())
         return "invalid";
 
-    return player->bookChanges.books.at(index).bookId.c_str();
+    return player->bookChanges.at(index).bookId.c_str();
 }
 
 void BookFunctions::SendBookChanges(unsigned short pid, bool sendToOtherPlayers, bool skipAttachedPlayer) noexcept
