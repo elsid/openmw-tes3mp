@@ -129,12 +129,6 @@ namespace mwmp
         int action; // 0 - Clear and set in entirety, 1 - Add spell, 2 - Remove spell
     };
 
-    struct CellStateChanges
-    {
-        std::vector<CellState> cellStates;
-        unsigned int count;
-    };
-
     enum RESURRECT_TYPE
     {
         REGULAR = 0,
@@ -225,7 +219,7 @@ namespace mwmp
         FactionChanges factionChanges;
         std::vector<Topic> topicChanges;
         std::vector<Book> bookChanges;
-        CellStateChanges cellStateChanges;
+        std::vector<CellState> cellStateChanges;
 
         ESM::ActiveSpells activeSpells;
         CurrentContainer currentContainer;

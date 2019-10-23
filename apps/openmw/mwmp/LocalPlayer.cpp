@@ -1675,7 +1675,7 @@ void LocalPlayer::sendCellStates()
 
 void LocalPlayer::clearCellStates()
 {
-    cellStateChanges.cellStates.clear();
+    cellStateChanges.clear();
 }
 
 void LocalPlayer::clearCurrentContainer()
@@ -1689,12 +1689,12 @@ void LocalPlayer::storeCellState(const ESM::Cell& cell, int stateType)
 {
     std::vector<CellState>::iterator iter;
 
-    for (iter = cellStateChanges.cellStates.begin(); iter != cellStateChanges.cellStates.end(); )
+    for (iter = cellStateChanges.begin(); iter != cellStateChanges.end(); )
     {
         // If there's already a cell state recorded for this particular cell,
         // remove it
         if (cell.getDescription() == (*iter).cell.getDescription())
-            iter = cellStateChanges.cellStates.erase(iter);
+            iter = cellStateChanges.erase(iter);
         else
             ++iter;
     }
@@ -1703,7 +1703,7 @@ void LocalPlayer::storeCellState(const ESM::Cell& cell, int stateType)
     cellState.cell = cell;
     cellState.type = stateType;
 
-    cellStateChanges.cellStates.push_back(cellState);
+    cellStateChanges.push_back(cellState);
 }
 
 void LocalPlayer::storeCurrentContainer(const MWWorld::Ptr &container)

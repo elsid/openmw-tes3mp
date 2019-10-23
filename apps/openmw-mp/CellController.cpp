@@ -162,7 +162,7 @@ void CellController::update(Player *player)
 {
     std::vector<Cell*> toDelete;
 
-    for (auto &&cell : player->cellStateChanges.cellStates)
+    for (auto &&cell : player->cellStateChanges)
     {
         if (cell.type == mwmp::CellState::LOAD)
         {
