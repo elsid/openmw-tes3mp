@@ -15,24 +15,21 @@ void PacketPlayerSpellbook::Packet(RakNet::BitStream *bs, bool send)
 
     RW(player->spellbookChanges.action, send);
 
+    uint32_t count;
+
     if (send)
-        player->spellbookChanges.count = (unsigned int) (player->spellbookChanges.spells.size());
-    else
-        player->spellbookChanges.spells.clear();
+        count = static_cast<uint32_t>(player->spellbookChanges.spells.size());
 
-    RW(player->spellbookChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->spellbookChanges.count; i++)
+    if (!send)
     {
-        ESM::Spell spell;
-
-        if (send)
-            spell = player->spellbookChanges.spells.at(i);
-
-        RW(spell.mId, send, true);
-
-        if (!send)
-            player->spellbookChanges.spells.push_back(spell);
+        player->spellbookChanges.spells.clear();
+        player->spellbookChanges.spells.resize(count);
     }
 
+    for (auto &&spell : player->spellbookChanges.spells)
+    {
+        RW(spell.mId, send, true);
+    }
 }

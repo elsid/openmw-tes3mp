@@ -119,7 +119,6 @@ namespace mwmp
     struct SpellbookChanges
     {
         std::vector<ESM::Spell> spells;
-        unsigned int count;
         enum ACTION_TYPE
         {
             SET = 0,
@@ -176,7 +175,6 @@ namespace mwmp
             inventoryChanges.action = 0;
             inventoryChanges.count = 0;
             spellbookChanges.action = 0;
-            spellbookChanges.count = 0;
 
             exchangeFullInfo = false;
             displayCreatureName = false;

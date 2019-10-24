@@ -21,7 +21,7 @@ unsigned int SpellFunctions::GetSpellbookChangesSize(unsigned short pid) noexcep
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->spellbookChanges.count;
+    return player->spellbookChanges.spells.size();
 }
 
 unsigned int SpellFunctions::GetSpellbookChangesAction(unsigned short pid) noexcept
@@ -56,7 +56,7 @@ const char *SpellFunctions::GetSpellId(unsigned short pid, unsigned int index) n
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->spellbookChanges.count)
+    if (index >= player->spellbookChanges.spells.size())
         return "invalid";
 
     return player->spellbookChanges.spells.at(index).mId.c_str();
