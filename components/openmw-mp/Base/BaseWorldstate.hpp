@@ -291,9 +291,9 @@ namespace mwmp
     struct Weather
     {
         std::string region;
-        unsigned int currentWeather;
-        unsigned int nextWeather;
-        unsigned int queuedWeather;
+        int currentWeather;
+        int nextWeather;
+        int queuedWeather;
         float transitionFactor;
     };
 

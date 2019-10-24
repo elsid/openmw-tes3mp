@@ -704,8 +704,8 @@ void WeatherManager::playerTeleported(const std::string& playerRegion, bool isEx
     Make it possible to set a specific weather state for a region from elsewhere
     in the code
 */
-void WeatherManager::setRegionWeather(const std::string& region, const unsigned int currentWeather, const unsigned int nextWeather,
-    const unsigned int queuedWeather, const float transitionFactor, bool force)
+void WeatherManager::setRegionWeather(const std::string& region, const int currentWeather, const int nextWeather,
+    const int queuedWeather, const float transitionFactor, bool force)
 {
     bool isSameRegion = Misc::StringUtils::ciEqual(region, mCurrentRegion);
 
