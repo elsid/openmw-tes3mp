@@ -6,7 +6,7 @@
 
 namespace mwmp
 {
-    class ProcessorGUIMessageBox : public PlayerProcessor
+    class ProcessorGUIMessageBox final: public PlayerProcessor
     {
     public:
         ProcessorGUIMessageBox()

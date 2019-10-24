@@ -8,7 +8,7 @@
 
 namespace mwmp
 {
-    class ProcessorWorldTime : public WorldstateProcessor
+    class ProcessorWorldTime final: public WorldstateProcessor
     {
     public:
         ProcessorWorldTime()

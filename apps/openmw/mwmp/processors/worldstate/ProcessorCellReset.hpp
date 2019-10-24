@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorCellReset : public WorldstateProcessor
+    class ProcessorCellReset final: public WorldstateProcessor
     {
     public:
         ProcessorCellReset()

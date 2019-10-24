@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectActivate : public BaseObjectProcessor
+    class ProcessorObjectActivate final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectActivate()

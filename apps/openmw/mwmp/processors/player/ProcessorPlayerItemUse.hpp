@@ -12,7 +12,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerItemUse : public PlayerProcessor
+    class ProcessorPlayerItemUse final: public PlayerProcessor
     {
     public:
         ProcessorPlayerItemUse()

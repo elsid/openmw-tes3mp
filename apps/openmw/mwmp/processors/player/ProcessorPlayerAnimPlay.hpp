@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerAnimPlay : public PlayerProcessor
+    class ProcessorPlayerAnimPlay final: public PlayerProcessor
     {
     public:
         ProcessorPlayerAnimPlay()

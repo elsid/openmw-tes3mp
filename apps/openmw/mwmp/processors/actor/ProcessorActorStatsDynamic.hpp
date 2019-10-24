@@ -7,7 +7,7 @@
 
 namespace mwmp
 {
-    class ProcessorActorStatsDynamic : public ActorProcessor
+    class ProcessorActorStatsDynamic final: public ActorProcessor
     {
     public:
         ProcessorActorStatsDynamic()

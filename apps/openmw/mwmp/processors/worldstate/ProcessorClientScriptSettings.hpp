@@ -8,7 +8,7 @@
 
 namespace mwmp
 {
-    class ProcessorClientScriptSettings : public WorldstateProcessor
+    class ProcessorClientScriptSettings final: public WorldstateProcessor
     {
     public:
         ProcessorClientScriptSettings()

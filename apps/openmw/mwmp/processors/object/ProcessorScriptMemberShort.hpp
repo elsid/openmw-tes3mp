@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorScriptMemberShort : public ObjectProcessor
+    class ProcessorScriptMemberShort final: public ObjectProcessor
     {
     public:
         ProcessorScriptMemberShort()

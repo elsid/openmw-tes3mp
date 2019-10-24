@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorRecordDynamic : public WorldstateProcessor
+    class ProcessorRecordDynamic final: public WorldstateProcessor
     {
     public:
         ProcessorRecordDynamic()

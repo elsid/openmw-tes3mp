@@ -8,7 +8,7 @@
 
 namespace mwmp
 {
-    class ProcessorActorCellChange : public ActorProcessor
+    class ProcessorActorCellChange final: public ActorProcessor
     {
     public:
         ProcessorActorCellChange()

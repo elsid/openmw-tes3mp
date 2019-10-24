@@ -7,7 +7,7 @@
 
 namespace mwmp
 {
-    class ProcessorActorAI : public ActorProcessor
+    class ProcessorActorAI final: public ActorProcessor
     {
     public:
         ProcessorActorAI()

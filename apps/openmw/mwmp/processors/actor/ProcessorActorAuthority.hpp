@@ -8,7 +8,7 @@
 
 namespace mwmp
 {
-    class ProcessorActorAuthority : public ActorProcessor
+    class ProcessorActorAuthority final: public ActorProcessor
     {
     public:
         ProcessorActorAuthority()

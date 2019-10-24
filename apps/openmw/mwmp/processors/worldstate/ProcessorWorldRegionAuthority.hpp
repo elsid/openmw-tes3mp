@@ -7,7 +7,7 @@
 
 namespace mwmp
 {
-    class ProcessorWorldRegionAuthority : public WorldstateProcessor
+    class ProcessorWorldRegionAuthority final: public WorldstateProcessor
     {
     public:
         ProcessorWorldRegionAuthority()

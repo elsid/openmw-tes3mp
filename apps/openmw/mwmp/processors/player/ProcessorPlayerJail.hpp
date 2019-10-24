@@ -10,7 +10,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerJail : public PlayerProcessor
+    class ProcessorPlayerJail final: public PlayerProcessor
     {
     public:
         ProcessorPlayerJail()

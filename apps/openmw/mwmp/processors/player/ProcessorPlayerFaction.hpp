@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerFaction : public PlayerProcessor
+    class ProcessorPlayerFaction final: public PlayerProcessor
     {
     public:
         ProcessorPlayerFaction()

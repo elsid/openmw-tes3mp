@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorWorldWeather : public WorldstateProcessor
+    class ProcessorWorldWeather final: public WorldstateProcessor
     {
     public:
         ProcessorWorldWeather()

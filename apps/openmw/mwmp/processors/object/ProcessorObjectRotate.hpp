@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectRotate : public BaseObjectProcessor
+    class ProcessorObjectRotate final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectRotate()

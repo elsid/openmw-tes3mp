@@ -6,7 +6,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerSkill : public PlayerProcessor
+    class ProcessorPlayerSkill final: public PlayerProcessor
     {
     public:
         ProcessorPlayerSkill()

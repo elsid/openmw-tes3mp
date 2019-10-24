@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerCellState : public PlayerProcessor
+    class ProcessorPlayerCellState final: public PlayerProcessor
     {
     public:
         ProcessorPlayerCellState()

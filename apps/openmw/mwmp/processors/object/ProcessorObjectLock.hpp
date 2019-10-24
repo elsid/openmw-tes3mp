@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectLock : public BaseObjectProcessor
+    class ProcessorObjectLock final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectLock()

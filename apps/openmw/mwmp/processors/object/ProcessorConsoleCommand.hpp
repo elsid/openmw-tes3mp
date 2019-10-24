@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorConsoleCommand : public BaseObjectProcessor
+    class ProcessorConsoleCommand final: public BaseObjectProcessor
     {
     public:
         ProcessorConsoleCommand()

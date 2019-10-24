@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerSpeech : public PlayerProcessor
+    class ProcessorPlayerSpeech final: public PlayerProcessor
     {
     public:
         ProcessorPlayerSpeech()

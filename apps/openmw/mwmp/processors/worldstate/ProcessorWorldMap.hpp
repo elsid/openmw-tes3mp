@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorWorldMap : public WorldstateProcessor
+    class ProcessorWorldMap final: public WorldstateProcessor
     {
     public:
         ProcessorWorldMap()

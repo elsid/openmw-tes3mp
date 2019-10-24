@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerInventory : public PlayerProcessor
+    class ProcessorPlayerInventory final: public PlayerProcessor
     {
     public:
         ProcessorPlayerInventory()

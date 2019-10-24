@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorDoorDestination : public BaseObjectProcessor
+    class ProcessorDoorDestination final: public BaseObjectProcessor
     {
     public:
         ProcessorDoorDestination()

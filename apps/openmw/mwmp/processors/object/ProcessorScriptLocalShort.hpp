@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorScriptLocalShort : public BaseObjectProcessor
+    class ProcessorScriptLocalShort final: public BaseObjectProcessor
     {
     public:
         ProcessorScriptLocalShort()

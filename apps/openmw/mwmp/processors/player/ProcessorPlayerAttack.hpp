@@ -7,7 +7,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerAttack : public PlayerProcessor
+    class ProcessorPlayerAttack final: public PlayerProcessor
     {
     public:
         ProcessorPlayerAttack()

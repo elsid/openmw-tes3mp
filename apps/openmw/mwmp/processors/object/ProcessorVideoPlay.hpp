@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorVideoPlay : public ObjectProcessor
+    class ProcessorVideoPlay final: public ObjectProcessor
     {
     public:
         ProcessorVideoPlay()

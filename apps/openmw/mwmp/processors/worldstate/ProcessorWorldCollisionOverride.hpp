@@ -8,7 +8,7 @@
 
 namespace mwmp
 {
-    class ProcessorWorldCollisionOverride : public WorldstateProcessor
+    class ProcessorWorldCollisionOverride final: public WorldstateProcessor
     {
     public:
         ProcessorWorldCollisionOverride()

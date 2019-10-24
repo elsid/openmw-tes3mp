@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectMove : public BaseObjectProcessor
+    class ProcessorObjectMove final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectMove()

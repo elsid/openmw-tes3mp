@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectCollision : public BaseObjectProcessor
+    class ProcessorObjectCollision final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectCollision()

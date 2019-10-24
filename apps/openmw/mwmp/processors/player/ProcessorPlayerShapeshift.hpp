@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerShapeshift : public PlayerProcessor
+    class ProcessorPlayerShapeshift final: public PlayerProcessor
     {
     public:
         ProcessorPlayerShapeshift()

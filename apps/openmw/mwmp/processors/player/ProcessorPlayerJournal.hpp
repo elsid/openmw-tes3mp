@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerJournal : public PlayerProcessor
+    class ProcessorPlayerJournal final: public PlayerProcessor
     {
     public:
         ProcessorPlayerJournal()

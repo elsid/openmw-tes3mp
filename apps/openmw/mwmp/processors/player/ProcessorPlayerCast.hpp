@@ -7,7 +7,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerCast : public PlayerProcessor
+    class ProcessorPlayerCast final: public PlayerProcessor
     {
     public:
         ProcessorPlayerCast()

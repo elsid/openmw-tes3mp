@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectAttach : public BaseObjectProcessor
+    class ProcessorObjectAttach final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectAttach()

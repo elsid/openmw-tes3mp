@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerBounty : public PlayerProcessor
+    class ProcessorPlayerBounty final: public PlayerProcessor
     {
     public:
         ProcessorPlayerBounty()

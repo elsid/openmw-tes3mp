@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectHit : public BaseObjectProcessor
+    class ProcessorObjectHit final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectHit()

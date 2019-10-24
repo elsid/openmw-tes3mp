@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorWorldKillCount : public WorldstateProcessor
+    class ProcessorWorldKillCount final: public WorldstateProcessor
     {
     public:
         ProcessorWorldKillCount()

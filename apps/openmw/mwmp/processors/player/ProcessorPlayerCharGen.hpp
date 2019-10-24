@@ -6,7 +6,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerCharGen : public PlayerProcessor
+    class ProcessorPlayerCharGen final: public PlayerProcessor
     {
     public:
         ProcessorPlayerCharGen()

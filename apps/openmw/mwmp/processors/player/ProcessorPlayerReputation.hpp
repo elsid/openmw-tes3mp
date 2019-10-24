@@ -6,7 +6,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerReputation : public PlayerProcessor
+    class ProcessorPlayerReputation final: public PlayerProcessor
     {
     public:
         ProcessorPlayerReputation()

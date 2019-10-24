@@ -6,7 +6,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerLevel : public PlayerProcessor
+    class ProcessorPlayerLevel final: public PlayerProcessor
     {
     public:
         ProcessorPlayerLevel()

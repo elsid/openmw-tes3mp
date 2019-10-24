@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorPlayerRest : public PlayerProcessor
+    class ProcessorPlayerRest final: public PlayerProcessor
     {
     public:
         ProcessorPlayerRest()

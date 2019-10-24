@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorScriptLocalFloat : public BaseObjectProcessor
+    class ProcessorScriptLocalFloat final: public BaseObjectProcessor
     {
     public:
         ProcessorScriptLocalFloat()

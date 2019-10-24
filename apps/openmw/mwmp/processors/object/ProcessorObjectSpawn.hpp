@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorObjectSpawn : public BaseObjectProcessor
+    class ProcessorObjectSpawn final: public BaseObjectProcessor
     {
     public:
         ProcessorObjectSpawn()

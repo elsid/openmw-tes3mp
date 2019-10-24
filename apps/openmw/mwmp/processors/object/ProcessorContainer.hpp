@@ -5,7 +5,7 @@
 
 namespace mwmp
 {
-    class ProcessorContainer : public BaseObjectProcessor
+    class ProcessorContainer final: public BaseObjectProcessor
     {
     public:
         ProcessorContainer()
