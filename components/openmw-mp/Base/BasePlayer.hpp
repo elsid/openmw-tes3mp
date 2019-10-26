@@ -105,7 +105,6 @@ namespace mwmp
     struct InventoryChanges
     {
         std::vector<Item> items;
-        unsigned int count;
         enum ACTION_TYPE
         {
             SET = 0,
@@ -172,7 +171,6 @@ namespace mwmp
         BasePlayer(RakNet::RakNetGUID guid) : guid(guid)
         {
             inventoryChanges.action = 0;
-            inventoryChanges.count = 0;
             spellbookChanges.action = 0;
 
             exchangeFullInfo = false;

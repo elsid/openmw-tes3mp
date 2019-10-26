@@ -27,7 +27,7 @@ unsigned int ItemFunctions::GetInventoryChangesSize(unsigned short pid) noexcept
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->inventoryChanges.count;
+    return player->inventoryChanges.items.size();
 }
 
 unsigned int ItemFunctions::GetInventoryChangesAction(unsigned short pid) noexcept
@@ -133,7 +133,7 @@ const char *ItemFunctions::GetInventoryItemRefId(unsigned short pid, unsigned in
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->inventoryChanges.count)
+    if (index >= player->inventoryChanges.items.size())
         return "invalid";
 
     return player->inventoryChanges.items.at(index).refId.c_str();
@@ -168,7 +168,7 @@ const char *ItemFunctions::GetInventoryItemSoul(unsigned short pid, unsigned int
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->inventoryChanges.count)
+    if (index >= player->inventoryChanges.items.size())
         return "invalid";
 
     return player->inventoryChanges.items.at(index).soul.c_str();

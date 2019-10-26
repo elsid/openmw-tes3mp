@@ -15,27 +15,25 @@ void PacketPlayerInventory::Packet(RakNet::BitStream *bs, bool send)
 
     RW(player->inventoryChanges.action, send);
 
+    uint32_t count;
+
     if (send)
-        player->inventoryChanges.count = (unsigned int) (player->inventoryChanges.items.size());
-    else
-        player->inventoryChanges.items.clear();
+        count = static_cast<uint32_t>(player->inventoryChanges.items.size());
 
-    RW(player->inventoryChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->inventoryChanges.count; i++)
+    if (!send)
     {
-        Item item;
+        player->inventoryChanges.items.clear();
+        player->inventoryChanges.items.resize(count);
+    }
 
-        if (send)
-            item = player->inventoryChanges.items.at(i);
-
+    for (auto &&item : player->inventoryChanges.items)
+    {
         RW(item.refId, send, true);
         RW(item.count, send);
         RW(item.charge, send);
         RW(item.enchantmentCharge, send);
         RW(item.soul, send, true);
-
-        if (!send)
-            player->inventoryChanges.items.push_back(item);
     }
 }
