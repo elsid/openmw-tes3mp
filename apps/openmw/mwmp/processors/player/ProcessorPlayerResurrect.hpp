@@ -2,6 +2,9 @@
 #define OPENMW_PROCESSORPLAYERRESURRECT_HPP
 
 #include "../PlayerProcessor.hpp"
+
+#include "apps/openmw/mwmechanics/mechanicsmanagerimp.hpp"
+
 #include "apps/openmw/mwmp/Main.hpp"
 #include "apps/openmw/mwmp/Networking.hpp"
 
@@ -36,7 +39,7 @@ namespace mwmp
 
                 MWWorld::Ptr ptr = static_cast<DedicatedPlayer*>(player)->getPtr();
 
-                ptr.getClass().getCreatureStats(ptr).resurrect();
+                MWBase::Environment::get().getMechanicsManager()->resurrect(ptr);
 
                 MWMechanics::DynamicStat<float> health;
                 health.readState(player->creatureStats.mDynamic[0]);

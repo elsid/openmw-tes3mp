@@ -828,7 +828,7 @@ void LocalPlayer::resurrect()
     else if (resurrectType == mwmp::RESURRECT_TYPE::TRIBUNAL_TEMPLE)
         MWBase::Environment::get().getWorld()->teleportToClosestMarker(ptrPlayer, "templemarker");
 
-    ptrPlayer.getClass().getCreatureStats(ptrPlayer).resurrect();
+    MWBase::Environment::get().getMechanicsManager()->resurrect(ptrPlayer);
 
     // The player could have died from a hand-to-hand attack, so reset their fatigue
     // as well
