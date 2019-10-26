@@ -15,20 +15,21 @@ void PacketPlayerFaction::Packet(RakNet::BitStream *bs, bool send)
 
     RW(player->factionChanges.action, send);
 
+    uint32_t count;
+
     if (send)
-        player->factionChanges.count = (unsigned int)(player->factionChanges.factions.size());
-    else
-        player->factionChanges.factions.clear();
+        count = static_cast<uint32_t>(player->factionChanges.factions.size());
 
-    RW(player->factionChanges.count, send);
+    RW(count, send);
 
-    for (unsigned int i = 0; i < player->factionChanges.count; i++)
+    if (!send)
     {
-        Faction faction;
+        player->factionChanges.factions.clear();
+        player->factionChanges.factions.resize(count);
+    }
 
-        if (send)
-            faction = player->factionChanges.factions.at(i);
-
+    for (auto &&faction : player->factionChanges.factions)
+    {
         RW(faction.factionId, send, true);
 
         if (player->factionChanges.action == FactionChanges::RANK)
@@ -39,8 +40,5 @@ void PacketPlayerFaction::Packet(RakNet::BitStream *bs, bool send)
 
         if (player->factionChanges.action == FactionChanges::REPUTATION)
             RW(faction.reputation, send);
-
-        if (!send)
-            player->factionChanges.factions.push_back(faction);
     }
 }

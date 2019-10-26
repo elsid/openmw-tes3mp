@@ -24,7 +24,7 @@ unsigned int FactionFunctions::GetFactionChangesSize(unsigned short pid) noexcep
     Player *player;
     GET_PLAYER(pid, player, 0);
 
-    return player->factionChanges.count;
+    return player->factionChanges.factions.size();
 }
 
 unsigned char FactionFunctions::GetFactionChangesAction(unsigned short pid) noexcept
@@ -40,7 +40,7 @@ const char *FactionFunctions::GetFactionId(unsigned short pid, unsigned int inde
     Player *player;
     GET_PLAYER(pid, player, "");
 
-    if (index >= player->factionChanges.count)
+    if (index >= player->factionChanges.factions.size())
         return "invalid";
 
     return player->factionChanges.factions.at(index).factionId.c_str();

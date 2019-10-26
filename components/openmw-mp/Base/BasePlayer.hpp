@@ -91,7 +91,6 @@ namespace mwmp
     struct FactionChanges
     {
         std::vector<Faction> factions;
-        unsigned int count;
 
         enum FACTION_ACTION
         {
@@ -100,7 +99,7 @@ namespace mwmp
             REPUTATION = 2
         };
 
-        int action; // 0 - Rank, 1 - Expulsion state, 2 - Both
+        int action; // 0 - Rank, 1 - Expulsion state, 2 - Faction reputation
     };
 
     struct InventoryChanges
