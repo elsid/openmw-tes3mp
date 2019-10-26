@@ -14,9 +14,10 @@ namespace mwmp
         virtual void Do(WorldstatePacket &packet, Worldstate &worldstate) = 0;
 
         static bool Process(RakNet::Packet &packet, Worldstate &worldstate);
+
+        virtual ~WorldstateProcessor();
     };
 }
-
 
 
 #endif //OPENMW_WORLDSTATEPROCESSOR_HPP

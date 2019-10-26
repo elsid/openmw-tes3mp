@@ -16,6 +16,8 @@ namespace mwmp
         virtual void Do(ActorPacket &packet, ActorList &actorList) = 0;
 
         static bool Process(RakNet::Packet &packet, ActorList &actorList);
+
+        virtual ~ActorProcessor();
     };
 }
 

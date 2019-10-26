@@ -7,6 +7,11 @@ using namespace mwmp;
 template<class T>
 typename BasePacketProcessor<T>::processors_t BasePacketProcessor<T>::processors;
 
+ActorProcessor::~ActorProcessor()
+{
+
+}
+
 bool ActorProcessor::Process(RakNet::Packet &packet, ActorList &actorList)
 {
     RakNet::BitStream bsIn(&packet.data[1], packet.length, false);
