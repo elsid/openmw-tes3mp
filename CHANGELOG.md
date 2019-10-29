@@ -19,6 +19,7 @@
     Bug #3778: [Mod] Improved Thrown Weapon Projectiles - weapons have wrong transformation during throw animation
     Bug #3812: Wrong multiline tooltips width when word-wrapping is enabled
     Bug #3894: Hostile spell effects not detected/present on first frame of OnPCHitMe
+    Bug #3977: Non-ASCII characters in object ID's are not supported
     Bug #4077: Enchanted items are not recharged if they are not in the player's inventory
     Bug #4202: Open .omwaddon files without needing toopen openmw-cs first
     Bug #4240: Ash storm origin coordinates and hand shielding animation behavior are incorrect
@@ -55,6 +56,7 @@
     Bug #4768: Fallback numerical value recovery chokes on invalid arguments
     Bug #4775: Slowfall effect resets player jumping flag
     Bug #4778: Interiors of Illusion puzzle in Sotha Sil Expanded mod is broken
+    Bug #4783: Blizzard behavior is incorrect
     Bug #4787: Sneaking makes 1st person walking/bobbing animation super-slow
     Bug #4797: Player sneaking and running stances are not accounted for when in air
     Bug #4800: Standing collisions are not updated immediately when an object is teleported without a cell change
@@ -135,6 +137,7 @@
     Bug #5089: Swimming/Underwater creatures only swim around ground level
     Bug #5092: NPCs with enchanted weapons play sound when out of charges
     Bug #5093: Hand to hand sound plays on knocked out enemies
+    Bug #5097: String arguments can't be parsed as number literals in scripts
     Bug #5099: Non-swimming enemies will enter water if player is water walking
     Bug #5103: Sneaking state behavior is still inconsistent
     Bug #5104: Black Dart's enchantment doesn't trigger at low Enchant levels
@@ -163,6 +166,8 @@
     Bug #5177: Editor: Unexplored map tiles get corrupted after a file with terrain is saved
     Bug #5182: OnPCEquip doesn't trigger on skipped beast race attempts to equip something not equippable by beasts
     Bug #5186: Equipped item enchantments don't affect creatures
+    Bug #5190: On-strike enchantments can be applied to and used with non-projectile ranged weapons
+    Bug #5196: Dwarven ghosts do not use idle animations
     Feature #1774: Handle AvoidNode
     Feature #2229: Improve pathfinding AI
     Feature #3025: Analogue gamepad movement controls
@@ -183,6 +188,7 @@
     Feature #4784: Launcher: Duplicate Content Lists
     Feature #4812: Support NiSwitchNode
     Feature #4836: Daytime node switch
+    Feature #4840: Editor: Transient terrain change support
     Feature #4859: Make water reflections more configurable
     Feature #4882: Support for NiPalette node
     Feature #4887: Add openmw command option to set initial random seed
@@ -209,6 +215,8 @@
     Feature #5132: Unique animations for different weapon types
     Feature #5146: Safe Dispose corpse
     Feature #5147: Show spell magicka cost in spell buying window
+    Feature #5170: Editor: Land shape editing, land selection
+    Feature #5193: Weapon sheathing
     Task #4686: Upgrade media decoder to a more current FFmpeg API
     Task #4695: Optimize Distant Terrain memory consumption
     Task #4789: Optimize cell transitions

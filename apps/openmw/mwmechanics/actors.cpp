@@ -344,7 +344,7 @@ namespace MWMechanics
             if (actor.getClass().getCreatureStats(actor).isDead())
                 return;
 
-            if (!actor.getClass().hasInventoryStore(actor) || !actor.getClass().getInventoryStore(actor).canActorAutoEquip(actor))
+            if (!actor.getClass().hasInventoryStore(actor))
                 return;
 
             if (actor.getClass().isNpc() && actor.getClass().getNpcStats(actor).isWerewolf())
@@ -1293,7 +1293,7 @@ namespace MWMechanics
                     heldIter = inventoryStore.getSlot(MWWorld::InventoryStore::Slot_CarriedLeft);
 
                     // If we have a torch and can equip it, then equip it now.
-                    if (heldIter == inventoryStore.end() && inventoryStore.canActorAutoEquip(ptr))
+                    if (heldIter == inventoryStore.end())
                     {
                         inventoryStore.equip(MWWorld::InventoryStore::Slot_CarriedLeft, torch, ptr);
                     }
@@ -2056,6 +2056,7 @@ namespace MWMechanics
                 // One case where we need this is to make sure bound items are removed upon death
                 stats.modifyMagicEffects(MWMechanics::MagicEffects());
                 stats.getActiveSpells().clear();
+                stats.getSpells().clear();
                 // Make sure spell effects are removed
                 purgeSpellEffects(stats.getActorId());
 

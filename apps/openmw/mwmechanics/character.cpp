@@ -493,6 +493,11 @@ void CharacterController::refreshMovementAnims(const std::string& weapShortGroup
     if (movement == mMovementState && idle == mIdleState && !force)
         return;
 
+    // Reset idle if we actually play movement animations excepts of these cases:
+    // 1. When we play turning animations
+    // 2. When we use a fallback animation for lower body since movement animation for given weapon is missing (e.g. for crossbows and spellcasting)
+    bool resetIdle = (movement != CharState_None && !isTurning());
+
     std::string movementAnimName;
     MWRender::Animation::BlendMask movemask;
     const StateInfo *movestate;
@@ -524,14 +529,9 @@ void CharacterController::refreshMovementAnims(const std::string& weapShortGroup
                     // For upper body there will be idle animation.
                     if (movemask == MWRender::Animation::BlendMask_LowerBody && idle == CharState_None)
                         idle = CharState_Idle;
-                }
-                else if (idle == CharState_None)
-                {
-                    // In the 1st-person mode use ground idle animations as fallback
-                    if (mPtr == getPlayer() && MWBase::Environment::get().getWorld()->isFirstPerson())
-                        idle = CharState_Idle;
-                    else
-                        idle = CharState_IdleSwim;
+
+                    if (movemask == MWRender::Animation::BlendMask_LowerBody)
+                        resetIdle = false;
                 }
             }
         }
@@ -554,7 +554,11 @@ void CharacterController::refreshMovementAnims(const std::string& weapShortGroup
                         if(mAnimation->hasAnimation(weapMovementAnimName))
                             movementAnimName = weapMovementAnimName;
                         else
+                        {
                             movementAnimName = fallbackShortWeaponGroup(movementAnimName, &movemask);
+                            if (movemask == MWRender::Animation::BlendMask_LowerBody)
+                                resetIdle = false;
+                        }
                     }
                 }
 
@@ -581,6 +585,10 @@ void CharacterController::refreshMovementAnims(const std::string& weapShortGroup
         mMovementAnimationControlled = true;
 
         mAnimation->disable(mCurrentMovement);
+
+        if (!mAnimation->hasAnimation(movementAnimName))
+            movementAnimName.clear();
+
         mCurrentMovement = movementAnimName;
         if(!mCurrentMovement.empty())
         {
@@ -623,7 +631,12 @@ void CharacterController::refreshMovementAnims(const std::string& weapShortGroup
 
             mAnimation->play(mCurrentMovement, Priority_Movement, movemask, false,
                              1.f, "start", "stop", startpoint, ~0ul, true);
+
+            if (resetIdle)
+                mAnimation->disable(mCurrentIdle);
         }
+        else
+            mMovementState = CharState_None;
     }
 }
 
@@ -1015,7 +1028,11 @@ void CharacterController::handleTextKey(const std::string &groupname, const std:
     size_t off = groupname.size()+2;
     size_t len = evt.size() - off;
 
-    if(evt.compare(off, len, "equip attach") == 0)
+    if(groupname == "shield" && evt.compare(off, len, "equip attach") == 0)
+        mAnimation->showCarriedLeft(true);
+    else if(groupname == "shield" && evt.compare(off, len, "unequip detach") == 0)
+        mAnimation->showCarriedLeft(false);
+    else if(evt.compare(off, len, "equip attach") == 0)
         mAnimation->showWeapons(true);
     else if(evt.compare(off, len, "unequip detach") == 0)
         mAnimation->showWeapons(false);
@@ -1253,7 +1270,7 @@ bool CharacterController::updateCarriedLeftVisible(const int weaptype) const
     // Shields/torches shouldn't be visible during any operation involving two hands
     // There seems to be no text keys for this purpose, except maybe for "[un]equip start/stop",
     // but they are also present in weapon drawing animation.
-    return !(getWeaponType(weaptype)->mFlags & ESM::WeaponType::TwoHanded);
+    return mAnimation->updateCarriedLeftVisible(weaptype);
 }
 
 bool CharacterController::updateWeaponState(CharacterState& idle)
@@ -1335,8 +1352,19 @@ bool CharacterController::updateWeaponState(CharacterState& idle)
             {
                 // Note: we do not disable unequipping animation automatically to avoid body desync
                 weapgroup = getWeaponAnimation(mWeaponType);
-                mAnimation->play(weapgroup, priorityWeapon,
-                                MWRender::Animation::BlendMask_All, false,
+                int unequipMask = MWRender::Animation::BlendMask_All;
+                bool useShieldAnims = mAnimation->useShieldAnimations();
+                if (useShieldAnims && mWeaponType != ESM::Weapon::HandToHand && mWeaponType != ESM::Weapon::Spell && !(mWeaponType == ESM::Weapon::None && weaptype == ESM::Weapon::Spell))
+                {
+                    unequipMask = unequipMask |~MWRender::Animation::BlendMask_LeftArm;
+                    mAnimation->play("shield", Priority_Block,
+                                MWRender::Animation::BlendMask_LeftArm, true,
+                                1.0f, "unequip start", "unequip stop", 0.0f, 0);
+                }
+                else if (mWeaponType == ESM::Weapon::HandToHand)
+                    mAnimation->showCarriedLeft(false);
+
+                mAnimation->play(weapgroup, priorityWeapon, unequipMask, false,
                                 1.0f, "unequip start", "unequip stop", 0.0f, 0);
                 mUpperBodyState = UpperCharState_UnEquipingWeap;
 
@@ -1361,7 +1389,10 @@ bool CharacterController::updateWeaponState(CharacterState& idle)
             if (weaptype != mWeaponType)
             {
                 forcestateupdate = true;
-                mAnimation->showCarriedLeft(updateCarriedLeftVisible(weaptype));
+                bool useShieldAnims = mAnimation->useShieldAnimations();
+                if (!useShieldAnims)
+                    mAnimation->showCarriedLeft(updateCarriedLeftVisible(weaptype));
+
                 weapgroup = getWeaponAnimation(weaptype);
 
                 // Note: controllers for ranged weapon should use time for beginning of animation to play shooting properly,
@@ -1376,8 +1407,16 @@ bool CharacterController::updateWeaponState(CharacterState& idle)
                     if (weaptype != ESM::Weapon::None)
                     {
                         mAnimation->showWeapons(false);
-                        mAnimation->play(weapgroup, priorityWeapon,
-                                        MWRender::Animation::BlendMask_All, true,
+                        int equipMask = MWRender::Animation::BlendMask_All;
+                        if (useShieldAnims && weaptype != ESM::Weapon::Spell)
+                        {
+                            equipMask = equipMask |~MWRender::Animation::BlendMask_LeftArm;
+                            mAnimation->play("shield", Priority_Block,
+                                        MWRender::Animation::BlendMask_LeftArm, true,
+                                        1.0f, "equip start", "equip stop", 0.0f, 0);
+                        }
+
+                        mAnimation->play(weapgroup, priorityWeapon, equipMask, true,
                                         1.0f, "equip start", "equip stop", 0.0f, 0);
                         mUpperBodyState = UpperCharState_EquipingWeap;
 
@@ -2313,10 +2352,7 @@ void CharacterController::update(float duration, bool animationOnly)
 
         if(mAnimQueue.empty() || inwater || sneak)
         {
-            // Note: turning animations should not interrupt idle ones
-            if (movestate != CharState_None && !isTurning())
-                idlestate = CharState_None;
-            else if (inwater)
+            if (inwater)
                 idlestate = CharState_IdleSwim;
             else if (sneak && !inJump)
                 idlestate = CharState_IdleSneak;

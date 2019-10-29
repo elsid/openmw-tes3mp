@@ -66,6 +66,11 @@ namespace MWWorld
         return mCellRef.mRefID;
     }
 
+    const std::string* CellRef::getRefIdPtr() const
+    {
+        return &mCellRef.mRefID;
+    }
+
     bool CellRef::getTeleport() const
     {
         return mCellRef.mTeleport;
