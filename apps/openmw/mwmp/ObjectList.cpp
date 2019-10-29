@@ -184,7 +184,7 @@ void ObjectList::editContainers(MWWorld::CellStore* cellStore)
                     if (!containerItem.soul.empty())
                         newPtr.getCellRef().setSoul(containerItem.soul);
 
-                    containerStore.add(newPtr, containerItem.count, ownerPtr, true);
+                    containerStore.add(newPtr, containerItem.count, ownerPtr);
                 }
 
                 else if (action == BaseObjectList::REMOVE && containerItem.actionCount > 0)

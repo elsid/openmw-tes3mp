@@ -25,6 +25,7 @@
 #include "../mwmechanics/creaturestats.hpp"
 #include "../mwmechanics/levelledlist.hpp"
 #include "../mwmechanics/actorutil.hpp"
+#include "../mwmechanics/recharge.hpp"
 
 #include "manualref.hpp"
 #include "refdata.hpp"
@@ -126,7 +127,11 @@ void MWWorld::ContainerStore::storeStates (const CellRefList<T>& collection,
 
 const std::string MWWorld::ContainerStore::sGoldId = "gold_001";
 
-MWWorld::ContainerStore::ContainerStore() : mListener(nullptr), mCachedWeight (0), mWeightUpToDate (false) {}
+MWWorld::ContainerStore::ContainerStore()
+    : mListener(nullptr)
+    , mRechargingItemsUpToDate(false)
+    , mCachedWeight (0)
+    , mWeightUpToDate (false) {}
 
 MWWorld::ContainerStore::~ContainerStore() {}
 
@@ -272,7 +277,6 @@ bool MWWorld::ContainerStore::stacks(const ConstPtr& ptr1, const ConstPtr& ptr2)
     }
 
     return ptr1 != ptr2 // an item never stacks onto itself
-        && ptr1.getCellRef().getOwner() == ptr2.getCellRef().getOwner()
         && ptr1.getCellRef().getSoul() == ptr2.getCellRef().getSoul()
 
         && ptr1.getClass().getRemainingUsageTime(ptr1) == ptr2.getClass().getRemainingUsageTime(ptr2)
@@ -290,30 +294,14 @@ bool MWWorld::ContainerStore::stacks(const ConstPtr& ptr1, const ConstPtr& ptr2)
 MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add(const std::string &id, int count, const Ptr &actorPtr)
 {
     MWWorld::ManualRef ref(MWBase::Environment::get().getWorld()->getStore(), id, count);
-    return add(ref.getPtr(), count, actorPtr, true);
+    return add(ref.getPtr(), count, actorPtr);
 }
 
-MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add (const Ptr& itemPtr, int count, const Ptr& actorPtr, bool setOwner)
+MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add (const Ptr& itemPtr, int count, const Ptr& actorPtr)
 {
     Ptr player = MWBase::Environment::get().getWorld ()->getPlayerPtr();
 
-    MWWorld::ContainerStoreIterator it = end();
-
-    // HACK: Set owner on the original item, then reset it after we have copied it
-    // If we set the owner on the copied item, it would not stack correctly...
-    std::string oldOwner = itemPtr.getCellRef().getOwner();
-    if (!setOwner || actorPtr == MWMechanics::getPlayer()) // No point in setting owner to the player - NPCs will not respect this anyway
-    {
-        itemPtr.getCellRef().setOwner("");
-    }
-    else
-    {
-        itemPtr.getCellRef().setOwner(actorPtr.getCellRef().getRefId());
-    }
-
-    it = addImp(itemPtr, count);
-
-    itemPtr.getCellRef().setOwner(oldOwner);
+    MWWorld::ContainerStoreIterator it = addImp(itemPtr, count);
 
     // The copy of the original item we just made
     MWWorld::Ptr item = *it;
@@ -354,7 +342,8 @@ MWWorld::ContainerStoreIterator MWWorld::ContainerStore::add (const Ptr& itemPtr
     pos.pos[2] = 0;
     item.getCellRef().setPosition(pos);
 
-    // reset ownership stuff, owner was already handled above
+    // We do not need to store owners for items in container stores - we do not use it anyway.
+    item.getCellRef().setOwner("");
     item.getCellRef().resetGlobalVariable();
     item.getCellRef().setFaction("");
     item.getCellRef().setFactionRank(-1);
@@ -470,6 +459,46 @@ MWWorld::ContainerStoreIterator MWWorld::ContainerStore::addNewStack (const Cons
 
     flagAsModified();
     return it;
+}
+
+void MWWorld::ContainerStore::rechargeItems(float duration)
+{
+    if (!mRechargingItemsUpToDate)
+    {
+        updateRechargingItems();
+        mRechargingItemsUpToDate = true;
+    }
+    for (TRechargingItems::iterator it = mRechargingItems.begin(); it != mRechargingItems.end(); ++it)
+    {
+        if (!MWMechanics::rechargeItem(*it->first, it->second, duration))
+            continue;
+
+        // attempt to restack when fully recharged
+        if (it->first->getCellRef().getEnchantmentCharge() == it->second)
+            it->first = restack(*it->first);
+    }
+}
+
+void MWWorld::ContainerStore::updateRechargingItems()
+{
+    mRechargingItems.clear();
+    for (ContainerStoreIterator it = begin(); it != end(); ++it)
+    {
+        const std::string& enchantmentId = it->getClass().getEnchantment(*it);
+        if (!enchantmentId.empty())
+        {
+            const ESM::Enchantment* enchantment = MWBase::Environment::get().getWorld()->getStore().get<ESM::Enchantment>().search(enchantmentId);
+            if (!enchantment)
+            {
+                Log(Debug::Warning) << "Warning: Can't find enchantment '" << enchantmentId << "' on item " << it->getCellRef().getRefId();
+                continue;
+            }
+
+            if (enchantment->mData.mType == ESM::Enchantment::WhenUsed
+                    || enchantment->mData.mType == ESM::Enchantment::WhenStrikes)
+                mRechargingItems.emplace_back(it, static_cast<float>(enchantment->mData.mCharge));
+        }
+    }
 }
 
 int MWWorld::ContainerStore::remove(const std::string& itemId, int count, const Ptr& actor)
@@ -725,6 +754,7 @@ void MWWorld::ContainerStore::clear()
 void MWWorld::ContainerStore::flagAsModified()
 {
     mWeightUpToDate = false;
+    mRechargingItemsUpToDate = false;
 }
 
 float MWWorld::ContainerStore::getWeight() const

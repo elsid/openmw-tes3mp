@@ -87,17 +87,17 @@ namespace
         {
             if (mRendered)
             {
-                node->setNodeMask(0);
+                if (mParent->copyResult(static_cast<osg::Camera*>(node), nv->getTraversalNumber()))
+                {
+                    node->setNodeMask(0);
+                    mParent->markForRemoval(static_cast<osg::Camera*>(node));
+                }
                 return;
             }
 
             traverse(node, nv);
 
-            if (!mRendered)
-            {
-                mRendered = true;
-                mParent->markForRemoval(static_cast<osg::Camera*>(node));
-            }
+            mRendered = true;
         }
 
     private:
@@ -361,7 +361,7 @@ namespace MWRender
             imageDest.mImage = image;
             imageDest.mX = x;
             imageDest.mY = y;
-            mPendingImageDest.push_back(imageDest);
+            mPendingImageDest[camera] = imageDest;
         }
 
         // Create a quad rendering the updated texture
@@ -614,35 +614,21 @@ namespace MWRender
         }
     }
 
-    void GlobalMap::markForRemoval(osg::Camera *camera)
+    bool GlobalMap::copyResult(osg::Camera *camera, unsigned int frame)
     {
-        CameraVector::iterator found = std::find(mActiveCameras.begin(), mActiveCameras.end(), camera);
-        if (found == mActiveCameras.end())
+        ImageDestMap::iterator it = mPendingImageDest.find(camera);
+        if (it == mPendingImageDest.end())
+            return true;
+        else
         {
-            Log(Debug::Error) << "Error: GlobalMap trying to remove an inactive camera";
-            return;
-        }
-        mActiveCameras.erase(found);
-        mCamerasPendingRemoval.push_back(camera);
-    }
-
-    void GlobalMap::cleanupCameras()
-    {
-        for (auto& camera : mCamerasPendingRemoval)
-            removeCamera(camera);
-
-        mCamerasPendingRemoval.clear();
-
-        for (ImageDestVector::iterator it = mPendingImageDest.begin(); it != mPendingImageDest.end();)
-        {
-            ImageDest& imageDest = *it;
-            if (--imageDest.mFramesUntilDone > 0)
+            ImageDest& imageDest = it->second;
+            if (imageDest.mFrameDone == 0) imageDest.mFrameDone = frame+2; // wait an extra frame to ensure the draw thread has completed its frame.
+            if (imageDest.mFrameDone > frame)
             {
                 ++it;
-                continue;
+                return false;
             }
 
-            ensureLoaded();
             mOverlayImage->copySubImage(imageDest.mX, imageDest.mY, 0, imageDest.mImage);
 
             /*
@@ -673,7 +659,7 @@ namespace MWRender
                         if (!readerwriter)
                         {
                             std::cerr << "Error: Can't write temporary map image, no '" << "png" << "' readerwriter found" << std::endl;
-                            return;
+                            return false;
                         }
 
                         std::ostringstream ostream;
@@ -697,7 +683,28 @@ namespace MWRender
             */
 
             it = mPendingImageDest.erase(it);
+            return true;
         }
+    }
+
+    void GlobalMap::markForRemoval(osg::Camera *camera)
+    {
+        CameraVector::iterator found = std::find(mActiveCameras.begin(), mActiveCameras.end(), camera);
+        if (found == mActiveCameras.end())
+        {
+            Log(Debug::Error) << "Error: GlobalMap trying to remove an inactive camera";
+            return;
+        }
+        mActiveCameras.erase(found);
+        mCamerasPendingRemoval.push_back(camera);
+    }
+
+    void GlobalMap::cleanupCameras()
+    {
+        for (auto& camera : mCamerasPendingRemoval)
+            removeCamera(camera);
+
+        mCamerasPendingRemoval.clear();
     }
 
     void GlobalMap::removeCamera(osg::Camera *cam)
