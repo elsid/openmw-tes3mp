@@ -4,6 +4,7 @@
     Bug #1515: Opening console masks dialogue, inventory menu
     Bug #1933: Actors can have few stocks of the same item
     Bug #2395: Duplicated plugins in the launcher when multiple data directories provide the same plugin
+    Bug #2679: Unable to map mouse wheel under control settings
     Bug #2969: Scripted items can stack
     Bug #2976: Data lines in global openmw.cfg take priority over user openmw.cfg
     Bug #2987: Editor: some chance and AI data fields can overflow
@@ -35,6 +36,7 @@
     Bug #4456: AiActivate should not be cancelled after target activation
     Bug #4540: Rain delay when exiting water
     Bug #4594: Actors without AI packages don't use Hello dialogue
+    Bug #4598: Script parser does not support non-ASCII characters
     Bug #4600: Crash when no sound output is available or --no-sound is used.
     Bug #4639: Black screen after completing first mages guild mission + training
     Bug #4650: Focus is lost after pressing ESC in confirmation dialog inside savegame dialog
@@ -132,6 +134,7 @@
     Bug #5074: Paralyzed actors greet the player
     Bug #5075: Enchanting cast style can be changed if there's no object
     Bug #5078: DisablePlayerLooking is broken
+    Bug #5081: OpenMW-CS: Apparatus type "Alembic" is erroneously named "Albemic"
     Bug #5082: Scrolling with controller in GUI mode is broken
     Bug #5087: Some valid script names can't be used as string arguments
     Bug #5089: Swimming/Underwater creatures only swim around ground level
@@ -152,6 +155,7 @@
     Bug #5134: Doors rotation by "Lock" console command is inconsistent
     Bug #5136: LegionUniform script: can not access local variables
     Bug #5137: Textures with Clamp Mode set to Clamp instead of Wrap are too dark outside the boundaries
+    Bug #5138: Actors stuck in half closed door
     Bug #5149: Failing lock pick attempts isn't always a crime
     Bug #5155: Lock/unlock behavior differs from vanilla
     Bug #5158: Objects without a name don't fallback to their ID
@@ -182,6 +186,7 @@
     Feature #4255: Handle broken RepairedOnMe script function
     Feature #4316: Implement RaiseRank/LowerRank functions properly
     Feature #4360: Improve default controller bindings
+    Feature #4544: Actors movement deceleration
     Feature #4673: Weapon sheathing
     Feature #4675: Support for NiRollController
     Feature #4730: Native animated containers support

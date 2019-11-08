@@ -361,7 +361,7 @@ namespace Compiler
                 opcodePlayLoopSound3DExplicit);
             extensions.registerInstruction ("playloopsound3dvp", "cff", opcodePlayLoopSound3DVP,
                 opcodePlayLoopSound3DVPExplicit);
-            extensions.registerInstruction ("stopsound", "c", opcodeStopSound,
+            extensions.registerInstruction ("stopsound", "cXX", opcodeStopSound,
                 opcodeStopSoundExplicit);
             extensions.registerFunction ("getsoundplaying", 'l', "c", opcodeGetSoundPlaying,
                 opcodeGetSoundPlayingExplicit);
@@ -537,7 +537,7 @@ namespace Compiler
             extensions.registerInstruction("setpos","cf",opcodeSetPos,opcodeSetPosExplicit);
             extensions.registerFunction("getpos",'f',"c",opcodeGetPos,opcodeGetPosExplicit);
             extensions.registerFunction("getstartingpos",'f',"c",opcodeGetStartingPos,opcodeGetStartingPosExplicit);
-            extensions.registerInstruction("position","ffffX",opcodePosition,opcodePositionExplicit);
+            extensions.registerInstruction("position","ffffz",opcodePosition,opcodePositionExplicit);
             extensions.registerInstruction("positioncell","ffffcX",opcodePositionCell,opcodePositionCellExplicit);
             extensions.registerInstruction("placeitemcell","ccffffX",opcodePlaceItemCell);
             extensions.registerInstruction("placeitem","cffffX",opcodePlaceItem);
