@@ -20,6 +20,7 @@
 #include <components/esm/loadnpc.hpp>
 #include <components/esm/loadprob.hpp>
 #include <components/esm/loadrepa.hpp>
+#include <components/esm/loadscpt.hpp>
 #include <components/esm/loadspel.hpp>
 #include <components/esm/loadstat.hpp>
 #include <components/esm/loadweap.hpp>
@@ -52,7 +53,8 @@ namespace mwmp
         PROBE,
         REPAIR,
         LIGHT,
-        CELL
+        CELL,
+        SCRIPT
     };
 
     // When using an existing record as a base, this struct tracks which changes
@@ -125,6 +127,8 @@ namespace mwmp
         bool hasSound = false;
         bool hasOpenSound = false;
         bool hasCloseSound = false;
+
+        bool hasScriptText = false;
     };
 
     struct ActivatorRecord
@@ -258,6 +262,13 @@ namespace mwmp
         BaseOverrides baseOverrides;
     };
 
+    struct ScriptRecord
+    {
+        ESM::Script data;
+        std::string baseId;
+        BaseOverrides baseOverrides;
+    };
+
     struct SpellRecord
     {
         ESM::Spell data;
@@ -360,6 +371,7 @@ namespace mwmp
         std::vector<PotionRecord> potionRecords;
         std::vector<ProbeRecord> probeRecords;
         std::vector<RepairRecord> repairRecords;
+        std::vector<ScriptRecord> scriptRecords;
         std::vector<SpellRecord> spellRecords;
         std::vector<StaticRecord> staticRecords;
         std::vector<WeaponRecord> weaponRecords;

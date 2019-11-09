@@ -97,6 +97,8 @@
     {"SetRecordOpenSound",                      RecordsDynamicFunctions::SetRecordOpenSound},\
     {"SetRecordCloseSound",                     RecordsDynamicFunctions::SetRecordCloseSound},\
     \
+    {"SetRecordScriptText",                     RecordsDynamicFunctions::SetRecordScriptText},\
+    \
     {"SetRecordIdByIndex",                      RecordsDynamicFunctions::SetRecordIdByIndex},\
     {"SetRecordEnchantmentIdByIndex",           RecordsDynamicFunctions::SetRecordEnchantmentIdByIndex},\
     \
@@ -823,6 +825,15 @@ public:
     * \return void
     */
     static void SetRecordCloseSound(const char* sound) noexcept;
+
+    /**
+    * \brief Set the script text of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param sound The script text of the record.
+    * \return void
+    */
+    static void SetRecordScriptText(const char* scriptText) noexcept;
 
     /**
     * \brief Set the id of the record at a certain index in the records stored on the server.

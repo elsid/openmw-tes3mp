@@ -33,6 +33,7 @@ ProbeRecord tempProbe;
 RepairRecord tempRepair;
 LightRecord tempLight;
 CellRecord tempCell;
+ScriptRecord tempScript;
 
 BaseOverrides tempOverrides;
 
@@ -80,6 +81,7 @@ void RecordsDynamicFunctions::ClearRecords() noexcept
     WorldstateFunctions::writeWorldstate.repairRecords.clear();
     WorldstateFunctions::writeWorldstate.lightRecords.clear();
     WorldstateFunctions::writeWorldstate.cellRecords.clear();
+    WorldstateFunctions::writeWorldstate.scriptRecords.clear();
 }
 
 unsigned short RecordsDynamicFunctions::GetRecordType() noexcept
@@ -380,6 +382,8 @@ void RecordsDynamicFunctions::SetRecordId(const char* id) noexcept
         tempRepair.data.mId = id;
     else if (writeRecordsType == mwmp::RECORD_TYPE::LIGHT)
         tempLight.data.mId = id;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::SCRIPT)
+        tempScript.data.mId = id;
     else
         LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set id for record type %i which lacks that property", writeRecordsType);
 }
@@ -430,6 +434,8 @@ void RecordsDynamicFunctions::SetRecordBaseId(const char* baseId) noexcept
         tempLight.baseId = baseId;
     else if (writeRecordsType == mwmp::RECORD_TYPE::CELL)
         tempCell.baseId = baseId;
+    else if (writeRecordsType == mwmp::RECORD_TYPE::SCRIPT)
+        tempScript.baseId = baseId;
     else
         LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set baseId for record type %i which lacks that property", writeRecordsType);
 }
@@ -1373,6 +1379,21 @@ void RecordsDynamicFunctions::SetRecordCloseSound(const char* sound) noexcept
     tempOverrides.hasCloseSound = true;
 }
 
+void RecordsDynamicFunctions::SetRecordScriptText(const char* scriptText) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::SCRIPT)
+        tempScript.data.mScriptText = scriptText;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set close sound for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasScriptText = true;
+}
+
 void RecordsDynamicFunctions::SetRecordIdByIndex(unsigned int index, const char* id) noexcept
 {
     unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
@@ -1605,6 +1626,12 @@ void RecordsDynamicFunctions::AddRecord() noexcept
         tempCell.baseOverrides = tempOverrides;
         WorldstateFunctions::writeWorldstate.cellRecords.push_back(tempCell);
         tempCell = {};
+    }
+    else if (writeRecordsType == mwmp::RECORD_TYPE::SCRIPT)
+    {
+        tempScript.baseOverrides = tempOverrides;
+        WorldstateFunctions::writeWorldstate.scriptRecords.push_back(tempScript);
+        tempScript = {};
     }
 
     effectCount = 0;

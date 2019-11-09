@@ -62,6 +62,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->lightRecords);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::CELL)
             worldstate->recordsCount = Utils::getVectorSize(worldstate->cellRecords);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::SCRIPT)
+            worldstate->recordsCount = Utils::getVectorSize(worldstate->scriptRecords);
         else
         {
             LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Processed invalid ID_RECORD_DYNAMIC packet about unimplemented recordsType %i",
@@ -124,6 +126,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             Utils::resetVector(worldstate->lightRecords, worldstate->recordsCount);
         else if (worldstate->recordsType == mwmp::RECORD_TYPE::CELL)
             Utils::resetVector(worldstate->cellRecords, worldstate->recordsCount);
+        else if (worldstate->recordsType == mwmp::RECORD_TYPE::SCRIPT)
+            Utils::resetVector(worldstate->scriptRecords, worldstate->recordsCount);
     }
 
     if (worldstate->recordsType == mwmp::RECORD_TYPE::SPELL)
@@ -784,7 +788,24 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             auto &recordData = record.data;
 
             RW(record.baseId, send, true);
-            RW(record.data.mName, send, true);
+            RW(recordData.mName, send, true);
+        }
+    }
+    else if (worldstate->recordsType == mwmp::RECORD_TYPE::SCRIPT)
+    {
+        for (auto &&record : worldstate->scriptRecords)
+        {
+            auto &recordData = record.data;
+
+            RW(record.baseId, send, true);
+            RW(recordData.mId, send, true);
+            RW(recordData.mScriptText, send, true);
+
+            if (!record.baseId.empty())
+            {
+                auto &&overrides = record.baseOverrides;
+                RW(overrides.hasScriptText, send);
+            }
         }
     }
 }

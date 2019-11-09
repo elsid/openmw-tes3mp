@@ -1185,6 +1185,40 @@ void RecordHelper::overrideRecord(const mwmp::RepairRecord& record)
         world->updatePtrsWithRefId(recordData.mId);
 }
 
+void RecordHelper::overrideRecord(const mwmp::ScriptRecord& record)
+{
+    const ESM::Script &recordData = record.data;
+
+    if (recordData.mId.empty())
+    {
+        LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring record override with no id provided");
+        return;
+    }
+
+    MWBase::World *world = MWBase::Environment::get().getWorld();
+
+    if (record.baseId.empty())
+    {
+        world->getModifiableStore().overrideRecord(recordData);
+    }
+    else if (doesRecordIdExist<ESM::Script>(record.baseId))
+    {
+        const ESM::Script *baseData = world->getStore().get<ESM::Script>().search(record.baseId);
+        ESM::Script finalData = *baseData;
+        finalData.mId = recordData.mId;
+
+        if (record.baseOverrides.hasScriptText)
+            finalData.mScriptText = recordData.mScriptText;
+
+        world->getModifiableStore().overrideRecord(finalData);
+    }
+    else
+    {
+        LOG_APPEND(TimedLog::LOG_INFO, "-- Ignoring record override with invalid baseId %s", record.baseId.c_str());
+        return;
+    }
+}
+
 void RecordHelper::overrideRecord(const mwmp::SpellRecord& record)
 {
     const ESM::Spell &recordData = record.data;
