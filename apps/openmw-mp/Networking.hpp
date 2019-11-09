@@ -1,6 +1,7 @@
 #ifndef OPENMW_NETWORKING_HPP
 #define OPENMW_NETWORKING_HPP
 
+#include <components/openmw-mp/Controllers/SystemPacketController.hpp>
 #include <components/openmw-mp/Controllers/PlayerPacketController.hpp>
 #include <components/openmw-mp/Controllers/ActorPacketController.hpp>
 #include <components/openmw-mp/Controllers/ObjectPacketController.hpp>
@@ -25,6 +26,7 @@ namespace  mwmp
         void unbanAddress(const char *ipAddress);
         RakNet::SystemAddress getSystemAddress(RakNet::RakNetGUID guid);
 
+        void processSystemPacket(RakNet::Packet *packet);
         void processPlayerPacket(RakNet::Packet *packet);
         void processActorPacket(RakNet::Packet *packet);
         void processObjectPacket(RakNet::Packet *packet);
@@ -40,6 +42,7 @@ namespace  mwmp
 
         void stopServer(int code);
 
+        SystemPacketController *getSystemPacketController() const;
         PlayerPacketController *getPlayerPacketController() const;
         ActorPacketController *getActorPacketController() const;
         ObjectPacketController *getObjectPacketController() const;
@@ -80,10 +83,12 @@ namespace  mwmp
         TPlayers *players;
         MasterClient *mclient;
 
+        BaseSystem baseSystem;
         BaseActorList baseActorList;
         BaseObjectList baseObjectList;
         BaseWorldstate baseWorldstate;
 
+        SystemPacketController *systemPacketController;
         PlayerPacketController *playerPacketController;
         ActorPacketController *actorPacketController;
         ObjectPacketController *objectPacketController;

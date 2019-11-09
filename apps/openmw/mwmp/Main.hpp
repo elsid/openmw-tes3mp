@@ -9,6 +9,7 @@ namespace mwmp
 {
     class GUIController;
     class CellController;
+    class LocalSystem;
     class LocalPlayer;
     class Networking;
 
@@ -32,6 +33,7 @@ namespace mwmp
         static std::string getResDir();
 
         Networking *getNetworking() const;
+        LocalSystem *getLocalSystem() const;
         LocalPlayer *getLocalPlayer() const;
         GUIController *getGUIController() const;
         CellController *getCellController() const;
@@ -48,6 +50,7 @@ namespace mwmp
         ///< not implemented
         static Main *pMain;
         Networking *mNetworking;
+        LocalSystem *mLocalSystem;
         LocalPlayer *mLocalPlayer;
 
         GUIController *mGUIController;

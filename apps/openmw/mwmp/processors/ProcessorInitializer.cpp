@@ -1,9 +1,11 @@
 #include "ProcessorInitializer.hpp"
 
+#include "SystemProcessor.hpp"
+#include "system/ProcessorSystemHandshake.hpp"
+
 #include "PlayerProcessor.hpp"
 #include "player/ProcessorChatMessage.hpp"
 #include "player/ProcessorGUIMessageBox.hpp"
-#include "player/ProcessorHandshake.hpp"
 #include "player/ProcessorUserDisconnected.hpp"
 #include "player/ProcessorGameSettings.hpp"
 #include "player/ProcessorPlayerAnimFlags.hpp"
@@ -103,9 +105,10 @@ using namespace mwmp;
 
 void ProcessorInitializer()
 {
+    SystemProcessor::AddProcessor(new ProcessorSystemHandshake());
+
     PlayerProcessor::AddProcessor(new ProcessorChatMessage());
     PlayerProcessor::AddProcessor(new ProcessorGUIMessageBox());
-    PlayerProcessor::AddProcessor(new ProcessorHandshake());
     PlayerProcessor::AddProcessor(new ProcessorUserDisconnected());
     PlayerProcessor::AddProcessor(new ProcessorGameSettings());
     PlayerProcessor::AddProcessor(new ProcessorPlayerAnimFlags());

@@ -155,11 +155,11 @@ add_component_dir (openmw-mp
         )
 
 add_component_dir (openmw-mp/Base
-        BaseActor BaseObject BasePacketProcessor BasePlayer BaseStructs BaseWorldstate
+        BaseActor BaseObject BasePacketProcessor BasePlayer BaseStructs BaseSystem BaseWorldstate
         )
 
 add_component_dir (openmw-mp/Controllers
-        PlayerPacketController ActorPacketController ObjectPacketController WorldstatePacketController
+        SystemPacketController PlayerPacketController ActorPacketController ObjectPacketController WorldstatePacketController
         )
 
 add_component_dir(openmw-mp/Master
@@ -178,10 +178,16 @@ add_component_dir (openmw-mp/Packets/Actor
         PacketActorSpeech PacketActorStatsDynamic
         )
 
+add_component_dir (openmw-mp/Packets/System
+        SystemPacket
+
+        PacketSystemHandshake
+        )
+
 add_component_dir (openmw-mp/Packets/Player
         PlayerPacket
 
-        PacketHandshake PacketChatMessage PacketGUIBoxes PacketGameSettings
+        PacketChatMessage PacketGUIBoxes PacketGameSettings
 
         PacketPlayerBaseInfo PacketPlayerCharGen PacketPlayerActiveSkills PacketPlayerAnimFlags PacketPlayerAnimPlay
         PacketPlayerAttack PacketPlayerAttribute PacketPlayerBehavior PacketPlayerBook PacketPlayerBounty

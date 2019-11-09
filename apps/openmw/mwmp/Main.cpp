@@ -37,6 +37,7 @@
 
 #include "Main.hpp"
 #include "Networking.hpp"
+#include "LocalSystem.hpp"
 #include "LocalPlayer.hpp"
 #include "DedicatedPlayer.hpp"
 #include "PlayerList.hpp"
@@ -84,6 +85,7 @@ Main::Main()
 {
     LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "tes3mp started");
     mNetworking = new Networking();
+    mLocalSystem = new LocalSystem();
     mLocalPlayer = new LocalPlayer();
     mGUIController = new GUIController();
     mCellController = new CellController();
@@ -96,6 +98,7 @@ Main::~Main()
 {
     LOG_MESSAGE_SIMPLE(TimedLog::LOG_INFO, "tes3mp stopped");
     delete mNetworking;
+    delete mLocalSystem;
     delete mLocalPlayer;
     delete mCellController;
     delete mGUIController;
@@ -144,7 +147,7 @@ bool Main::init(std::vector<std::string> &content, Files::Collections &collectio
         pMain->server = address.substr(0, delimPos);
         pMain->port = atoi(address.substr(delimPos + 1).c_str());
     }
-    get().mLocalPlayer->serverPassword = serverPassword;
+    get().mLocalSystem->serverPassword = serverPassword;
 
     pMain->mNetworking->connect(pMain->server, pMain->port, content, collections);
 
@@ -177,7 +180,6 @@ void Main::frame(float dt)
     get().updateWorld(dt);
 
     get().getGUIController()->update(dt);
-
 }
 
 void Main::updateWorld(float dt) const
@@ -216,11 +218,15 @@ Networking *Main::getNetworking() const
     return mNetworking;
 }
 
+LocalSystem *Main::getLocalSystem() const
+{
+    return mLocalSystem;
+}
+
 LocalPlayer *Main::getLocalPlayer() const
 {
     return mLocalPlayer;
 }
-
 
 GUIController *Main::getGUIController() const
 {

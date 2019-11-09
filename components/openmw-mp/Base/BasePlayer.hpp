@@ -185,7 +185,6 @@ namespace mwmp
         }
 
         RakNet::RakNetGUID guid;
-        std::string serverPassword;
 
         GUIMessageBox guiMessageBox;
 

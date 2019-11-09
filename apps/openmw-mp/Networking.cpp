@@ -41,12 +41,14 @@ Networking::Networking(RakNet::RakPeerInterface *peer) : mclient(nullptr)
 
     CellController::create();
 
+    systemPacketController = new SystemPacketController(peer);
     playerPacketController = new PlayerPacketController(peer);
     actorPacketController = new ActorPacketController(peer);
     objectPacketController = new ObjectPacketController(peer);
     worldstatePacketController = new WorldstatePacketController(peer);
 
     // Set send stream
+    systemPacketController->SetStream(0, &bsOut);
     playerPacketController->SetStream(0, &bsOut);
     actorPacketController->SetStream(0, &bsOut);
     objectPacketController->SetStream(0, &bsOut);
@@ -69,6 +71,7 @@ Networking::~Networking()
     CellController::destroy();
 
     sThis = 0;
+    delete systemPacketController;
     delete playerPacketController;
     delete actorPacketController;
     delete objectPacketController;
@@ -85,15 +88,15 @@ bool Networking::isPassworded() const
     return serverPassword != TES3MP_DEFAULT_PASSW;
 }
 
-void Networking::processPlayerPacket(RakNet::Packet *packet)
+void Networking::processSystemPacket(RakNet::Packet *packet)
 {
     Player *player = Players::getPlayer(packet->guid);
 
-    PlayerPacket *myPacket = playerPacketController->GetPacket(packet->data[0]);
+    SystemPacket *myPacket = systemPacketController->GetPacket(packet->data[0]);
 
-    if (packet->data[0] == ID_HANDSHAKE)
+    if (packet->data[0] == ID_SYSTEM_HANDSHAKE)
     {
-        myPacket->setPlayer(player);
+        myPacket->setSystem(&baseSystem);
         myPacket->Read();
 
         if (!myPacket->isPacketValid())
@@ -110,7 +113,7 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
             return;
         }
 
-        if (player->serverPassword != serverPassword)
+        if (baseSystem.serverPassword != serverPassword)
         {
             if (isPassworded())
             {
@@ -128,6 +131,13 @@ void Networking::processPlayerPacket(RakNet::Packet *packet)
         player->setHandshake();
         return;
     }
+}
+
+void Networking::processPlayerPacket(RakNet::Packet *packet)
+{
+    Player *player = Players::getPlayer(packet->guid);
+
+    PlayerPacket *myPacket = playerPacketController->GetPacket(packet->data[0]);
 
     if (!player->isHandshaked())
     {
@@ -283,8 +293,8 @@ bool Networking::preInit(RakNet::Packet *packet, RakNet::BitStream &bsIn)
         packetPreInit.setChecksums(&tmp);
         packetPreInit.Send(packet->systemAddress);
         Players::newPlayer(packet->guid); // create player if connection allowed
-        playerPacketController->SetStream(&bsIn, nullptr); // and request handshake
-        playerPacketController->GetPacket(ID_HANDSHAKE)->RequestData(packet->guid);
+        systemPacketController->SetStream(&bsIn, nullptr); // and request handshake
+        systemPacketController->GetPacket(ID_SYSTEM_HANDSHAKE)->RequestData(packet->guid);
         return true;
     }
 
@@ -293,7 +303,12 @@ bool Networking::preInit(RakNet::Packet *packet, RakNet::BitStream &bsIn)
 
 void Networking::update(RakNet::Packet *packet, RakNet::BitStream &bsIn)
 {
-    if (playerPacketController->ContainsPacket(packet->data[0]))
+    if (systemPacketController->ContainsPacket(packet->data[0]))
+    {
+        systemPacketController->SetStream(&bsIn, nullptr);
+        processSystemPacket(packet);
+    }
+    else if (playerPacketController->ContainsPacket(packet->data[0]))
     {
         playerPacketController->SetStream(&bsIn, nullptr);
         processPlayerPacket(packet);

@@ -95,15 +95,18 @@ add_openmw_dir (mwbase
     inputmanager windowmanager statemanager
     )
 
-add_openmw_dir (mwmp Main Networking LocalPlayer DedicatedPlayer PlayerList LocalActor DedicatedActor ActorList ObjectList
-    Worldstate Cell CellController GUIController MechanicsHelper RecordHelper ScriptController
+add_openmw_dir (mwmp Main Networking LocalSystem LocalPlayer DedicatedPlayer PlayerList LocalActor DedicatedActor ActorList
+    ObjectList Worldstate Cell CellController GUIController MechanicsHelper RecordHelper ScriptController
     )
 
 add_openmw_dir (mwmp/GUI GUIChat GUILogin PlayerMarkerCollection GUIDialogList TextInputDialog
     )
 
-add_openmw_dir(mwmp/processors BaseClientPacketProcessor PlayerProcessor ObjectProcessor ActorProcessor WorldstateProcessor 
-    ProcessorInitializer
+add_openmw_dir(mwmp/processors BaseClientPacketProcessor SystemProcessor PlayerProcessor ObjectProcessor ActorProcessor
+    WorldstateProcessor ProcessorInitializer
+    )
+
+add_openmw_dir (mwmp/processors/system ProcessorSystemHandshake
     )
 
 add_openmw_dir (mwmp/processors/actor ProcessorActorAI ProcessorActorAnimFlags ProcessorActorAnimPlay ProcessorActorAttack
@@ -111,16 +114,15 @@ add_openmw_dir (mwmp/processors/actor ProcessorActorAI ProcessorActorAnimFlags P
     ProcessorActorList ProcessorActorPosition ProcessorActorSpeech ProcessorActorStatsDynamic ProcessorActorTest
     )
 
-add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageBox ProcessorHandshake
-    ProcessorUserDisconnected ProcessorUserMyID ProcessorGameSettings ProcessorPlayerAnimFlags ProcessorPlayerAnimPlay
-    ProcessorPlayerAttack ProcessorPlayerAttribute ProcessorPlayerBaseInfo ProcessorPlayerBehavior ProcessorPlayerBook
-    ProcessorPlayerBounty ProcessorPlayerCast ProcessorPlayerCellChange ProcessorPlayerCellState ProcessorPlayerCharClass
-    ProcessorPlayerCharGen ProcessorPlayerDeath ProcessorPlayerDisposition ProcessorPlayerEquipment ProcessorPlayerFaction
-    ProcessorPlayerInput ProcessorPlayerInventory ProcessorPlayerItemUse ProcessorPlayerJail ProcessorPlayerJournal
-    ProcessorPlayerLevel ProcessorPlayerMiscellaneous ProcessorPlayerMomentum ProcessorPlayerPosition ProcessorPlayerQuickKeys
-    ProcessorPlayerReputation ProcessorPlayerResurrect ProcessorPlayerShapeshift ProcessorPlayerSkill
-    ProcessorPlayerSpeech ProcessorPlayerSpellbook ProcessorPlayerStatsDynamic ProcessorPlayerTopic
-    ProcessorPlayerPlaceholder
+add_openmw_dir (mwmp/processors/player ProcessorChatMessage ProcessorGUIMessageBox ProcessorUserDisconnected
+    ProcessorUserMyID ProcessorGameSettings ProcessorPlayerAnimFlags ProcessorPlayerAnimPlay ProcessorPlayerAttack
+    ProcessorPlayerAttribute ProcessorPlayerBaseInfo ProcessorPlayerBehavior ProcessorPlayerBook ProcessorPlayerBounty
+    ProcessorPlayerCast ProcessorPlayerCellChange ProcessorPlayerCellState ProcessorPlayerCharClass ProcessorPlayerCharGen
+    ProcessorPlayerDeath ProcessorPlayerDisposition ProcessorPlayerEquipment ProcessorPlayerFaction ProcessorPlayerInput
+    ProcessorPlayerInventory ProcessorPlayerItemUse ProcessorPlayerJail ProcessorPlayerJournal ProcessorPlayerLevel
+    ProcessorPlayerMiscellaneous ProcessorPlayerMomentum ProcessorPlayerPosition ProcessorPlayerQuickKeys ProcessorPlayerReputation
+    ProcessorPlayerResurrect ProcessorPlayerShapeshift ProcessorPlayerSkill ProcessorPlayerSpeech ProcessorPlayerSpellbook
+    ProcessorPlayerStatsDynamic ProcessorPlayerTopic ProcessorPlayerPlaceholder
     )
 
 add_openmw_dir (mwmp/processors/object BaseObjectProcessor
