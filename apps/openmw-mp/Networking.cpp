@@ -118,7 +118,7 @@ void Networking::processSystemPacket(RakNet::Packet *packet)
             if (isPassworded())
             {
                 LOG_MESSAGE_SIMPLE(TimedLog::LOG_WARN, "Wrong server password %s used by client at %s",
-                    player->serverPassword.c_str(), packet->systemAddress.ToString());
+                    baseSystem.serverPassword.c_str(), packet->systemAddress.ToString());
                 kickPlayer(player->guid);
                 return;
             }
