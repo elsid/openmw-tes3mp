@@ -486,6 +486,12 @@ void RecordHelper::overrideRecord(const mwmp::CreatureRecord& record)
         if (record.baseOverrides.hasModel)
             finalData.mModel = recordData.mModel;
 
+        if (record.baseOverrides.hasScale)
+            finalData.mScale = recordData.mScale;
+
+        if (record.baseOverrides.hasBloodType)
+            finalData.mBloodType = recordData.mBloodType;
+
         if (record.baseOverrides.hasSubtype)
             finalData.mData.mType = recordData.mData.mType;
 

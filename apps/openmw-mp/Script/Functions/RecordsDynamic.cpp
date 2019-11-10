@@ -1215,6 +1215,36 @@ void RecordsDynamicFunctions::SetRecordFaction(const char* faction) noexcept
     tempOverrides.hasFaction = true;
 }
 
+void RecordsDynamicFunctions::SetRecordScale(double scale) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mScale = scale;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set level for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasScale = true;
+}
+
+void RecordsDynamicFunctions::SetRecordBloodType(int bloodType) noexcept
+{
+    unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;
+
+    if (writeRecordsType == mwmp::RECORD_TYPE::CREATURE)
+        tempCreature.data.mBloodType = bloodType;
+    else
+    {
+        LOG_MESSAGE_SIMPLE(TimedLog::LOG_ERROR, "Tried to set blood type for record type %i which lacks that property", writeRecordsType);
+        return;
+    }
+
+    tempOverrides.hasBloodType = true;
+}
+
 void RecordsDynamicFunctions::SetRecordLevel(int level) noexcept
 {
     unsigned short writeRecordsType = WorldstateFunctions::writeWorldstate.recordsType;

@@ -115,6 +115,9 @@ namespace mwmp
         bool hasGender = false;
         bool hasFaction = false;
 
+        bool hasScale = false;
+        bool hasBloodType = false;
+
         bool hasLevel = false;
         bool hasMagicka = false;
         bool hasFatigue = false;

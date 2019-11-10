@@ -222,6 +222,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
             RW(recordData.mId, send, true);
             RW(recordData.mName, send, true);
             RW(recordData.mModel, send, true);
+            RW(recordData.mScale, send);
+            RW(recordData.mBloodType, send);
             RW(recordData.mData.mType, send);
             RW(recordData.mData.mLevel, send);
             RW(recordData.mData.mHealth, send);
@@ -240,6 +242,8 @@ void PacketRecordDynamic::Packet(RakNet::BitStream *bs, bool send)
                 auto &&overrides = record.baseOverrides;
                 RW(overrides.hasName, send);
                 RW(overrides.hasModel, send);
+                RW(overrides.hasScale, send);
+                RW(overrides.hasBloodType, send);
                 RW(overrides.hasSubtype, send);
                 RW(overrides.hasLevel, send);
                 RW(overrides.hasHealth, send);

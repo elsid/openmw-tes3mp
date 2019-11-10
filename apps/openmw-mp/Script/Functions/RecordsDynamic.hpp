@@ -84,6 +84,9 @@
     {"SetRecordClass",                          RecordsDynamicFunctions::SetRecordClass},\
     {"SetRecordFaction",                        RecordsDynamicFunctions::SetRecordFaction},\
     \
+    {"SetRecordScale",                          RecordsDynamicFunctions::SetRecordScale},\
+    {"SetRecordBloodType",                      RecordsDynamicFunctions::SetRecordBloodType},\
+    \
     {"SetRecordLevel",                          RecordsDynamicFunctions::SetRecordLevel},\
     {"SetRecordMagicka",                        RecordsDynamicFunctions::SetRecordMagicka},\
     {"SetRecordFatigue",                        RecordsDynamicFunctions::SetRecordFatigue},\
@@ -735,6 +738,24 @@ public:
     * \return void
     */
     static void SetRecordFaction(const char* faction) noexcept;
+
+    /**
+    * \brief Set the scale of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param scale The scale of the record.
+    * \return void
+    */
+    static void SetRecordScale(double scale) noexcept;
+
+    /**
+    * \brief Set the blood type of the temporary record stored on the server for the
+    * currently specified record type.
+    *
+    * \param bloodType The blood type of the record.
+    * \return void
+    */
+    static void SetRecordBloodType(int bloodType) noexcept;
 
     /**
     * \brief Set the level of the temporary record stored on the server for the
