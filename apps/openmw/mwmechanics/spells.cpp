@@ -4,6 +4,17 @@
 #include <components/esm/spellstate.hpp>
 #include <components/misc/rng.hpp>
 
+/*
+    Start of tes3mp addition
+
+    Include additional headers for multiplayer purposes
+*/
+#include "../mwmp/Main.hpp"
+#include "../mwmp/LocalPlayer.hpp"
+/*
+    End of tes3mp addition
+*/
+
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
 
@@ -229,6 +240,16 @@ namespace MWMechanics
             const ESM::Spell *spell = iter->first;
             if (spell->mData.mType == ESM::Spell::ST_Disease)
             {
+                /*
+                    Start of tes3mp addition
+
+                    Send an ID_PLAYER_SPELLBOOK packet every time a player's common disease is removed
+                */
+                mwmp::Main::get().getLocalPlayer()->sendSpellChange(spell->mId, mwmp::SpellbookChanges::REMOVE);
+                /*
+                    End of tes3mp addition
+                */
+
                 mSpells.erase(iter++);
                 mSpellsChanged = true;
             }
@@ -244,6 +265,16 @@ namespace MWMechanics
             const ESM::Spell *spell = iter->first;
             if (spell->mData.mType == ESM::Spell::ST_Blight && !hasCorprusEffect(spell))
             {
+                /*
+                    Start of tes3mp addition
+
+                    Send an ID_PLAYER_SPELLBOOK packet every time a player's blight disease is removed
+                */
+                mwmp::Main::get().getLocalPlayer()->sendSpellChange(spell->mId, mwmp::SpellbookChanges::REMOVE);
+                /*
+                    End of tes3mp addition
+                */
+
                 mSpells.erase(iter++);
                 mSpellsChanged = true;
             }
@@ -259,6 +290,16 @@ namespace MWMechanics
             const ESM::Spell *spell = iter->first;
             if (hasCorprusEffect(spell))
             {
+                /*
+                    Start of tes3mp addition
+
+                    Send an ID_PLAYER_SPELLBOOK packet every time a player's corprus disease is removed
+                */
+                mwmp::Main::get().getLocalPlayer()->sendSpellChange(spell->mId, mwmp::SpellbookChanges::REMOVE);
+                /*
+                    End of tes3mp addition
+                */
+
                 mSpells.erase(iter++);
                 mSpellsChanged = true;
             }
@@ -274,6 +315,16 @@ namespace MWMechanics
             const ESM::Spell *spell = iter->first;
             if (spell->mData.mType == ESM::Spell::ST_Curse)
             {
+                /*
+                    Start of tes3mp addition
+
+                    Send an ID_PLAYER_SPELLBOOK packet every time a player's curse is removed
+                */
+                mwmp::Main::get().getLocalPlayer()->sendSpellChange(spell->mId, mwmp::SpellbookChanges::REMOVE);
+                /*
+                    End of tes3mp addition
+                */
+
                 mSpells.erase(iter++);
                 mSpellsChanged = true;
             }
