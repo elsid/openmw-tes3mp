@@ -1,10 +1,10 @@
 language: cpp
-branches:
-  only:
-    - master
-    - coverity_scan
-    - /openmw-.*$/
-    - /^[0-9]+\.[0-9]+\.[0-9]+.*$/
+#branches:
+#  only:
+#    - master
+#    - coverity_scan
+#    - /openmw-.*$/
+#    - /^[0-9]+\.[0-9]+\.[0-9]+.*$/
 env:
   global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
@@ -23,7 +23,7 @@ addons:
       - llvm-toolchain-xenial-7
     packages: [
       # Dev
-      cmake, clang-7, clang-tools-7, gcc-8, g++-8, ccache,
+      cmake, clang-7, clang-tools-7, gcc-8, g++-8,
       # Boost
       libboost-filesystem-dev, libboost-iostreams-dev, libboost-program-options-dev, libboost-system-dev,
       # FFmpeg
@@ -74,7 +74,7 @@ before_install:
 before_script: ./CI/before_script.${TRAVIS_OS_NAME}.sh
 script:
  - cd ./build
- - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then ${ANALYZE}make -j3; fi
+ - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then ${ANALYZE}make VERBOSE=1 -j3; fi
  - if [ "$COVERITY_SCAN_BRANCH" != 1 ] && [ "${TRAVIS_OS_NAME}" = "osx" ]; then make package; fi
  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ] && [ "${TRAVIS_OS_NAME}" = "osx" ]; then ../CI/check_package.osx.sh; fi
  - if [ "$COVERITY_SCAN_BRANCH" != 1 ] && [ "${TRAVIS_OS_NAME}" = "linux" ]; then ./openmw_test_suite; fi
