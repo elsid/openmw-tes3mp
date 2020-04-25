@@ -16,6 +16,7 @@ FIND_LIBRARY (RakNet_LIBRARY_RELEASE NAMES RakNetLibStatic
     /usr/local/lib
     /opt/local/lib
     $ENV{RAKNET_ROOT}/lib
+    $ENV{RAKNET_ROOT}/Lib/RakNetLibStatic
     )
 	
 FIND_LIBRARY (RakNet_LIBRARY_DEBUG NAMES RakNetLibStatic
@@ -28,6 +29,7 @@ FIND_LIBRARY (RakNet_LIBRARY_DEBUG NAMES RakNetLibStatic
     /usr/local/lib
     /opt/local/lib
     $ENV{RAKNET_ROOT}/lib
+    $ENV{RAKNET_ROOT}/Lib/RakNetLibStatic
     )	
 	
 	
